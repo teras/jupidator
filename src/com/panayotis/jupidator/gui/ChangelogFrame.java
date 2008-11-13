@@ -206,7 +206,7 @@ private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
     CancelB.setEnabled(false);
-    callback.actioCancel();
+    callback.actionCancel();
 }//GEN-LAST:event_CancelBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

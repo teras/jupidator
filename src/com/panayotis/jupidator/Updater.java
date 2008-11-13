@@ -40,7 +40,7 @@ public class Updater {
         }
     }
 
-    public void actioCancel() {
+    public void actionCancel() {
         frame.setVisible(false);
         frame.dispose();
     }
