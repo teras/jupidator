@@ -25,7 +25,7 @@ public class UpdaterProperties {
         this.appinfo = appinfo;
         opts = new Properties();
         try {
-            opts.loadFromXML(new FileInputStream(appinfo.getAppUpdaterFile()));
+            opts.loadFromXML(new FileInputStream(appinfo.getUpdaterConfigFile()));
         } catch (IOException ex) {
         }
         appinfo.updateRelease(opts.getProperty(VERSIONCHECK, "0"));
@@ -56,7 +56,7 @@ public class UpdaterProperties {
 
     private void storeOptions() {
         try {
-            opts.storeToXML(new FileOutputStream(appinfo.getAppUpdaterFile()), "JavaUpdater");
+            opts.storeToXML(new FileOutputStream(appinfo.getUpdaterConfigFile()), "JavaUpdater");
         } catch (IOException ex) {
             throw new IllegalArgumentException("Unable to store config file : " + ex.getMessage());
         }

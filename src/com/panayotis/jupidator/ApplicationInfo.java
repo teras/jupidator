@@ -18,8 +18,8 @@ public class ApplicationInfo {
 
     protected static final String SEP = System.getProperty("file.separator");
     private String AppHome;
-    private String AppUpdaterFile;
     private String AppConfigFile;
+    private String AppSupportDir;
     private int release = -1;
     private String version = "0.0.0";
     /**
@@ -28,25 +28,47 @@ public class ApplicationInfo {
      */
     private boolean distributionBased = false;
 
-    public ApplicationInfo(String AppHome) {
-        if (AppHome == null) {
+    public ApplicationInfo(String AppHome, String AppConfigFile, String AppSupportDir, String release, String version) {
+        if (AppHome == null)
             throw new NullPointerException(_("Application path can not be null."));
-        }
         File f = new File(AppHome);
-        if (!f.isDirectory()) {
+        if (!f.isDirectory())
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
-        }
         this.AppHome = AppHome;
-        AppUpdaterFile = AppHome + SEP + "updater.xml";
-        AppConfigFile = AppHome + SEP + "config.xml";
+
+        try {
+            FileUtils.fileIsValid(AppConfigFile, "Application configuration");
+        } catch (IOException ex) {
+            AppConfigFile = AppHome + SEP + "config.xml";
+        }
+        this.AppConfigFile = AppConfigFile;
+
+        try {
+            FileUtils.fileIsValid(AppSupportDir, "Application support directory");
+        } catch (IOException ex) {
+            AppSupportDir = AppHome;
+        }
+        if (!new File(AppSupportDir).isDirectory())
+            AppSupportDir = AppHome;
+        if (!AppSupportDir.endsWith(SEP))
+            AppSupportDir = AppSupportDir + SEP;
+        this.AppSupportDir = AppSupportDir + SEP;
+
+        try {
+            this.release = Integer.parseInt(release);
+        } catch (NumberFormatException ex) {
+        }
+
+        if (version != null)
+            this.version = version;
     }
 
     public boolean isDistributionBased() {
         return distributionBased;
     }
 
-    String getAppUpdaterFile() {
-        return AppUpdaterFile;
+    String getUpdaterConfigFile() {
+        return AppSupportDir + "updater.xml";
     }
 
     public String updatePath(String path) {
@@ -54,7 +76,7 @@ public class ApplicationInfo {
             path = "";
         path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
         path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
-        path = path.replaceAll("\\$\\{APPUPDATER\\}", AppUpdaterFile);
+        path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
         return path;
     }
 
@@ -68,31 +90,12 @@ public class ApplicationInfo {
         }
     }
 
-    public void setAppConfigFile(String AppConfigFile) throws IOException {
-        FileUtils.fileIsValid(AppConfigFile, "Application configuration");
-        this.AppConfigFile = AppConfigFile;
-    }
-
-    public void setAppUpdaterFile(String AppUpdaterFile) throws IOException {
-        FileUtils.fileIsValid(AppUpdaterFile, "Application updater");
-        this.AppUpdaterFile = AppUpdaterFile;
-    }
-
     public int getRelease() {
         return release;
     }
 
     public String getVersion() {
         return version;
-    }
-
-    public void setCurrentVersion(String rel, String ver) {
-        try {
-            release = Integer.parseInt(rel);
-        } catch (NumberFormatException ex) {
-        }
-        if (ver != null)
-            version = ver;
     }
 
     public void setDistributionBased(boolean distributionBased) {
