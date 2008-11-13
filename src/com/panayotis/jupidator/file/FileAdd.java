@@ -4,10 +4,11 @@
  */
 package com.panayotis.jupidator.file;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.download.Downloader;
-import com.panayotis.jupidator.file.FileUtils;
 import java.io.IOException;
 
 /**
@@ -39,9 +40,9 @@ public class FileAdd extends FileElement {
             return "File " + tofile + " can not be created.";
         }
         try {
-            Downloader.download(fromfile, tofile + ".updated");
+            Downloader.download(fromfile+"d", tofile + ".updated");
         } catch (IOException ex) {
-            return "Unable to download file " + fromfile;
+            return _("Unable to download file: {0}" , name);
         }
         return null;
     }

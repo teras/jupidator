@@ -12,6 +12,7 @@ import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.list.UpdaterAppElements;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,7 +53,16 @@ public class ChangelogFrame extends JDialog {
             throw new UpdaterException("Unable to load  icon "+ex.getMessage());
         }
     }
-
+    
+    public void errorOnCommit(String message) {
+        BarPanel.remove(PBar);
+        ProgressP.remove(PLabel);
+        BarPanel.add(PLabel);
+        PLabel.setText(message);
+        PLabel.setForeground(Color.RED);
+        ProgressP.revalidate();
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -78,11 +88,11 @@ public class ChangelogFrame extends JDialog {
         LaterB = new javax.swing.JButton();
         UpdateB = new javax.swing.JButton();
         ProgressP = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
+        BarPanel = new javax.swing.JPanel();
         PBar = new javax.swing.JProgressBar();
-        jPanel9 = new javax.swing.JPanel();
+        ButtonPanel = new javax.swing.JPanel();
         CancelB = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        PLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -160,27 +170,27 @@ public class ChangelogFrame extends JDialog {
 
         ProgressP.setLayout(new java.awt.BorderLayout());
 
-        jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
-        jPanel8.setLayout(new java.awt.BorderLayout());
-        jPanel8.add(PBar, java.awt.BorderLayout.CENTER);
+        BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        BarPanel.setLayout(new java.awt.BorderLayout());
+        BarPanel.add(PBar, java.awt.BorderLayout.CENTER);
 
-        ProgressP.add(jPanel8, java.awt.BorderLayout.CENTER);
+        ProgressP.add(BarPanel, java.awt.BorderLayout.CENTER);
 
-        jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
-        jPanel9.setLayout(new java.awt.BorderLayout());
+        ButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
+        ButtonPanel.setLayout(new java.awt.BorderLayout());
 
-        CancelB.setText(_("CancelB"));
+        CancelB.setText(_("Cancel"));
         CancelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelBActionPerformed(evt);
             }
         });
-        jPanel9.add(CancelB, java.awt.BorderLayout.CENTER);
+        ButtonPanel.add(CancelB, java.awt.BorderLayout.CENTER);
 
-        ProgressP.add(jPanel9, java.awt.BorderLayout.EAST);
+        ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
 
-        jLabel1.setText(_("Downloading..."));
-        ProgressP.add(jLabel1, java.awt.BorderLayout.LINE_START);
+        PLabel.setText(_("Downloading..."));
+        ProgressP.add(PLabel, java.awt.BorderLayout.LINE_START);
 
         MainPanel.add(ProgressP, java.awt.BorderLayout.SOUTH);
 
@@ -210,6 +220,8 @@ private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_CancelBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel BarPanel;
+    private javax.swing.JPanel ButtonPanel;
     private javax.swing.JButton CancelB;
     private javax.swing.JPanel CommandP;
     private javax.swing.JLabel IconL;
@@ -219,17 +231,15 @@ private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JLabel NewVerL;
     private javax.swing.JLabel NotesL;
     private javax.swing.JProgressBar PBar;
+    private javax.swing.JLabel PLabel;
     private javax.swing.JPanel ProgressP;
     private javax.swing.JButton SkipB;
     private javax.swing.JButton UpdateB;
     private javax.swing.JLabel VersInfoL;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

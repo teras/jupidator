@@ -56,7 +56,7 @@ public class UpdaterProperties {
 
     private void storeOptions() {
         try {
-            opts.storeToXML(new FileOutputStream(appinfo.getUpdaterConfigFile()), "JavaUpdater");
+            opts.storeToXML(new FileOutputStream(appinfo.getUpdaterConfigFile()), "Jupidator Java Updater http://sourceforge.net/projects/jupidator/");
         } catch (IOException ex) {
             throw new IllegalArgumentException("Unable to store config file : " + ex.getMessage());
         }

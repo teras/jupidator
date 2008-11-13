@@ -30,7 +30,13 @@ public class Updater {
 
     public void actionCommit() {
         for(String key:vers.keySet()) {
-            vers.get(key).action();
+            System.out.println("key="+key);
+            String result = vers.get(key).action();
+            if (result!=null) {
+                frame.errorOnCommit(result);
+                //actionCancel();
+                return;
+            }
         }
         frame.setVisible(false);
         frame.dispose();
