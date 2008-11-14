@@ -10,6 +10,7 @@ import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterListener;
 import com.panayotis.jupidator.download.Downloader;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -30,6 +31,18 @@ public class FileAdd extends FileElement {
 
     public String toString() {
         return "+" + source + SEP + name + ">" + getDestination();
+    }
+
+    private String checkDestFile(String fname, String type, UpdaterListener listener) {
+        try {
+            FileUtils.fileIsValid(fname, type);
+        } catch (IOException ex) {
+            String msg = _("File {0} can not be created.", fname);
+            if (listener != null)
+                listener.receiveMessage(msg + " - " + ex.getMessage());
+            return msg;
+        }
+        return null;
     }
 
     public String action(UpdaterListener listener) {
@@ -56,15 +69,12 @@ public class FileAdd extends FileElement {
         return null;
     }
 
-    private String checkDestFile(String fname, String type, UpdaterListener listener) {
-        try {
-            FileUtils.fileIsValid(fname, type);
-        } catch (IOException ex) {
-            String msg = _("File {0} can not be created.", fname);
-            if (listener != null)
-                listener.receiveMessage(msg + " - " + ex.getMessage());
-            return msg;
+    public void cancel(UpdaterListener listener) {
+        File del = new File(dest + SEP + name + ".updated");
+        if (!del.delete()) {
+            listener.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
+        } else {
+            listener.receiveMessage(_("Cancel updating: Successfully deleted downloaded file {0}", del));
         }
-        return null;
     }
 }

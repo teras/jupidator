@@ -42,17 +42,18 @@ public abstract class FileElement {
         return dest;
     }
 
-    /**
-     * 
-     * @param log
-     * @return Error message, or null if everything is fine
-     */
-    public abstract String action(UpdaterListener listener);
-
     public FileElement getNewestRelease(FileElement fother) {
         if (release > fother.release)
             return this;
         else
             return fother;
     }
+
+    /**
+     * 
+     * @param log
+     * @return Error message, or null if everything is fine
+     */
+    public abstract String action(UpdaterListener listener);
+    public abstract void cancel (UpdaterListener listener);
 }

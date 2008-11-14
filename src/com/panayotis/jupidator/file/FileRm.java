@@ -41,4 +41,9 @@ public class FileRm extends FileElement {
         }
         return null;
     }
+
+    public void cancel(UpdaterListener listener) {
+        if (listener != null)
+            listener.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + SEP + name));
+    }
 }
