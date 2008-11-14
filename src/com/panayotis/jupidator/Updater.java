@@ -43,6 +43,28 @@ public class Updater {
         frame.successOnCommit();
     }
 
+    public void actionCancel() {
+        for (String key : vers.keySet()) {
+            vers.get(key).cancel(listener);
+        }
+        frame.setVisible(false);
+        frame.dispose();
+    }
+
+    /* Do nothing - wait for next cycle */
+    public void actionDefer() {
+        frame.setVisible(false);
+        frame.dispose();
+        vers.getUpdaterProperties().defer();
+    }
+
+    public void actionIgnore() {
+        frame.setVisible(false);
+        frame.dispose();
+        vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
+    }
+
+    
     public void actionRestart() {
         frame.setVisible(false);
         frame.dispose();
@@ -85,26 +107,5 @@ public class Updater {
             }
             System.exit(0);
         }
-    }
-
-    public void actionCancel() {
-        for (String key : vers.keySet()) {
-            vers.get(key).cancel(listener);
-        }
-        frame.setVisible(false);
-        frame.dispose();
-    }
-
-    /* Do nothing - wait for next cycle */
-    public void actionDefer() {
-        frame.setVisible(false);
-        frame.dispose();
-        vers.getUpdaterProperties().defer();
-    }
-
-    public void actionIgnore() {
-        frame.setVisible(false);
-        frame.dispose();
-        vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
     }
 }
