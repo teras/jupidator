@@ -9,6 +9,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterListener;
+import com.panayotis.jupidator.deployer.JupidatorDeployer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,7 +21,6 @@ import java.net.URL;
  */
 public class FileAdd extends FileElement {
 
-    public static final String EXTENSION = ".updated";
     /** This is actually a URL */
     private String source;
 
@@ -36,7 +36,7 @@ public class FileAdd extends FileElement {
     }
 
     public String getDestinationAction() {
-        return "+" + getHash() + EXTENSION;
+        return "+" + getHash() + JupidatorDeployer.EXTENSION;
     }
 
     private String checkDestFile(String fname, String type, UpdaterListener listener) {
@@ -54,7 +54,7 @@ public class FileAdd extends FileElement {
     public String action(UpdaterListener listener) {
         String fromfile = source + "/" + name;
         String oldtofile = dest + SEP + name;
-        String newtofile = oldtofile + EXTENSION;
+        String newtofile = oldtofile + JupidatorDeployer.EXTENSION;
         String msg;
 
         if ((msg = checkDestFile(oldtofile, _("Original destination file"), listener)) != null)
@@ -83,7 +83,7 @@ public class FileAdd extends FileElement {
     }
 
     public void cancel(UpdaterListener listener) {
-        File del = new File(dest + SEP + name + EXTENSION);
+        File del = new File(dest + SEP + name + JupidatorDeployer.EXTENSION);
         if (!del.delete()) {
             listener.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
         } else {

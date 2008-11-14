@@ -23,7 +23,6 @@ import java.util.zip.ZipFile;
 public class FileUtils {
 
     private final static char FS = System.getProperty("file.separator").charAt(0);
-    private final static String NL = System.getProperty("file.separator");
     private final static String HOME = System.getProperty("java.home");
 
     public static File fileIsValid(String file, String type) throws IOException {
@@ -44,10 +43,10 @@ public class FileUtils {
     public static String getJavaExec() {
         String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "java.exe" : "java";
         String file;
-        file = HOME + NL + "bin" + NL + EXEC;
+        file = HOME + FS + "bin" + FS + EXEC;
         if (new File(file).isFile())
             return file;
-        file = HOME + NL + "jre" + NL + "bin" + NL + EXEC;
+        file = HOME + FS + "jre" + FS + "bin" + FS + EXEC;
         if (new File(file).isFile())
             return file;
         return null;

@@ -3,9 +3,14 @@
  *
  * Created on September 29, 2008, 5:10 PM
  */
-
 package com.panayotis.jupidator.deployer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -13,14 +18,16 @@ import javax.swing.JFrame;
  * @author  teras
  */
 public class JupidatorDeployer extends JFrame {
-    
+
+    public static final String EXTENSION = ".updated";
+
     public void initGUI() {
         initComponents();
         ProgressBar.putClientProperty("JProgressBar.style", "circular");
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -53,16 +60,48 @@ public class JupidatorDeployer extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String[] args) {
-        JupidatorDeployer f = new JupidatorDeployer();
-        f.initGUI();
-        
-        for (int i = 0 ; i < args.length ; i++ ) {
-            System.out.println(args[i]);
-        }
-        
+
+        BufferedWriter out = null;
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
+            JupidatorDeployer f = new JupidatorDeployer();
+            f.initGUI();
+            out = new BufferedWriter(new FileWriter("/tmp/jub"));
+
+            out.write("Start here");
+            out.newLine();
+            for (int i = 0; i < args.length; i++) {
+                boolean rm = args[i].charAt(0) == '-';
+                String path = args[i].substring(1, args[i].length());
+                if (rm) {
+                    new File(path).delete();
+                    out.write("Deleting file " + path);
+                    out.newLine();
+                } else {
+                    String oldpath = path.substring(0, path.length() - EXTENSION.length());
+                    File oldfile = new File(oldpath);
+                    File newfile = new File(path);
+                    
+                    oldfile.delete();
+                    out.write("Deleting file " + oldfile);
+                    out.newLine();
+                    out.write("Exists? " + oldfile.exists() + " " + newfile.exists());
+                    out.newLine();
+                    newfile.renameTo(oldfile);
+                    out.write("renaming " + path + " to " + oldfile);
+                    out.newLine();
+                    out.write("Exists? " + oldfile.exists() + " " + newfile.exists());
+                    out.newLine();
+                }
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(JupidatorDeployer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(JupidatorDeployer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         System.exit(0);
     }
