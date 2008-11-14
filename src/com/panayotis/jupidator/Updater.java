@@ -6,6 +6,7 @@ package com.panayotis.jupidator;
 
 import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.ChangelogFrame;
+import com.panayotis.jupidator.list.Arch;
 import com.panayotis.jupidator.list.Version;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -48,7 +49,8 @@ public class Updater {
         if (listener == null || listener.requestRestart()) {
             String classname = "com.panayotis.jupidator.deployer.JupidatorDeployer";
             String temppath = System.getProperty("java.io.tmpdir");
-            
+            Arch arch = vers.getArch();
+
             String message = FileUtils.copyClass(classname, temppath);
             if (message != null) {
                 listener.receiveMessage(message);
@@ -56,19 +58,28 @@ public class Updater {
                 return;
             }
 
-            String args[] = new String[4 + vers.size()];
+            String args[] = new String[5 + vers.size() + arch.countArguments()];
             args[0] = FileUtils.getJavaExec();
             args[1] = "-cp";
             args[2] = temppath;
             args[3] = classname;
 
-            int counter = 4;
+            args[4] = String.valueOf(vers.size());
+            int counter = 5;
             for (String key : vers.keySet()) {
                 args[counter++] = vers.get(key).getDestinationAction();
             }
 
+            for (int i = 0; i < arch.countArguments(); i++) {
+                args[counter++] = arch.getArgument(i);
+            }
+
+            for (int i = 0; i < args.length; i++) {
+                System.out.println(i + ": " + args[i]);
+            }
+
             try {
-                Process proc = Runtime.getRuntime().exec(args);
+                Runtime.getRuntime().exec(args);
             } catch (IOException ex) {
                 listener.receiveMessage(ex.getMessage());
             }

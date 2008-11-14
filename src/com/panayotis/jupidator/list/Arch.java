@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.jupidator.list;
 
 import java.util.ArrayList;
@@ -12,10 +11,10 @@ import java.util.ArrayList;
  * @author teras
  */
 public class Arch {
+
     private String tag;
     private String os;
     private String arch;
-    
     private String exec;
     private ArrayList<String> arguments;
     private String basefile;
@@ -38,16 +37,28 @@ public class Arch {
         String c_arch = System.getProperty("os.arch");
         return (c_os.toLowerCase().startsWith(os) && c_arch.toLowerCase().startsWith(arch));
     }
-    
+
     void setExec(String exec) {
         this.exec = exec;
     }
-    
+
     void addArgument(String argument) {
         arguments.add(argument);
     }
-    
+
     void setBaseFile(String basefile) {
         this.basefile = basefile;
+    }
+
+    public int countArguments() {
+        return arguments.size() + 1;
+    }
+
+    public String getArgument(int index) {
+        if (index == 0)
+            return exec;
+        if (index > 0 && index <= arguments.size())
+            return arguments.get(index - 1);
+        throw new ArrayIndexOutOfBoundsException("Not valid index for architecture arguments: " + index);
     }
 }

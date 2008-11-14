@@ -128,10 +128,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
     }
 
     Version getVersion() {
-        // Make sure that we are never rturning null.
+        // Make sure that we never return null.
         // note: latest is null if no updates were found at all
-        if (latest == null)
-            return new Version();
-        return latest;
+        Version v = latest;
+        if (v == null)
+            v = new Version();
+        v.setArch(arch);
+        return v;
     }
 }

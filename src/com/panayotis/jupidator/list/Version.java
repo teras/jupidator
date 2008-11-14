@@ -23,7 +23,8 @@ public class Version extends HashMap<String, FileElement> {
 
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
-    
+    private Arch arch;
+
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
             UpdaterProperties prop = new UpdaterProperties(appinfo);
@@ -60,7 +61,7 @@ public class Version extends HashMap<String, FileElement> {
     public UpdaterAppElements getAppElements() {
         return appel;
     }
-    
+
     public UpdaterProperties getUpdaterProperties() {
         return appprop;
     }
@@ -80,5 +81,13 @@ public class Version extends HashMap<String, FileElement> {
                 put(tag, fnew);
             }
         }
+    }
+
+    public Arch getArch() {
+        return arch;
+    }
+
+    public void setArch(Arch arch) {
+        this.arch = arch;
     }
 }
