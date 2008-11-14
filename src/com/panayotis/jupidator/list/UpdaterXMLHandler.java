@@ -20,6 +20,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
     private Arch arch;  // The stored architecture of the running system - null if unknown
+    private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
     private Version latest; // The full aggregated list of the latest files, in order to upgrade
     private Version current;    // The list of files for the current reading "version" object
     private boolean ignore_version; // true, if this version is too old and should be ignored
@@ -32,13 +33,18 @@ public class UpdaterXMLHandler extends DefaultHandler {
         ignore_version = false;
         display = new DefaultHTMLCreator();
         this.appinfo = appinfo;
+        arch = new Arch("any", "", ""); // Default arch is selected by default
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attr) {
-        if (qName.equals("alias")) {
-            Arch a = new Arch(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
-            if (a.isCurrent())
-                arch = a;
+        if (qName.equals("architect")) {
+            lastarch = new Arch(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
+            if (lastarch.isCurrent())
+                arch = lastarch;
+        } else if (qName.equals("launcher")) {
+            lastarch.setExec(attr.getValue("exec"));
+        } else if (qName.equals("argument")) {
+            lastarch.addArgument(attr.getValue("value"));
         } else if (qName.equals("version")) {
             int release_last = Integer.parseInt(attr.getValue("id"));
             String version_last = attr.getValue("release");
@@ -49,9 +55,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("arch")) {
             if (ignore_version)
                 return;
-            String tag = attr.getValue("name");
-            if (arch != null && arch.isTag(tag) || (arch == null && tag.equals("any"))) {
-                // We have found the correct arch OR we are using generic tag, if nothing is found
+            if (arch.isTag(attr.getValue("name"))) {  // Found current architecture
                 current = new Version();
             }
         } else if (qName.equals("file")) {
