@@ -25,6 +25,10 @@ public class FileRm extends FileElement {
         return "-" + getHash();
     }
 
+    public String getDestinationAction() {
+        return toString();
+    }
+
     public String action(UpdaterListener listener) {
         String tofile = dest + SEP + name;
         File f = new File(tofile);

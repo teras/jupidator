@@ -1,22 +1,18 @@
 /*
- * Deployer.java
+ * JupidatorDeployer.java
  *
  * Created on September 29, 2008, 5:10 PM
  */
 
 package com.panayotis.jupidator.deployer;
 
-import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
  *
  * @author  teras
  */
-public class Deployer extends JFrame {
-    private ArrayList<String> movedfiles = new ArrayList<String>();
-    private ArrayList<String> deletedfiles = new ArrayList<String>();
-    
+public class JupidatorDeployer extends JFrame {
     
     public void initGUI() {
         initComponents();
@@ -57,10 +53,12 @@ public class Deployer extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String[] args) {
-        Deployer f = new Deployer();
+        JupidatorDeployer f = new JupidatorDeployer();
         f.initGUI();
         
-        
+        for (int i = 0 ; i < args.length ; i++ ) {
+            System.out.println(args[i]);
+        }
         
         try {
             Thread.sleep(1000);

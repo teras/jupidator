@@ -4,8 +4,11 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.ChangelogFrame;
 import com.panayotis.jupidator.list.Version;
+import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,6 +46,32 @@ public class Updater {
         frame.setVisible(false);
         frame.dispose();
         if (listener == null || listener.requestRestart()) {
+            String classname = "com.panayotis.jupidator.deployer.JupidatorDeployer";
+            String temppath = System.getProperty("java.io.tmpdir");
+            
+            String message = FileUtils.copyClass(classname, temppath);
+            if (message != null) {
+                listener.receiveMessage(message);
+                JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String args[] = new String[4 + vers.size()];
+            args[0] = FileUtils.getJavaExec();
+            args[1] = "-cp";
+            args[2] = temppath;
+            args[3] = classname;
+
+            int counter = 4;
+            for (String key : vers.keySet()) {
+                args[counter++] = vers.get(key).getDestinationAction();
+            }
+
+            try {
+                Process proc = Runtime.getRuntime().exec(args);
+            } catch (IOException ex) {
+                listener.receiveMessage(ex.getMessage());
+            }
             System.exit(0);
         }
     }

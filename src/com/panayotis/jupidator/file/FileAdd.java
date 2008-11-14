@@ -9,9 +9,10 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterListener;
-import com.panayotis.jupidator.download.Downloader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * 
@@ -19,6 +20,7 @@ import java.io.IOException;
  */
 public class FileAdd extends FileElement {
 
+    public static final String EXTENSION = ".updated";
     /** This is actually a URL */
     private String source;
 
@@ -31,6 +33,10 @@ public class FileAdd extends FileElement {
 
     public String toString() {
         return "+" + source + SEP + name + ">" + getDestination();
+    }
+
+    public String getDestinationAction() {
+        return "+" + getHash() + EXTENSION;
     }
 
     private String checkDestFile(String fname, String type, UpdaterListener listener) {
@@ -48,7 +54,7 @@ public class FileAdd extends FileElement {
     public String action(UpdaterListener listener) {
         String fromfile = source + "/" + name;
         String oldtofile = dest + SEP + name;
-        String newtofile = oldtofile + ".updated";
+        String newtofile = oldtofile + EXTENSION;
         String msg;
 
         if ((msg = checkDestFile(oldtofile, _("Original destination file"), listener)) != null)
@@ -56,21 +62,28 @@ public class FileAdd extends FileElement {
         if ((msg = checkDestFile(newtofile, _("Downloaded destination file"), listener)) != null)
             return msg;
 
+        String error = null;
         try {
-            Downloader.download(fromfile, newtofile);
+            error = FileUtils.copyFile(new URL(fromfile).openConnection().getInputStream(),
+                    new FileOutputStream(newtofile));
         } catch (IOException ex) {
-            msg = _("Unable to download file {0}", name);
-            if (listener != null)
-                listener.receiveMessage(msg + " - " + ex.getMessage());
-            return msg;
+            error = ex.getMessage();
         }
+        
+        if (error == null) {
+            if (listener != null)
+                listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
+            return null;
+        }
+
+        msg = _("Unable to download file {0}", name);
         if (listener != null)
-            listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
-        return null;
+            listener.receiveMessage(msg + " - " + error);
+        return msg;
     }
 
     public void cancel(UpdaterListener listener) {
-        File del = new File(dest + SEP + name + ".updated");
+        File del = new File(dest + SEP + name + EXTENSION);
         if (!del.delete()) {
             listener.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
         } else {
