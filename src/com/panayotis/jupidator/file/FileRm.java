@@ -4,8 +4,11 @@
  */
 package com.panayotis.jupidator.file;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdaterListener;
 import java.io.File;
 
 /**
@@ -22,14 +25,19 @@ public class FileRm extends FileElement {
         return "-" + getHash();
     }
 
-    public String action() {
-        String tofile = dest+SEP+name;
+    public String action(UpdaterListener listener) {
+        String tofile = dest + SEP + name;
         File f = new File(tofile);
         if (f.exists()) {
             if (!f.delete()) {
-                return "File " + tofile + " can not be deleted.";
+                String msg = _("File {0} can not be deleted.", tofile);
+                if (listener != null)
+                    listener.receiveMessage(msg);
+                return msg;
             }
         }
+        if (listener != null)
+            listener.receiveMessage(_("File {0} successfully deleted."));
         return null;
     }
 }

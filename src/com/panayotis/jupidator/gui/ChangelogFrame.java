@@ -55,14 +55,24 @@ public class ChangelogFrame extends JDialog {
     }
     
     public void errorOnCommit(String message) {
-        BarPanel.remove(PBar);
-        ProgressP.remove(PLabel);
-        BarPanel.add(PLabel);
-        PLabel.setText(message);
+        setInfoArea(message);
         PLabel.setForeground(Color.RED);
         ProgressP.revalidate();
     }
     
+    public void successOnCommit() {
+        setInfoArea(_("Successfully downloaded updates"));
+        ActionB.setText(_("Restart application"));
+        ActionB.setActionCommand("restart");
+        ProgressP.revalidate();
+    }
+    
+    private void setInfoArea(String message) {
+        BarPanel.remove(PBar);
+        ProgressP.remove(PLabel);
+        BarPanel.add(PLabel);
+        PLabel.setText(message);
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -91,7 +101,7 @@ public class ChangelogFrame extends JDialog {
         BarPanel = new javax.swing.JPanel();
         PBar = new javax.swing.JProgressBar();
         ButtonPanel = new javax.swing.JPanel();
-        CancelB = new javax.swing.JButton();
+        ActionB = new javax.swing.JButton();
         PLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -179,13 +189,14 @@ public class ChangelogFrame extends JDialog {
         ButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
         ButtonPanel.setLayout(new java.awt.BorderLayout());
 
-        CancelB.setText(_("Cancel"));
-        CancelB.addActionListener(new java.awt.event.ActionListener() {
+        ActionB.setText(_("Cancel"));
+        ActionB.setActionCommand("cancel");
+        ActionB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelBActionPerformed(evt);
+                ActionBActionPerformed(evt);
             }
         });
-        ButtonPanel.add(CancelB, java.awt.BorderLayout.CENTER);
+        ButtonPanel.add(ActionB, java.awt.BorderLayout.CENTER);
 
         ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
 
@@ -214,15 +225,18 @@ private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     callback.actionIgnore();
 }//GEN-LAST:event_SkipBActionPerformed
 
-private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
-    CancelB.setEnabled(false);
-    callback.actionCancel();
-}//GEN-LAST:event_CancelBActionPerformed
+private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionBActionPerformed
+    ActionB.setEnabled(false);
+    if (ActionB.getActionCommand().startsWith("c"))
+        callback.actionCancel();
+    else
+        callback.actionRestart();
+}//GEN-LAST:event_ActionBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ActionB;
     private javax.swing.JPanel BarPanel;
     private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JButton CancelB;
     private javax.swing.JPanel CommandP;
     private javax.swing.JLabel IconL;
     private javax.swing.JEditorPane InfoPane;

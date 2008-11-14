@@ -8,6 +8,7 @@ import com.panayotis.jupidator.list.*;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdaterListener;
 
 /**
  *
@@ -46,7 +47,7 @@ public abstract class FileElement {
      * @param log
      * @return Error message, or null if everything is fine
      */
-    public abstract String action();
+    public abstract String action(UpdaterListener listener);
 
     public FileElement getNewestRelease(FileElement fother) {
         if (release > fother.release)

@@ -11,4 +11,5 @@ package com.panayotis.jupidator;
 public interface UpdaterListener {
 
     public abstract boolean requestRestart();
+    public abstract void receiveMessage(String message);
 }

@@ -8,6 +8,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdaterListener;
 import com.panayotis.jupidator.download.Downloader;
 import java.io.IOException;
 
@@ -31,19 +32,27 @@ public class FileAdd extends FileElement {
         return "+" + source + SEP + name + ">" + getDestination();
     }
 
-    public String action() {
-        String fromfile = source+"/"+name;
-        String tofile = dest+SEP+name;
+    public String action(UpdaterListener listener) {
+        String fromfile = source + "/" + name;
+        String tofile = dest + SEP + name + ".updated";
         try {
             FileUtils.fileIsValid(tofile, "Destination file");
         } catch (IOException ex) {
-            return "File " + tofile + " can not be created.";
+            String msg = _("File {0} can not be created.", tofile);
+            if (listener != null)
+                listener.receiveMessage(msg + " - " + ex.getMessage());
+            return msg;
         }
         try {
-            Downloader.download(fromfile+"d", tofile + ".updated");
+            Downloader.download(fromfile, tofile);
         } catch (IOException ex) {
-            return _("Unable to download file: {0}" , name);
+            String msg = _("Unable to download file {0}", name);
+            if (listener != null)
+                listener.receiveMessage(msg + " - " + ex.getMessage());
+            return msg;
         }
+        if (listener != null)
+            listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
         return null;
     }
 }

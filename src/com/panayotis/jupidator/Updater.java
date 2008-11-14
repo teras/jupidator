@@ -29,18 +29,20 @@ public class Updater {
     }
 
     public void actionCommit() {
-        for(String key:vers.keySet()) {
-            System.out.println("key="+key);
-            String result = vers.get(key).action();
-            if (result!=null) {
+        for (String key : vers.keySet()) {
+            String result = vers.get(key).action(listener);
+            if (result != null) {
                 frame.errorOnCommit(result);
-                //actionCancel();
                 return;
             }
         }
+        frame.successOnCommit();
+    }
+
+    public void actionRestart() {
         frame.setVisible(false);
         frame.dispose();
-        if (listener.requestRestart()) {
+        if (listener == null || listener.requestRestart()) {
             System.out.println("Restart successfull");
             System.exit(0);
         }
@@ -63,5 +65,4 @@ public class Updater {
         frame.dispose();
         vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
     }
-
 }
