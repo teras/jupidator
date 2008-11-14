@@ -34,25 +34,37 @@ public class FileAdd extends FileElement {
 
     public String action(UpdaterListener listener) {
         String fromfile = source + "/" + name;
-        String tofile = dest + SEP + name + ".updated";
-        try {
-            FileUtils.fileIsValid(tofile, "Destination file");
-        } catch (IOException ex) {
-            String msg = _("File {0} can not be created.", tofile);
-            if (listener != null)
-                listener.receiveMessage(msg + " - " + ex.getMessage());
+        String oldtofile = dest + SEP + name;
+        String newtofile = oldtofile + ".updated";
+        String msg;
+
+        if ((msg = checkDestFile(oldtofile, _("Original destination file"), listener)) != null)
             return msg;
-        }
+        if ((msg = checkDestFile(newtofile, _("Downloaded destination file"), listener)) != null)
+            return msg;
+
         try {
-            Downloader.download(fromfile, tofile);
+            Downloader.download(fromfile, newtofile);
         } catch (IOException ex) {
-            String msg = _("Unable to download file {0}", name);
+            msg = _("Unable to download file {0}", name);
             if (listener != null)
                 listener.receiveMessage(msg + " - " + ex.getMessage());
             return msg;
         }
         if (listener != null)
             listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
+        return null;
+    }
+
+    private String checkDestFile(String fname, String type, UpdaterListener listener) {
+        try {
+            FileUtils.fileIsValid(fname, type);
+        } catch (IOException ex) {
+            String msg = _("File {0} can not be created.", fname);
+            if (listener != null)
+                listener.receiveMessage(msg + " - " + ex.getMessage());
+            return msg;
+        }
         return null;
     }
 }

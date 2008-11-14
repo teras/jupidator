@@ -43,7 +43,6 @@ public class Updater {
         frame.setVisible(false);
         frame.dispose();
         if (listener == null || listener.requestRestart()) {
-            System.out.println("Restart successfull");
             System.exit(0);
         }
     }

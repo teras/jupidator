@@ -29,15 +29,16 @@ public class FileRm extends FileElement {
         String tofile = dest + SEP + name;
         File f = new File(tofile);
         if (f.exists()) {
-            if (!f.delete()) {
-                String msg = _("File {0} can not be deleted.", tofile);
+            if (f.getParentFile().canWrite() && f.canWrite()) {
                 if (listener != null)
-                    listener.receiveMessage(msg);
-                return msg;
+                    listener.receiveMessage(_("File {0} will be deleted."));
+                return null;
             }
+            String msg = _("File {0} could not be deleted.", tofile);
+            if (listener != null)
+                listener.receiveMessage(msg);
+            return msg;
         }
-        if (listener != null)
-            listener.receiveMessage(_("File {0} successfully deleted."));
         return null;
     }
 }
