@@ -113,17 +113,20 @@ public class ApplicationInfo {
         while (m.find()) {
             String group = m.group();
             String name = group.substring(2, group.length() - 1);
-            String value = vars.get(name);
-            if (value == null) {
-                value = System.getProperty(name);
+            if (name.length() > 0) {
+                String value = vars.get(name);
                 if (value == null) {
-                    value = System.getenv(name);
+                    value = System.getProperty(name);
+                    if (value == null) {
+                        value = System.getenv(name);
+                    }
                 }
+                if (value != null)
+                    m.appendReplacement(sb, value);
             }
-            if (value != null)
-                m.appendReplacement(sb, value);
         }
         m.appendTail(sb);
+//        System.out.println(path + " -> " + sb.toString());
         return sb.toString();
     }
 }
