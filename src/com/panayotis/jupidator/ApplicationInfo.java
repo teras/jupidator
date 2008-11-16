@@ -106,8 +106,8 @@ public class ApplicationInfo {
         path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
         path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
         path = path.replaceAll("\\$\\{BASEFILE\\}", AppBaseFile);
-        path = path.replaceAll("\\$\\{JAVAHOME\\}", AppBaseFile);
-        path = path.replaceAll("\\$\\{JAVABIN\\}", AppBaseFile);
+        path = path.replaceAll("\\$\\{JAVAHOME\\}", FileUtils.JAVAHOME);
+        path = path.replaceAll("\\$\\{JAVABIN\\}", FileUtils.JAVABIN);
         return path;
     }
 }
