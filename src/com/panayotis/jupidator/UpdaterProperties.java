@@ -22,8 +22,10 @@ public class UpdaterProperties {
     private ApplicationInfo appinfo;
 
     public UpdaterProperties(ApplicationInfo appinfo) throws UpdaterException {
-        this.appinfo = appinfo;
         opts = new Properties();
+        if (appinfo == null)
+            return;
+        this.appinfo = appinfo;
         try {
             opts.loadFromXML(new FileInputStream(appinfo.getUpdaterConfigFile()));
         } catch (IOException ex) {

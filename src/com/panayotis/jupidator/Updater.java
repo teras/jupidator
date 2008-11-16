@@ -26,6 +26,9 @@ public class Updater {
         this.appinfo = appinfo;
         vers = Version.loadVersion(xmlurl, appinfo);
         this.listener = listener;
+    }
+    
+    public void actionStart() throws UpdaterException {
         if (vers.size() > 0) {
             frame = new ChangelogFrame(this);
             frame.setInformation(vers.getAppElements(), appinfo);
@@ -105,5 +108,9 @@ public class Updater {
             }
             System.exit(0);
         }
+    }
+    
+    public String getChangeLog() {
+        return vers.getAppElements().getHTML();
     }
 }

@@ -66,7 +66,6 @@ public class ApplicationInfo {
         } catch (NumberFormatException ex) {
         }
 
-        vars.put("JAVAHOME", FileUtils.JAVAHOME);
         vars.put("JAVABIN", FileUtils.JAVABIN);
     }
 

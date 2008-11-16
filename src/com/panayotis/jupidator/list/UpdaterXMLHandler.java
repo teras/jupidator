@@ -49,11 +49,13 @@ public class UpdaterXMLHandler extends DefaultHandler {
             int release_last = Integer.parseInt(attr.getValue("id"));
             String version_last = attr.getValue("release");
             elements.updateVersion(release_last, version_last);
-            ignore_version = release_last <= appinfo.getRelease();
+            ignore_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
         } else if (qName.equals("description")) {
             descbuffer = new StringBuffer();
         } else if (qName.equals("arch")) {
             if (ignore_version)
+                return;
+            if (appinfo == null)
                 return;
             if (arch.isTag(attr.getValue("name"))) {  // Found current architecture
                 appinfo.setBaseFile(attr.getValue("basefile"));
@@ -80,6 +82,8 @@ public class UpdaterXMLHandler extends DefaultHandler {
         if (ignore_version)
             return true;
         if (current == null)
+            return true;
+        if (appinfo == null)
             return true;
 
         if (!appinfo.isDistributionBased())
