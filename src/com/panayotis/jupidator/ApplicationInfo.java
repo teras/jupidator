@@ -11,6 +11,9 @@ import com.panayotis.jupidator.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -18,12 +21,8 @@ import java.io.IOException;
  */
 public class ApplicationInfo {
 
-    private String AppHome;
-    private String AppConfigFile;
-    private String AppSupportDir;
-    private String AppBaseFile = "a.class";
-    private int release = -1;
-    private String version = "0.0.0";
+    private HashMap<String, String> vars;
+    private int release;
     /**
     true:  Some files can be ignored, if they are taken care by a distribution
     false: All files should be  updated
@@ -31,19 +30,21 @@ public class ApplicationInfo {
     private boolean distributionBased = false;
 
     public ApplicationInfo(String AppHome, String AppConfigFile, String AppSupportDir, String release, String version) {
+        vars = new HashMap<String, String>();
+
         if (AppHome == null)
             throw new NullPointerException(_("Application path can not be null."));
         File f = new File(AppHome);
         if (!f.isDirectory())
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
-        this.AppHome = AppHome;
+        vars.put("APPHOME", AppHome);
 
         try {
             FileUtils.fileIsValid(AppConfigFile, "Application configuration");
         } catch (IOException ex) {
             AppConfigFile = AppHome + FS + "config.xml";
         }
-        this.AppConfigFile = AppConfigFile;
+        vars.put("APPCONFIG", AppConfigFile);
 
         try {
             FileUtils.fileIsValid(AppSupportDir, "Application support directory");
@@ -54,19 +55,23 @@ public class ApplicationInfo {
             AppSupportDir = AppHome;
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
             AppSupportDir = AppSupportDir + FS;
-        this.AppSupportDir = AppSupportDir;
+        vars.put("APPSUPPORT", AppSupportDir);
+
+        if (version == null || version.equals(""))
+            version = "0.0.0.0";
+        vars.put("VERSION", version);
 
         try {
             this.release = Integer.parseInt(release);
         } catch (NumberFormatException ex) {
         }
 
-        if (version != null)
-            this.version = version;
+        vars.put("JAVAHOME", FileUtils.JAVAHOME);
+        vars.put("JAVABIN", FileUtils.JAVABIN);
     }
 
     public void setBaseFile(String basefile) {
-        AppBaseFile = basefile;
+        vars.put("BASEFILE", basefile);
     }
 
     public boolean isDistributionBased() {
@@ -74,7 +79,7 @@ public class ApplicationInfo {
     }
 
     String getUpdaterConfigFile() {
-        return AppSupportDir + "updater.xml";
+        return vars.get("APPSUPPORT") + "updater.xml";
     }
 
     /* This new release has to do with ignoring a specific version */
@@ -92,7 +97,7 @@ public class ApplicationInfo {
     }
 
     public String getVersion() {
-        return version;
+        return vars.get("VERSION");
     }
 
     public void setDistributionBased(boolean distributionBased) {
@@ -102,12 +107,23 @@ public class ApplicationInfo {
     public String updatePath(String path) {
         if (path == null)
             path = "";
-        path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
-        path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
-        path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
-        path = path.replaceAll("\\$\\{BASEFILE\\}", AppBaseFile);
-        path = path.replaceAll("\\$\\{JAVAHOME\\}", FileUtils.JAVAHOME);
-        path = path.replaceAll("\\$\\{JAVABIN\\}", FileUtils.JAVABIN);
-        return path;
+
+        StringBuffer sb = new StringBuffer();
+        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(path);
+        while (m.find()) {
+            String group = m.group();
+            String name = group.substring(2, group.length() - 1);
+            String value = vars.get(name);
+            if (value == null) {
+                value = System.getProperty(name);
+                if (value == null) {
+                    value = System.getenv(name);
+                }
+            }
+            if (value != null)
+                m.appendReplacement(sb, value);
+        }
+        m.appendTail(sb);
+        return sb.toString();
     }
 }
