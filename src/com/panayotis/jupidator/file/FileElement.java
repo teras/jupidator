@@ -50,11 +50,23 @@ public abstract class FileElement {
     }
 
     /**
-     * 
+     * This method performs the commit action for this element.
      * @param log
      * @return Error message, or null if everything is fine
      */
     public abstract String action(UpdaterListener listener);
-    public abstract void cancel (UpdaterListener listener);
+
+    public abstract void cancel(UpdaterListener listener);
+
     public abstract String getArgument();
+
+    /**
+     *
+     * @return self
+     */
+    public FileElement updateSystemVariables() {
+        name = info.updatePath(name);
+        dest = info.updatePath(dest);
+        return this;
+    }
 }

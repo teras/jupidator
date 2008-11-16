@@ -36,7 +36,7 @@ public class Updater {
 
     public void actionCommit() {
         for (String key : vers.keySet()) {
-            String result = vers.get(key).action(listener);
+            String result = vers.get(key).updateSystemVariables().action(listener); // Lazy update of arguments
             if (result != null) {
                 frame.errorOnCommit(result);
                 return;
@@ -91,11 +91,11 @@ public class Updater {
             args[4] = String.valueOf(vers.size());
             int counter = 5;
             for (String key : vers.keySet()) {
-                args[counter++] = appinfo.updatePath(vers.get(key).getArgument());
+                args[counter++] = vers.get(key).getArgument();
             }
 
             for (int i = 0; i < arch.countArguments(); i++) {
-                args[counter++] = appinfo.updatePath(arch.getArgument(i));
+                args[counter++] = appinfo.updatePath(arch.getArgument(i));  // Lazy update of arguments
             }
 
             try {

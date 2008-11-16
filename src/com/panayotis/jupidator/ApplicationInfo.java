@@ -77,18 +77,6 @@ public class ApplicationInfo {
         return AppSupportDir + "updater.xml";
     }
 
-    public String updatePath(String path) {
-        if (path == null)
-            path = "";
-        path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
-        path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
-        path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
-        path = path.replaceAll("\\$\\{BASEFILE\\}", AppBaseFile);
-        path = path.replaceAll("\\$\\{JAVAHOME\\}", AppBaseFile);
-        path = path.replaceAll("\\$\\{JAVABIN\\}", AppBaseFile);
-        return path;
-    }
-
     /* This new release has to do with ignoring a specific version */
     public void updateRelease(String lastrelease) {
         try {
@@ -109,5 +97,17 @@ public class ApplicationInfo {
 
     public void setDistributionBased(boolean distributionBased) {
         this.distributionBased = distributionBased;
+    }
+
+    public String updatePath(String path) {
+        if (path == null)
+            path = "";
+        path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
+        path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
+        path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
+        path = path.replaceAll("\\$\\{BASEFILE\\}", AppBaseFile);
+        path = path.replaceAll("\\$\\{JAVAHOME\\}", AppBaseFile);
+        path = path.replaceAll("\\$\\{JAVABIN\\}", AppBaseFile);
+        return path;
     }
 }

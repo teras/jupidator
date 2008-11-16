@@ -31,7 +31,7 @@ public class FileRm extends FileElement {
     }
 
     public String action(UpdaterListener listener) {
-        String tofile = dest + FS + name;
+        String tofile = dest + FS + name;  // replace system variables
         File f = new File(tofile);
         if (f.exists()) {
             if (f.getParentFile().canWrite() && f.canWrite()) {

@@ -70,7 +70,7 @@ public class FileAdd extends FileElement {
         } catch (IOException ex) {
             error = ex.getMessage();
         }
-        
+
         if (error == null) {
             if (listener != null)
                 listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
@@ -90,5 +90,11 @@ public class FileAdd extends FileElement {
         } else {
             listener.receiveMessage(_("Cancel updating: Successfully deleted downloaded file {0}", del));
         }
+    }
+
+    public FileElement updateSystemVariables() {
+        super.updateSystemVariables();
+        source = info.updatePath(source);
+        return this;
     }
 }
