@@ -25,7 +25,7 @@ public class FileRm extends FileElement {
         return "-" + getHash();
     }
 
-    public String getDestinationAction() {
+    public String getArgument() {
         return toString();
     }
 

@@ -9,8 +9,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.JFrame;
 
 /**
@@ -25,7 +25,8 @@ public class JupidatorDeployer extends JFrame {
 
     static {
         try {
-            out = new BufferedWriter(new FileWriter("/tmp/jub"));
+            String filename = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "jupidator." + new SimpleDateFormat("yyyyMMdd_hhmmss").format(Calendar.getInstance().getTime()) + ".log";
+            out = new BufferedWriter(new FileWriter(filename));
         } catch (IOException ex) {
         }
     }
@@ -41,49 +42,64 @@ public class JupidatorDeployer extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-
-        JupidatorDeployer f = new JupidatorDeployer();
-        debug("Start here");
-
-        int params = Integer.valueOf(args[0]);
-
-        for (int i = 1; i <= params; i++) {
-            debug("Working with file #" + i + " " + args[i]);
-
-            boolean rm = args[i].charAt(0) == '-';
-            String path = args[i].substring(1, args[i].length());
-            if (rm) {
-                new File(path).delete();
-                debug("Deleting file " + path);
-            } else {
-                String oldpath = path.substring(0, path.length() - EXTENSION.length());
-                File oldfile = new File(oldpath);
-                File newfile = new File(path);
-
-                oldfile.delete();
-                debug("Deleting file " + oldfile);
-                debug("Exists? " + oldfile.exists() + " " + newfile.exists());
-                newfile.renameTo(oldfile);
-                debug("renaming " + path + " to " + oldfile);
-                debug("Exists? " + oldfile.exists() + " " + newfile.exists());
+    private static void endDebug() {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException ex) {
             }
         }
+    }
 
-        params++;
-        String exec[] = new String[args.length - params];
-        for (int i = params; i < args.length; i++) {
-            exec[i - params] = args[i];
-        }
-        for (int i = 0; i < exec.length; i++) {
-            debug("Exec #" + i + ": " + exec[i]);
-        }
+    public static void main(String[] args) {
         try {
-            Runtime.getRuntime().exec(exec);
-        } catch (IOException ex) {
+            new JupidatorDeployer();
+            debug("Start log of Jupidator Deployer with arguments:");
+            for (int i = 0; i < args.length; i++) {
+                debug("  #" + i + ": " + args[i]);
+            }
+
+            int files = Integer.valueOf(args[0]);
+            debug("Number of affected files: " + files);
+
+            for (int i = 1; i <= files; i++) {
+                boolean rm = args[i].charAt(0) == '-';
+                String path = args[i].substring(1, args[i].length());
+                debug("Working with " + path + "");
+                if (rm) {
+                    debug("  Deleting file " + path);
+                    new File(path).delete();
+                } else {
+                    String oldpath = path.substring(0, path.length() - EXTENSION.length());
+                    File oldfile = new File(oldpath);
+                    File newfile = new File(path);
+
+                    debug("  Deleting file " + oldfile);
+                    oldfile.delete();
+                    debug("  Renaming " + path + " to " + oldfile);
+                    newfile.renameTo(oldfile);
+                }
+                debug("End of works with " + path);
+            }
+
+            files++;
+            String exec[] = new String[args.length - files];
+            debug("Restarting application with following arguments:");
+            for (int i = files; i < args.length; i++) {
+                exec[i - files] = args[i];
+                debug("  #" + (i - files) + ": " + exec[i - files]);
+            }
+            try {
+                Runtime.getRuntime().exec(exec);
+            } catch (IOException ex) {
+            }
+
+        } catch (Exception ex) {
+            debug("Exception found: " + ex.toString());
+        } finally {
+            endDebug();
+            System.exit(0);
         }
-        
-        System.exit(0);
     }
 
     public JupidatorDeployer() {

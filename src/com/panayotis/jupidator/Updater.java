@@ -89,15 +89,11 @@ public class Updater {
             args[4] = String.valueOf(vers.size());
             int counter = 5;
             for (String key : vers.keySet()) {
-                args[counter++] = vers.get(key).getDestinationAction();
+                args[counter++] = vers.get(key).getArgument();
             }
 
             for (int i = 0; i < arch.countArguments(); i++) {
                 args[counter++] = arch.getArgument(i);
-            }
-
-            for (int i = 0; i < args.length; i++) {
-                System.out.println(i + ": " + args[i]);
             }
 
             try {

@@ -56,5 +56,5 @@ public abstract class FileElement {
      */
     public abstract String action(UpdaterListener listener);
     public abstract void cancel (UpdaterListener listener);
-    public abstract String getDestinationAction();
+    public abstract String getArgument();
 }

@@ -35,7 +35,7 @@ public class FileAdd extends FileElement {
         return "+" + source + SEP + name + ">" + getDestination();
     }
 
-    public String getDestinationAction() {
+    public String getArgument() {
         return "+" + getHash() + JupidatorDeployer.EXTENSION;
     }
 
