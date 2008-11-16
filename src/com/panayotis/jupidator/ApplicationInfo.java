@@ -5,6 +5,8 @@
 package com.panayotis.jupidator;
 
 import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.file.FileUtils.FS;
+
 import com.panayotis.jupidator.file.FileUtils;
 
 import java.io.File;
@@ -16,10 +18,10 @@ import java.io.IOException;
  */
 public class ApplicationInfo {
 
-    protected static final String SEP = System.getProperty("file.separator");
     private String AppHome;
     private String AppConfigFile;
     private String AppSupportDir;
+    private String AppBaseFile = "a.class";
     private int release = -1;
     private String version = "0.0.0";
     /**
@@ -39,7 +41,7 @@ public class ApplicationInfo {
         try {
             FileUtils.fileIsValid(AppConfigFile, "Application configuration");
         } catch (IOException ex) {
-            AppConfigFile = AppHome + SEP + "config.xml";
+            AppConfigFile = AppHome + FS + "config.xml";
         }
         this.AppConfigFile = AppConfigFile;
 
@@ -50,9 +52,9 @@ public class ApplicationInfo {
         }
         if (!new File(AppSupportDir).isDirectory())
             AppSupportDir = AppHome;
-        if (!AppSupportDir.endsWith(SEP))
-            AppSupportDir = AppSupportDir + SEP;
-        this.AppSupportDir = AppSupportDir + SEP;
+        if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
+            AppSupportDir = AppSupportDir + FS;
+        this.AppSupportDir = AppSupportDir;
 
         try {
             this.release = Integer.parseInt(release);
@@ -61,6 +63,10 @@ public class ApplicationInfo {
 
         if (version != null)
             this.version = version;
+    }
+
+    public void setBaseFile(String basefile) {
+        AppBaseFile = basefile;
     }
 
     public boolean isDistributionBased() {
@@ -77,6 +83,9 @@ public class ApplicationInfo {
         path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
         path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
         path = path.replaceAll("\\$\\{APPSUPPORT\\}", AppSupportDir);
+        path = path.replaceAll("\\$\\{BASEFILE\\}", AppBaseFile);
+        path = path.replaceAll("\\$\\{JAVAHOME\\}", AppBaseFile);
+        path = path.replaceAll("\\$\\{JAVABIN\\}", AppBaseFile);
         return path;
     }
 

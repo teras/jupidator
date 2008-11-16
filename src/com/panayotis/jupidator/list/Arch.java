@@ -17,7 +17,6 @@ public class Arch {
     private String arch;
     private String exec;
     private ArrayList<String> arguments;
-    private String basefile;
 
     public Arch(String tag, String os, String arch) {
         this.tag = tag.toLowerCase();
@@ -44,10 +43,6 @@ public class Arch {
 
     void addArgument(String argument) {
         arguments.add(argument);
-    }
-
-    void setBaseFile(String basefile) {
-        this.basefile = basefile;
     }
 
     public int countArguments() {

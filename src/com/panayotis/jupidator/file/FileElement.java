@@ -4,9 +4,10 @@
  */
 package com.panayotis.jupidator.file;
 
-import com.panayotis.jupidator.list.*;
 import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.file.FileUtils.FS;
 
+import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterListener;
 
@@ -16,7 +17,6 @@ import com.panayotis.jupidator.UpdaterListener;
  */
 public abstract class FileElement {
 
-    protected static final String SEP = System.getProperty("file.separator");
     protected String name = "";
     protected String dest;
     protected int release;
@@ -26,7 +26,7 @@ public abstract class FileElement {
         if (name != null)
             this.name = name;
         release = elements.getLastRelease();
-        this.dest = appinfo.updatePath(dest);
+        this.dest = dest;
 
         info = appinfo;
         if (info == null) {
@@ -35,7 +35,7 @@ public abstract class FileElement {
     }
 
     public String getHash() {
-        return dest + SEP + name;
+        return dest + FS + name;
     }
 
     public String getDestination() {

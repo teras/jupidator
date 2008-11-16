@@ -20,13 +20,15 @@ public class Updater {
     private Version vers;
     private ChangelogFrame frame;
     private UpdaterListener listener;
+    private ApplicationInfo appinfo;
 
-    public Updater(String xmlurl, ApplicationInfo apinfo, UpdaterListener listener) throws UpdaterException {
-        vers = Version.loadVersion(xmlurl, apinfo);
+    public Updater(String xmlurl, ApplicationInfo appinfo, UpdaterListener listener) throws UpdaterException {
+        this.appinfo = appinfo;
+        vers = Version.loadVersion(xmlurl, appinfo);
         this.listener = listener;
         if (vers.size() > 0) {
             frame = new ChangelogFrame(this);
-            frame.setInformation(vers.getAppElements(), apinfo);
+            frame.setInformation(vers.getAppElements(), appinfo);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         }
@@ -81,7 +83,7 @@ public class Updater {
             }
 
             String args[] = new String[5 + vers.size() + arch.countArguments()];
-            args[0] = FileUtils.getJavaExec();
+            args[0] = FileUtils.JAVABIN;
             args[1] = "-cp";
             args[2] = temppath;
             args[3] = classname;
@@ -89,11 +91,11 @@ public class Updater {
             args[4] = String.valueOf(vers.size());
             int counter = 5;
             for (String key : vers.keySet()) {
-                args[counter++] = vers.get(key).getArgument();
+                args[counter++] = appinfo.updatePath(vers.get(key).getArgument());
             }
 
             for (int i = 0; i < arch.countArguments(); i++) {
-                args[counter++] = arch.getArgument(i);
+                args[counter++] = appinfo.updatePath(arch.getArgument(i));
             }
 
             try {

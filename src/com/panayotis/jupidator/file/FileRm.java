@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.file;
 
 import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
@@ -30,7 +31,7 @@ public class FileRm extends FileElement {
     }
 
     public String action(UpdaterListener listener) {
-        String tofile = dest + SEP + name;
+        String tofile = dest + FS + name;
         File f = new File(tofile);
         if (f.exists()) {
             if (f.getParentFile().canWrite() && f.canWrite()) {
@@ -48,6 +49,6 @@ public class FileRm extends FileElement {
 
     public void cancel(UpdaterListener listener) {
         if (listener != null)
-            listener.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + SEP + name));
+            listener.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + FS + name));
     }
 }

@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.file;
 
 import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
@@ -32,7 +33,7 @@ public class FileAdd extends FileElement {
     }
 
     public String toString() {
-        return "+" + source + SEP + name + ">" + getDestination();
+        return "+" + source + FS + name + ">" + getDestination();
     }
 
     public String getArgument() {
@@ -53,7 +54,7 @@ public class FileAdd extends FileElement {
 
     public String action(UpdaterListener listener) {
         String fromfile = source + "/" + name;
-        String oldtofile = dest + SEP + name;
+        String oldtofile = dest + FS + name;
         String newtofile = oldtofile + JupidatorDeployer.EXTENSION;
         String msg;
 
@@ -83,7 +84,7 @@ public class FileAdd extends FileElement {
     }
 
     public void cancel(UpdaterListener listener) {
-        File del = new File(dest + SEP + name + JupidatorDeployer.EXTENSION);
+        File del = new File(dest + FS + name + JupidatorDeployer.EXTENSION);
         if (!del.delete()) {
             listener.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
         } else {
