@@ -64,7 +64,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), elements, appinfo);
+            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), attr.getValue("size"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))

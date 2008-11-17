@@ -19,10 +19,11 @@ public abstract class FileElement {
 
     protected String name = "";
     protected String dest;
+    protected int size;
     protected int release;
     protected ApplicationInfo info;
 
-    public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo) {
+    public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo) {
         if (name != null)
             this.name = name;
         release = elements.getLastRelease();
@@ -31,6 +32,12 @@ public abstract class FileElement {
         info = appinfo;
         if (info == null) {
             throw new NullPointerException(_("Application info not provided."));
+        }
+        try {
+            this.size = Integer.parseInt(size);
+            if (this.size < 0)
+                this.size = 0;
+        } catch (NumberFormatException ex) {
         }
     }
 
@@ -49,6 +56,10 @@ public abstract class FileElement {
             return fother;
     }
 
+    public int getSize() {
+        return size;
+    }
+    
     /**
      * This method performs the commit action for this element.
      * @param log

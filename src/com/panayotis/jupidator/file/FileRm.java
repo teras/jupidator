@@ -19,7 +19,7 @@ import java.io.File;
 public class FileRm extends FileElement {
 
     public FileRm(String name, String dest, UpdaterAppElements elements, ApplicationInfo info) {
-        super(name, dest, elements, info);
+        super(name, dest, "0", elements, info);
     }
 
     public String toString() {

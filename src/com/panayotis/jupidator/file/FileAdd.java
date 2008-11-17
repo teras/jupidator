@@ -25,8 +25,8 @@ public class FileAdd extends FileElement {
     /** This is actually a URL */
     private String source;
 
-    public FileAdd(String name, String source, String dest, UpdaterAppElements elements, ApplicationInfo info) {
-        super(name, dest, elements, info);
+    public FileAdd(String name, String source, String dest, String size, UpdaterAppElements elements, ApplicationInfo info) {
+        super(name, dest, size, elements, info);
         if (source == null)
             source = "";
         this.source = elements.getBaseURL() + source;
