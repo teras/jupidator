@@ -15,8 +15,8 @@ public class DefaultHTMLCreator implements UpdaterHTMLCreator {
 
     public DefaultHTMLCreator() {
         data = new StringBuffer();
-        data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
-        data.append("<html>\n");
+        data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
+        data.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n");
         data.append("<head>\n");
         data.append("<title></title>\n");
         data.append("<style type=\"text/css\">\n");
