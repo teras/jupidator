@@ -16,6 +16,9 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Formatter;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
@@ -23,10 +26,15 @@ import javax.swing.JDialog;
  *
  * @author  teras
  */
-public class ChangelogFrame extends JDialog {
+public class ChangelogFrame extends JDialog implements BufferListener {
 
     private Updater callback;
     
+    private long bytes;
+    private long lastbytes;
+    private long allbytes;
+    private Timer timer;
+
     /** Creates new form ChangelogFrame */
     public ChangelogFrame(Updater callback) {
         super((Frame) null, false);
@@ -50,29 +58,77 @@ public class ChangelogFrame extends JDialog {
             if (icon != null)
                 IconL.setIcon(new ImageIcon(icon));
         } catch (MalformedURLException ex) {
-            throw new UpdaterException("Unable to load  icon "+ex.getMessage());
+            throw new UpdaterException("Unable to load  icon " + ex.getMessage());
         }
     }
-    
+
     public void errorOnCommit(String message) {
+        stopDownloadTimer();
         setInfoArea(message);
-        PLabel.setForeground(Color.RED);
+        InfoL.setForeground(Color.RED);
         ProgressP.revalidate();
     }
-    
+
     public void successOnCommit() {
+        stopDownloadTimer();
         setInfoArea(_("Successfully downloaded updates"));
         ActionB.setText(_("Restart application"));
         ActionB.setActionCommand("restart");
         ProgressP.revalidate();
     }
-    
+
     private void setInfoArea(String message) {
         BarPanel.remove(PBar);
-        ProgressP.remove(PLabel);
-        BarPanel.add(PLabel);
-        PLabel.setText(message);
+        ProgressP.remove(InfoL);
+        BarPanel.add(InfoL);
+        InfoL.setText(message);
     }
+
+    public void setDownloadRatio(long bytes, float percent) {
+        PBar.setValue(Math.round(percent * 100));
+
+        StringBuilder sb = new StringBuilder();
+        Formatter formatter = new Formatter(sb);
+        if (bytes < 1e3) {
+            formatter.format("%db/sec", bytes);
+        } else if (bytes < 1e6) {
+            formatter.format("%2.1fKb/sec", bytes / 1e3);
+        } else if (bytes < 1e9) {
+            formatter.format("%2.1fMb/sec", bytes / 1e6);
+        } else if (bytes < 1e12) {
+            formatter.format("%2.1fGb/sec", bytes / 1e9);
+        }
+        String ratio = sb.toString().trim();
+        PBar.setToolTipText("Download speed: "+ratio);
+        PBar.setString(ratio);
+    }
+
+    public void addBytes(long bytes) {
+        this.bytes += bytes;
+    }
+
+    public void setAllBytes(long bytes) {
+        allbytes = bytes;
+    }
+
+    public void startDownloadTimer() {
+        stopDownloadTimer();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                long diffbytes = bytes - lastbytes;
+                lastbytes = bytes;
+                setDownloadRatio(diffbytes, ((float)lastbytes) / allbytes);
+            }
+        }, 0, 1000);
+    }
+
+    private void stopDownloadTimer() {
+        if (timer!=null)
+            timer.cancel();
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -102,7 +158,7 @@ public class ChangelogFrame extends JDialog {
         PBar = new javax.swing.JProgressBar();
         ButtonPanel = new javax.swing.JPanel();
         ActionB = new javax.swing.JButton();
-        PLabel = new javax.swing.JLabel();
+        InfoL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -182,6 +238,8 @@ public class ChangelogFrame extends JDialog {
 
         BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
         BarPanel.setLayout(new java.awt.BorderLayout());
+
+        PBar.setStringPainted(true);
         BarPanel.add(PBar, java.awt.BorderLayout.CENTER);
 
         ProgressP.add(BarPanel, java.awt.BorderLayout.CENTER);
@@ -200,8 +258,8 @@ public class ChangelogFrame extends JDialog {
 
         ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
 
-        PLabel.setText(_("Downloading..."));
-        ProgressP.add(PLabel, java.awt.BorderLayout.LINE_START);
+        InfoL.setText(_("Downloading..."));
+        ProgressP.add(InfoL, java.awt.BorderLayout.LINE_START);
 
         MainPanel.add(ProgressP, java.awt.BorderLayout.SOUTH);
 
@@ -227,25 +285,25 @@ private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionBActionPerformed
     ActionB.setEnabled(false);
+    stopDownloadTimer();
     if (ActionB.getActionCommand().startsWith("c"))
         callback.actionCancel();
     else
         callback.actionRestart();
 }//GEN-LAST:event_ActionBActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ActionB;
     private javax.swing.JPanel BarPanel;
     private javax.swing.JPanel ButtonPanel;
     private javax.swing.JPanel CommandP;
     private javax.swing.JLabel IconL;
+    private javax.swing.JLabel InfoL;
     private javax.swing.JEditorPane InfoPane;
     private javax.swing.JButton LaterB;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JLabel NewVerL;
     private javax.swing.JLabel NotesL;
     private javax.swing.JProgressBar PBar;
-    private javax.swing.JLabel PLabel;
     private javax.swing.JPanel ProgressP;
     private javax.swing.JButton SkipB;
     private javax.swing.JButton UpdateB;

@@ -8,7 +8,7 @@ package com.panayotis.jupidator;
  *
  * @author teras
  */
-public interface UpdaterListener {
+public interface UpdatedApplication {
 
     public abstract boolean requestRestart();
     public abstract void receiveMessage(String message);

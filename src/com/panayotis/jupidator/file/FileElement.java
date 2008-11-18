@@ -9,7 +9,8 @@ import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdaterListener;
+import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.gui.BufferListener;
 
 /**
  *
@@ -19,7 +20,7 @@ public abstract class FileElement {
 
     protected String name = "";
     protected String dest;
-    protected int size;
+    protected long size = 0;
     protected int release;
     protected ApplicationInfo info;
 
@@ -34,7 +35,7 @@ public abstract class FileElement {
             throw new NullPointerException(_("Application info not provided."));
         }
         try {
-            this.size = Integer.parseInt(size);
+            this.size = Long.parseLong(size);
             if (this.size < 0)
                 this.size = 0;
         } catch (NumberFormatException ex) {
@@ -56,18 +57,17 @@ public abstract class FileElement {
             return fother;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
     
     /**
      * This method performs the commit action for this element.
-     * @param log
      * @return Error message, or null if everything is fine
      */
-    public abstract String action(UpdaterListener listener);
+    public abstract String action(UpdatedApplication application, BufferListener blisten);
 
-    public abstract void cancel(UpdaterListener listener);
+    public abstract void cancel(UpdatedApplication application);
 
     public abstract String getArgument();
 

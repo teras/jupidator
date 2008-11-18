@@ -19,16 +19,16 @@ public class Updater {
 
     private Version vers;
     private ChangelogFrame frame;
-    private UpdaterListener listener;
+    private UpdatedApplication application;
     private ApplicationInfo appinfo;
 
-    public Updater(String xmlurl, ApplicationInfo appinfo, UpdaterListener listener) throws UpdaterException {
+    public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         this.appinfo = appinfo;
         vers = Version.loadVersion(xmlurl, appinfo);
-        this.listener = listener;
+        this.application = application;
     }
-    
-    public void actionStart() throws UpdaterException {
+
+    public void actionDisplay() throws UpdaterException {
         if (vers.size() > 0) {
             frame = new ChangelogFrame(this);
             frame.setInformation(vers.getAppElements(), appinfo);
@@ -38,19 +38,31 @@ public class Updater {
     }
 
     public void actionCommit() {
+        long size = 0;
         for (String key : vers.keySet()) {
-            String result = vers.get(key).updateSystemVariables().action(listener); // Lazy update of arguments
-            if (result != null) {
-                frame.errorOnCommit(result);
-                return;
-            }
+            size += vers.get(key).getSize();
         }
-        frame.successOnCommit();
+        frame.setAllBytes(size);
+        Thread download = new Thread() {
+
+            public void run() {
+                for (String key : vers.keySet()) {
+                    String result = vers.get(key).updateSystemVariables().action(application, frame); // Lazy update of arguments
+                    if (result != null) {
+                        frame.errorOnCommit(result);
+                        return;
+                    }
+                }
+                frame.successOnCommit();
+            }
+        };
+        download.start();
+        frame.startDownloadTimer();
     }
 
     public void actionCancel() {
         for (String key : vers.keySet()) {
-            vers.get(key).cancel(listener);
+            vers.get(key).cancel(application);
         }
         frame.setVisible(false);
         frame.dispose();
@@ -69,18 +81,17 @@ public class Updater {
         vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
     }
 
-    
     public void actionRestart() {
         frame.setVisible(false);
         frame.dispose();
-        if (listener == null || listener.requestRestart()) {
+        if (application == null || application.requestRestart()) {
             String classname = "com.panayotis.jupidator.deployer.JupidatorDeployer";
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
 
             String message = FileUtils.copyClass(classname, temppath);
             if (message != null) {
-                listener.receiveMessage(message);
+                application.receiveMessage(message);
                 JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -104,12 +115,12 @@ public class Updater {
             try {
                 Runtime.getRuntime().exec(args);
             } catch (IOException ex) {
-                listener.receiveMessage(ex.getMessage());
+                application.receiveMessage(ex.getMessage());
             }
             System.exit(0);
         }
     }
-    
+
     public String getChangeLog() {
         return vers.getAppElements().getHTML();
     }

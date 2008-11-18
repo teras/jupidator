@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.file;
 
+import com.panayotis.jupidator.gui.BufferListener;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import java.io.File;
@@ -53,14 +54,16 @@ public class FileUtils {
         return null;
     }
 
-    public static String copyFile(InputStream in, OutputStream out) {
+    public static String copyFile(InputStream in, OutputStream out, BufferListener blisten) {
         String message = null;
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[1024];
         int count;
 
         try {
             while ((count = in.read(buffer)) != -1) {
                 out.write(buffer, 0, count);
+                if (blisten!=null)
+                    blisten.addBytes(count);
             }
         } catch (IOException ex) {
             message = ex.getMessage();
@@ -110,8 +113,8 @@ public class FileUtils {
             if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
                 try {
                     ZipFile zip = new ZipFile(path);
-                    if (FileUtils.copyFile(zip.getInputStream(zip.getEntry(CLASSPATH)),
-                            new FileOutputStream(FILEOUT)) == null)
+                    if (copyFile(zip.getInputStream(zip.getEntry(CLASSPATH)),
+                            new FileOutputStream(FILEOUT), null) == null)
                         return null;
                 } catch (IOException ex) {
                 }
@@ -120,7 +123,7 @@ public class FileUtils {
                     path = path + FS;
                 path = path + CLASSPATHSYSTEM;
                 try {
-                    if (FileUtils.copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT)) == null)
+                    if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null)
                         return null;
                 } catch (FileNotFoundException ex) {
                 }

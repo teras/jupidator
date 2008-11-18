@@ -9,7 +9,8 @@ import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdaterListener;
+import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 
 /**
@@ -30,25 +31,25 @@ public class FileRm extends FileElement {
         return toString();
     }
 
-    public String action(UpdaterListener listener) {
+    public String action(UpdatedApplication application, BufferListener blisten) {
         String tofile = dest + FS + name;  // replace system variables
         File f = new File(tofile);
         if (f.exists()) {
             if (f.getParentFile().canWrite() && f.canWrite()) {
-                if (listener != null)
-                    listener.receiveMessage(_("File {0} will be deleted."));
+                if (application != null)
+                    application.receiveMessage(_("File {0} will be deleted."));
                 return null;
             }
             String msg = _("File {0} could not be deleted.", tofile);
-            if (listener != null)
-                listener.receiveMessage(msg);
+            if (application != null)
+                application.receiveMessage(msg);
             return msg;
         }
         return null;
     }
 
-    public void cancel(UpdaterListener listener) {
-        if (listener != null)
-            listener.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + FS + name));
+    public void cancel(UpdatedApplication application) {
+        if (application != null)
+            application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + FS + name));
     }
 }

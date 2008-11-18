@@ -9,8 +9,9 @@ import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdaterListener;
+import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
+import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,55 +41,55 @@ public class FileAdd extends FileElement {
         return "+" + getHash() + JupidatorDeployer.EXTENSION;
     }
 
-    private String checkDestFile(String fname, String type, UpdaterListener listener) {
+    private String checkDestFile(String fname, String type, UpdatedApplication application) {
         try {
             FileUtils.fileIsValid(fname, type);
         } catch (IOException ex) {
             String msg = _("File {0} can not be created.", fname);
-            if (listener != null)
-                listener.receiveMessage(msg + " - " + ex.getMessage());
+            if (application != null)
+                application.receiveMessage(msg + " - " + ex.getMessage());
             return msg;
         }
         return null;
     }
 
-    public String action(UpdaterListener listener) {
+    public String action(UpdatedApplication application, BufferListener blisten) {
         String fromfile = source + "/" + name;
         String oldtofile = dest + FS + name;
         String newtofile = oldtofile + JupidatorDeployer.EXTENSION;
         String msg;
 
-        if ((msg = checkDestFile(oldtofile, _("Original destination file"), listener)) != null)
+        if ((msg = checkDestFile(oldtofile, _("Original destination file"), application)) != null)
             return msg;
-        if ((msg = checkDestFile(newtofile, _("Downloaded destination file"), listener)) != null)
+        if ((msg = checkDestFile(newtofile, _("Downloaded destination file"), application)) != null)
             return msg;
 
         String error = null;
         try {
             error = FileUtils.copyFile(new URL(fromfile).openConnection().getInputStream(),
-                    new FileOutputStream(newtofile));
+                    new FileOutputStream(newtofile), blisten);
         } catch (IOException ex) {
             error = ex.getMessage();
         }
 
         if (error == null) {
-            if (listener != null)
-                listener.receiveMessage(_("File {0} sucessfully downloaded.", name));
+            if (application != null)
+                application.receiveMessage(_("File {0} sucessfully downloaded.", name));
             return null;
         }
 
         msg = _("Unable to download file {0}", name);
-        if (listener != null)
-            listener.receiveMessage(msg + " - " + error);
+        if (application != null)
+            application.receiveMessage(msg + " - " + error);
         return msg;
     }
 
-    public void cancel(UpdaterListener listener) {
+    public void cancel(UpdatedApplication application) {
         File del = new File(dest + FS + name + JupidatorDeployer.EXTENSION);
         if (!del.delete()) {
-            listener.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
+            application.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
         } else {
-            listener.receiveMessage(_("Cancel updating: Successfully deleted downloaded file {0}", del));
+            application.receiveMessage(_("Cancel updating: Successfully deleted downloaded file {0}", del));
         }
     }
 
