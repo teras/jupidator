@@ -21,6 +21,7 @@ public class Updater {
     private ChangelogFrame frame;
     private UpdatedApplication application;
     private ApplicationInfo appinfo;
+    private Thread download;
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         this.appinfo = appinfo;
@@ -43,7 +44,7 @@ public class Updater {
             size += vers.get(key).getSize();
         }
         frame.setAllBytes(size);
-        Thread download = new Thread() {
+        download = new Thread() {
 
             public void run() {
                 for (String key : vers.keySet()) {
@@ -61,11 +62,16 @@ public class Updater {
     }
 
     public void actionCancel() {
+        download.interrupt();
+        frame.setVisible(false);
+        frame.dispose();
+        try {
+            download.join();
+        } catch (InterruptedException ex) {
+        }
         for (String key : vers.keySet()) {
             vers.get(key).cancel(application);
         }
-        frame.setVisible(false);
-        frame.dispose();
     }
 
     /* Do nothing - wait for next cycle */

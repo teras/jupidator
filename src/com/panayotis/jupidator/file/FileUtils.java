@@ -61,6 +61,9 @@ public class FileUtils {
 
         try {
             while ((count = in.read(buffer)) != -1) {
+                if (Thread.interrupted()) {
+                    throw new IOException("User asked to cancel update");
+                }
                 out.write(buffer, 0, count);
                 if (blisten!=null)
                     blisten.addBytes(count);
