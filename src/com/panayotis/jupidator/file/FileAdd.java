@@ -7,10 +7,13 @@ package com.panayotis.jupidator.file;
 import static com.panayotis.jupidator.i18n.I18N._;
 import static com.panayotis.jupidator.file.FileUtils.FS;
 
+import com.panayotis.jupidator.file.compression.CompressionMethod;
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
+import com.panayotis.jupidator.file.compression.NullCompression;
+import com.panayotis.jupidator.file.compression.ZipCompression;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,12 +28,20 @@ public class FileAdd extends FileElement {
 
     /** This is actually a URL */
     private String source;
+    private CompressionMethod compression = null;
 
-    public FileAdd(String name, String source, String dest, String size, UpdaterAppElements elements, ApplicationInfo info) {
+    public FileAdd(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info);
         if (source == null)
             source = "";
         this.source = elements.getBaseURL() + source;
+        if (compress == null)
+            compress = "none";
+        compress = compress.toLowerCase();
+        if (compress.startsWith("zip"))
+            compression = new ZipCompression();
+        else
+            compression = new NullCompression();
     }
 
     public String toString() {
@@ -42,7 +53,7 @@ public class FileAdd extends FileElement {
     }
 
     public String fetch(UpdatedApplication application, BufferListener blisten) {
-        String fromfilename = source + "/" + name;
+        String fromfilename = source + "/" + name + compression.getFilenameExtension();
         String oldtofilename = dest + FS + name;
         String newtofilename = oldtofilename + JupidatorDeployer.EXTENSION;
         File oldtofile = new File(oldtofilename);
@@ -84,7 +95,7 @@ public class FileAdd extends FileElement {
     }
 
     public String deploy(UpdatedApplication application) {
-        return null;
+        return compression.decompress(new File(dest + FS + name + JupidatorDeployer.EXTENSION));
     }
 
     public void cancel(UpdatedApplication application) {

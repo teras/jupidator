@@ -43,6 +43,12 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         LaterB.requestFocus();
     }
 
+    public void setIndetermined() {
+        ActionB.setEnabled(false);
+        PBar.setIndeterminate(true);
+        InfoL.setText(_("Deploying files..."));
+    }
+    
     public void setInformation(UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         NewVerL.setText(_("A new version of {0} is available!", el.getAppName()));
         VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion()));

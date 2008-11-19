@@ -47,8 +47,18 @@ public class Updater {
         download = new Thread() {
 
             public void run() {
+                /* Download */
                 for (String key : vers.keySet()) {
                     String result = vers.get(key).updateSystemVariables().fetch(application, frame); // Lazy update of arguments
+                    if (result != null) {
+                        frame.errorOnCommit(result);
+                        return;
+                    }
+                }
+                /* Deploy */
+                frame.setIndetermined();
+                for (String key : vers.keySet()) {
+                    String result = vers.get(key).deploy(application);
                     if (result != null) {
                         frame.errorOnCommit(result);
                         return;
