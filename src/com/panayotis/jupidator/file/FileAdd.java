@@ -41,47 +41,50 @@ public class FileAdd extends FileElement {
         return "+" + getHash() + JupidatorDeployer.EXTENSION;
     }
 
-    private String checkDestFile(String fname, String type, UpdatedApplication application) {
-        try {
-            FileUtils.fileIsValid(fname, type);
-        } catch (IOException ex) {
-            String msg = _("File {0} can not be created.", fname);
-            if (application != null)
-                application.receiveMessage(msg + " - " + ex.getMessage());
-            return msg;
-        }
-        return null;
-    }
-
-    public String action(UpdatedApplication application, BufferListener blisten) {
-        String fromfile = source + "/" + name;
-        String oldtofile = dest + FS + name;
-        String newtofile = oldtofile + JupidatorDeployer.EXTENSION;
+    public String fetch(UpdatedApplication application, BufferListener blisten) {
+        String fromfilename = source + "/" + name;
+        String oldtofilename = dest + FS + name;
+        String newtofilename = oldtofilename + JupidatorDeployer.EXTENSION;
+        File oldtofile = new File(oldtofilename);
+        File newtofile = new File(newtofilename);
         String msg;
 
-        if ((msg = checkDestFile(oldtofile, _("Original destination file"), application)) != null)
-            return msg;
-        if ((msg = checkDestFile(newtofile, _("Downloaded destination file"), application)) != null)
-            return msg;
+        /* Check if (new) destination file is writable */
+        if (!FileUtils.isWritable(oldtofile)) {
+            if (application != null)
+                application.receiveMessage(_("Old destination file {0} is not writable.", oldtofilename));
+            return _("Old destination file {0} is not writable.", name);
+        }
+        /* Remove old download file. Whether parent directory is writable, was checked with oldtofile */
+        if (!FileUtils.rmTree(newtofile)) {
+            if (application != null)
+                application.receiveMessage(_("Could not remove old downloaded file {0}", newtofilename));
+            return _("Could not remove old downloaded file {0}", name);
+        }
 
+        /* Download file */
         String error = null;
         try {
-            error = FileUtils.copyFile(new URL(fromfile).openConnection().getInputStream(),
-                    new FileOutputStream(newtofile), blisten);
+            error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
+                    new FileOutputStream(newtofilename), blisten);
         } catch (IOException ex) {
             error = ex.getMessage();
         }
-
+        /* Successfully downloaded file */
         if (error == null) {
             if (application != null)
                 application.receiveMessage(_("File {0} sucessfully downloaded.", name));
             return null;
         }
-
+        /* Error while downloading */
         msg = _("Unable to download file {0}", name);
         if (application != null)
             application.receiveMessage(msg + " - " + error);
         return msg;
+    }
+
+    public String deploy(UpdatedApplication application) {
+        return null;
     }
 
     public void cancel(UpdatedApplication application) {

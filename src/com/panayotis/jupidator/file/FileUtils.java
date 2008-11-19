@@ -27,21 +27,6 @@ public class FileUtils {
     public final static String JAVAHOME = System.getProperty("java.home");
     public final static String JAVABIN = getJavaExec();
 
-    public static File fileIsValid(String file, String type) throws IOException {
-        if (file == null) {
-            throw new NullPointerException(type + " file could not be null.");
-        }
-        File f = new File(file);
-        File p = f.getParentFile();
-        if (!(p.exists()))
-            p.mkdirs();
-        if (!(p.exists()) && p.isDirectory() && p.canWrite())
-            throw new IOException(type + "parent file is not writable.");
-        if (f.exists() && (!f.canWrite()))
-            throw new IOException(type + " file is not writable.");
-        return f;
-    }
-
     private static String getJavaExec() {
         String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "java.exe" : "java";
         String file;
@@ -65,7 +50,7 @@ public class FileUtils {
                     throw new IOException("User asked to cancel update");
                 }
                 out.write(buffer, 0, count);
-                if (blisten!=null)
+                if (blisten != null)
                     blisten.addBytes(count);
             }
         } catch (IOException ex) {
@@ -90,8 +75,8 @@ public class FileUtils {
     }
 
     public static String copyClass(String CLASSNAME, String FILEHOME) {
-        String CLASS = CLASSNAME.substring(CLASSNAME.lastIndexOf('.')+1);
-        String CLASSDIR = CLASSNAME.substring(0, CLASSNAME.length()-CLASS.length()-1).replace('.', '/');
+        String CLASS = CLASSNAME.substring(CLASSNAME.lastIndexOf('.') + 1);
+        String CLASSDIR = CLASSNAME.substring(0, CLASSNAME.length() - CLASS.length() - 1).replace('.', '/');
 
         String CLASSFILE = CLASS + ".class";
         String CLASSPATH = CLASSDIR + "/" + CLASSFILE;
@@ -133,5 +118,63 @@ public class FileUtils {
             }
         }
         return _("Unable to create Deployer");
+    }
+
+    static boolean rmTree(File f) {
+        if (!f.exists())
+            return true;
+        if (f.isDirectory()) {
+            File dir[] = f.listFiles();
+            for (int i = 0; i < dir.length; i++) {
+                if (!rmTree(dir[i]))
+                    return false;
+            }
+            return true;
+        } else {
+            return f.delete();
+        }
+    }
+    
+    static boolean isWritable(File f) {
+        if (f == null || f.equals(""))
+            throw new NullPointerException(_("Updated file could not be null."));
+        if (!isParentWritable(f))
+            return false;
+        if (!f.exists())
+            return true;
+        return isWritableLoop(f);
+    }
+
+    private static boolean isWritableLoop(File f) {
+        if (f.isDirectory()) {
+            File dir[] = f.listFiles();
+            for (int i = 0; i < dir.length; i++) {
+                if (!isWritable(dir[i]))
+                    return false;
+            }
+            return true;
+        } else {
+            return f.canWrite();
+        }
+    }
+
+    private static boolean isParentWritable(File f) {
+        File p = f.getParentFile();
+        if (p == null)  // No parent file - can't work on root files
+            return false;
+        if (f.exists()) {
+            /* we are sure that a parent exists for this file */
+            return p.canWrite();
+        } else {
+            if (p.exists()) {
+                /* Check if parent file is directory AND can write in it */
+                if (p.isDirectory() && p.canWrite())
+                    return true;
+                return false;
+            } else {
+                /* directories created (?) */
+                return p.mkdirs();
+            }
+        }
     }
 }

@@ -39,8 +39,6 @@ public class ChangelogFrame extends JDialog implements BufferListener {
     public ChangelogFrame(Updater callback) {
         super((Frame) null, false);
         initComponents();
-        ProgressP.setVisible(false);
-        MainPanel.add(CommandP, BorderLayout.SOUTH);
         this.callback = callback;
         LaterB.requestFocus();
     }
@@ -138,6 +136,12 @@ public class ChangelogFrame extends JDialog implements BufferListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ProgressP = new javax.swing.JPanel();
+        BarPanel = new javax.swing.JPanel();
+        PBar = new javax.swing.JProgressBar();
+        ButtonPanel = new javax.swing.JPanel();
+        ActionB = new javax.swing.JButton();
+        InfoL = new javax.swing.JLabel();
         MainPanel = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -153,12 +157,33 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         jPanel4 = new javax.swing.JPanel();
         LaterB = new javax.swing.JButton();
         UpdateB = new javax.swing.JButton();
-        ProgressP = new javax.swing.JPanel();
-        BarPanel = new javax.swing.JPanel();
-        PBar = new javax.swing.JProgressBar();
-        ButtonPanel = new javax.swing.JPanel();
-        ActionB = new javax.swing.JButton();
-        InfoL = new javax.swing.JLabel();
+
+        ProgressP.setLayout(new java.awt.BorderLayout());
+
+        BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        BarPanel.setLayout(new java.awt.BorderLayout());
+
+        PBar.setStringPainted(true);
+        BarPanel.add(PBar, java.awt.BorderLayout.CENTER);
+
+        ProgressP.add(BarPanel, java.awt.BorderLayout.CENTER);
+
+        ButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
+        ButtonPanel.setLayout(new java.awt.BorderLayout());
+
+        ActionB.setText(_("Cancel"));
+        ActionB.setActionCommand("cancel");
+        ActionB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActionBActionPerformed(evt);
+            }
+        });
+        ButtonPanel.add(ActionB, java.awt.BorderLayout.CENTER);
+
+        ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
+
+        InfoL.setText(_("Downloading..."));
+        ProgressP.add(InfoL, java.awt.BorderLayout.LINE_START);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -213,7 +238,7 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 12));
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
-        LaterB.setText(_("Remind me later"));
+        LaterB.setText(_("Remind me tomorrow"));
         LaterB.setSelected(true);
         LaterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,35 +258,6 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         CommandP.add(jPanel4, java.awt.BorderLayout.EAST);
 
         MainPanel.add(CommandP, java.awt.BorderLayout.SOUTH);
-
-        ProgressP.setLayout(new java.awt.BorderLayout());
-
-        BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
-        BarPanel.setLayout(new java.awt.BorderLayout());
-
-        PBar.setStringPainted(true);
-        BarPanel.add(PBar, java.awt.BorderLayout.CENTER);
-
-        ProgressP.add(BarPanel, java.awt.BorderLayout.CENTER);
-
-        ButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
-        ButtonPanel.setLayout(new java.awt.BorderLayout());
-
-        ActionB.setText(_("Cancel"));
-        ActionB.setActionCommand("cancel");
-        ActionB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActionBActionPerformed(evt);
-            }
-        });
-        ButtonPanel.add(ActionB, java.awt.BorderLayout.CENTER);
-
-        ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
-
-        InfoL.setText(_("Downloading..."));
-        ProgressP.add(InfoL, java.awt.BorderLayout.LINE_START);
-
-        MainPanel.add(ProgressP, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
 

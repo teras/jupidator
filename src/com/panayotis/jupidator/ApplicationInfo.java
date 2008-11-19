@@ -28,29 +28,20 @@ public class ApplicationInfo {
     false: All files should be  updated
      */
     private boolean distributionBased = false;
-
+    
     public ApplicationInfo(String AppHome, String AppConfigFile, String AppSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
 
         if (AppHome == null)
             throw new NullPointerException(_("Application path can not be null."));
-        File f = new File(AppHome);
-        if (!f.isDirectory())
+        if (!new File(AppHome).isDirectory())
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
         vars.put("APPHOME", AppHome);
 
-        try {
-            FileUtils.fileIsValid(AppConfigFile, "Application configuration");
-        } catch (IOException ex) {
+        if (!new File(AppConfigFile).isFile())
             AppConfigFile = AppHome + FS + "config.xml";
-        }
         vars.put("APPCONFIG", AppConfigFile);
 
-        try {
-            FileUtils.fileIsValid(AppSupportDir, "Application support directory");
-        } catch (IOException ex) {
-            AppSupportDir = AppHome;
-        }
         if (!new File(AppSupportDir).isDirectory())
             AppSupportDir = AppHome;
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)

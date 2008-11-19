@@ -31,20 +31,22 @@ public class FileRm extends FileElement {
         return toString();
     }
 
-    public String action(UpdatedApplication application, BufferListener blisten) {
-        String tofile = dest + FS + name;  // replace system variables
-        File f = new File(tofile);
-        if (f.exists()) {
-            if (f.getParentFile().canWrite() && f.canWrite()) {
-                if (application != null)
-                    application.receiveMessage(_("File {0} will be deleted."));
-                return null;
-            }
-            String msg = _("File {0} could not be deleted.", tofile);
+    /* Nothig to download, but it will be faster if we check files here */
+    public String fetch(UpdatedApplication application, BufferListener blisten) {
+        File f = new File(dest + FS + name);
+        if ((!f.exists()) || (f.getParentFile().canWrite() && FileUtils.isWritable(f))) {
             if (application != null)
-                application.receiveMessage(msg);
-            return msg;
+                application.receiveMessage(_("File {0} will be deleted, if exists.", f.getPath()));
+            return null;
         }
+        String msg = _("File {0} could not be deleted.", f.getPath());
+        if (application != null)
+            application.receiveMessage(msg);
+        return msg;
+    }
+
+    /* Nothing to deploy */
+    public String deploy(UpdatedApplication application) {
         return null;
     }
 

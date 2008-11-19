@@ -48,7 +48,7 @@ public class Updater {
 
             public void run() {
                 for (String key : vers.keySet()) {
-                    String result = vers.get(key).updateSystemVariables().action(application, frame); // Lazy update of arguments
+                    String result = vers.get(key).updateSystemVariables().fetch(application, frame); // Lazy update of arguments
                     if (result != null) {
                         frame.errorOnCommit(result);
                         return;

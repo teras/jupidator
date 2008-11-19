@@ -62,11 +62,21 @@ public abstract class FileElement {
     }
     
     /**
-     * This method performs the commit action for this element.
+     * This method downloads files for this element.
      * @return Error message, or null if everything is fine
      */
-    public abstract String action(UpdatedApplication application, BufferListener blisten);
+    public abstract String fetch(UpdatedApplication application, BufferListener blisten);
 
+    /**
+     * This method performs housekeeping (check permissions, unzip files etc.) work for this element.
+     * @return Error message, or null if everything is fine
+     */
+    public abstract String deploy(UpdatedApplication application);
+    
+    /**
+     * This mehtod cancels action and rollbacks everything
+     * @param application
+     */
     public abstract void cancel(UpdatedApplication application);
 
     public abstract String getArgument();

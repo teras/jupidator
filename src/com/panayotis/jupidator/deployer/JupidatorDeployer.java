@@ -19,7 +19,7 @@ import javax.swing.JFrame;
  */
 public class JupidatorDeployer extends JFrame {
 
-    public static final String EXTENSION = ".updated";
+    public static final String EXTENSION = ".jupidator";
     private static BufferedWriter out;
     
 
