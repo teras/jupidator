@@ -120,21 +120,6 @@ public class FileUtils {
         return _("Unable to create Deployer");
     }
 
-    static boolean rmTree(File f) {
-        if (!f.exists())
-            return true;
-        if (f.isDirectory()) {
-            File dir[] = f.listFiles();
-            for (int i = 0; i < dir.length; i++) {
-                if (!rmTree(dir[i]))
-                    return false;
-            }
-            return true;
-        } else {
-            return f.delete();
-        }
-    }
-    
     static boolean isWritable(File f) {
         if (f == null || f.equals(""))
             throw new NullPointerException(_("Updated file could not be null."));

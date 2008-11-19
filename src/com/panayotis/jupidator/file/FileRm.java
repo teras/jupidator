@@ -28,7 +28,7 @@ public class FileRm extends FileElement {
     }
 
     public String getArgument() {
-        return toString();
+        return dest + FS + name;
     }
 
     /* Nothig to download, but it will be faster if we check files here */

@@ -49,27 +49,28 @@ public class FileAdd extends FileElement {
     }
 
     public String getArgument() {
-        return "+" + getHash() + JupidatorDeployer.EXTENSION;
+        return "+" + dest + FS + name + JupidatorDeployer.EXTENSION;
     }
 
     public String fetch(UpdatedApplication application, BufferListener blisten) {
         String fromfilename = source + "/" + name + compression.getFilenameExtension();
-        String oldtofilename = dest + FS + name;
-        String newtofilename = oldtofilename + JupidatorDeployer.EXTENSION;
-        File oldtofile = new File(oldtofilename);
-        File newtofile = new File(newtofilename);
+        String tofilename = dest + FS + name;
+        String downloadfilename = tofilename + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION;
+        File tofile = new File(tofilename);
+        File downloadfile = new File(downloadfilename);
         String msg;
 
         /* Check if (new) destination file is writable */
-        if (!FileUtils.isWritable(oldtofile)) {
+        if (!FileUtils.isWritable(tofile)) {
             if (application != null)
-                application.receiveMessage(_("Old destination file {0} is not writable.", oldtofilename));
-            return _("Old destination file {0} is not writable.", name);
+                application.receiveMessage(_("Destination file {0} is not writable.", tofilename));
+            return _("Destination file {0} is not writable.", name);
         }
-        /* Remove old download file. Whether parent directory is writable, was checked with oldtofile */
-        if (!FileUtils.rmTree(newtofile)) {
+        /* Remove old download file. Whether parent directory is writable, was checked with tofile */
+        downloadfile.delete();
+        if (downloadfile.exists()) {
             if (application != null)
-                application.receiveMessage(_("Could not remove old downloaded file {0}", newtofilename));
+                application.receiveMessage(_("Could not remove old downloaded file {0}", downloadfilename));
             return _("Could not remove old downloaded file {0}", name);
         }
 
@@ -77,7 +78,7 @@ public class FileAdd extends FileElement {
         String error = null;
         try {
             error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
-                    new FileOutputStream(newtofilename), blisten);
+                    new FileOutputStream(downloadfilename), blisten);
         } catch (IOException ex) {
             error = ex.getMessage();
         }
@@ -95,11 +96,11 @@ public class FileAdd extends FileElement {
     }
 
     public String deploy(UpdatedApplication application) {
-        return compression.decompress(new File(dest + FS + name + JupidatorDeployer.EXTENSION));
+        return compression.decompress(new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION));
     }
 
     public void cancel(UpdatedApplication application) {
-        File del = new File(dest + FS + name + JupidatorDeployer.EXTENSION);
+        File del = new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
         if (!del.delete()) {
             application.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
         } else {

@@ -82,6 +82,7 @@ public class ChangelogFrame extends JDialog implements BufferListener {
     }
 
     private void setInfoArea(String message) {
+        ActionB.setEnabled(true);
         BarPanel.remove(PBar);
         ProgressP.remove(InfoL);
         BarPanel.add(InfoL);
