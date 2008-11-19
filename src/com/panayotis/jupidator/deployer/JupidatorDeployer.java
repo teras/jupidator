@@ -68,14 +68,16 @@ public class JupidatorDeployer extends JFrame {
                 debug("Working with " + path + "");
                 if (rm) {
                     debug("  Deleting file " + path);
-                    new File(path).delete();
+                    if (!rmTree(new File(path)))
+                        debug("*ERROR* Unable to delete file "+path);
                 } else {
                     String oldpath = path.substring(0, path.length() - EXTENSION.length());
                     File oldfile = new File(oldpath);
                     File newfile = new File(path);
 
                     debug("  Deleting file " + oldfile);
-                    oldfile.delete();
+                    if (!rmTree(oldfile))
+                        debug("*ERROR* Unable to remove old file "+oldpath);
                     debug("  Renaming " + path + " to " + oldfile);
                     newfile.renameTo(oldfile);
                 }
@@ -102,7 +104,7 @@ public class JupidatorDeployer extends JFrame {
         }
     }
 
-    private static boolean rmTree(File f) {
+    public static boolean rmTree(File f) {
         if (!f.exists())
             return true;
         if (f.isDirectory()) {
@@ -111,10 +113,8 @@ public class JupidatorDeployer extends JFrame {
                 if (!rmTree(dir[i]))
                     return false;
             }
-            return true;
-        } else {
-            return f.delete();
         }
+        return f.delete();
     }
 
     public JupidatorDeployer() {

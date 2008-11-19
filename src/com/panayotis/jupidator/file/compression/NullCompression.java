@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.file.compression;
 
+
 import java.io.File;
 
 /**
@@ -12,8 +13,8 @@ import java.io.File;
  */
 public class NullCompression implements CompressionMethod {
 
-    public String decompress(File f) {
-        return null;
+    public String decompress(File f, String name) {
+       return null;
     }
 
     public String getFilenameExtension() {

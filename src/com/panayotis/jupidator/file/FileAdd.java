@@ -96,7 +96,16 @@ public class FileAdd extends FileElement {
     }
 
     public String deploy(UpdatedApplication application) {
-        return compression.decompress(new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION));
+        File downloadfile = new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
+        String status = compression.decompress(downloadfile, name);
+        if (status == null) {
+            if (!compression.getFilenameExtension().equals(""))
+                downloadfile.delete();
+            return null;
+        }
+        application.receiveMessage(status);
+        JupidatorDeployer.rmTree(new File(dest + FS + name + JupidatorDeployer.EXTENSION));
+        return status;
     }
 
     public void cancel(UpdatedApplication application) {
