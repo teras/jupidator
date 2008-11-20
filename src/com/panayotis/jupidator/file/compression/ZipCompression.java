@@ -46,7 +46,6 @@ public class ZipCompression implements CompressionMethod {
                     status = FileUtils.copyFile(zip.getInputStream(entry), new FileOutputStream(out), null);
                     if (status != null)
                         return status;
-//                    System.out.println(entry.getName() + " -> " + out.getPath());
                 }
             }
         } catch (ZipException ex) {
