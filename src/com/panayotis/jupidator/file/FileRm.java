@@ -19,21 +19,21 @@ import java.io.File;
  */
 public class FileRm extends FileElement {
 
-    public FileRm(String name, String dest, UpdaterAppElements elements, ApplicationInfo info) {
-        super(name, dest, "0", elements, info);
+    public FileRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
+        super(file, elements, info);
     }
 
     public String toString() {
-        return "-" + getHash();
+        return "-" + getDestinationFile();
     }
 
     public String getArgument() {
-        return dest + FS + name;
+        return "-" + getDestinationFile();
     }
 
     /* Nothig to download, but it will be faster if we check files here */
     public String fetch(UpdatedApplication application, BufferListener blisten) {
-        File f = new File(dest + FS + name);
+        File f = new File(getDestinationFile());
         if ((!f.exists()) || (f.getParentFile().canWrite() && FileUtils.isWritable(f))) {
             if (application != null)
                 application.receiveMessage(_("File {0} will be deleted, if exists.", f.getPath()));
@@ -52,6 +52,6 @@ public class FileRm extends FileElement {
 
     public void cancel(UpdatedApplication application) {
         if (application != null)
-            application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", dest + FS + name));
+            application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", getDestinationFile()));
     }
 }

@@ -3,7 +3,6 @@
  *
  * Created on September 29, 2008, 5:10 PM
  */
-
 package com.panayotis.jupidator.deployer;
 
 import java.io.BufferedWriter;
@@ -18,6 +17,7 @@ import java.util.Calendar;
  * @author teras
  */
 public class JupidatorDeployer {
+
     public static final String EXTENSION = ".jupidator";
     private static BufferedWriter out;
     
@@ -62,25 +62,27 @@ public class JupidatorDeployer {
             debug("Number of affected files: " + files);
 
             for (int i = 1; i <= files; i++) {
-                boolean rm = args[i].charAt(0) == '-';
-                String path = args[i].substring(1, args[i].length());
-                debug("Working with " + path + "");
-                if (rm) {
-                    debug("  Deleting file " + path);
-                    if (!rmTree(new File(path)))
-                        debug("*ERROR* Unable to delete file "+path);
-                } else {
-                    String oldpath = path.substring(0, path.length() - EXTENSION.length());
-                    File oldfile = new File(oldpath);
-                    File newfile = new File(path);
+                if (args[i].length() > 0) {
+                    boolean rm = args[i].charAt(0) == '-';
+                    String path = args[i].substring(1, args[i].length());
+                    debug("Working with " + path + "");
+                    if (rm) {
+                        debug("  Deleting file " + path);
+                        if (!rmTree(new File(path)))
+                            debug("*ERROR* Unable to delete file " + path);
+                    } else {
+                        String oldpath = path.substring(0, path.length() - EXTENSION.length());
+                        File oldfile = new File(oldpath);
+                        File newfile = new File(path);
 
-                    debug("  Deleting file " + oldfile);
-                    if (!rmTree(oldfile))
-                        debug("*ERROR* Unable to remove old file "+oldpath);
-                    debug("  Renaming " + path + " to " + oldfile);
-                    newfile.renameTo(oldfile);
+                        debug("  Deleting file " + oldfile);
+                        if (!rmTree(oldfile))
+                            debug("*ERROR* Unable to remove old file " + oldpath);
+                        debug("  Renaming " + path + " to " + oldfile);
+                        newfile.renameTo(oldfile);
+                    }
+                    debug("End of works with " + path);
                 }
-                debug("End of works with " + path);
             }
 
             files++;
@@ -115,5 +117,4 @@ public class JupidatorDeployer {
         }
         return f.delete();
     }
-
 }

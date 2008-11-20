@@ -71,7 +71,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), elements, appinfo);
+            FileRm f = new FileRm(attr.getValue("file"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));

@@ -11,6 +11,7 @@ import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.gui.BufferListener;
+import java.io.File;
 
 /**
  *
@@ -18,17 +19,27 @@ import com.panayotis.jupidator.gui.BufferListener;
  */
 public abstract class FileElement {
 
-    protected String name = "";
-    protected String dest;
-    protected long size = 0;
-    protected int release;
+    private String filename = "";
+    private String destdir = "";
+    private long size = 0;
+    private int release;
+    
     protected ApplicationInfo info;
+
+    public FileElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo) {
+        this(new File(file).getParent(), new File(file).getName(), elements, appinfo);
+    }
+
+    public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo) {
+        this(name, dest, "0", elements, appinfo);
+    }
 
     public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo) {
         if (name != null)
-            this.name = name;
+            this.filename = name;
+        if (destdir != null)
+            this.destdir = dest;
         release = elements.getLastRelease();
-        this.dest = dest;
 
         info = appinfo;
         if (info == null) {
@@ -43,11 +54,15 @@ public abstract class FileElement {
     }
 
     public String getHash() {
-        return dest + FS + name;
+        return getDestinationFile();
     }
 
-    public String getDestination() {
-        return dest;
+    public String getDestinationFile() {
+        return destdir + FS + filename;
+    }
+    
+    public String getFileName() {
+        return filename;
     }
 
     public FileElement getNewestRelease(FileElement fother) {
@@ -60,7 +75,7 @@ public abstract class FileElement {
     public long getSize() {
         return size;
     }
-    
+
     /**
      * This method downloads files for this element.
      * @return Error message, or null if everything is fine
@@ -72,7 +87,7 @@ public abstract class FileElement {
      * @return Error message, or null if everything is fine
      */
     public abstract String deploy(UpdatedApplication application);
-    
+
     /**
      * This mehtod cancels action and rollbacks everything
      * @param application
@@ -86,8 +101,8 @@ public abstract class FileElement {
      * @return self
      */
     public FileElement updateSystemVariables() {
-        name = info.updatePath(name);
-        dest = info.updatePath(dest);
+        filename = info.updatePath(filename);
+        destdir = info.updatePath(destdir);
         return this;
     }
 }
