@@ -12,6 +12,8 @@ import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
+import com.panayotis.jupidator.file.compression.BZip2Compression;
+import com.panayotis.jupidator.file.compression.GZipCompression;
 import com.panayotis.jupidator.file.compression.NullCompression;
 import com.panayotis.jupidator.file.compression.ZipCompression;
 import com.panayotis.jupidator.gui.BufferListener;
@@ -38,8 +40,12 @@ public class FileAdd extends FileElement {
         if (compress == null)
             compress = "none";
         compress = compress.toLowerCase();
-        if (compress.startsWith("zip"))
+        if (compress.equals("zip"))
             compression = new ZipCompression();
+        else if (compress.equals("bzip2") || compress.equals("bz2"))
+            compression = new BZip2Compression();
+        else if (compress.equals("gz") || compress.equals("gzip"))
+            compression = new GZipCompression();
         else
             compression = new NullCompression();
     }
