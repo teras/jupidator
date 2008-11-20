@@ -99,27 +99,36 @@ public class FileAdd extends FileElement {
         File downloadfile = new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
         String status = compression.decompress(downloadfile, name);
         if (status == null) {
-            if (!compression.getFilenameExtension().equals(""))
-                downloadfile.delete();
+            if (!compression.getFilenameExtension().equals("")) {
+                if (!downloadfile.delete())
+                    application.receiveMessage(_("Unable to cleanup downloaded file {0}", downloadfile.getPath()));
+                else
+                    application.receiveMessage(_("Successfully cleanup downloaded file {0}", downloadfile.getPath()));
+            }
             return null;
         }
         application.receiveMessage(status);
-        JupidatorDeployer.rmTree(new File(dest + FS + name + JupidatorDeployer.EXTENSION));
         return status;
     }
 
     public void cancel(UpdatedApplication application) {
         File del = new File(dest + FS + name + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
-        if (!del.delete()) {
-            application.receiveMessage(_("Cancel updating: Unable to delete downloaded file {0}", del));
-        } else {
-            application.receiveMessage(_("Cancel updating: Successfully deleted downloaded file {0}", del));
-        }
+        if (!del.delete())
+            application.receiveMessage(_("Unable to delete downloaded file {0}", del.getPath()));
+        else
+            application.receiveMessage(_("Successfully deleted downloaded file {0}", del.getPath()));
+
+        File depfile = new File(dest + FS + name + JupidatorDeployer.EXTENSION);
+        if (!JupidatorDeployer.rmTree(depfile))
+            application.receiveMessage(_("Unable to cleanup file {0}", depfile));
+        else
+            application.receiveMessage(_("Successfully cleanup file {0}", depfile));
     }
 
     public FileElement updateSystemVariables() {
         super.updateSystemVariables();
-        source = info.updatePath(source);
+        source =
+                info.updatePath(source);
         return this;
     }
 }
