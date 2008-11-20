@@ -5,20 +5,15 @@
 package com.panayotis.jupidator.file;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.list.UpdaterAppElements;
 
 /**
  *
  * @author teras
  */
-public class FileChmod extends FileNativeExec {
+public class FileChmod extends FileChstatus {
 
-    public FileChmod(String file, UpdaterAppElements elements, ApplicationInfo info) {
-        super(file, elements, info);
-    }
-
-    public String deploy(UpdatedApplication application) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public FileChmod(String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
+        super("chmod", file, attr, recursive, elements, info);
     }
 }

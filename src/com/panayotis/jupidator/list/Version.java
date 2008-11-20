@@ -8,8 +8,10 @@ import com.panayotis.jupidator.file.FileElement;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.UpdaterProperties;
+import com.panayotis.jupidator.file.ExecutionTime;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -19,8 +21,9 @@ import org.xml.sax.SAXException;
  *
  * @author teras
  */
-public class Version extends HashMap<String, FileElement> {
+public class Version {
 
+    private LinkedHashMap<String, FileElement> elements = new LinkedHashMap<String, FileElement>();
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
     private Arch arch;
@@ -36,6 +39,7 @@ public class Version extends HashMap<String, FileElement> {
             Version v = handler.getVersion();
             v.appel = handler.getAppElements();
             v.appprop = prop;
+            v.sort();
             return v;
         } catch (SAXException ex) {
             throw new UpdaterException(ex.getMessage());
@@ -49,9 +53,9 @@ public class Version extends HashMap<String, FileElement> {
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("[Version").append('\n');
-        for (String tag : keySet()) {
+        for (String tag : elements.keySet()) {
             b.append("  ");
-            b.append(get(tag).toString());
+            b.append(elements.get(tag).toString());
             b.append('\n');
         }
         b.append("]");
@@ -71,14 +75,14 @@ public class Version extends HashMap<String, FileElement> {
             return;
 
         FileElement fother, fthis, fnew;
-        for (String tag : other.keySet()) {
-            fother = other.get(tag);
-            fthis = get(tag);
+        for (String tag : other.elements.keySet()) {
+            fother = other.elements.get(tag);
+            fthis = elements.get(tag);
             if (fthis == null) {
-                put(tag, fother);
+                elements.put(tag, fother);
             } else {
                 fnew = fthis.getNewestRelease(fother);
-                put(tag, fnew);
+                elements.put(tag, fnew);
             }
         }
     }
@@ -89,5 +93,43 @@ public class Version extends HashMap<String, FileElement> {
 
     public void setArch(Arch arch) {
         this.arch = arch;
+    }
+
+    private void sort() {
+        FileElement element;
+        ExecutionTime time;
+        LinkedHashMap<String, FileElement> before = new LinkedHashMap<String, FileElement>();
+        LinkedHashMap<String, FileElement> mid = new LinkedHashMap<String, FileElement>();
+        LinkedHashMap<String, FileElement> after = new LinkedHashMap<String, FileElement>();
+        for (String key : elements.keySet()) {
+            element = elements.get(key);
+            time = element.getExectime();
+            if (time.equals(ExecutionTime.BEFORE))
+                before.put(key, element);
+            else if (time.equals(ExecutionTime.AFTER))
+                after.put(key, element);
+            else
+                mid.put(key, element);
+        }
+        elements = new LinkedHashMap<String, FileElement>();
+        elements.putAll(before);
+        elements.putAll(mid);
+        elements.putAll(after);
+    }
+
+    public int size() {
+        return elements.size();
+    }
+
+    public Set<String> keySet() {
+        return elements.keySet();
+    }
+
+    public FileElement get(String key) {
+        return elements.get(key);
+    }
+
+    public void put(String key, FileElement element) {
+        elements.put(key, element);
     }
 }

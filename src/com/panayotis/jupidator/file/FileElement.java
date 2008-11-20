@@ -23,18 +23,22 @@ public abstract class FileElement {
     private String destdir = "";
     private long size = 0;
     private int release;
-    
+    private ExecutionTime exectime;
+
+    public ExecutionTime getExectime() {
+        return exectime;
+    }
     protected ApplicationInfo info;
 
-    public FileElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo) {
-        this(new File(file).getParent(), new File(file).getName(), elements, appinfo);
+    public FileElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
+        this(new File(file).getName(), new File(file).getParent(), elements, appinfo, exectime);
     }
 
-    public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo) {
-        this(name, dest, "0", elements, appinfo);
+    public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
+        this(name, dest, "0", elements, appinfo, exectime);
     }
 
-    public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo) {
+    public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         if (name != null)
             this.filename = name;
         if (destdir != null)
@@ -51,6 +55,9 @@ public abstract class FileElement {
                 this.size = 0;
         } catch (NumberFormatException ex) {
         }
+        if (exectime == null)
+            exectime = ExecutionTime.MID;
+        this.exectime = exectime;
     }
 
     public String getHash() {
@@ -60,7 +67,7 @@ public abstract class FileElement {
     public String getDestinationFile() {
         return destdir + FS + filename;
     }
-    
+
     public String getFileName() {
         return filename;
     }

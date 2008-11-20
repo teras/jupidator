@@ -5,7 +5,6 @@
 package com.panayotis.jupidator.file;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.file.FileUtils.FS;
 
 import com.panayotis.jupidator.list.*;
 import com.panayotis.jupidator.ApplicationInfo;
@@ -20,7 +19,7 @@ import java.io.File;
 public class FileRm extends FileElement {
 
     public FileRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
-        super(file, elements, info);
+        super(file, elements, info, ExecutionTime.MID);
     }
 
     public String toString() {

@@ -32,7 +32,7 @@ public class FileAdd extends FileElement {
     private CompressionMethod compression = null;
 
     public FileAdd(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
-        super(name, dest, size, elements, info);
+        super(name, dest, size, elements, info, ExecutionTime.MID);
         if (source == null)
             source = "";
         this.source = elements.getBaseURL() + source;
@@ -52,7 +52,7 @@ public class FileAdd extends FileElement {
     private String getSourceFile() {
         return source + "/" + getFileName();
     }
-    
+
     public String toString() {
         return "+" + getSourceFile() + ">" + getDestinationFile();
     }

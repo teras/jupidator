@@ -7,6 +7,8 @@ package com.panayotis.jupidator.list;
 import com.panayotis.jupidator.file.FileAdd;
 import com.panayotis.jupidator.file.FileRm;
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.file.FileChmod;
+import com.panayotis.jupidator.file.FileChown;
 import com.panayotis.jupidator.html.UpdaterHTMLCreator;
 import com.panayotis.jupidator.html.DefaultHTMLCreator;
 import org.xml.sax.Attributes;
@@ -72,6 +74,14 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             FileRm f = new FileRm(attr.getValue("file"), elements, appinfo);
+            current.put(f.getHash(), f);
+        } else if (qName.equals("chmod")) {
+            FileChmod f = new FileChmod(attr.getValue("file"), attr.getValue("attr"),
+                    attr.getValue("recursive"), elements, appinfo);
+            current.put(f.getHash(), f);
+        } else if (qName.equals("chown")) {
+            FileChown f = new FileChown(attr.getValue("file"), attr.getValue("attr"),
+                    attr.getValue("recursive"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
