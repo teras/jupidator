@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.jupidator.file.compression;
 
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
@@ -21,7 +20,12 @@ public class BZip2Compression implements CompressionMethod {
 
     public String decompress(File compressedfile, String outfile) {
         try {
-            return FileUtils.copyFile(new CBZip2InputStream(new FileInputStream(compressedfile)), new FileOutputStream(compressedfile.getParent() + FileUtils.FS + outfile + JupidatorDeployer.EXTENSION), null);
+            FileInputStream fin = new FileInputStream(compressedfile);
+            char b = (char) fin.read();
+            char z = (char) fin.read();
+            if (b != 'B' && z != 'Z')
+                fin.reset();
+            return FileUtils.copyFile(new CBZip2InputStream(fin), new FileOutputStream(compressedfile.getParent() + FileUtils.FS + outfile + JupidatorDeployer.EXTENSION), null);
         } catch (IOException ex) {
             return ex.getMessage();
         }
