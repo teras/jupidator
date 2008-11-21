@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -63,25 +64,30 @@ public class JupidatorDeployer {
 
             for (int i = 1; i <= files; i++) {
                 if (args[i].length() > 0) {
-                    boolean rm = args[i].charAt(0) == '-';
-                    String path = args[i].substring(1, args[i].length());
-                    debug("Working with " + path + "");
-                    if (rm) {
-                        debug("  Deleting file " + path);
-                        if (!rmTree(new File(path)))
-                            debug("*ERROR* Unable to delete file " + path);
-                    } else {
-                        String oldpath = path.substring(0, path.length() - EXTENSION.length());
-                        File oldfile = new File(oldpath);
-                        File newfile = new File(path);
+                    String data = args[i].substring(1, args[i].length());
+                    debug("Working with " + data + "");
+                    switch (args[i].charAt(0)) {
+                        case '-':
+                            debug("  Deleting file " + data);
+                            if (!rmTree(new File(data)))
+                                debug("*ERROR* Unable to delete file " + data);
+                            break;
+                        case '+':
+                            String oldpath = data.substring(0, data.length() - EXTENSION.length());
+                            File oldfile = new File(oldpath);
+                            File newfile = new File(data);
 
-                        debug("  Deleting file " + oldfile);
-                        if (!rmTree(oldfile))
-                            debug("*ERROR* Unable to remove old file " + oldpath);
-                        debug("  Renaming " + path + " to " + oldfile);
-                        newfile.renameTo(oldfile);
+                            debug("  Deleting file " + oldfile);
+                            if (!rmTree(oldfile))
+                                debug("*ERROR* Unable to remove old file " + oldpath);
+                            debug("  Renaming " + data + " to " + oldfile);
+                            newfile.renameTo(oldfile);
+                            break;
+                        case 'c':
+                            exec(data);
+                            break;
                     }
-                    debug("End of works with " + path);
+                    debug("End of works with " + data);
                 }
             }
 
@@ -116,5 +122,40 @@ public class JupidatorDeployer {
             }
         }
         return f.delete();
+    }
+
+    private static void exec(String arguments) {
+        try {
+            String[] cmd = buildArgs(arguments);
+            Process p = Runtime.getRuntime().exec(cmd);
+            p.waitFor();
+            if (p.exitValue() != 0) {
+                debug("  Error while executing " + cmd[0]);
+            } else {
+                debug("  Successfully executied " + cmd[0]);
+            }
+        } catch (Exception ex) {
+            debug(ex.getMessage());
+        }
+    }
+
+    private static String[] buildArgs(String arguments) throws NumberFormatException, StringIndexOutOfBoundsException {
+        ArrayList<Integer> sizes = new ArrayList<Integer>();
+        int pos = 0;
+        int lastpos = 0;
+        while ((pos = arguments.indexOf("#", pos)) > 0) {
+            sizes.add(Integer.valueOf(arguments.substring(lastpos, pos++)));
+            lastpos = pos;
+            if (arguments.charAt(pos) == '.')
+                break;
+        }
+        pos++;
+        String[] args = new String[sizes.size()];
+        for (int i = 0; i < sizes.size(); i++) {
+            args[i] = arguments.substring(pos, pos + sizes.get(i));
+            pos += sizes.get(i);
+            debug("  #" + i + ": " + args[i]);
+        }
+        return args;
     }
 }
