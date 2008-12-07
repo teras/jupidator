@@ -118,7 +118,7 @@ public class FileUtils {
                     if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null) == null)
                         return null;
                     /* make sure that in this zip entry there is no classpath definition */
-                    getClassPathFromManifest(zip, classpaths, new File(path).getParent() + FS);
+                    getClassPathFromManifest(zip, classpaths, new File(path).getParent());
                 } catch (IOException ex) {
                 }
             } else {
@@ -138,6 +138,11 @@ public class FileUtils {
     }
 
     private static void getClassPathFromManifest(ZipFile zip, Vector<String> classpaths, String parent) {
+        if (parent==null)
+            parent = "";
+        else
+            parent = parent + FS;
+
         ZipEntry manifest = zip.getEntry("META-INF/MANIFEST.MF");
         if (manifest != null) {
             BufferedReader cpin = null;
@@ -149,7 +154,7 @@ public class FileUtils {
                         String nextline;
                         while ((nextline = cpin.readLine()) != null && nextline.startsWith(" "))
                             line = line + nextline.substring(1);
-                        StringTokenizer tok = new StringTokenizer(line.substring(11));
+                        StringTokenizer tok = new StringTokenizer(line.substring(11).replace('/', FS));
                         while (tok.hasMoreElements())
                             classpaths.add(parent + tok.nextToken());
                         return;
