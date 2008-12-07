@@ -105,7 +105,7 @@ public class Updater {
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
 
-            String message = FileUtils.copyClass(classname, temppath);
+            String message = FileUtils.copyClass(classname, temppath, application);
             if (message != null) {
                 application.receiveMessage(message);
                 JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);

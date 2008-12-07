@@ -245,7 +245,7 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 12));
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
-        LaterB.setText(_("Remind me tomorrow"));
+        LaterB.setText(_("Remind me later"));
         LaterB.setSelected(true);
         LaterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

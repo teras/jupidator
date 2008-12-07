@@ -4,7 +4,9 @@
  */
 package com.panayotis.jupidator.file;
 
+import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.gui.BufferListener;
+import java.io.BufferedReader;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import java.io.File;
@@ -13,8 +15,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
@@ -74,7 +81,7 @@ public class FileUtils {
         return message;
     }
 
-    public static String copyClass(String CLASSNAME, String FILEHOME) {
+    public static String copyClass(String CLASSNAME, String FILEHOME, UpdatedApplication listener) {
         String CLASS = CLASSNAME.substring(CLASSNAME.lastIndexOf('.') + 1);
         String CLASSDIR = CLASSNAME.substring(0, CLASSNAME.length() - CLASS.length() - 1).replace('.', '/');
 
@@ -85,8 +92,12 @@ public class FileUtils {
         String FILEDIR = FILEHOME + FS + CLASSDIR.replace('/', FS);
         String FILEOUT = FILEDIR + FS + CLASSFILE;
 
+        /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
+        Vector<String> classpaths = new Vector<String>();
         StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"),
                 System.getProperty("path.separator"));
+        while (tok.hasMoreElements())
+            classpaths.add(tok.nextToken());
 
         /* Create Java path */
         File dir = new File(FILEDIR);
@@ -96,14 +107,18 @@ public class FileUtils {
 
         /* Find JAR/EXE with the desired .class file */
         String path;
-        while (tok.hasMoreTokens()) {
-            path = tok.nextToken();
+        while (classpaths.size() > 0) {
+            path = classpaths.get(0);
+            classpaths.remove(0);
+            listener.receiveMessage(_("Checking path {0} for Deployer class.", path));
             if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
                 try {
                     ZipFile zip = new ZipFile(path);
-                    if (copyFile(zip.getInputStream(zip.getEntry(CLASSPATH)),
-                            new FileOutputStream(FILEOUT), null) == null)
+                    ZipEntry entry = zip.getEntry(CLASSPATH);
+                    if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null) == null)
                         return null;
+                    /* make sure that in this zip entry there is no classpath definition */
+                    getClassPathFromManifest(zip, classpaths, new File(path).getParent() + FS);
                 } catch (IOException ex) {
                 }
             } else {
@@ -111,8 +126,10 @@ public class FileUtils {
                     path = path + FS;
                 path = path + CLASSPATHSYSTEM;
                 try {
-                    if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null)
+                    if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null) {
+                        listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
                         return null;
+                    }
                 } catch (FileNotFoundException ex) {
                 }
             }
@@ -120,8 +137,38 @@ public class FileUtils {
         return _("Unable to create Deployer");
     }
 
+    private static void getClassPathFromManifest(ZipFile zip, Vector<String> classpaths, String parent) {
+        ZipEntry manifest = zip.getEntry("META-INF/MANIFEST.MF");
+        if (manifest != null) {
+            BufferedReader cpin = null;
+            try {
+                String line;
+                cpin = new BufferedReader(new InputStreamReader(zip.getInputStream(manifest)));
+                while ((line = cpin.readLine()) != null) {
+                    if (line.toLowerCase().startsWith("class-path:")) {
+                        String nextline;
+                        while ((nextline = cpin.readLine()) != null && nextline.startsWith(" "))
+                            line = line + nextline.substring(1);
+                        StringTokenizer tok = new StringTokenizer(line.substring(11));
+                        while (tok.hasMoreElements())
+                            classpaths.add(parent + tok.nextToken());
+                        return;
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    cpin.close();
+                } catch (IOException ex) {
+                }
+            }
+        }
+
+    }
+
     static boolean isWritable(File f) {
-        if (f == null || f.equals(""))
+        if (f == null)
             throw new NullPointerException(_("Updated file could not be null."));
         if (!isParentWritable(f))
             return false;
