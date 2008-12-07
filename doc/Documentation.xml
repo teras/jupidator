@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN">
+ 
+<book>
+ 
+<bookinfo>
+<title>Jupidator</title>
+</bookinfo>
+ 
+<chapter>
+<title>Introduction</title>
+ 
+<para>Thank you for trying Jupidator. This is an open source developer library which is used to automate the updating procedure of an application. It is written in Java and has been tested in all major platforms. The update mechanism itself is not platform agnostic, so that the developer can choose the appropriate files per platform.</para>
+
+<para>Usually an application has no mechanism by default, to inform the user that a new version of the application is available. Although some operating systems support downloading of new packages, in most desktops this is not applicable. More sophisticated applications can check the current version, by loading a specific web page and inform the user that a newer version is available. Then the user is directed to manually download the newest version and install it.</para>
+
+<para>A few applications have an intergrated update feature. The user is informed of the new version, the application is downloaded in the background and when ready, the application is restarted. The user experience is much improved then. With this approach newer version is automatically installed and the user doesn't need to go to a specific page in order to download it. In big and compicated applications, the updater is able to fetch only parts of the application, or "packages", which have been upgraded from one version to the other.</para>
+
+<para>Jupidator is a library to intergrade the update feature to any program, written in Java. It goes though one step further. Instead of fetching the complete application or separated packages, it is able to fine grain the update procedure by working with files. Although it is still possible to work with packages or complete replace of the application, the developer can work with file groups or even single files, while keeping track of the changelog in the desired granularity. Files that have been updated through more than one version, only the latest version is brought. Even if a file exists in one version, and is missing in a future version, the system is able to delete this file - and bring it back if this file appears again.</para>
+
+<para>Granularity in various levels is not the only advanced feature of Jupidator. It uses a single centralized XML configuration file to simultaneously support all desired platforms. Platform support is not limited by it's popularity. The developer is able to define the platform he is interested in, or even revert to the general non-specific platform for all other cases. The platform manipulation is flexible to completely fit the developer needs.</para>
+
+<para>Jupidator has been checked in most major platforms. File management can not be really multi-platform, due to the nature of file storing. Still, this library does it's best and is supposed to properly work with any system that has JRE version 5 ( in other words 1.5 ) and above.</para>
+
+</chapter>
+
+<chapter>
+<title>Intergration in a project</title>
+</chapter>
+</book>

@@ -76,10 +76,14 @@ public class UpdaterXMLHandler extends DefaultHandler {
             FileRm f = new FileRm(attr.getValue("file"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("chmod")) {
+            if (shouldIgnore(attr.getValue("forceinstall")))
+                return;
             FileChmod f = new FileChmod(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("chown")) {
+            if (shouldIgnore(attr.getValue("forceinstall")))
+                return;
             FileChown f = new FileChown(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo);
             current.put(f.getHash(), f);
