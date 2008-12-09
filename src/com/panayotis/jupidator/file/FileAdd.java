@@ -110,9 +110,9 @@ public class FileAdd extends FileElement {
         if (status == null) {
             if (!compression.getFilenameExtension().equals("")) {
                 if (!downloadfile.delete())
-                    application.receiveMessage(_("Unable to cleanup downloaded file {0}", downloadfile.getPath()));
+                    application.receiveMessage(_("Unable to delete downloaded file {0}", downloadfile.getPath()));
                 else
-                    application.receiveMessage(_("Successfully cleanup downloaded file {0}", downloadfile.getPath()));
+                    application.receiveMessage(_("Successfully deleted downloaded file {0}", downloadfile.getPath()));
             }
             return null;
         }
@@ -129,9 +129,9 @@ public class FileAdd extends FileElement {
 
         File depfile = new File(getDestinationFile() + JupidatorDeployer.EXTENSION);
         if (!JupidatorDeployer.rmTree(depfile))
-            application.receiveMessage(_("Unable to cleanup file {0}", depfile));
+            application.receiveMessage(_("Unable to delete file {0}", depfile));
         else
-            application.receiveMessage(_("Successfully cleanup file {0}", depfile));
+            application.receiveMessage(_("Successfully deleted file {0}", depfile));
     }
 
     public FileElement updateSystemVariables() {
