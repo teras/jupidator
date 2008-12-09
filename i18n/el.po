@@ -1,0 +1,180 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Jupidator 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-09 17:49+0200\n"
+"PO-Revision-Date: 2008-12-09 17:56+0200\n"
+"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
+"Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: com/panayotis/jupidator/ApplicationInfo.java:35
+msgid "Application path can not be null."
+msgstr "Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
+
+#: com/panayotis/jupidator/ApplicationInfo.java:37
+#, java-format
+msgid "Unable to find Application path {0}."
+msgstr "Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
+
+#: com/panayotis/jupidator/Updater.java:137
+#, java-format
+msgid "Executing {0}"
+msgstr "Εκτέλεση {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:75
+#: com/panayotis/jupidator/file/FileAdd.java:76
+#, java-format
+msgid "Destination file {0} is not writable."
+msgstr "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
+
+#: com/panayotis/jupidator/file/FileAdd.java:82
+#: com/panayotis/jupidator/file/FileAdd.java:83
+#, java-format
+msgid "Could not remove old downloaded file {0}"
+msgstr "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:97
+#, java-format
+msgid "File {0} sucessfully downloaded."
+msgstr "Το αρχείο {0} κατέβηκε με επιτυχία"
+
+#: com/panayotis/jupidator/file/FileAdd.java:101
+#, java-format
+msgid "Unable to download file {0}"
+msgstr "Αδυναμία κατά το κατέβασμα του {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:113
+#: com/panayotis/jupidator/file/FileAdd.java:126
+#, java-format
+msgid "Unable to delete downloaded file {0}"
+msgstr "Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:115
+#: com/panayotis/jupidator/file/FileAdd.java:128
+#, java-format
+msgid "Successfully deleted downloaded file {0}"
+msgstr "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:132
+#, java-format
+msgid "Unable to delete file {0}"
+msgstr "Αδυναμία αφαίρεσης του αρχείου {0}"
+
+#: com/panayotis/jupidator/file/FileAdd.java:134
+#, java-format
+msgid "Successfully deleted file {0}"
+msgstr "Επιτυχής διαγραφή του αρχείου {0}"
+
+#: com/panayotis/jupidator/file/FileElement.java:50
+msgid "Application info not provided."
+msgstr "Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
+
+#: com/panayotis/jupidator/file/FileRm.java:38
+#, java-format
+msgid "File {0} will be deleted, if exists."
+msgstr "Το αρχείο {0} θα διαγραφεί, αν υπάρχει."
+
+#: com/panayotis/jupidator/file/FileRm.java:41
+#, java-format
+msgid "File {0} could not be deleted."
+msgstr "Δε μπορεί να διαγραφεί το αρχείο {0}."
+
+#: com/panayotis/jupidator/file/FileRm.java:54
+#, java-format
+msgid "Cancel updating: Ignoring deleting of file {0}"
+msgstr "Ακύρωση ενημέρωσης: Δε θα διαγραφεί το αρχείο {0}"
+
+#: com/panayotis/jupidator/file/FileUtils.java:106
+#, java-format
+msgid "Deployer path {0} is not writable."
+msgstr "Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
+
+#: com/panayotis/jupidator/file/FileUtils.java:113
+#, java-format
+msgid "Checking path {0} for Deployer class."
+msgstr "Έλεγχος της διαδρομής {0} για τον εκκινητή."
+
+#: com/panayotis/jupidator/file/FileUtils.java:130
+#, java-format
+msgid "Deployer stored in {0}"
+msgstr "Ο εκκινητής αποθηκεύτηκε στο {0}"
+
+#: com/panayotis/jupidator/file/FileUtils.java:137
+msgid "Unable to create Deployer"
+msgstr "Αδυναμία κατασκευής εκκινητή"
+
+#: com/panayotis/jupidator/file/FileUtils.java:177
+msgid "Updated file could not be null."
+msgstr "Το αρχείο ενημέρωσης δε μπορεί να είναι null"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:49
+msgid "Deploying files..."
+msgstr "Αποθήκευση αρχείων..."
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:53
+#, java-format
+msgid "A new version of {0} is available!"
+msgstr "Μία νέα έκδοση του {0} είναι διαθέσιμη!"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:54
+#, java-format
+msgid "{0} version {1} is now available - you have {2}."
+msgstr "Η έκδοση {1} του {0} είναι διαθέσιμη - έχετε την {2}."
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:55
+#, java-format
+msgid "New version of {0} found!"
+msgstr "Βρέθηκε νέα έκδοση του {0}!"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:78
+msgid "Successfully downloaded updates"
+msgstr "Οι ενημερώσεις κατέβηκαν με επιτυχία"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:79
+msgid "Restart application"
+msgstr "Επανεκκίνηση"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:181
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:192
+msgid "Downloading..."
+msgstr "Λήψη..."
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:218
+msgid "Release Notes"
+msgstr "Πληροφορίες εκδόσεων"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:235
+msgid "Skip this version"
+msgstr "Προσπέραση έκδοσης"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:248
+msgid "Remind me later"
+msgstr "Αναβολή ενημέρωσης"
+
+#: com/panayotis/jupidator/gui/ChangelogFrame.java:257
+msgid "Install Update"
+msgstr "Εγκατάσταση"
+
+#: com/panayotis/jupidator/html/DefaultHTMLCreator.java:32
+msgid "Version"
+msgstr "Έκδοση"
+
+#~ msgid	"Unable to cleanup downloaded file {0}"
+#~ msgstr	"Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+#~ msgid	"Successfully cleanup downloaded file {0}"
+#~ msgstr	"Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+

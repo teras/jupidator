@@ -1,0 +1,14 @@
+PROJECT=jupidator
+SRC=../src
+CLASSPATH=com.panayotis.jupidator.i18n
+
+
+# Automatic variable definition #
+pushd . >/dev/null
+cd `dirname $0`
+SELFLOCATION=`pwd`
+cd $SRC
+SRCLOCATION=`pwd`
+popd >/dev/null
+
+CLASSDIR=`echo $CLASSPATH | sed -e 's/\./\//g'`

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+source `dirname $0`/properties
+
+rm -f ${PROJECT}.pot
+cd ${SRCLOCATION}
+xgettext  --from-code=utf-8 -k_ `find . | grep '.java$'` -d . -o ${SELFLOCATION}/${PROJECT}.pot

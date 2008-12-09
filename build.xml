@@ -70,5 +70,23 @@
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file. 
 
-    -->
+ 
+
+   -->
+
+<target name="-pre-jar">
+        <exec dir="i18n" executable="bash" failonerror="true">
+            <arg line="compile"/>
+        </exec>
+</target>
+
+
+
+<target name="-post-clean">
+        <delete>
+			<fileset dir="src/com/panayotis/jupidator/i18n" includes="Messages*" />
+			<fileset dir="i18n" includes="*.mo"/>
+		</delete>
+</target>
+
 </project>
