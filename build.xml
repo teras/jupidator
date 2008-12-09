@@ -74,12 +74,17 @@
 
    -->
 
-<target name="-pre-jar">
+<target name="i18n">
         <exec dir="i18n" executable="bash" failonerror="true">
             <arg line="compile"/>
         </exec>
 </target>
 
+<target name="doc">
+	<exec dir="doc" executable="docbook2html" failonerror="false">
+		<arg line="-u Documentation.xml"/>
+	</exec>
+</target>
 
 
 <target name="-post-clean">

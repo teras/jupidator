@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
  
-<book>
+<article>
  
-<bookinfo>
+<articleinfo>
 <title>Jupidator</title>
-</bookinfo>
+</articleinfo>
  
-<chapter>
+<sect1>
 <title>Introduction</title>
  
 <para>Thank you for trying Jupidator. This is an open source developer library which is used to automate the updating procedure of an application. It is written in Java and has been tested in all major platforms. The update mechanism itself is not platform agnostic, so that the developer can choose the appropriate files per platform.</para>
@@ -22,9 +22,20 @@
 
 <para>Jupidator has been checked in most major platforms. File management can not be really multi-platform, due to the nature of file storing. Still, this library does it's best and is supposed to properly work with any system that has JRE version 5 ( in other words 1.5 ) and above.</para>
 
-</chapter>
+</sect1>
 
-<chapter>
+<sect1>
 <title>Intergration in a project</title>
-</chapter>
-</book>
+
+<para>In order to use jupidator, one needs to intergrate it into the project - either as an external library or inside the application itself. Jupidator doesn't care where it exists, as long as it can be found somewhere inside the classpath of the application.</para>
+
+<para>The most easy way is to build the JAR file and use it as external library. Do not forget of course to distribute jupidator.jar file along your project and put it in the classpath. When you add it, you call it and everything else (including deploying of the installer class) is automatically found and executed.</para>
+
+<para>If you prefer to change some parts of Jupidator itself, or if you don't want to distribute a separated JAR file, you can add Jupidator source code to your project. Just copy the source tree of Jupidator and you are ready! In any case, just make sure that you are in accordance with the Licence which comes together with Jupidator.</para>
+</sect1>
+
+<sect1>
+<title>Usage</title>
+</sect1>
+
+</article>
