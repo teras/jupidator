@@ -94,7 +94,7 @@ public class FileAdd extends FileElement {
         /* Successfully downloaded file */
         if (error == null) {
             if (application != null)
-                application.receiveMessage(_("File {0} sucessfully downloaded.", getFileName()));
+                application.receiveMessage(_("File {0} sucessfully downloaded.", downloadfile.getPath()));
             return null;
         }
         /* Error while downloading */

@@ -4,6 +4,8 @@
  */
 package com.panayotis.jupidator;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.ChangelogFrame;
 import com.panayotis.jupidator.list.Arch;
@@ -129,6 +131,10 @@ public class Updater {
             }
 
             try {
+                StringBuffer buf = new StringBuffer();
+                for(int i = 0 ; i < args.length ; i++)
+                    buf.append(args[i]).append(' ');
+                application.receiveMessage(_("Executing {0}", buf.toString()));
                 Runtime.getRuntime().exec(args);
             } catch (IOException ex) {
                 application.receiveMessage(ex.getMessage());

@@ -10,7 +10,6 @@ import static com.panayotis.jupidator.file.FileUtils.FS;
 import com.panayotis.jupidator.file.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,8 +110,10 @@ public class ApplicationInfo {
                         value = System.getenv(name);
                     }
                 }
-                if (value != null)
+                if (value != null) {
+                    value = value.replace("\\", "\\\\").replace("$", "\\$");
                     m.appendReplacement(sb, value);
+                }
             }
         }
         m.appendTail(sb);

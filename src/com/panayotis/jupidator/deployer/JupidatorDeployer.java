@@ -59,6 +59,12 @@ public class JupidatorDeployer {
                 debug("  #" + i + ": " + args[i]);
             }
 
+            /* Under windows it is important to wait a bit before deleting files */
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                Thread.sleep(3000);
+                debug("Waiting 3 seconds before starting updating");
+            }
+
             int files = Integer.valueOf(args[0]);
             debug("Number of affected files: " + files);
 
