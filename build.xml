@@ -82,7 +82,7 @@
 
 <target name="doc">
 	<exec dir="doc" executable="docbook2html" failonerror="false">
-		<arg line="-u Documentation.xml"/>
+		<arg line="Documentation.xml"/>
 	</exec>
 </target>
 
@@ -91,6 +91,7 @@
         <delete>
 			<fileset dir="src/com/panayotis/jupidator/i18n" includes="Messages*" />
 			<fileset dir="i18n" includes="*.mo"/>
+			<fileset dir="doc" includes="*.html"/>
 		</delete>
 </target>
 
