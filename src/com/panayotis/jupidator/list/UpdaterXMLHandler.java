@@ -48,8 +48,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("argument")) {
             lastarch.addArgument(attr.getValue("value"));
         } else if (qName.equals("version")) {
-            int release_last = Integer.parseInt(attr.getValue("id"));
-            String version_last = attr.getValue("release");
+            int release_last = 0;
+            try {
+                release_last = Integer.parseInt(attr.getValue("release"));
+            } catch (NumberFormatException ex) {
+            }
+            String version_last = attr.getValue("version");
             elements.updateVersion(release_last, version_last);
             ignore_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
         } else if (qName.equals("description")) {
@@ -106,7 +110,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             return false;
         if (force != null) {
             force = force.toLowerCase().trim();
-            if (force.equals("true") || force.equals("yes") || force.equals("1"))
+            if (force.equals("true") || force.equals("yes") || force.equals("1") || force.equals("on"))
                 return false;
         }
         return true;
