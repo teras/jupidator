@@ -22,7 +22,7 @@ public class FileChstatus extends FileNativeExec {
             this.attr = attr;
         if (recursive != null && (!recursive.equals(""))) {
             recursive = recursive.toLowerCase();
-            this.recursive = "true".startsWith(recursive) || "yes".startsWith(recursive) || recursive.equals("1");
+            this.recursive = "true".startsWith(recursive) || "yes".startsWith(recursive) || "on".equals(recursive) || recursive.equals("1");
         }
     }
 

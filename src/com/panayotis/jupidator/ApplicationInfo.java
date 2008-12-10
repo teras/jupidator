@@ -27,8 +27,8 @@ public class ApplicationInfo {
     false: All files should be  updated
      */
     private boolean distributionBased = false;
-    
-    public ApplicationInfo(String AppHome, String AppConfigFile, String AppSupportDir, String release, String version) {
+
+    public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
 
         if (AppHome == null)
@@ -37,11 +37,7 @@ public class ApplicationInfo {
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
         vars.put("APPHOME", AppHome);
 
-        if (!new File(AppConfigFile).isFile())
-            AppConfigFile = AppHome + FS + "config.xml";
-        vars.put("APPCONFIG", AppConfigFile);
-
-        if (!new File(AppSupportDir).isDirectory())
+        if (AppSupportDir == null || (!new File(AppSupportDir).isDirectory()))
             AppSupportDir = AppHome;
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
             AppSupportDir = AppSupportDir + FS;
@@ -59,8 +55,16 @@ public class ApplicationInfo {
         vars.put("JAVABIN", FileUtils.JAVABIN);
     }
 
+    public void setProperty(String name, String value) {
+        if (name==null || name.equals(""))
+            throw new NullPointerException(_("Property name could not be null"));
+        if (value==null)
+            value="";
+        vars.put(name, value);
+    }
+
     public void setBaseFile(String basefile) {
-        vars.put("BASEFILE", basefile);
+        setProperty("BASEFILE", basefile);
     }
 
     public boolean isDistributionBased() {

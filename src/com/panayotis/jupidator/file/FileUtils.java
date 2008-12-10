@@ -19,8 +19,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -161,7 +159,6 @@ public class FileUtils {
                     }
                 }
             } catch (IOException ex) {
-                Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     cpin.close();

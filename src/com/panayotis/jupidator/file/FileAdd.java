@@ -88,13 +88,15 @@ public class FileAdd extends FileElement {
         try {
             error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
                     new FileOutputStream(downloadfilename), blisten);
+        if (downloadfile.length()!=getSize())
+            error =_("Size of file {0} does not match. Reported {1}, required {2}", downloadfilename, downloadfile.length(), getSize());
         } catch (IOException ex) {
             error = ex.getMessage();
         }
         /* Successfully downloaded file */
         if (error == null) {
             if (application != null)
-                application.receiveMessage(_("File {0} sucessfully downloaded.", downloadfile.getPath()));
+                application.receiveMessage(_("File {0} sucessfully downloaded", downloadfile.getPath()));
             return null;
         }
         /* Error while downloading */
