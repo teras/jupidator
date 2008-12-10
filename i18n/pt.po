@@ -1,187 +1,177 @@
-# SOME DESCRIPTIVE TITLE.
+# translation of jupidator.po to Brazilian Portuguese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Doutor Zero <doutor.zero@gmail.com>, 2008.
 msgid	""
-msgstr	"Project-Id-Version: Jupidator 0.1\n"
+msgstr	"Project-Id-Version: jupidator\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2008-12-10 13:44+0200\n"
-	"PO-Revision-Date: 2008-12-10 12:17+0200\n"
-	"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
-	"Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
+	"POT-Creation-Date: 2008-12-10 13:43+0200\n"
+	"PO-Revision-Date: 2008-12-10 09:25-0200\n"
+	"Last-Translator: Doutor Zero <doutor.zero@gmail.com>\n"
+	"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@mail.kde.org>\n"
 	"MIME-Version: 1.0\n"
-	"Content-Type: text/plain; charset=utf-8\n"
+	"Content-Type: text/plain; charset=UTF-8\n"
 	"Content-Transfer-Encoding: 8bit\n"
-	"X-Poedit-Language: Greek\n"
-	"X-Poedit-Country: GREECE\n"
-	"X-Poedit-SourceCharset: utf-8\n"
+	"X-Generator: KBabel 1.11.4\n"
+	"Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
 #: com/panayotis/jupidator/ApplicationInfo.java:35
 msgid	"Application path can not be null."
-msgstr	"Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
+msgstr	"O caminho do Aplicativo não pode ser nulo."
 
 #: com/panayotis/jupidator/ApplicationInfo.java:37
 #, java-format
 msgid	"Unable to find Application path {0}."
-msgstr	"Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
+msgstr	"Não foi possível encontrar o caminho do Aplicativo {0}."
 
 #: com/panayotis/jupidator/Updater.java:137
 #, java-format
 msgid	"Executing {0}"
-msgstr	"Εκτέλεση {0}"
+msgstr	"Executando {0}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:75
 #: com/panayotis/jupidator/file/FileAdd.java:76
 #, java-format
 msgid	"Destination file {0} is not writable."
-msgstr	"Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
+msgstr	"O arquivo de destino {0} não é gravável."
 
 #: com/panayotis/jupidator/file/FileAdd.java:82
 #: com/panayotis/jupidator/file/FileAdd.java:83
 #, java-format
 msgid	"Could not remove old downloaded file {0}"
-msgstr	"Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
+msgstr	"Não foi possível remover o arquivo antigo baixado {0}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:92
 #, java-format
 msgid	"Size of file {0} does not match. Reported {1}, required {2}"
-msgstr	"Το  μέγεθος του αρχείου {0} είναι λάθος. Βρέθηκε {1}, απαιτείται {2}"
+msgstr	"O tamanho do arquivo {0} não coincide. Reportado {1}, exigido {2}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:99
 #, java-format
 msgid	"File {0} sucessfully downloaded"
-msgstr	"Έγινε με επιτυχία η λήψη του αρχείου {0}"
+msgstr	"O arquivo {0} foi baixado com sucesso"
 
 #: com/panayotis/jupidator/file/FileAdd.java:103
 #, java-format
 msgid	"Unable to download file {0}"
-msgstr	"Αδυναμία κατά το κατέβασμα του {0}"
+msgstr	"Não foi possível baixar o arquivo {0}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:115
 #: com/panayotis/jupidator/file/FileAdd.java:128
 #, java-format
 msgid	"Unable to delete downloaded file {0}"
-msgstr	"Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+msgstr	"Não foi possível apagar o arquivo baixado {0}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:117
 #: com/panayotis/jupidator/file/FileAdd.java:130
 #, java-format
 msgid	"Successfully deleted downloaded file {0}"
-msgstr	"Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+msgstr	"O arquivo baixado {0} foi apagado com sucesso"
 
 #: com/panayotis/jupidator/file/FileAdd.java:134
 #, java-format
 msgid	"Unable to delete file {0}"
-msgstr	"Αδυναμία αφαίρεσης του αρχείου {0}"
+msgstr	"Não foi possível apagar o arquivo {0}"
 
 #: com/panayotis/jupidator/file/FileAdd.java:136
 #, java-format
 msgid	"Successfully deleted file {0}"
-msgstr	"Επιτυχής διαγραφή του αρχείου {0}"
+msgstr	"O arquivo {0} foi apagado com sucesso"
 
 #: com/panayotis/jupidator/file/FileElement.java:50
 msgid	"Application info not provided."
-msgstr	"Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
+msgstr	"Não foram fornecidas informações sobre o aplicativo."
 
 #: com/panayotis/jupidator/file/FileRm.java:38
 #, java-format
 msgid	"File {0} will be deleted, if exists."
-msgstr	"Το αρχείο {0} θα διαγραφεί, αν υπάρχει."
+msgstr	"O arquivo {0} será apagado, se existir."
 
 #: com/panayotis/jupidator/file/FileRm.java:41
 #, java-format
 msgid	"File {0} could not be deleted."
-msgstr	"Δε μπορεί να διαγραφεί το αρχείο {0}."
+msgstr	"O arquivo {0} não pôde ser apagado."
 
 #: com/panayotis/jupidator/file/FileRm.java:54
 #, java-format
 msgid	"Cancel updating: Ignoring deleting of file {0}"
-msgstr	"Ακύρωση ενημέρωσης: Δε θα διαγραφεί το αρχείο {0}"
+msgstr	"Cancelar atualização: ignorando o apagamento do arquivo {0}"
 
 #: com/panayotis/jupidator/file/FileUtils.java:104
 #, java-format
 msgid	"Deployer path {0} is not writable."
-msgstr	"Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
+msgstr	"O caminho do Instalador {0} não é gravável."
 
 #: com/panayotis/jupidator/file/FileUtils.java:111
 #, java-format
 msgid	"Checking path {0} for Deployer class."
-msgstr	"Έλεγχος της διαδρομής {0} για τον εκκινητή."
+msgstr	"Verificando o caminho {0} para a classe do Instalador."
 
 #: com/panayotis/jupidator/file/FileUtils.java:128
 #, java-format
 msgid	"Deployer stored in {0}"
-msgstr	"Ο εκκινητής αποθηκεύτηκε στο {0}"
+msgstr	"Instalador armazenado em {0}"
 
 #: com/panayotis/jupidator/file/FileUtils.java:135
 msgid	"Unable to create Deployer"
-msgstr	"Αδυναμία κατασκευής εκκινητή"
+msgstr	"Não foi possível criar o Instalador"
 
 #: com/panayotis/jupidator/file/FileUtils.java:174
 msgid	"Updated file could not be null."
-msgstr	"Το αρχείο ενημέρωσης δε μπορεί να είναι null"
+msgstr	"O arquivo atualizado não pode ser nulo."
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:49
 msgid	"Deploying files..."
-msgstr	"Αποθήκευση αρχείων..."
+msgstr	"Instalando arquivos..."
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:53
 #, java-format
 msgid	"A new version of {0} is available!"
-msgstr	"Μία νέα έκδοση του {0} είναι διαθέσιμη!"
+msgstr	"Uma nova versão do {0} está disponível!"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:54
 #, java-format
 msgid	"{0} version {1} is now available - you have {2}."
-msgstr	"Η έκδοση {1} του {0} είναι διαθέσιμη - έχετε την {2}."
+msgstr	"A versão {0} do {1}está disponível agora - você possui a {2}."
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:55
 #, java-format
 msgid	"New version of {0} found!"
-msgstr	"Βρέθηκε νέα έκδοση του {0}!"
+msgstr	"Foi encontrada uma nova versão do {0}!"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:78
 msgid	"Successfully downloaded updates"
-msgstr	"Οι ενημερώσεις κατέβηκαν με επιτυχία"
+msgstr	"Atualizações baixadas com sucesso"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:79
 msgid	"Restart application"
-msgstr	"Επανεκκίνηση"
+msgstr	"Reiniciar aplicativo"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:181
 msgid	"Cancel"
-msgstr	"Ακύρωση"
+msgstr	"Cancelar"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:192
 msgid	"Downloading..."
-msgstr	"Λήψη..."
+msgstr	"Baixando..."
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:218
 msgid	"Release Notes"
-msgstr	"Πληροφορίες εκδόσεων"
+msgstr	"Notas da Versão"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:235
 msgid	"Skip this version"
-msgstr	"Προσπέραση έκδοσης"
+msgstr	"Ignorar esta versão"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:248
 msgid	"Remind me later"
-msgstr	"Αναβολή ενημέρωσης"
+msgstr	"Lembrar-me depois"
 
 #: com/panayotis/jupidator/gui/ChangelogFrame.java:257
 msgid	"Install Update"
-msgstr	"Εγκατάσταση"
+msgstr	"Instalar Atualização"
 
 #: com/panayotis/jupidator/html/DefaultHTMLCreator.java:32
 msgid	"Version"
-msgstr	"Έκδοση"
-
-#~ msgid	"Successfully cleanup downloaded file {0}"
-#~ msgstr	"Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid	"Unable to cleanup downloaded file {0}"
-#~ msgstr	"Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
-
-#~ msgid	"File {0} sucessfully downloaded."
-#~ msgstr	"Το αρχείο {0} κατέβηκε με επιτυχία"
+msgstr	"Versão"
