@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN">
  
 <article>
  
@@ -14,9 +14,9 @@
 
 <para>Usually an application has no mechanism by default, to inform the user that a new version of the application is available. Although some operating systems support downloading of new packages, in most desktops this is not applicable. More sophisticated applications can check the current version, by loading a specific web page and inform the user that a newer version is available. Then the user is directed to manually download the newest version and install it.</para>
 
-<para>A few applications have an intergrated update feature. The user is informed of the new version, the application is downloaded in the background and when ready, the application is restarted. The user experience is much improved then. With this approach newer version is automatically installed and the user doesn't need to go to a specific page in order to download it. In big and compicated applications, the updater is able to fetch only parts of the application, or "packages", which have been upgraded from one version to the other.</para>
+<para>A few applications have an integrated update feature. The user is informed of the new version, the application is downloaded in the background and when ready, the application is restarted. The user experience is much improved then. With this approach newer version is automatically installed and the user doesn't need to go to a specific page in order to download it. In big and complicated applications, the updater is able to fetch only parts of the application, or "packages", which have been upgraded from one version to the other.</para>
 
-<para>Jupidator is a library to intergrade the update feature to any program, written in Java. It goes though one step further. Instead of fetching the complete application or separated packages, it is able to fine grain the update procedure by working with files. Although it is still possible to work with packages or complete replace of the application, the developer can work with file groups or even single files, while keeping track of the changelog in the desired granularity. Files that have been updated through more than one version, only the latest version is brought. Even if a file exists in one version, and is missing in a future version, the system is able to delete this file - and bring it back if this file appears again.</para>
+<para>Jupidator is a library to intergrade the update feature to any program, written in Java. It goes though one step further. Instead of fetching the complete application or separated packages, it is able to fine grain the update procedure by working with files. Although it is still possible to work with packages or complete replace of the application, the developer can work with file groups or even single files, while keeping track of the change-log in the desired granularity. Files that have been updated through more than one version, only the latest version is brought. Even if a file exists in one version, and is missing in a future version, the system is able to delete this file - and bring it back if this file appears again.</para>
 
 <para>Granularity in various levels is not the only advanced feature of Jupidator. It uses a single centralized XML configuration file to simultaneously support all desired platforms. Platform support is not limited by it's popularity. The developer is able to define the platform he is interested in, or even revert to the general non-specific platform for all other cases. The platform manipulation is flexible to completely fit the developer needs.</para>
 
@@ -25,17 +25,262 @@
 </sect1>
 
 <sect1>
-<title>Intergration in a project</title>
+<title>Integration in a project</title>
 
-<para>In order to use jupidator, one needs to intergrate it into the project - either as an external library or inside the application itself. Jupidator doesn't care where it exists, as long as it can be found somewhere inside the classpath of the application.</para>
+<para>Jupidator needs to be integrated into the project - either as an external library or inside the application itself. Jupidator doesn't care where it exists, as long as it can be found somewhere inside the classpath of the application.</para>
 
 <para>The most easy way is to build the JAR file and use it as external library. Do not forget of course to distribute jupidator.jar file along your project and put it in the classpath. When you add it, you call it and everything else (including deploying of the installer class) is automatically found and executed.</para>
 
-<para>If you prefer to change some parts of Jupidator itself, or if you don't want to distribute a separated JAR file, you can add Jupidator source code to your project. Just copy the source tree of Jupidator and you are ready! In any case, just make sure that you are in accordance with the Licence which comes together with Jupidator.</para>
+<para>If you prefer to change some parts of Jupidator itself, or if you don't want to distribute a separated JAR file, you can add Jupidator source code to your project. Just copy the source tree of Jupidator and you are ready! In any case, just make sure that you are in accordance with the Licenses which come together with Jupidator.</para>
+
+<para>To use Jupidator, you have to define two simple things:</para>
+<itemizedlist>
+    <listitem><para>Bindings with the running application</para></listitem>
+    <listitem><para>An XML file which describes the updated parts of the application</para></listitem>
+</itemizedlist>
+
+<para>Jupidator is using a incremental updating mechanism. In any new version the developer needs to provide <emphasis>only</emphasis> the changed files, and <emphasis>not</emphasis> the whole distribution. The updating mechanism parses all versions newer than the currently running and cleverly downloads the latest version of every part, even if parts are brought in <emphasis>various</emphasis> versions. Even if a file exists in one version, then gets deleted in a future distribution and then appears again, the file will be downloaded if nessesary.</para>
+
+<para>The updating scheme can be used in two contexts: with operating systems that support updating of the main application and with operating systems that the applications should be take care of themselves for updating. The first system is for example Debian, while the second is Windows. The first type of operating systems needs only to update parts like plugins of the application, and not the application core itself, while the other type requires all files to be updated. This difference is taken into account when using Jupidator updater.</para>
+
 </sect1>
 
 <sect1>
-<title>Usage</title>
+<title>Bindings with the running application</title>
+
+<para>The bindings with the actual application are divided in the following 3 parts:</para>
+
+<itemizedlist>
+    <listitem><para>Run time application information</para></listitem>
+    <listitem><para>Feedback mechanism of the updater</para></listitem>
+    <listitem><para>Execution of the updater</para></listitem>
+</itemizedlist>
+
+<sect2>
+<title id="runtimeinfo">Run-time application information</title>
+
+<para>In order to properly update the application, it is important to provide some run-time information for the current application. This information is encapsulated inside a <classname>com.panayotis.jupidator.ApplicationInfo</classname> object. The constructor of this object is:</para>
+<para><function>public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version)</function></para>
+<itemizedlist>
+	<listitem><para><varname>AppHome</varname> the directory path of the application. Typically is where the JAR file is found. It is writable mostly by a user with elevated privileges.</para></listitem>
+	<listitem><para><varname>AppSupportDir</varname> is the directory path where application locally stores files. Typically the user has write permissions in it.</para></listitem>
+	<listitem><para><varname>release</varname> the numerical version of the application. This should be an increasing integer number which marks every release.</para></listitem>
+	<listitem><para><varname>version</varname> the human readable version of the application. This is a free text versioning scheme, for displaying reasons.</para></listitem>
+</itemizedlist>
+<para>All arguments are mandatory, for the updater to work correctly.</para>
+</sect2>
+
+<sect2>
+<title id="feedback">Feedback mechanism of the updater</title>
+<para>The main program needs to receive some feedback of the updater process. Firstly, it needs to receive debugging information and secondly it needs to be informed that application restart is needed. Thus an object implementing <classname>com.panayotis.jupidator.UpdatedApplication</classname> is required. The two required methods are defined as follows:</para>
+
+<itemizedlist>
+	<listitem><para><function>public void receiveMessage(String message)</function></para>
+	<para>Mechanism for the main application to receive debugging messages. These messages can be ignored of course, or stored wherever the application think is appropriate (i.e. in a log file). These messages are possibly localized.</para></listitem>
+	<listitem><para><function>public boolean requestRestart()</function> </para>
+	<para>The updater requests to restart the application. No actual restart is performed. This method is used to do the necessary housekeeping, like for example to save open files. If the application returns "true" then housekeeping is successful and the updater is allowed to restart the application. Or else the updating procedure is stopped.</para></listitem>
+</itemizedlist>
+</sect2>
+
+<sect2>
+<title>Execution of the updater</title>
+<para>A <classname>com.panayotis.jupidator.Updater</classname> object is required to start the actual updating procedure. It is constructed as follows:</para>
+<para><function>public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application)</function></para>
+<itemizedlist>
+	<listitem><para><varname>xmlurl</varname> the location of the XML file which describes the updated parts. See next section.</para></listitem>
+	<listitem><para><varname>ApplicationInfo</varname> the runtime information as <link linkend="runtimeinfo">described above</link>.</para></listitem>
+	<listitem><para><varname>UpdatedApplication</varname> the object implementing the <classname>com.panayotis.jupidator.UpdatedApplication</classname> interface, as <link linkend="feedback">described above</link>.</para></listitem>
+</itemizedlist>
+
+<para>To start the actual updating procedure, the <function>actionDisplay()</function> should be called. All further actions are handled by Jupidator, in a separated thread if needed.</para>
+</sect2>
+
+</sect1>
+
+<sect1>
+<title>XML updater description</title>
+
+<para>Jupidator needs a XML file to store the various updated files. Here is an example of this file:</para>
+<para><screen><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<updatelist application="Jubler" baseurl="http://www.jubler.org/files" icon="icons/jubler.png">
+
+    <architect tag="any" os="" arch="">
+        <launcher exec="${JAVABIN}">
+            <argument value="-jar"/>
+            <argument value="${APPHOME}/${BASEFILE}"/>
+        </launcher>
+    </architect>
+    
+    <architect tag="win32" os="Windows" arch="x86">
+        <launcher exec="${APPHOME}\${BASEFILE}"/>
+    </architect>
+
+    <version release="10" version="0.1.0-RC1">
+        <description>Minor updates</description>
+        <arch name="win32" basefile="Jubler.exe">
+            <file name="Jubler.exe" sourcedir="0.1.0" destdir="${APPHOME}" size="942915" compress="gzip"/>
+        </arch>
+    </version>
+
+    <version release="1" version="0.0.1">
+        <description>Initial release</description>
+    </version>
+    
+</updatelist>]]></screen>
+</para>
+
+<para>In the following sub-sections these elements will be presented.</para>
+
+<sect2>
+<title>updatelist</title>
+<para>This is the main element of the Jupidator file.</para>
+<itemizedlist>
+	<listitem><para><varname>application</varname></para>
+	<para>The application name</para></listitem>
+
+	<listitem><para><varname>baseurl</varname></para>
+	<para>The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.</para></listitem>
+	
+	<listitem><para><varname>icon</varname></para>
+	<para>The image icon of the application. It should be in a format that the JRE will be able to understand. In our example, the actual URL of the icon is <filename>http://www.jubler.org/files/icons/jubler.png</filename></para></listitem>
+
+</itemizedlist>
+
+<para>Child elements: <varname>architect version</varname></para>
+
+</sect2>
+
+<sect2>
+<title>architect</title>
+<para>Jupidator can be used in various architectures. With this element we define which architectures we support. Since Jupidator is developed in Java, where multi-platform programming is encouraged, this is reflected here too. Architectures are marked with a "tag" and this "tag" can be used in more than one actual architecture (for example in Mac OS X under PPC and Intel machines at the same time).</para>
+<para>One special tag exists: the "any" tag. This is used as a failsafe mechanism to support all remaining machines with architectures different than the one we directly support. If a machine has an unknown/unsupported architecture, fails back to the "any" tag.</para>
+<itemizedlist>
+	<listitem><para><varname>tag</varname></para>
+	<para>The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator.</para></listitem>
+	<listitem><para><varname>os</varname></para>
+	<para>The operating system of this machine. This variable matches current operating system if System property "os.name" starts with this value. This attribute is not case sensitive.</para></listitem>
+	<listitem><para><varname>arch</varname></para>
+	<para>The machine architecture. This variable matches current operating system if System property "os.arch" starts with this value. This attribute is not case sensitive.</para></listitem>
+</itemizedlist>
+<para>Child elements: <varname>launcher</varname></para>
+</sect2>
+
+<sect2>
+<title>launcher</title>
+<para>This element is mandatory and defines how the application should be launched after the update procedure. Since launching is typically the same across updates, but differs in every platform, thus it is defined here.</para>
+<itemizedlist>
+	<listitem><para><varname>exec</varname></para>
+	<para>The executable filename. If arguments are required, these are defined by the nested <varname>argument</varname> element.</para></listitem>
+</itemizedlist>
+<para>Child elements: <varname>argument</varname></para>
+</sect2>
+
+<sect2>
+<title>argument</title>
+<para>Command line argument for the launcher. If no arguments are required, this element can be ommited. In the XML file there are as many <varname>argument</varname> elements, as the required arguments.</para>
+<itemizedlist>
+	<listitem><para><varname>value</varname></para>
+	<para>The value of the argument</para></listitem>
+</itemizedlist>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
+
+
+<sect2>
+<title>version</title>
+<para>Every new version of the application has one <varname>version</varname> element. Here the files which needed to be updated are defined. If this version is written only for display reasons, no <varname>arch</varname> elements are required.</para>
+<itemizedlist>
+	<listitem><para><varname>release</varname></para>
+	<para>The integer value of the current release. This number is checked against the "release" value of the runtime environment.</para>
+    <para>Remember that release files are incrementally defined. <emphasis>All</emphasis> versions with release number greater than the one defined at runtime environment are taken into account. <emphasis>Not</emphasis> not only the last one!</para></listitem>
+	<listitem><para><varname>version</varname></para>
+	<para>Human readable display of the current release version</para></listitem>
+</itemizedlist>
+<para>Child elements: <varname>description arch</varname></para>
+</sect2>
+
+<sect2>
+<title>description</title>
+<para>Free text description of this version. HTML tags are allowed, if escaped correctly to be included inside the XML document.</para>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
+
+<sect2>
+<title>arch</title>
+<para>Architecture dependent actions. For every architecture, as defined as <varname>tag</varname> with the <varname>architect</varname> element, a set of actions are defined. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this architecture can be skipped.</para>
+<itemizedlist>
+	<listitem><para><varname>name</varname></para>
+	<para>The name of this architevture, as defines with the <varname>architect</varname> element above.</para></listitem>
+	<listitem><para><varname>basefile</varname></para>
+	<para>The main executable file for this architecture. The value of this attribute is stored inside the BASEFILE property and can be used in <varname>launcher</varname> element.</para></listitem>
+</itemizedlist>
+<para>Child elements: <varname>file rm chmod chown</varname></para>
+</sect2>
+
+<sect2>
+<title>file</title>
+<para>Download a file from the remote location, relative to base URL. The latest file from every version will be taken into account, as discussed before.</para>
+<itemizedlist>
+	<listitem><para><varname>sourcedir</varname></para>
+    <para>The directory in the source location where this file exists. This is appended to the base URL.</para></listitem>
+	<listitem><para><varname>destdir</varname></para>
+    <para>The destination directory of the file. This directory is <emphasis>not</emphasis> relative to anything.</para></listitem>
+	<listitem><para><varname>name</varname></para>
+    <para>The file name. The name of the file is the same in both the source URL and in the destination directory. If this file is compressed (see below) then the appropriate compression extension is added to the source file name.</para></listitem>
+	<listitem><para><varname>size</varname></para>
+    <para>The size of the source file. It will be used to check if the downloaded file has correct size.</para></listitem>
+	<listitem><para><varname>compress</varname></para>
+    <para>The source file is compressed in the server. The following methods can be used: <varname>gzip bzip2 zip</varname>.</para>
+    <para>Depending on the type of compression, the following extensions are expected for the source file: <varname>gz bz2 zip</varname>.</para></listitem>
+	<listitem><para><varname>forceinstall</varname></para>
+    <para>This attribure is disabled (false) by default. With this default behaviour, if the selected runtime application is under an operating system that takes care of the update process by itself, this file is ignored. If it is enabled, then this file is used no matter what the operating system does. Enable this feature if you want to upgrade parts of the application that are not taken care by the operating system.</para></listitem>
+</itemizedlist>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
+
+<sect2>
+<title>rm</title>
+<para>Remove a local file.</para>
+<itemizedlist>
+	<listitem><para><varname>file</varname></para>
+    <para>The local file name. The full path name is expected.</para></listitem>
+	<listitem><para><varname>forceinstall</varname></para>
+    <para>If enabled, this file is deleted in any case. For discussion about this parameter, see the <varname>file</varname> element.</para></listitem>
+</itemizedlist>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
+
+<sect2>
+<title>chmod</title>
+<para>Change permissions of a local file. This element is useful only in unix-like operating systems.</para>
+<itemizedlist>
+	<listitem><para><varname>file</varname></para>
+    <para>The local file name. The full path name is expected.</para></listitem>
+	<listitem><para><varname>attr</varname></para>
+    <para>The new attributes of this file. The syntax is the same with <command>chmod</command> command.</para></listitem>
+	<listitem><para><varname>recursive</varname></para>
+    <para>If this is a directory, change attributes of all files recursively.</para></listitem>
+	<listitem><para><varname>forceinstall</varname></para>
+    <para>If enabled, the attributes of this file are changed in any case. For discussion about this parameter, see the <varname>file</varname> element.</para></listitem>
+</itemizedlist>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
+
+<sect2>
+<title>chown</title>
+<para>Change the owner of a local file. This element is useful only in unix-like operating systems.</para>
+<itemizedlist>
+	<listitem><para><varname>file</varname></para>
+    <para>The local file name. The full path name is expected.</para></listitem>
+	<listitem><para><varname>attr</varname></para>
+    <para>The new owner of this file. The syntax is the same with <command>chown</command> command.</para></listitem>
+	<listitem><para><varname>recursive</varname></para>
+    <para>If this is a directory, change attributes of all files recursively.</para></listitem>
+	<listitem><para><varname>forceinstall</varname></para>
+    <para>If enabled, the owner of this file are changed in any case. For discussion about this parameter, see the <varname>file</varname> element.</para></listitem>
+</itemizedlist>
+<para>Child elements: <emphasis>none</emphasis></para>
+</sect2>
 </sect1>
 
 </article>
