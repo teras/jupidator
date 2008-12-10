@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-09 17:49+0200\n"
+"POT-Creation-Date: 2008-12-10 12:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,34 +37,39 @@ msgstr ""
 msgid "Could not remove old downloaded file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileAdd.java:97
+#: com/panayotis/jupidator/file/FileAdd.java:92
 #, java-format
-msgid "File {0} sucessfully downloaded."
+msgid "Size of file {0} does not match. Reported {1}, required {2}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileAdd.java:101
+#: com/panayotis/jupidator/file/FileAdd.java:99
+#, java-format
+msgid "File {0} sucessfully downloaded"
+msgstr ""
+
+#: com/panayotis/jupidator/file/FileAdd.java:103
 #, java-format
 msgid "Unable to download file {0}"
-msgstr ""
-
-#: com/panayotis/jupidator/file/FileAdd.java:113
-#: com/panayotis/jupidator/file/FileAdd.java:126
-#, java-format
-msgid "Unable to delete downloaded file {0}"
 msgstr ""
 
 #: com/panayotis/jupidator/file/FileAdd.java:115
 #: com/panayotis/jupidator/file/FileAdd.java:128
 #, java-format
+msgid "Unable to delete downloaded file {0}"
+msgstr ""
+
+#: com/panayotis/jupidator/file/FileAdd.java:117
+#: com/panayotis/jupidator/file/FileAdd.java:130
+#, java-format
 msgid "Successfully deleted downloaded file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileAdd.java:132
+#: com/panayotis/jupidator/file/FileAdd.java:134
 #, java-format
 msgid "Unable to delete file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileAdd.java:134
+#: com/panayotis/jupidator/file/FileAdd.java:136
 #, java-format
 msgid "Successfully deleted file {0}"
 msgstr ""
@@ -88,26 +93,26 @@ msgstr ""
 msgid "Cancel updating: Ignoring deleting of file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileUtils.java:106
+#: com/panayotis/jupidator/file/FileUtils.java:104
 #, java-format
 msgid "Deployer path {0} is not writable."
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileUtils.java:113
+#: com/panayotis/jupidator/file/FileUtils.java:111
 #, java-format
 msgid "Checking path {0} for Deployer class."
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileUtils.java:130
+#: com/panayotis/jupidator/file/FileUtils.java:128
 #, java-format
 msgid "Deployer stored in {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileUtils.java:137
+#: com/panayotis/jupidator/file/FileUtils.java:135
 msgid "Unable to create Deployer"
 msgstr ""
 
-#: com/panayotis/jupidator/file/FileUtils.java:177
+#: com/panayotis/jupidator/file/FileUtils.java:174
 msgid "Updated file could not be null."
 msgstr ""
 
