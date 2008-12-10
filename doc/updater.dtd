@@ -36,8 +36,8 @@
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT version (description, (arch)*)>
 <!ATTLIST version
-    id CDATA #REQUIRED
     release CDATA #REQUIRED
+    version CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->
@@ -54,11 +54,11 @@
 <!ELEMENT file EMPTY>
 <!ATTLIST file
     sourcedir CDATA #REQUIRED
-    forceinstall CDATA "false"
-    compress CDATA "none"
     destdir CDATA #REQUIRED
     name CDATA #REQUIRED
     size CDATA #REQUIRED
+    forceinstall CDATA "false"
+    compress CDATA "none"
   >
 
 <!--- Put your DTDDoc comment here. -->
