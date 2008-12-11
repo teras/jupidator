@@ -89,7 +89,7 @@
 <target name="doc">
 	<mkdir dir="dist/doc"/>
 	<exec dir="dist/doc" executable="docbook2html" failonerror="true">
-		<arg line="../../src/doc/Documentation.docbook"/>
+		<arg line="../../src/doc/Documentation.xml"/>
 	</exec>
 </target>
 
