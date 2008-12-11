@@ -81,18 +81,19 @@
 </target>
 
 <target name="doc">
-	<exec dir="doc" executable="docbook2html" failonerror="false">
-		<arg line="Documentation.xml"/>
+	<mkdir dir="dist/doc"/>
+	<exec dir="dist/doc" executable="docbook2html" failonerror="true">
+		<arg line="../../src/doc/Documentation.docbook"/>
 	</exec>
 </target>
 
 
 <target name="-post-clean">
         <delete>
-			<fileset dir="src/com/panayotis/jupidator/i18n" includes="Messages*" />
+			<fileset dir="src/java/com/panayotis/jupidator/i18n" includes="Messages*" />
 			<fileset dir="i18n" includes="*.mo"/>
-			<fileset dir="doc" includes="*.html"/>
 		</delete>
+		<delete dir="dist/doc" />
 </target>
 
 </project>
