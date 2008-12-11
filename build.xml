@@ -74,6 +74,12 @@
 
    -->
 
+<taskdef name="DTDDoc"
+			onerror="report"
+             classname="DTDDoc.DTDDocTask"
+             classpath="../../Tools/dtddoc/DTDDoc.jar"/>
+
+
 <target name="i18n">
         <exec dir="i18n" executable="bash" failonerror="true">
             <arg line="compile"/>
@@ -87,6 +93,15 @@
 	</exec>
 </target>
 
+<target name="dtddoc">
+	<DTDDoc showHiddenTags="true"
+                showFixmeTags="false"
+                sourceDir="src/doc"
+                destDir="dist/doc"
+                docTitle = "DTDDoc test title">
+            <include name="*.dtd"/>
+        </DTDDoc>
+</target>
 
 <target name="-post-clean">
         <delete>

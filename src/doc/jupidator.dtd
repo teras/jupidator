@@ -1,21 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <!--
-    TODO define vocabulary identification
-    PUBLIC ID: -//vendor//vocabulary//EN
-    SYSTEM ID: http://server/path/updater.dtd
-
--->
-
-<!--- Put your DTDDoc comment here. -->
+    This is the main element of the Jupidator file.
+    @title Jupidator remote definition file
+    @root updatelist
+ -->
 <!ELEMENT updatelist (architect*, version+)>
+<!--
+    @attr application The application name
+    @attr baseurl The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.
+    @icon The image icon of the application. It should be in a format that the JRE will be able to understand.
+        For example, if baseurl is http://www.myserver.org/files and icon is icons/mascot.png then the icon URL is http://www.myserver.org/files/icons/mascot.png 
+ -->
 <!ATTLIST updatelist
     application CDATA #REQUIRED
     baseurl CDATA #REQUIRED
     icon CDATA #IMPLIED
   >
   
-<!--- Put your DTDDoc comment here. -->
+<!--
+Jupidator can be used in various architectures. With this element we define which architectures we support. Since Jupidator is developed in Java, where multi-platform programming is encouraged, this is reflected here too. Architectures are marked with a "tag" and this "tag" can be used in more than one actual architecture (for example in Mac OS X under PPC and Intel machines at the same time).
+
+One special tag exists: the "any" tag. This is used as a failsafe mechanism to support all remaining machines with architectures different than the one we directly support. If a machine has an unknown/unsupported architecture, fails back to the "any" tag.
+  -->
 <!ELEMENT architect (launcher)>
 <!ATTLIST architect
     arch CDATA #REQUIRED
@@ -33,24 +40,24 @@
     value CDATA #REQUIRED
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT version (description, (arch)*)>
 <!ATTLIST version
     release CDATA #REQUIRED
     version CDATA #REQUIRED
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT description (#PCDATA)>
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT arch (file|rm|chmod|chown)*>
 <!ATTLIST arch
     name CDATA #REQUIRED
     basefile CDATA #REQUIRED
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT file EMPTY>
 <!ATTLIST file
     sourcedir CDATA #REQUIRED
@@ -61,14 +68,14 @@
     compress CDATA "none"
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT rm EMPTY>
 <!ATTLIST rm
     file CDATA #REQUIRED
     forceinstall CDATA "false"
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT chmod EMPTY>
 <!ATTLIST chmod
     file CDATA #REQUIRED
@@ -77,7 +84,7 @@
     forceinstall CDATA "false"
   >
 
-<!--- Put your DTDDoc comment here. -->
+<!-- -->
 <!ELEMENT chown EMPTY>
 <!ATTLIST chown
     file CDATA #REQUIRED
