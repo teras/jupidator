@@ -74,10 +74,9 @@
 
    -->
 
-<taskdef name="DTDDoc"
-			onerror="report"
-             classname="DTDDoc.DTDDocTask"
-             classpath="../../Tools/dtddoc/DTDDoc.jar"/>
+<taskdef name="DTDDoc" onerror="report"
+	classname="DTDDoc.DTDDocTask"
+	classpath="../../Tools/dtddoc/DTDDoc.jar"/>
 
 
 <target name="i18n">
@@ -86,7 +85,7 @@
         </exec>
 </target>
 
-<target name="doc">
+<target name="doc" depends="dtddoc">
 	<mkdir dir="dist/doc"/>
 	<exec dir="dist/doc" executable="docbook2html" failonerror="true">
 		<arg line="../../src/doc/Documentation.xml"/>
@@ -94,13 +93,9 @@
 </target>
 
 <target name="dtddoc">
-	<DTDDoc showHiddenTags="true"
-                showFixmeTags="false"
-                sourceDir="src/doc"
-                destDir="dist/doc"
-                docTitle = "DTDDoc test title">
-            <include name="*.dtd"/>
-        </DTDDoc>
+	<DTDDoc sourceDir="src/doc" destDir="dist/doc/dtd" docTitle = "Jupidator DTD">
+		<include name="*.dtd"/>
+	</DTDDoc>
 </target>
 
 <target name="-post-clean">

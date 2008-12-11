@@ -2,14 +2,14 @@
 
 <!--
     This is the main element of the Jupidator file.
-    @title Jupidator remote definition file
+    @title Remote definition file
     @root updatelist
  -->
 <!ELEMENT updatelist (architect*, version+)>
 <!--
     @attr application The application name
     @attr baseurl The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.
-    @icon The image icon of the application. It should be in a format that the JRE will be able to understand.
+    @attr icon The image icon of the application. It should be in a format that the JRE will be able to understand.
         For example, if baseurl is http://www.myserver.org/files and icon is icons/mascot.png then the icon URL is http://www.myserver.org/files/icons/mascot.png 
  -->
 <!ATTLIST updatelist
@@ -24,59 +24,115 @@ Jupidator can be used in various architectures. With this element we define whic
 One special tag exists: the "any" tag. This is used as a failsafe mechanism to support all remaining machines with architectures different than the one we directly support. If a machine has an unknown/unsupported architecture, fails back to the "any" tag.
   -->
 <!ELEMENT architect (launcher)>
+<!--
+    @attr tag The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator.
+    @attr os The operating system of this machine. This variable matches current operating system if System property "os.name" starts with this value. This attribute is not case sensitive.
+    @attr arch The machine architecture. This variable matches current operating system if System property "os.arch" starts with this value. This attribute is not case sensitive.
+-->
 <!ATTLIST architect
-    arch CDATA #REQUIRED
-    os CDATA #REQUIRED
     tag CDATA #REQUIRED
+    os CDATA #REQUIRED
+    arch CDATA #REQUIRED
   >
 
+<!--
+    This element is mandatory and defines how the application should be launched after the update procedure. Since launching is typically the same across updates, but differs in every platform, thus it is defined here.
+-->
 <!ELEMENT launcher (argument*)>
+<!--
+    @attr exec The executable filename. If arguments are required, these are defined by the nested argument element.
+-->
 <!ATTLIST launcher
     exec CDATA #REQUIRED
   >
   
+<!--
+    Command line argument for the launcher. If no arguments are required, this element can be ommited. In the XML file there are as many argument elements, as the required arguments.
+-->
 <!ELEMENT argument EMPTY>
+<!--
+    @attr value The value of the argument
+-->
 <!ATTLIST argument
     value CDATA #REQUIRED
   >
 
-<!-- -->
+<!--
+    Every new version of the application has one version element. Here the files which needed to be updated are defined. If this version is written only for display reasons, no arch elements are required.
+-->
 <!ELEMENT version (description, (arch)*)>
+<!--
+    @attr release <p>The integer value of the current release. This number is checked against the "release" value of the runtime environment.<p>
+        <p>Remember that release files are incrementally defined. <emphasis>All</emphasis> versions with release number greater than the one defined at runtime environment are taken into account. <emphasis>Not</emphasis> not only the last one!</p>
+    @attr version Human readable display of the current release version
+-->
 <!ATTLIST version
     release CDATA #REQUIRED
     version CDATA #REQUIRED
   >
 
-<!-- -->
+<!--
+    Free text description of this version. HTML tags are allowed, if escaped correctly to be included inside the XML document.
+-->
 <!ELEMENT description (#PCDATA)>
 
-<!-- -->
+<!--
+    Architecture dependent actions. For every architecture, as defined as tag with the architect element, a set of actions are defined. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this architecture can be skipped.
+-->
 <!ELEMENT arch (file|rm|chmod|chown)*>
+<!--
+    @attr name The name of this architevture, as defines with the architect element above.
+    @attr basefile The main executable file for this architecture. The value of this attribute is stored inside the BASEFILE property and can be used in launcher element.
+-->
 <!ATTLIST arch
     name CDATA #REQUIRED
     basefile CDATA #REQUIRED
   >
 
-<!-- -->
+<!--
+    Download a file from the remote location, relative to base URL. The latest file from every version will be taken into account, as discussed before.
+-->
 <!ELEMENT file EMPTY>
+<!--
+    @attr sourcedir The directory in the source location where this file exists. This is appended to the base URL.
+    @attr destdir The destination directory of the file. This directory is <emphasis>not</emphasis> relative to anything.
+    @attr name The file name. The name of the file is the same in both the source URL and in the destination directory. If this file is compressed (see below) then the appropriate compression extension is added to the source file name.
+    @attr size The size of the source file. It will be used to check if the downloaded file has correct size.
+    @attr compress The source file is compressed in the server. The following methods can be used: gzip bzip2 zip.
+    @attr forceinstall This attribure is disabled (false) by default. With this default behaviour, if the selected runtime application is under an operating system that takes care of the update process by itself, this file is ignored. If it is enabled, then this file is used no matter what the operating system does. Enable this feature if you want to upgrade parts of the application that are not taken care by the operating system.
+-->
 <!ATTLIST file
     sourcedir CDATA #REQUIRED
     destdir CDATA #REQUIRED
     name CDATA #REQUIRED
     size CDATA #REQUIRED
-    forceinstall CDATA "false"
     compress CDATA "none"
+    forceinstall CDATA "false"
   >
 
-<!-- -->
+<!--
+    Remove a local file.
+-->
 <!ELEMENT rm EMPTY>
+<!--
+    @attr file The local file name. The full path name is expected.
+    @attr forceinstall If enabled, the owner of this file are changed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
+-->
 <!ATTLIST rm
     file CDATA #REQUIRED
     forceinstall CDATA "false"
   >
 
-<!-- -->
+<!--
+
+-->
 <!ELEMENT chmod EMPTY>
+<!--
+    @attr file The local file name. The full path name is expected.
+    @attr attr The new attributes of this file. The syntax is the same with <command>chmod</command> command.
+    @attr recursive If this is a directory, change attributes of all files recursively.
+    @attr forceinstall If enabled, the owner of this file are changed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
+-->
 <!ATTLIST chmod
     file CDATA #REQUIRED
     attr CDATA #REQUIRED
@@ -84,8 +140,16 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     forceinstall CDATA "false"
   >
 
-<!-- -->
+<!--
+    Change permissions of a local file. This element is useful only in unix-like operating systems.
+-->
 <!ELEMENT chown EMPTY>
+<!--
+    @attr file The local file name. The full path name is expected.
+    @attr attr The new owner of this file. The syntax is the same with <command>chown</command> command.
+    @attr recursive If this is a directory, change owner of all files recursively.
+    @attr forceinstall If enabled, the owner of this file are changed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
+-->
 <!ATTLIST chown
     file CDATA #REQUIRED
     attr CDATA #REQUIRED
