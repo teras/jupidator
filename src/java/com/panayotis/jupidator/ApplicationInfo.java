@@ -41,7 +41,7 @@ public class ApplicationInfo {
             AppSupportDir = AppHome;
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
             AppSupportDir = AppSupportDir + FS;
-        vars.put("APPSUPPORT", AppSupportDir);
+        vars.put("APPSUPPORTDIR", AppSupportDir);
 
         if (version == null || version.equals(""))
             version = "0.0.0.0";
@@ -51,6 +51,7 @@ public class ApplicationInfo {
             this.release = Integer.parseInt(release);
         } catch (NumberFormatException ex) {
         }
+        vars.put("RELEASE", Integer.toString(this.release));
 
         vars.put("JAVABIN", FileUtils.JAVABIN);
     }
@@ -68,7 +69,7 @@ public class ApplicationInfo {
     }
 
     String getUpdaterConfigFile() {
-        return vars.get("APPSUPPORT") + "updater.xml";
+        return vars.get("APPSUPPORTDIR") + "updater.xml";
     }
 
     /* This new release has to do with ignoring a specific version */

@@ -63,7 +63,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT version (description, (arch)*)>
 <!--
     @attr release <p>The integer value of the current release. This number is checked against the "release" value of the runtime environment.<p>
-        <p>Remember that release files are incrementally defined. <emphasis>All</emphasis> versions with release number greater than the one defined at runtime environment are taken into account. <emphasis>Not</emphasis> not only the last one!</p>
+        <p>Remember that release files are incrementally defined. <i>All</i> versions with release number greater than the one defined at runtime environment are taken into account. <i>Not</i> not only the last one!</p>
     @attr version Human readable display of the current release version
 -->
 <!ATTLIST version
@@ -93,7 +93,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT file EMPTY>
 <!--
     @attr sourcedir The directory in the source location where this file exists. This is appended to the base URL.
-    @attr destdir The destination directory of the file. This directory is <emphasis>not</emphasis> relative to anything.
+    @attr destdir The destination directory of the file. This directory is <i>not</i> relative to anything.
     @attr name The file name. The name of the file is the same in both the source URL and in the destination directory. If this file is compressed (see below) then the appropriate compression extension is added to the source file name.
     @attr size The size of the source file. It will be used to check if the downloaded file has correct size.
     @attr compress The source file is compressed in the server. The following methods can be used: gzip bzip2 zip.
