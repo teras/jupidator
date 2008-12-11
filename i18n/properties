@@ -1,5 +1,5 @@
 PROJECT=jupidator
-SRC=../src
+SRC=../src/java
 CLASSPATH=com.panayotis.jupidator.i18n
 
 
