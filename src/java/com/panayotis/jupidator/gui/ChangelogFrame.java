@@ -167,7 +167,7 @@ public class ChangelogFrame extends JDialog implements BufferListener {
 
         ProgressP.setLayout(new java.awt.BorderLayout());
 
-        BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        BarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 0));
         BarPanel.setLayout(new java.awt.BorderLayout());
 
         PBar.setStringPainted(true);

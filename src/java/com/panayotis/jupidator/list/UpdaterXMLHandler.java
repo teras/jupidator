@@ -61,10 +61,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("arch")) {
             if (ignore_version)
                 return;
-            if (appinfo == null)
-                return;
             if (arch.isTag(attr.getValue("name"))) {  // Found current architecture
-                appinfo.setBaseFile(attr.getValue("basefile"));
                 current = new Version();
             }
         } else if (qName.equals("file")) {

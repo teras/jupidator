@@ -63,10 +63,6 @@ public class ApplicationInfo {
         vars.put(name, value);
     }
 
-    public void setBaseFile(String basefile) {
-        setProperty("BASEFILE", basefile);
-    }
-
     public boolean isDistributionBased() {
         return distributionBased;
     }

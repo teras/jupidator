@@ -107,17 +107,17 @@
     <architect tag="any" os="" arch="">
         <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="${APPHOME}/${BASEFILE}"/>
+            <argument value="${APPHOME}/Jubler.jar"/>
         </launcher>
     </architect>
     
     <architect tag="win32" os="Windows" arch="x86">
-        <launcher exec="${APPHOME}\${BASEFILE}"/>
+        <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
     <version release="10" version="0.1.0-RC1">
         <description>Minor updates</description>
-        <arch name="win32" basefile="Jubler.exe">
+        <arch name="win32">
             <file name="Jubler.exe" sourcedir="0.1.0" destdir="${APPHOME}" size="942915" compress="gzip"/>
         </arch>
     </version>

@@ -82,11 +82,9 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT arch (file|rm|chmod|chown)*>
 <!--
     @attr name The name of this architevture, as defines with the architect element above.
-    @attr basefile The main executable file for this architecture. The value of this attribute is stored inside the BASEFILE property and can be used in launcher element.
 -->
 <!ATTLIST arch
     name CDATA #REQUIRED
-    basefile CDATA #REQUIRED
   >
 
 <!--
