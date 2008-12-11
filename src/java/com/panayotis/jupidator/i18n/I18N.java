@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 public class I18N {
     private static ResourceBundle b;
     
-    private static final String PATH = "com.panayotis.jubler.i18n.Messages";
+    private static final String PATH = "com.panayotis.jupidator.i18n.Messages";
     
     static {
         String lang = System.getProperty("user.language");
