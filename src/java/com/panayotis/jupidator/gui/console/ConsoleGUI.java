@@ -73,7 +73,8 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void successOnCommit() {
-        System.out.println(_("Upgrade successfull"));
+        System.out.println(_("Downloading successfull"));
+        callback.actionRestart();
     }
 
     public void setDownloadRatio(String ratio, float percent) {
