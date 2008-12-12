@@ -1,10 +1,11 @@
 /*
- * ChangelogFrame.java
+ * SwingGUI.java
  *
  * Created on September 25, 2008, 3:54 AM
  */
-package com.panayotis.jupidator.gui;
+package com.panayotis.jupidator.gui.swing;
 
+import com.panayotis.jupidator.gui.*;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -19,17 +20,18 @@ import java.net.URL;
 import java.util.Formatter;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author  teras
  */
-public class ChangelogFrame extends JDialog implements JupidatorGUI {
+public class SwingGUI extends JDialog implements JupidatorGUI {
 
     private Updater callback;
 
-    /** Creates new form ChangelogFrame */
-    public ChangelogFrame(Updater callback) {
+    /** Creates new form SwingGUI */
+    public SwingGUI(Updater callback) {
         super((Frame) null, false);
         initComponents();
         this.callback = callback;
@@ -130,10 +132,11 @@ public class ChangelogFrame extends JDialog implements JupidatorGUI {
         jScrollPane1 = new javax.swing.JScrollPane();
         InfoPane = new javax.swing.JEditorPane();
         jPanel5 = new javax.swing.JPanel();
-        NewVerL = new javax.swing.JLabel();
         VersInfoL = new javax.swing.JLabel();
         NotesL = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        InfoB = new javax.swing.JButton();
+        NewVerL = new javax.swing.JLabel();
         IconL = new javax.swing.JLabel();
         CommandP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -185,10 +188,6 @@ public class ChangelogFrame extends JDialog implements JupidatorGUI {
         jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
-
-        NewVerL.setFont(NewVerL.getFont().deriveFont(NewVerL.getFont().getStyle() | java.awt.Font.BOLD, NewVerL.getFont().getSize()+1));
-        NewVerL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
-        jPanel5.add(NewVerL, java.awt.BorderLayout.NORTH);
         jPanel5.add(VersInfoL, java.awt.BorderLayout.CENTER);
 
         NotesL.setFont(NotesL.getFont().deriveFont(NotesL.getFont().getStyle() | java.awt.Font.BOLD));
@@ -196,12 +195,25 @@ public class ChangelogFrame extends JDialog implements JupidatorGUI {
         NotesL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 4, 0));
         jPanel5.add(NotesL, java.awt.BorderLayout.SOUTH);
 
-        jButton1.setText("<i>");
-        jButton1.setBorderPainted(false);
-        jButton1.setMaximumSize(new java.awt.Dimension(16, 16));
-        jButton1.setMinimumSize(new java.awt.Dimension(16, 16));
-        jButton1.setPreferredSize(new java.awt.Dimension(16, 16));
-        jPanel5.add(jButton1, java.awt.BorderLayout.EAST);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i.png"))); // NOI18N
+        InfoB.setBorderPainted(false);
+        InfoB.setMaximumSize(new java.awt.Dimension(16, 16));
+        InfoB.setMinimumSize(new java.awt.Dimension(16, 16));
+        InfoB.setPreferredSize(new java.awt.Dimension(16, 16));
+        InfoB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InfoBActionPerformed(evt);
+            }
+        });
+        jPanel1.add(InfoB, java.awt.BorderLayout.EAST);
+
+        NewVerL.setFont(NewVerL.getFont().deriveFont(NewVerL.getFont().getStyle() | java.awt.Font.BOLD, NewVerL.getFont().getSize()+1));
+        NewVerL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
+        jPanel1.add(NewVerL, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel1, java.awt.BorderLayout.NORTH);
 
         jPanel6.add(jPanel5, java.awt.BorderLayout.PAGE_START);
 
@@ -277,12 +289,19 @@ private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     else
         callback.actionRestart();
 }//GEN-LAST:event_ActionBActionPerformed
+
+private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoBActionPerformed
+    String msg = "Jupidator is open source, under the LGPL\nMore info: http://www.jupidator.org";
+    JOptionPane.showMessageDialog(this, msg, _("About Jupidator"), JOptionPane.INFORMATION_MESSAGE);
+}//GEN-LAST:event_InfoBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ActionB;
     private javax.swing.JPanel BarPanel;
     private javax.swing.JPanel ButtonPanel;
     private javax.swing.JPanel CommandP;
     private javax.swing.JLabel IconL;
+    private javax.swing.JButton InfoB;
     private javax.swing.JLabel InfoL;
     private javax.swing.JEditorPane InfoPane;
     private javax.swing.JButton LaterB;
@@ -294,7 +313,7 @@ private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JButton SkipB;
     private javax.swing.JButton UpdateB;
     private javax.swing.JLabel VersInfoL;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

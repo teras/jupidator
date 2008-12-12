@@ -7,11 +7,11 @@ package com.panayotis.jupidator;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.file.FileUtils;
-import com.panayotis.jupidator.gui.ChangelogFrame;
+import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.list.Arch;
-import com.panayotis.jupidator.list.SimpleUpdatedApplication;
+import com.panayotis.jupidator.applications.SimpleApplication;
 import com.panayotis.jupidator.list.Version;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -33,14 +33,14 @@ public class Updater {
         this.appinfo = appinfo;
         vers = Version.loadVersion(xmlurl, appinfo);
         if (application == null)
-            application = new SimpleUpdatedApplication();
+            application = new SimpleApplication();
         this.application = application;
         watcher = new UpdateWatcher();
     }
 
     public void actionDisplay() throws UpdaterException {
         if (vers.size() > 0) {
-            gui = new ChangelogFrame(this);
+            gui = new SwingGUI(this);
             watcher.setCallBack(gui);
             gui.setInformation(vers.getAppElements(), appinfo);
             gui.startDialog();

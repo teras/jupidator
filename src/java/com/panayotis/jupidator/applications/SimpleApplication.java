@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.jupidator.list;
+package com.panayotis.jupidator.applications;
 
 import com.panayotis.jupidator.UpdatedApplication;
 
@@ -11,7 +11,7 @@ import com.panayotis.jupidator.UpdatedApplication;
  *
  * @author teras
  */
-public class SimpleUpdatedApplication implements UpdatedApplication {
+public class SimpleApplication implements UpdatedApplication {
 
     public boolean requestRestart() {
         return true;
