@@ -177,7 +177,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <para>Jupidator supports variables inside the various URLs and filenames. This is a list of predefined variables:</para>
 <itemizedlist>
 	<listitem><para><varname>APPHOME</varname></para><para>Home directory of the application, as given to the <link linkend="apphome">runtime environment</link></para></listitem>
-	<listitem><para><varname>APPSUPPORTDIR</varname></para>Support directory of the application, as given to the <link linkend="appsupportdir">runtime environment</link><para></para></listitem>
+	<listitem><para><varname>APPSUPPORTDIR</varname></para><para>Support directory of the application, as given to the <link linkend="appsupportdir">runtime environment</link></para></listitem>
 	<listitem><para><varname>VERSION</varname></para><para>Human readable version, as given to the <link linkend="version">runtime environment</link></para></listitem>
 	<listitem><para><varname>RELEASE</varname></para><para>Numeric release, as given to the <link linkend="release">runtime environment</link></para></listitem>
 	<listitem><para><varname>JAVABIN</varname></para><para>Path to Java executable.</para></listitem>
@@ -420,6 +420,7 @@ This package is based on the work done by Keiron Liddle, Aftex Software
 keiron@aftexsw.com to whom the Ant project is very grateful for his
 great code.
 </screen>
+</sect2>
 
 </sect1>
 

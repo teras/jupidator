@@ -7,7 +7,7 @@ package com.panayotis.jupidator.list;
 import com.panayotis.jupidator.file.FileElement;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.UpdaterProperties;
+import com.panayotis.jupidator.list.UpdaterProperties;
 import com.panayotis.jupidator.file.ExecutionTime;
 import java.io.IOException;
 import java.util.LinkedHashMap;

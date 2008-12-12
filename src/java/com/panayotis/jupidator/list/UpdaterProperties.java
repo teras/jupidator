@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator;
+package com.panayotis.jupidator.list;
 
+import com.panayotis.jupidator.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,12 +47,12 @@ public class UpdaterProperties {
         return false;
     }
 
-    void defer() {
+    public void defer() {
         opts.put(TIMECHECK, Long.toString(Calendar.getInstance().getTimeInMillis()));
         storeOptions();
     }
 
-    void ignore(int newrelease) {
+    public void ignore(int newrelease) {
         opts.put(VERSIONCHECK, Integer.toString(newrelease));
         storeOptions();
     }

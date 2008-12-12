@@ -34,13 +34,11 @@ public class FileRm extends FileElement {
     public String fetch(UpdatedApplication application, BufferListener blisten) {
         File f = new File(getDestinationFile());
         if ((!f.exists()) || (f.getParentFile().canWrite() && FileUtils.isWritable(f))) {
-            if (application != null)
-                application.receiveMessage(_("File {0} will be deleted, if exists.", f.getPath()));
+            application.receiveMessage(_("File {0} will be deleted, if exists.", f.getPath()));
             return null;
         }
         String msg = _("File {0} could not be deleted.", f.getPath());
-        if (application != null)
-            application.receiveMessage(msg);
+        application.receiveMessage(msg);
         return msg;
     }
 
@@ -50,7 +48,6 @@ public class FileRm extends FileElement {
     }
 
     public void cancel(UpdatedApplication application) {
-        if (application != null)
-            application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", getDestinationFile()));
+        application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", getDestinationFile()));
     }
 }

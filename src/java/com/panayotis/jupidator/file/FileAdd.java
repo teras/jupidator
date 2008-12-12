@@ -61,7 +61,7 @@ public class FileAdd extends FileElement {
         return "+" + getDestinationFile() + JupidatorDeployer.EXTENSION;
     }
 
-    public String fetch(UpdatedApplication application, BufferListener blisten) {
+    public String fetch(UpdatedApplication application, BufferListener watcher) {
         String fromfilename = getSourceFile() + compression.getFilenameExtension();
         String tofilename = getDestinationFile();
         String downloadfilename = tofilename + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION;
@@ -71,15 +71,13 @@ public class FileAdd extends FileElement {
 
         /* Check if (new) destination file is writable */
         if (!FileUtils.isWritable(tofile)) {
-            if (application != null)
-                application.receiveMessage(_("Destination file {0} is not writable.", tofilename));
+            application.receiveMessage(_("Destination file {0} is not writable.", tofilename));
             return _("Destination file {0} is not writable.", getFileName());
         }
         /* Remove old download file. Whether parent directory is writable, was checked with tofile */
         downloadfile.delete();
         if (downloadfile.exists()) {
-            if (application != null)
-                application.receiveMessage(_("Could not remove old downloaded file {0}", downloadfilename));
+            application.receiveMessage(_("Could not remove old downloaded file {0}", downloadfilename));
             return _("Could not remove old downloaded file {0}", getFileName());
         }
 
@@ -87,22 +85,20 @@ public class FileAdd extends FileElement {
         String error = null;
         try {
             error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
-                    new FileOutputStream(downloadfilename), blisten);
-        if (downloadfile.length()!=getSize())
-            error =_("Size of file {0} does not match. Reported {1}, required {2}", downloadfilename, downloadfile.length(), getSize());
+                    new FileOutputStream(downloadfilename), watcher);
+            if (downloadfile.length() != getSize())
+                error = _("Size of file {0} does not match. Reported {1}, required {2}", downloadfilename, downloadfile.length(), getSize());
         } catch (IOException ex) {
             error = ex.getMessage();
         }
         /* Successfully downloaded file */
         if (error == null) {
-            if (application != null)
-                application.receiveMessage(_("File {0} sucessfully downloaded", downloadfile.getPath()));
+            application.receiveMessage(_("File {0} sucessfully downloaded", downloadfile.getPath()));
             return null;
         }
         /* Error while downloading */
         msg = _("Unable to download file {0}", getFileName());
-        if (application != null)
-            application.receiveMessage(msg + " - " + error);
+        application.receiveMessage(msg + " - " + error);
         return msg;
     }
 
@@ -111,10 +107,11 @@ public class FileAdd extends FileElement {
         String status = compression.decompress(downloadfile, getFileName());
         if (status == null) {
             if (!compression.getFilenameExtension().equals("")) {
-                if (!downloadfile.delete())
+                if (!downloadfile.delete()) {
                     application.receiveMessage(_("Unable to delete downloaded file {0}", downloadfile.getPath()));
-                else
+                } else {
                     application.receiveMessage(_("Successfully deleted downloaded file {0}", downloadfile.getPath()));
+                }
             }
             return null;
         }
@@ -124,16 +121,18 @@ public class FileAdd extends FileElement {
 
     public void cancel(UpdatedApplication application) {
         File del = new File(getDestinationFile() + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
-        if (!del.delete())
+        if (!del.delete()) {
             application.receiveMessage(_("Unable to delete downloaded file {0}", del.getPath()));
-        else
+        } else {
             application.receiveMessage(_("Successfully deleted downloaded file {0}", del.getPath()));
+        }
 
         File depfile = new File(getDestinationFile() + JupidatorDeployer.EXTENSION);
-        if (!JupidatorDeployer.rmTree(depfile))
+        if (!JupidatorDeployer.rmTree(depfile)) {
             application.receiveMessage(_("Unable to delete file {0}", depfile));
-        else
+        } else {
             application.receiveMessage(_("Successfully deleted file {0}", depfile));
+        }
     }
 
     public FileElement updateSystemVariables() {

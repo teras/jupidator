@@ -87,7 +87,7 @@
 
 <target name="doc" depends="dtddoc">
 	<mkdir dir="dist/doc"/>
-	<exec dir="dist/doc" executable="docbook2html" failonerror="true">
+	<exec dir="dist/doc" executable="docbook2html" failonerror="false">
 		<arg line="../../src/doc/Documentation.xml"/>
 	</exec>
 </target>

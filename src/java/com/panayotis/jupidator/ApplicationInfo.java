@@ -68,7 +68,7 @@ public class ApplicationInfo {
         return distributionBased;
     }
 
-    String getUpdaterConfigFile() {
+    public String getUpdaterConfigFile() {
         return vars.get("APPSUPPORTDIR") + "updater.xml";
     }
 

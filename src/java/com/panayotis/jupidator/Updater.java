@@ -8,7 +8,10 @@ import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.ChangelogFrame;
+import com.panayotis.jupidator.gui.JupidatorGUI;
+import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.list.Arch;
+import com.panayotis.jupidator.list.SimpleUpdatedApplication;
 import com.panayotis.jupidator.list.Version;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -20,7 +23,8 @@ import javax.swing.JOptionPane;
 public class Updater {
 
     private Version vers;
-    private ChangelogFrame frame;
+    private JupidatorGUI gui;
+    private UpdateWatcher watcher;
     private UpdatedApplication application;
     private ApplicationInfo appinfo;
     private Thread download;
@@ -28,15 +32,18 @@ public class Updater {
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         this.appinfo = appinfo;
         vers = Version.loadVersion(xmlurl, appinfo);
+        if (application == null)
+            application = new SimpleUpdatedApplication();
         this.application = application;
+        watcher = new UpdateWatcher();
     }
 
     public void actionDisplay() throws UpdaterException {
         if (vers.size() > 0) {
-            frame = new ChangelogFrame(this);
-            frame.setInformation(vers.getAppElements(), appinfo);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            gui = new ChangelogFrame(this);
+            watcher.setCallBack(gui);
+            gui.setInformation(vers.getAppElements(), appinfo);
+            gui.startDialog();
         }
     }
 
@@ -45,38 +52,41 @@ public class Updater {
         for (String key : vers.keySet()) {
             size += vers.get(key).getSize();
         }
-        frame.setAllBytes(size);
+        watcher.setAllBytes(size);
         download = new Thread() {
 
             public void run() {
                 /* Download */
                 for (String key : vers.keySet()) {
-                    String result = vers.get(key).updateSystemVariables().fetch(application, frame); // Lazy update of arguments
+                    String result = vers.get(key).updateSystemVariables().fetch(application, watcher); // Lazy update of arguments
                     if (result != null) {
-                        frame.errorOnCommit(result);
+                        watcher.stopWatcher();
+                        gui.errorOnCommit(result);
                         return;
                     }
                 }
                 /* Deploy */
-                frame.setIndetermined();
+                gui.setIndetermined();
                 for (String key : vers.keySet()) {
                     String result = vers.get(key).deploy(application);
                     if (result != null) {
-                        frame.errorOnCommit(result);
+                        watcher.stopWatcher();
+                        gui.errorOnCommit(result);
                         return;
                     }
                 }
-                frame.successOnCommit();
+                watcher.stopWatcher();
+                gui.successOnCommit();
             }
         };
         download.start();
-        frame.startDownloadTimer();
+        watcher.startWatcher();
     }
 
     public void actionCancel() {
+        watcher.stopWatcher();
         download.interrupt();
-        frame.setVisible(false);
-        frame.dispose();
+        gui.endDialog();
         try {
             download.join();
         } catch (InterruptedException ex) {
@@ -88,21 +98,20 @@ public class Updater {
 
     /* Do nothing - wait for next cycle */
     public void actionDefer() {
-        frame.setVisible(false);
-        frame.dispose();
+        watcher.stopWatcher();
         vers.getUpdaterProperties().defer();
     }
 
     public void actionIgnore() {
-        frame.setVisible(false);
-        frame.dispose();
+        watcher.stopWatcher();
+        gui.endDialog();
         vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
     }
 
     public void actionRestart() {
-        frame.setVisible(false);
-        frame.dispose();
-        if (application == null || application.requestRestart()) {
+        watcher.stopWatcher();
+        gui.endDialog();
+        if (application.requestRestart()) {
             String classname = "com.panayotis.jupidator.deployer.JupidatorDeployer";
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
@@ -132,7 +141,7 @@ public class Updater {
 
             try {
                 StringBuffer buf = new StringBuffer();
-                for(int i = 0 ; i < args.length ; i++)
+                for (int i = 0; i < args.length; i++)
                     buf.append(args[i]).append(' ');
                 application.receiveMessage(_("Executing {0}", buf.toString()));
                 Runtime.getRuntime().exec(args);

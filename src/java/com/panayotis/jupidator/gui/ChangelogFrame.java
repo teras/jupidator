@@ -17,8 +17,6 @@ import java.awt.Frame;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Formatter;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
@@ -26,14 +24,9 @@ import javax.swing.JDialog;
  *
  * @author  teras
  */
-public class ChangelogFrame extends JDialog implements BufferListener {
+public class ChangelogFrame extends JDialog implements JupidatorGUI {
 
     private Updater callback;
-    
-    private long bytes;
-    private long lastbytes;
-    private long allbytes;
-    private Timer timer;
 
     /** Creates new form ChangelogFrame */
     public ChangelogFrame(Updater callback) {
@@ -43,12 +36,6 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         LaterB.requestFocus();
     }
 
-    public void setIndetermined() {
-        ActionB.setEnabled(false);
-        PBar.setIndeterminate(true);
-        InfoL.setText(_("Deploying files..."));
-    }
-    
     public void setInformation(UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         NewVerL.setText(_("A new version of {0} is available!", el.getAppName()));
         VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion()));
@@ -66,15 +53,29 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         }
     }
 
+    public void startDialog() {
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void endDialog() {
+        setVisible(false);
+        dispose();
+    }
+
+    public void setIndetermined() {
+        ActionB.setEnabled(false);
+        PBar.setIndeterminate(true);
+        InfoL.setText(_("Deploying files..."));
+    }
+
     public void errorOnCommit(String message) {
-        stopDownloadTimer();
         setInfoArea(message);
         InfoL.setForeground(Color.RED);
         ProgressP.revalidate();
     }
 
     public void successOnCommit() {
-        stopDownloadTimer();
         setInfoArea(_("Successfully downloaded updates"));
         ActionB.setText(_("Restart application"));
         ActionB.setActionCommand("restart");
@@ -104,35 +105,10 @@ public class ChangelogFrame extends JDialog implements BufferListener {
             formatter.format("%2.1fGb/sec", bytes / 1e9);
         }
         String ratio = sb.toString().trim();
-        PBar.setToolTipText("Download speed: "+ratio);
+        PBar.setToolTipText("Download speed: " + ratio);
         PBar.setString(ratio);
     }
 
-    public void addBytes(long bytes) {
-        this.bytes += bytes;
-    }
-
-    public void setAllBytes(long bytes) {
-        allbytes = bytes;
-    }
-
-    public void startDownloadTimer() {
-        stopDownloadTimer();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                long diffbytes = bytes - lastbytes;
-                lastbytes = bytes;
-                setDownloadRatio(diffbytes, ((float)lastbytes) / allbytes);
-            }
-        }, 0, 1000);
-    }
-
-    private void stopDownloadTimer() {
-        if (timer!=null)
-            timer.cancel();
-    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -157,6 +133,7 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         NewVerL = new javax.swing.JLabel();
         VersInfoL = new javax.swing.JLabel();
         NotesL = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         IconL = new javax.swing.JLabel();
         CommandP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -218,6 +195,13 @@ public class ChangelogFrame extends JDialog implements BufferListener {
         NotesL.setText(_("Release Notes"));
         NotesL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 4, 0));
         jPanel5.add(NotesL, java.awt.BorderLayout.SOUTH);
+
+        jButton1.setText("<i>");
+        jButton1.setBorderPainted(false);
+        jButton1.setMaximumSize(new java.awt.Dimension(16, 16));
+        jButton1.setMinimumSize(new java.awt.Dimension(16, 16));
+        jButton1.setPreferredSize(new java.awt.Dimension(16, 16));
+        jPanel5.add(jButton1, java.awt.BorderLayout.EAST);
 
         jPanel6.add(jPanel5, java.awt.BorderLayout.PAGE_START);
 
@@ -288,7 +272,6 @@ private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionBActionPerformed
     ActionB.setEnabled(false);
-    stopDownloadTimer();
     if (ActionB.getActionCommand().startsWith("c"))
         callback.actionCancel();
     else
@@ -311,6 +294,7 @@ private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JButton SkipB;
     private javax.swing.JButton UpdateB;
     private javax.swing.JLabel VersInfoL;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
