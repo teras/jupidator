@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Formatter;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -31,14 +30,15 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
     private Updater callback;
 
     /** Creates new form SwingGUI */
-    public SwingGUI(Updater callback) {
+    public SwingGUI() {
         super((Frame) null, false);
         initComponents();
-        this.callback = callback;
         LaterB.requestFocus();
     }
 
-    public void setInformation(UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
+    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
+        this.callback = callback;
+
         NewVerL.setText(_("A new version of {0} is available!", el.getAppName()));
         VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion()));
         setTitle(_("New version of {0} found!", el.getAppName()));
@@ -92,21 +92,8 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         InfoL.setText(message);
     }
 
-    public void setDownloadRatio(long bytes, float percent) {
+    public void setDownloadRatio(String ratio, float percent) {
         PBar.setValue(Math.round(percent * 100));
-
-        StringBuilder sb = new StringBuilder();
-        Formatter formatter = new Formatter(sb);
-        if (bytes < 1e3) {
-            formatter.format("%db/sec", bytes);
-        } else if (bytes < 1e6) {
-            formatter.format("%2.1fKb/sec", bytes / 1e3);
-        } else if (bytes < 1e9) {
-            formatter.format("%2.1fMb/sec", bytes / 1e6);
-        } else if (bytes < 1e12) {
-            formatter.format("%2.1fGb/sec", bytes / 1e9);
-        }
-        String ratio = sb.toString().trim();
         PBar.setToolTipText("Download speed: " + ratio);
         PBar.setString(ratio);
     }

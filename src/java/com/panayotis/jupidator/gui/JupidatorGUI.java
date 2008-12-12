@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.gui;
 
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.list.UpdaterAppElements;
 
@@ -14,7 +15,7 @@ import com.panayotis.jupidator.list.UpdaterAppElements;
  */
 public interface JupidatorGUI {
 
-    public void setInformation(UpdaterAppElements appElements, ApplicationInfo appinfo) throws UpdaterException;
+    public void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo) throws UpdaterException;
 
     public void startDialog();
     public void endDialog();
@@ -22,6 +23,6 @@ public interface JupidatorGUI {
     public void errorOnCommit(String message);
     public void successOnCommit();
 
-    public void setDownloadRatio(long bytes, float percent);
+    public void setDownloadRatio(String ratio, float percent);
     public void setIndetermined();
 }
