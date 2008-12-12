@@ -36,7 +36,7 @@ public class ConsoleGUI implements JupidatorGUI {
             in = new BufferedReader(new InputStreamReader(System.in));
             System.out.println(info1);
             System.out.println(info2);
-            System.out.print("Do you want to (S)kip this version, (R)emind later or (I)nstall? [SRI] ");
+            System.out.print(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [SRI] "));
             int data;
             while ((data = in.read()) != -1) {
                 if (data == 'S' || data == 's') {
@@ -73,7 +73,7 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void successOnCommit() {
-        System.out.println("Upgrade successfull");
+        System.out.println(_("Upgrade successfull"));
     }
 
     public void setDownloadRatio(String ratio, float percent) {
@@ -81,6 +81,6 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void setIndetermined() {
-        System.out.println("Please wait...");
+        System.out.println(_("Please wait..."));
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatelist application="Jupidator" baseurl="http://www.jubler.org/files" icon="icons/jubler.png">
+    <version release="" version="0.2.0">
+        <description>Support console as a valid GUI in headless environments.</description>
+    </version>
+
+    <version release="50" version="0.1.0">
+        <description>Initial Jupidator release</description>
+    </version>
+</updatelist>
