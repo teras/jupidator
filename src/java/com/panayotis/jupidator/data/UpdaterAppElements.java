@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.list;
+package com.panayotis.jupidator.data;
+
+import com.panayotis.jupidator.loglist.LogItem;
+import com.panayotis.jupidator.loglist.LogList;
 
 /**
  *
@@ -17,7 +20,7 @@ public class UpdaterAppElements {
     private int lastrelease = -1;   // Last known release, read from XML
     private String newversion = "0.0.0";
     private String lastversion = "0.0.0.0"; // Last known version, read from XML
-    private String HTML;
+    private LogList loglist = new LogList();
 
     public String getAppName() {
         return AppName;
@@ -36,8 +39,8 @@ public class UpdaterAppElements {
             this.AppName = AppName;
     }
 
-    public String getHTML() {
-        return HTML;
+    public LogList getLogList() {
+        return loglist;
     }
 
     public String getBaseURL() {
@@ -50,8 +53,8 @@ public class UpdaterAppElements {
         baseURL = base + "/";
     }
 
-    void setHTML(String HTML) {
-        this.HTML = HTML;
+    void addLogItem(String version, String information) {
+        loglist.add(new LogItem(version, information));
     }
 
     public String getIconpath() {

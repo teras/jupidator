@@ -9,11 +9,12 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
-import com.panayotis.jupidator.list.Arch;
+import com.panayotis.jupidator.data.Arch;
 import com.panayotis.jupidator.applications.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
-import com.panayotis.jupidator.list.Version;
+import com.panayotis.jupidator.loglist.creators.HTMLCreator;
+import com.panayotis.jupidator.data.Version;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -46,6 +47,7 @@ public class Updater {
                 gui = new ConsoleGUI();
             else
                 gui = new SwingGUI();
+                gui.setProperty("about", "enable");
             watcher.setCallBack(gui);
             gui.setInformation(this, vers.getAppElements(), appinfo);
             gui.startDialog();
@@ -159,6 +161,6 @@ public class Updater {
     }
 
     public String getChangeLog() {
-        return vers.getAppElements().getHTML();
+        return HTMLCreator.getList(vers.getAppElements().getLogList());
     }
 }

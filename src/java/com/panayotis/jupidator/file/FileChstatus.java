@@ -5,7 +5,8 @@
 package com.panayotis.jupidator.file;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.list.UpdaterAppElements;
+import com.panayotis.jupidator.data.TextUtils;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 
 /**
  *
@@ -22,7 +23,7 @@ public class FileChstatus extends FileNativeExec {
             this.attr = attr;
         if (recursive != null && (!recursive.equals(""))) {
             recursive = recursive.toLowerCase();
-            this.recursive = "true".startsWith(recursive) || "yes".startsWith(recursive) || "on".equals(recursive) || recursive.equals("1");
+            this.recursive = TextUtils.isTrue(recursive);
         }
     }
 

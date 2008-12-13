@@ -7,7 +7,7 @@ package com.panayotis.jupidator.file;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.file.compression.CompressionMethod;
-import com.panayotis.jupidator.list.*;
+import com.panayotis.jupidator.data.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.deployer.JupidatorDeployer;

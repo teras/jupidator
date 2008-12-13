@@ -11,7 +11,9 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.list.UpdaterAppElements;
+import com.panayotis.jupidator.data.TextUtils;
+import com.panayotis.jupidator.loglist.creators.HTMLCreator;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
@@ -44,7 +46,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         setTitle(_("New version of {0} found!", el.getAppName()));
 
         InfoPane.setContentType("text/html");
-        InfoPane.setText(el.getHTML());
+        InfoPane.setText(HTMLCreator.getList(el.getLogList()));
 
         try {
             URL icon = new URL(el.getIconpath());
@@ -98,6 +100,11 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         PBar.setString(ratio);
     }
 
+    public void setProperty(String key, String value) {
+        if (key.toLowerCase().equals("about")) {
+            InfoB.setVisible(TextUtils.isTrue(value));
+        }
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.

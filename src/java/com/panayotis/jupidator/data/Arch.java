@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.list;
+package com.panayotis.jupidator.data;
 
 import java.util.ArrayList;
 

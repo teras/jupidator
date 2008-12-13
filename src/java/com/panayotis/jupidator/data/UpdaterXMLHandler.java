@@ -2,15 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.list;
+package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.file.FileAdd;
 import com.panayotis.jupidator.file.FileRm;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.file.FileChmod;
 import com.panayotis.jupidator.file.FileChown;
-import com.panayotis.jupidator.html.UpdaterHTMLCreator;
-import com.panayotis.jupidator.html.DefaultHTMLCreator;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -27,13 +25,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private Version current;    // The list of files for the current reading "version" object
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
-    private UpdaterHTMLCreator display; // Store version updated
     private ApplicationInfo appinfo;    // Remember information about the current running application
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
         ignore_version = false;
-        display = new DefaultHTMLCreator();
         this.appinfo = appinfo;
         arch = new Arch("any", "", ""); // Default arch is selected by default
     }
@@ -107,8 +103,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             return false;
         if (force != null) {
             force = force.toLowerCase().trim();
-            if (force.equals("true") || force.equals("yes") || force.equals("1") || force.equals("on"))
-                return false;
+            return !TextUtils.isTrue(force);
         }
         return true;
     }
@@ -126,14 +121,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("description")) {
             if (ignore_version)
                 return;
-            display.addInfo(elements.getLastVersion(), descbuffer.toString());
+            elements.addLogItem(elements.getLastVersion(), descbuffer.toString());
         }
     }
 
-    public void endDocument() {
-        elements.setHTML(display.getHTML());
-    }
-
+//    public void endDocument() {
+//    }
     public void characters(char[] ch, int start, int length) {
         if (ignore_version)
             return;

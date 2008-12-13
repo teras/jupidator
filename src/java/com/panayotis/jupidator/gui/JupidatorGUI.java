@@ -7,7 +7,7 @@ package com.panayotis.jupidator.gui;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.list.UpdaterAppElements;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 
 /**
  *
@@ -25,4 +25,6 @@ public interface JupidatorGUI {
 
     public void setDownloadRatio(String ratio, float percent);
     public void setIndetermined();
+
+    public void setProperty(String key, String value);
 }

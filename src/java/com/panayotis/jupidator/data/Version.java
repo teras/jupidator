@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.list;
+package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.file.FileElement;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.list.UpdaterProperties;
+import com.panayotis.jupidator.data.UpdaterProperties;
 import com.panayotis.jupidator.file.ExecutionTime;
 import java.io.IOException;
 import java.util.LinkedHashMap;

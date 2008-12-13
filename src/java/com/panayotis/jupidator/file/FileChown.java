@@ -5,7 +5,7 @@
 package com.panayotis.jupidator.file;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.list.UpdaterAppElements;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 
 /**
  *
