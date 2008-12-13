@@ -39,15 +39,14 @@ public class ConsoleGUI implements JupidatorGUI {
     public void startDialog() {
         System.out.println(info1);
         System.out.println(info2);
-        if (is_loglist_enabled) {
+        if (is_loglist_enabled && getAnswer(_("Do you want to see the detailed changelog? [Y/n]"), "n") != 'n') {
             System.out.println();
             System.out.println(loglist);
         }
         boolean valid = false;
         while (!valid) {
-            System.out.print(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [SRI] "));
             valid = true;   // Be optimistic, will handle this in default section
-            switch (getAnswer("sri")) {
+            switch (getAnswer(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] "), "sri")) {
                 case 's':
                     callback.actionIgnore();
                     break;
@@ -58,6 +57,7 @@ public class ConsoleGUI implements JupidatorGUI {
                     callback.actionCommit();
                     break;
                 default:
+                    System.out.println(_("Wrong answer."));
                     valid = false;
             }
         }
@@ -90,10 +90,11 @@ public class ConsoleGUI implements JupidatorGUI {
         }
     }
 
-    private char getAnswer(String list) {
+    private char getAnswer(String message, String list) {
         try {
             if (sysin == null)
                 return 0;
+            System.out.print(message);
             String input = sysin.readLine();
             if (input == null || list == null)
                 return 0;
