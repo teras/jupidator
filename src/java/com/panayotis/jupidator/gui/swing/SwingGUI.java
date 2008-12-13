@@ -21,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -285,8 +284,7 @@ private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_ActionBActionPerformed
 
 private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoBActionPerformed
-    String msg = "Jupidator is open source, under the LGPL\nMore info: http://www.jupidator.org";
-    JOptionPane.showMessageDialog(this, msg, _("About Jupidator"), JOptionPane.INFORMATION_MESSAGE);
+    new AboutDialog(this).setVisible(true);
 }//GEN-LAST:event_InfoBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -45,7 +45,7 @@ public class ConsoleGUI implements JupidatorGUI {
         }
         boolean valid = false;
         while (!valid) {
-            valid = true;   // Be optimistic, will handle this in default section
+            valid = true;   // Be optimistic; will handle this in default section
             switch (getAnswer(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] "), "sri")) {
                 case 's':
                     callback.actionIgnore();

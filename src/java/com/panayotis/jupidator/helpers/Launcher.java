@@ -48,7 +48,7 @@ public class Launcher {
 
         try {
             Updater upd = new Updater(URL, ap, null);
-            upd.setGUI(new ConsoleGUI());
+//            upd.setGUI(new ConsoleGUI());
 //            upd.getGUI().setProperty("about", "disabled");
 //            upd.getGUI().setProperty("loglist", "disabled");
             upd.actionDisplay();
