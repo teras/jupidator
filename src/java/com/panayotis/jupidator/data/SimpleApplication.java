@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.jupidator.applications;
+package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.UpdatedApplication;
 

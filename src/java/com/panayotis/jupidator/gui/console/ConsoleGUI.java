@@ -26,6 +26,7 @@ public class ConsoleGUI implements JupidatorGUI {
     private String info1,  info2,  loglist;
     private Updater callback;
     private boolean is_loglist_enabled = true;
+    private BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         info1 = _("A new version of {0} is available!", el.getAppName());
@@ -36,41 +37,30 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void startDialog() {
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println(info1);
-            System.out.println(info2);
-            if (is_loglist_enabled) {
-                System.out.println();
-                System.out.println(loglist);
-            }
+        System.out.println(info1);
+        System.out.println(info2);
+        if (is_loglist_enabled) {
+            System.out.println();
+            System.out.println(loglist);
+        }
+        boolean valid = false;
+        while (!valid) {
             System.out.print(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [SRI] "));
-            int data;
-            while ((data = in.read()) != -1) {
-                if (data == 'S' || data == 's') {
+            valid = true;   // Be optimistic, will handle this in default section
+            switch (getAnswer("sri")) {
+                case 's':
                     callback.actionIgnore();
                     break;
-                }
-                if (data == 'R' || data == 'r') {
+                case 'r':
                     callback.actionDefer();
                     break;
-                }
-                if (data == 'I' || data == 'i') {
+                case 'i':
                     callback.actionCommit();
                     break;
-                }
-            }
-
-        } catch (IOException ex) {
-        } finally {
-            try {
-                if (in != null)
-                    in.close();
-            } catch (IOException ex1) {
+                default:
+                    valid = false;
             }
         }
-
     }
 
     public void endDialog() {
@@ -98,5 +88,26 @@ public class ConsoleGUI implements JupidatorGUI {
         if (key.toLowerCase().equals("loglist")) {
             is_loglist_enabled = TextUtils.isTrue(value);
         }
+    }
+
+    private char getAnswer(String list) {
+        try {
+            if (sysin == null)
+                return 0;
+            String input = sysin.readLine();
+            if (input == null || list == null)
+                return 0;
+
+            input = input.toLowerCase().trim();
+            list = list.toLowerCase();
+            if (list.length() == 0 || input.length() == 0)
+                return 0;
+            for (int i = 0; i < list.length(); i++) {
+                if (input.charAt(0) == list.charAt(i))
+                    return input.charAt(0);
+            }
+        } catch (IOException ex) {
+        }
+        return 0;
     }
 }

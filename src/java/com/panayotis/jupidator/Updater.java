@@ -10,7 +10,7 @@ import com.panayotis.jupidator.file.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.data.Arch;
-import com.panayotis.jupidator.applications.SimpleApplication;
+import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
