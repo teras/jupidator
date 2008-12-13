@@ -41,13 +41,28 @@ public class Updater {
         watcher = new UpdateWatcher();
     }
 
-    public void actionDisplay() throws UpdaterException {
-        if (vers.size() > 0) {
+    /** Return JupidatorGUI, and create it if it does not exist.
+     *  This is the official method to create the default GUI
+     *  GUI is created lazily, when needed
+     */
+    public JupidatorGUI getGUI() {
+        if (gui == null) {
             if (GraphicsEnvironment.isHeadless())
                 gui = new ConsoleGUI();
             else
                 gui = new SwingGUI();
-                gui.setProperty("about", "enable");
+        }
+        return gui;
+    }
+
+    public void setGUI(JupidatorGUI gui) {
+        if (gui != null)
+            this.gui = gui;
+    }
+
+    public void actionDisplay() throws UpdaterException {
+        if (vers.size() > 0) {
+            getGUI();  /* GUI is created lazily, when needed */
             watcher.setCallBack(gui);
             gui.setInformation(this, vers.getAppElements(), appinfo);
             gui.startDialog();

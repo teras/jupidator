@@ -45,7 +45,7 @@
 
 <para>Jupidator is using a incremental updating mechanism. In any new version the developer needs to provide <emphasis>only</emphasis> the changed files, and <emphasis>not</emphasis> the whole distribution. The updating mechanism parses all versions newer than the currently running and cleverly downloads the latest version of every part, even if parts are brought in <emphasis>various</emphasis> versions. Even if a file exists in one version, then gets deleted in a future distribution and then appears again, the file will be downloaded if nessesary.</para>
 
-<para>The updating scheme can be used in two contexts: with operating systems that support updating of the main application and with operating systems that the applications should be take care of themselves for updating. The first system is for example Debian, while the second is Windows. The first type of operating systems needs only to update parts like plugins of the application, and not the application core itself, while the other type requires all files to be updated. This difference is taken into account when using Jupidator updater.</para>
+<para id="distributionbased">The updating scheme can be used in two contexts: with operating systems that support updating of the main application and with operating systems that the applications should be take care of themselves for updating. The first system is for example Debian, while the second is Windows. The first type of operating systems needs only to update parts like plugins of the application, and not the application core itself, while the other type requires all files to be updated. This difference is taken into account when using Jupidator updater.</para>
 
 </sect1>
 
@@ -172,8 +172,12 @@ public class MyAppUpdate implements UpdatedApplication {
 </sect1>
 
 <sect1>
-<title>Variables</title>
+<title>Customization and properties</title>
 
+<para>This section is about various properties that can be used inside the XML file, as well as some configuration options, which will override the defaults.</para>
+
+<sect2>
+<title>Variables</title>
 <para>Jupidator supports variables inside the various URLs and filenames. This is a list of predefined variables:</para>
 <itemizedlist>
 	<listitem><para><varname>APPHOME</varname></para><para>Home directory of the application, as given to the <link linkend="apphome">runtime environment</link></para></listitem>
@@ -185,8 +189,40 @@ public class MyAppUpdate implements UpdatedApplication {
 	<listitem><para>Any environmental variable, i.e. <varname>${UID}</varname></para></listitem>
 </itemizedlist>
 
+<para>The developer can define it's own variables and use them inside the XML file. New variables are stored inside the <varname>com.panayotis.jupidator.ApplicationInfo</varname> object, by calling the method <varname>setProperty(String name, String value)</varname></para>
+
 <para>In order to use these variables, should be enclosed in curly brackets and prepended with a dollar sign. For example, to define a directory inside application support directory, with the username in the path, the following expression should be written:</para>
 <para><varname>${APPSUPPORT}${file.separator}${user.name}${file.separator}myfile.txt</varname></para>
+</sect2>
+
+<sect2>
+<title>GUI properties</title>
+<para>The supported Jupidator GUIs might understand some properties, which will fine-tune the apperance of the information. To set these properties the developer has to call the method <varname>setProperty(String key, String value)</varname> in the GUI class.</para>
+<para>To receive the reference of the current (default) GUI, the method <varname>getGUI()</varname> of <varname>com.panayotis.jupidator.Updater</varname> should be called. The developer can of course change the default Jupidator GUI, by calling the <varname>setGUI()</varname> method of the same object</para>
+<para>These properties are case insensitive. If the values are boolean, then the words "enable" "true" "yes" "on" and "1" can be used to enable this feature; all other words are used to disable the feature.</para>
+
+<sect3>
+<title>SwingGUI</title>
+<itemizedlist>
+	<listitem><para><varname>About</varname>: enable/disable the about button.</para></listitem>
+</itemizedlist>
+</sect3>
+
+<sect3>
+<title>ConsoleGUI</title>
+<itemizedlist>
+	<listitem><para><varname>LogList</varname>: enable/disable display of full changelog list.</para></listitem>
+</itemizedlist>
+</sect3>
+
+</sect2>
+
+<sect2>
+<title>Special properties</title>
+<para>There is one special property which can be used with Jupidator - whether the desired update method is distributio based or not. If, in other words, the operating system itself takes care of the main update process of the application. This feature has been described <link linkend="distributionbased">here</link>.</para>
+<para>To turn on this feature, the developer has to call method <varname>setDistributionBased(true)</varname> in <varname>com.panayotis.jupidator.ApplicationInfo</varname> object.</para>
+</sect2>
+
 </sect1>
 
 <sect1>

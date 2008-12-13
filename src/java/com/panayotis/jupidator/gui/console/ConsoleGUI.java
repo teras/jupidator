@@ -95,7 +95,7 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void setProperty(String key, String value) {
-        if (key.toLowerCase().equals("listlog")) {
+        if (key.toLowerCase().equals("loglist")) {
             is_loglist_enabled = TextUtils.isTrue(value);
         }
     }
