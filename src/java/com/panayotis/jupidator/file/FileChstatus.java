@@ -21,10 +21,7 @@ public class FileChstatus extends FileNativeExec {
         super(command, file, elements, info);
         if (attr != null)
             this.attr = attr;
-        if (recursive != null && (!recursive.equals(""))) {
-            recursive = recursive.toLowerCase();
-            this.recursive = TextUtils.isTrue(recursive);
-        }
+        this.recursive = TextUtils.isTrue(recursive);
     }
 
     protected String[] getExecArguments() {

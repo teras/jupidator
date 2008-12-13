@@ -38,7 +38,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        CloseB = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -58,13 +58,13 @@ public class AboutDialog extends javax.swing.JDialog {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText(_("Thank you"));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        CloseB.setText(_("Thank you"));
+        CloseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                CloseBActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, java.awt.BorderLayout.EAST);
+        jPanel1.add(CloseB, java.awt.BorderLayout.EAST);
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
@@ -98,14 +98,14 @@ public class AboutDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void CloseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseBActionPerformed
         setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_CloseBActionPerformed
 
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton CloseB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
