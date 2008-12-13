@@ -13,11 +13,32 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public abstract class FileNativeExec extends FileElement {
+public abstract class FileNative extends FileElement {
 
+    private static final boolean isWindows,  isLinux,  isMac;
     private String command = "";
+    
 
-    public FileNativeExec(String command, String file, UpdaterAppElements elements, ApplicationInfo info) {
+    static {
+        String OS = System.getProperty("os.name").toLowerCase();
+        isWindows = OS.startsWith("windows");
+        isMac = OS.startsWith("mac");
+        isLinux = OS.startsWith("linux");
+    }
+
+    protected final static boolean isWindows() {
+        return isWindows;
+    }
+
+    protected final static boolean isMac() {
+        return isMac;
+    }
+
+    protected final static boolean isLinux() {
+        return isLinux;
+    }
+
+    public FileNative(String command, String file, UpdaterAppElements elements, ApplicationInfo info) {
         super(file, elements, info, ExecutionTime.AFTER);
         if (command != null)
             this.command = command;
@@ -35,7 +56,6 @@ public abstract class FileNativeExec extends FileElement {
     public void cancel(UpdatedApplication application) {
     }
 
-    /* No arguments here - execution has been done on deploy time */
     public String getArgument() {
         String[] args = getExecArguments();
         StringBuffer b = new StringBuffer();

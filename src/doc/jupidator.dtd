@@ -79,9 +79,9 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!--
     Architecture dependent actions. For every architecture, as defined as tag with the architect element, a set of actions are defined. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this architecture can be skipped.
 -->
-<!ELEMENT arch (file|rm|chmod|chown)*>
+<!ELEMENT arch (file|rm|chmod|chown|exec)*>
 <!--
-    @attr name The name of this architevture, as defines with the architect element above.
+    @attr name The name of this architecture, as defines with the architect element above.
 -->
 <!ATTLIST arch
     name CDATA #REQUIRED
@@ -122,7 +122,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
   >
 
 <!--
-
+    Change permissions of a local file. This element is useful only in unix-like operating systems.
 -->
 <!ELEMENT chmod EMPTY>
 <!--
@@ -139,7 +139,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
   >
 
 <!--
-    Change permissions of a local file. This element is useful only in unix-like operating systems.
+    Change owner of a local file. This element is useful only in unix-like operating systems.
 -->
 <!ELEMENT chown EMPTY>
 <!--
@@ -152,5 +152,19 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     file CDATA #REQUIRED
     attr CDATA #REQUIRED
     recursive CDATA "false"
+  >
+
+<!--
+    Execute a native command
+-->
+<!ELEMENT exec (argument*)>
+<!--
+    @attr executable The filename of the executable
+    @attr the input of this command, if needed by the application
+    @attr forceinstall If enabled, the command is executed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
+-->
+<!ATTLIST exec
+    executable CDATA #REQUIRED
+    input CDATA ""
     forceinstall CDATA "false"
   >

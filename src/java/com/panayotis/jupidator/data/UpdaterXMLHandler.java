@@ -9,6 +9,7 @@ import com.panayotis.jupidator.file.FileRm;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.file.FileChmod;
 import com.panayotis.jupidator.file.FileChown;
+import com.panayotis.jupidator.file.FileExec;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -26,6 +27,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
+    private FileExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
@@ -42,7 +44,10 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("launcher")) {
             lastarch.setExec(attr.getValue("exec"));
         } else if (qName.equals("argument")) {
-            lastarch.addArgument(attr.getValue("value"));
+            if (lastSeenExecElement == null)
+                lastarch.addArgument(attr.getValue("value"));
+            else
+                lastSeenExecElement.addArgument(attr.getValue("value"));
         } else if (qName.equals("version")) {
             int release_last = 0;
             try {
@@ -84,6 +89,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
             FileChown f = new FileChown(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo);
             current.put(f.getHash(), f);
+        } else if (qName.equals("exec")) {
+            if (shouldIgnore(attr.getValue("forceinstall")))
+                return;
+            lastSeenExecElement = new FileExec(attr.getValue("executable"), elements, appinfo);
+            current.put(lastSeenExecElement.getHash(), lastSeenExecElement);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));
@@ -122,6 +132,8 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (ignore_version)
                 return;
             elements.addLogItem(elements.getLastVersion(), descbuffer.toString());
+        } else if (qName.equals("exec")) {
+            lastSeenExecElement = null; // Forget it, we don't need it any more
         }
     }
 

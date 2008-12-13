@@ -12,7 +12,7 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public class FileChstatus extends FileNativeExec {
+public class FileChstatus extends FileNative {
 
     private String attr = "";
     private boolean recursive = false;
@@ -25,6 +25,9 @@ public class FileChstatus extends FileNativeExec {
     }
 
     protected String[] getExecArguments() {
+        if (isWindows())
+            return new String[] {""};
+        
         String res[] = new String[recursive ? 3 : 2];
         int which = 0;
         if (recursive)
