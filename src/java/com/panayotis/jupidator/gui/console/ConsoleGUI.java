@@ -39,7 +39,7 @@ public class ConsoleGUI implements JupidatorGUI {
     public void startDialog() {
         System.out.println(info1);
         System.out.println(info2);
-        if (is_loglist_enabled && getAnswer(_("Do you want to see the detailed changelog? [Y/n]"), "n") != 'n') {
+        if (is_loglist_enabled && getAnswer(_("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
             System.out.println();
             System.out.println(loglist);
         }
@@ -65,6 +65,7 @@ public class ConsoleGUI implements JupidatorGUI {
 
     public void endDialog() {
         System.out.println(_("Thank you for using Jupidator  (http://www.jupidator.com)"));
+        System.out.println();
     }
 
     public void errorOnCommit(String message) {
@@ -73,6 +74,7 @@ public class ConsoleGUI implements JupidatorGUI {
 
     public void successOnCommit() {
         System.out.println(_("Downloading successfull"));
+        getAnswer(_("Press [RETURN] to restart the application "), null);
         callback.actionRestart();
     }
 
