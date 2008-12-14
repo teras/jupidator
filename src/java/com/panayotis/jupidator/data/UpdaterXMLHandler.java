@@ -45,9 +45,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             lastarch.setExec(attr.getValue("exec"));
         } else if (qName.equals("argument")) {
             if (lastSeenExecElement == null)
-                lastarch.addArgument(attr.getValue("value"));
+                lastarch.addArgument(attr.getValue("value"), appinfo);
             else
-                lastSeenExecElement.addArgument(attr.getValue("value"));
+                lastSeenExecElement.addArgument(attr.getValue("value"), appinfo);
         } else if (qName.equals("version")) {
             int release_last = 0;
             try {
@@ -71,6 +71,8 @@ public class UpdaterXMLHandler extends DefaultHandler {
             FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"),
                     attr.getValue("destdir"), attr.getValue("size"),
                     attr.getValue("compress"), elements, appinfo);
+            if (TextUtils.isTrue(attr.getValue("ifexists")) && (!f.exists()))
+                return;
             current.put(f.getHash(), f);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))

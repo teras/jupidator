@@ -80,7 +80,7 @@ public class Updater {
             public void run() {
                 /* Download */
                 for (String key : vers.keySet()) {
-                    String result = vers.get(key).updateSystemVariables().fetch(application, watcher); // Lazy update of arguments
+                    String result = vers.get(key).fetch(application, watcher);
                     if (result != null) {
                         watcher.stopWatcher();
                         gui.errorOnCommit(result);
@@ -159,7 +159,7 @@ public class Updater {
             }
 
             for (int i = 0; i < arch.countArguments(); i++) {
-                args[counter++] = appinfo.updatePath(arch.getArgument(i));  // Lazy update of arguments
+                args[counter++] = arch.getArgument(i);
             }
 
             try {

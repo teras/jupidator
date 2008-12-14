@@ -21,8 +21,8 @@ public class FileExec extends FileNative {
         arguments = new ArrayList<String>();
     }
 
-    public void addArgument(String value) {
-        arguments.add(value);
+    public void addArgument(String value, ApplicationInfo appinfo) {
+        arguments.add(appinfo.updatePath(value));
     }
 
     protected String[] getExecArguments() {

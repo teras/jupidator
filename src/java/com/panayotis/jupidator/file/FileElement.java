@@ -40,9 +40,9 @@ public abstract class FileElement {
 
     public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         if (name != null)
-            this.filename = name;
+            this.filename = appinfo.updatePath(name);
         if (destdir != null)
-            this.destdir = dest;
+            this.destdir = appinfo.updatePath(dest);
         release = elements.getLastRelease();
 
         info = appinfo;
@@ -102,14 +102,4 @@ public abstract class FileElement {
     public abstract void cancel(UpdatedApplication application);
 
     public abstract String getArgument();
-
-    /**
-     *
-     * @return self
-     */
-    public FileElement updateSystemVariables() {
-        filename = info.updatePath(filename);
-        destdir = info.updatePath(destdir);
-        return this;
-    }
 }

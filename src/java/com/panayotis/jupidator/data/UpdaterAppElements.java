@@ -8,7 +8,7 @@ import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
 /**
- *
+ * This information is gathered for the library from the XML file
  * @author teras
  */
 public class UpdaterAppElements {

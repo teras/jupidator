@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updatelist application="Jupidator" baseurl="http://www.jubler.org/files" icon="icons/jubler.png">
     <version release="" version="0.2.0">
-        <description>Support console as a valid GUI in headless environments. About button in SwingGUI. Set properties in GUI elements. Improved documentation. Initial Czech translation.</description>
+        <description>Support console as a valid GUI in headless environments. "About" information in SwingGUI. Set properties in GUI elements. Improved documentation. Initial Czech translation. Support of "exec" element to execute native commands.</description>
     </version>
 
     <version release="50" version="0.1.0">

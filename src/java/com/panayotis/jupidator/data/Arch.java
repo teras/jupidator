@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.panayotis.jupidator.ApplicationInfo;
 import java.util.ArrayList;
 
 /**
@@ -41,8 +42,8 @@ public class Arch {
         this.exec = exec;
     }
 
-    void addArgument(String argument) {
-        arguments.add(argument);
+    void addArgument(String argument, ApplicationInfo appinfo) {
+        arguments.add(appinfo.updatePath(argument));
     }
 
     public int countArguments() {

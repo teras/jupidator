@@ -97,6 +97,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     @attr name The file name. The name of the file is the same in both the source URL and in the destination directory. If this file is compressed (see below) then the appropriate compression extension is added to the source file name.
     @attr size The size of the source file. It will be used to check if the downloaded file has correct size.
     @attr compress The source file is compressed in the server. The following methods can be used: gzip bzip2 zip.
+    @attr ifexists Download and install this file <i>only</i> if this file already exists. If it does not, then this file is ignored.
     @attr forceinstall This attribure is disabled (false) by default. With this default behaviour, if the selected runtime application is under an operating system that takes care of the update process by itself, this file is ignored. If it is enabled, then this file is used no matter what the operating system does. Enable this feature if you want to upgrade parts of the application that are not taken care by the operating system.
 -->
 <!ATTLIST file
@@ -105,6 +106,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     name CDATA #REQUIRED
     size CDATA #REQUIRED
     compress CDATA "none"
+    ifexists CDATA "false"
     forceinstall CDATA "false"
   >
 

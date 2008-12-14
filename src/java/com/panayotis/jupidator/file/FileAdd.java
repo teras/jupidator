@@ -35,7 +35,8 @@ public class FileAdd extends FileElement {
         super(name, dest, size, elements, info, ExecutionTime.MID);
         if (source == null)
             source = "";
-        this.source = elements.getBaseURL() + source;
+        this.source = info.updatePath(elements.getBaseURL() + source);
+        
         if (compress == null)
             compress = "none";
         compress = compress.toLowerCase();
@@ -47,6 +48,10 @@ public class FileAdd extends FileElement {
             compression = new GZipCompression();
         else
             compression = new NullCompression();
+    }
+
+    public boolean exists() {
+        return new File(getDestinationFile()).exists();
     }
 
     private String getSourceFile() {
@@ -133,11 +138,5 @@ public class FileAdd extends FileElement {
         } else {
             application.receiveMessage(_("Successfully deleted file {0}", depfile));
         }
-    }
-
-    public FileElement updateSystemVariables() {
-        super.updateSystemVariables();
-        source = info.updatePath(source);
-        return this;
     }
 }

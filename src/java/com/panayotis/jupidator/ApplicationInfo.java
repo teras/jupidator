@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * This information is given to the library from the runtime environment
  * @author teras
  */
 public class ApplicationInfo {
