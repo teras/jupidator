@@ -43,7 +43,10 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextPane1 = new javax.swing.JTextPane();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setAlwaysOnTop(true);
         setUndecorated(true);
@@ -69,7 +72,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel2.add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        jPanel3.setLayout(new java.awt.BorderLayout(0, 8));
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
@@ -82,11 +85,18 @@ public class AboutDialog extends javax.swing.JDialog {
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
-        jTextPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 8, 0));
-        jTextPane1.setEditable(false);
-        jTextPane1.setText(_("Jupidator is a library for automatic updating of applications.\nIs is open source under the LGPL licence.\nMore info can be found in: http://jupidator.sourceforge.net"));
-        jPanel3.add(jTextPane1, java.awt.BorderLayout.CENTER);
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel4.setText(_("Jupidator is a library for automatic updating of applications."));
+        jPanel5.add(jLabel4);
+
+        jLabel5.setText(_("It is open source under the LGPL licence."));
+        jPanel5.add(jLabel5);
+
+        jLabel6.setText(_("More info can be found in: http://jupidator.sourceforge.net"));
+        jPanel5.add(jLabel6);
+
+        jPanel3.add(jPanel5, java.awt.BorderLayout.NORTH);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -106,11 +116,14 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JPanel jPanel5;
     // End of variables declaration//GEN-END:variables
 
 }
