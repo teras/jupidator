@@ -144,22 +144,19 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextPane" name="jTextPane1">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ee" green="ee" id="Label.background" palette="3" red="ee" type="palette"/>
                 </Property>
-                <Property name="columns" type="int" value="35"/>
-                <Property name="editable" type="boolean" value="false"/>
-                <Property name="lineWrap" type="boolean" value="true"/>
-                <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Jupidator is a library for automatic updating of applications.\nIs is open source under the LGPL licence.\nMore info can be found in: http://jupidator.sourceforge.net&quot;)" type="code"/>
-                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="4" left="4" right="4" top="4"/>
+                    <EmptyBorder bottom="8" left="0" right="0" top="0"/>
                   </Border>
+                </Property>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Jupidator is a library for automatic updating of applications.\nIs is open source under the LGPL licence.\nMore info can be found in: http://jupidator.sourceforge.net&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Constraints>

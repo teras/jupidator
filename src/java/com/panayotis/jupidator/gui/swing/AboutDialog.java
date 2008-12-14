@@ -43,7 +43,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextPane1 = new javax.swing.JTextPane();
 
         setAlwaysOnTop(true);
         setUndecorated(true);
@@ -82,14 +82,11 @@ public class AboutDialog extends javax.swing.JDialog {
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jTextArea1.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
-        jTextArea1.setColumns(35);
-        jTextArea1.setEditable(false);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText(_("Jupidator is a library for automatic updating of applications.\nIs is open source under the LGPL licence.\nMore info can be found in: http://jupidator.sourceforge.net"));
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        jPanel3.add(jTextArea1, java.awt.BorderLayout.CENTER);
+        jTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
+        jTextPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        jTextPane1.setEditable(false);
+        jTextPane1.setText(_("Jupidator is a library for automatic updating of applications.\nIs is open source under the LGPL licence.\nMore info can be found in: http://jupidator.sourceforge.net"));
+        jPanel3.add(jTextPane1, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -113,7 +110,7 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 
 }
