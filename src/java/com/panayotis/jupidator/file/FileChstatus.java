@@ -18,7 +18,7 @@ public class FileChstatus extends FileNative {
     private boolean recursive = false;
 
     public FileChstatus(String command, String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
-        super(command, file, elements, info);
+        super(command, file, null, elements, info);
         if (attr != null)
             this.attr = attr;
         this.recursive = TextUtils.isTrue(recursive);

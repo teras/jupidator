@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +22,7 @@ public class JupidatorDeployer {
 
     public static final String EXTENSION = ".jupidator";
     private static BufferedWriter out;
-    
+
 
     static {
         try {
@@ -132,20 +133,28 @@ public class JupidatorDeployer {
 
     private static void exec(String arguments) {
         try {
-            String[] cmd = buildArgs(arguments);
+            ArrayList<String> list = buildArgs(arguments);
+            String input = list.get(list.size() - 1);
+            list.remove(list.size() - 1);
+            String[] cmd = list.toArray(new String[]{});
             Process p = Runtime.getRuntime().exec(cmd);
+            if (input.length() > 0) {
+                BufferedWriter w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+                w.write(input);
+                w.close();
+            }
             p.waitFor();
             if (p.exitValue() != 0) {
                 debug("  Error while executing " + cmd[0]);
             } else {
-                debug("  Successfully executied " + cmd[0]);
+                debug("  Successfully executed " + cmd[0]);
             }
         } catch (Exception ex) {
             debug(ex.getMessage());
         }
     }
 
-    private static String[] buildArgs(String arguments) throws NumberFormatException, StringIndexOutOfBoundsException {
+    private static ArrayList<String> buildArgs(String arguments) throws NumberFormatException, StringIndexOutOfBoundsException {
         ArrayList<Integer> sizes = new ArrayList<Integer>();
         int pos = 0;
         int lastpos = 0;
@@ -156,11 +165,13 @@ public class JupidatorDeployer {
                 break;
         }
         pos++;
-        String[] args = new String[sizes.size()];
+        ArrayList<String> args = new ArrayList<String>();
+        String a;
         for (int i = 0; i < sizes.size(); i++) {
-            args[i] = arguments.substring(pos, pos + sizes.get(i));
+            a = arguments.substring(pos, pos + sizes.get(i));
+            args.add(a);
             pos += sizes.get(i);
-            debug("  #" + i + ": " + args[i]);
+            debug("  #" + i + ": " + a);
         }
         return args;
     }

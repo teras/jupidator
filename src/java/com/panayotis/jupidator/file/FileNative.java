@@ -17,7 +17,8 @@ public abstract class FileNative extends FileElement {
 
     private static final boolean isWindows,  isLinux,  isMac;
     private String command = "";
-    
+    private String input = "";
+
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
@@ -38,10 +39,12 @@ public abstract class FileNative extends FileElement {
         return isLinux;
     }
 
-    public FileNative(String command, String file, UpdaterAppElements elements, ApplicationInfo info) {
+    public FileNative(String command, String file, String input, UpdaterAppElements elements, ApplicationInfo info) {
         super(file, elements, info, ExecutionTime.AFTER);
         if (command != null)
             this.command = command;
+        if (input != null)
+            this.input = input;
     }
 
     /* Nothing to do while fetching.
@@ -61,16 +64,18 @@ public abstract class FileNative extends FileElement {
         StringBuffer b = new StringBuffer();
 
         b.append('c');
-        b.append(command.length()).append("#");
+        b.append(command.length()).append('#');
         for (int i = 0; i < args.length; i++) {
             b.append(args[i].length()).append('#');
         }
+        b.append(input.length()).append('#');
         b.append(".");
 
         b.append(command);
         for (int i = 0; i < args.length; i++) {
             b.append(args[i]);
         }
+        b.append(input);
         return b.toString();
     }
 

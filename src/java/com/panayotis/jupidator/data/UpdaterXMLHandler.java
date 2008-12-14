@@ -92,7 +92,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("exec")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            lastSeenExecElement = new FileExec(attr.getValue("executable"), elements, appinfo);
+            lastSeenExecElement = new FileExec(attr.getValue("executable"), attr.getValue("input"), elements, appinfo);
             current.put(lastSeenExecElement.getHash(), lastSeenExecElement);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
