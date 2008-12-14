@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.UIManager;
 
 /**
  *
@@ -29,6 +30,14 @@ import javax.swing.JDialog;
 public class SwingGUI extends JDialog implements JupidatorGUI {
 
     private Updater callback;
+
+
+    static {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
+    }
 
     /** Creates new form SwingGUI */
     public SwingGUI() {
@@ -191,10 +200,11 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i.png"))); // NOI18N
+        InfoB.setBorder(null);
         InfoB.setBorderPainted(false);
-        InfoB.setMaximumSize(new java.awt.Dimension(16, 16));
-        InfoB.setMinimumSize(new java.awt.Dimension(16, 16));
-        InfoB.setPreferredSize(new java.awt.Dimension(16, 16));
+        InfoB.setMaximumSize(new java.awt.Dimension(20, 20));
+        InfoB.setMinimumSize(new java.awt.Dimension(20, 20));
+        InfoB.setPreferredSize(new java.awt.Dimension(20, 20));
         InfoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InfoBActionPerformed(evt);

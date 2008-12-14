@@ -132,11 +132,11 @@ public class JupidatorDeployer {
     }
 
     private static void exec(String arguments) {
+        ArrayList<String> list = buildArgs(arguments);
+        String input = list.get(list.size() - 1);
+        list.remove(list.size() - 1);
+        String[] cmd = list.toArray(new String[]{});
         try {
-            ArrayList<String> list = buildArgs(arguments);
-            String input = list.get(list.size() - 1);
-            list.remove(list.size() - 1);
-            String[] cmd = list.toArray(new String[]{});
             Process p = Runtime.getRuntime().exec(cmd);
             if (input.length() > 0) {
                 BufferedWriter w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
@@ -144,14 +144,14 @@ public class JupidatorDeployer {
                 w.close();
             }
             p.waitFor();
-            if (p.exitValue() != 0) {
-                debug("  Error while executing " + cmd[0]);
-            } else {
+            if (p.exitValue() == 0) {
                 debug("  Successfully executed " + cmd[0]);
+                return;
             }
         } catch (Exception ex) {
             debug(ex.getMessage());
         }
+        debug("  Error while executing " + cmd[0]);
     }
 
     private static ArrayList<String> buildArgs(String arguments) throws NumberFormatException, StringIndexOutOfBoundsException {
