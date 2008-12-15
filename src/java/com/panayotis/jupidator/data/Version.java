@@ -129,7 +129,7 @@ public class Version {
         return elements.get(key);
     }
 
-    public void put(String key, FileElement element) {
-        elements.put(key, element);
+    public void put(FileElement element) {
+        elements.put(element.getHash(), element);
     }
 }

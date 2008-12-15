@@ -50,9 +50,9 @@ public class Arch {
         return arguments.size() + 1;
     }
 
-    public String getArgument(int index) {
+    public String getArgument(int index, ApplicationInfo appinfo) {
         if (index == 0)
-            return exec;
+            return appinfo.updatePath(exec);
         if (index > 0 && index <= arguments.size())
             return arguments.get(index - 1);
         throw new ArrayIndexOutOfBoundsException("Not valid index for architecture arguments: " + index);

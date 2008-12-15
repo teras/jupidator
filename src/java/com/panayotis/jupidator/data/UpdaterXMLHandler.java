@@ -10,6 +10,7 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.file.FileChmod;
 import com.panayotis.jupidator.file.FileChown;
 import com.panayotis.jupidator.file.FileExec;
+import com.panayotis.jupidator.file.FileWait;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -73,29 +74,30 @@ public class UpdaterXMLHandler extends DefaultHandler {
                     attr.getValue("compress"), elements, appinfo);
             if (TextUtils.isTrue(attr.getValue("ifexists")) && (!f.exists()))
                 return;
-            current.put(f.getHash(), f);
+            current.put(f);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileRm f = new FileRm(attr.getValue("file"), elements, appinfo);
-            current.put(f.getHash(), f);
+            current.put(new FileRm(attr.getValue("file"), elements, appinfo));
         } else if (qName.equals("chmod")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileChmod f = new FileChmod(attr.getValue("file"), attr.getValue("attr"),
-                    attr.getValue("recursive"), elements, appinfo);
-            current.put(f.getHash(), f);
+            current.put(new FileChmod(attr.getValue("file"), attr.getValue("attr"),
+                    attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("chown")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileChown f = new FileChown(attr.getValue("file"), attr.getValue("attr"),
-                    attr.getValue("recursive"), elements, appinfo);
-            current.put(f.getHash(), f);
+            current.put(new FileChown(attr.getValue("file"), attr.getValue("attr"),
+                    attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("exec")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             lastSeenExecElement = new FileExec(attr.getValue("executable"), attr.getValue("input"), elements, appinfo);
-            current.put(lastSeenExecElement.getHash(), lastSeenExecElement);
+            current.put(lastSeenExecElement);
+        } else if (qName.equals("gui")) {
+            appinfo.setGraphicalDeployer(true);
+        } else if (qName.equals("wait")) {
+            current.put(new FileWait(attr.getValue("msecs"), elements, appinfo));
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));

@@ -27,6 +27,10 @@ public class ApplicationInfo {
     false: All files should be  updated
      */
     private boolean distributionBased = false;
+    /**
+     * if the deployer will visually display something while installing
+     */
+    private boolean graphicalDeployer = false;
 
     public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
@@ -57,11 +61,23 @@ public class ApplicationInfo {
     }
 
     public void setProperty(String name, String value) {
-        if (name==null || name.equals(""))
+        if (name == null || name.equals(""))
             throw new NullPointerException(_("Property name could not be null"));
-        if (value==null)
-            value="";
+        if (value == null)
+            value = "";
         vars.put(name, value);
+    }
+
+    public void setGraphicalDeployer(boolean graphicalDeployer) {
+        this.graphicalDeployer = graphicalDeployer;
+    }
+
+    public boolean isGraphicalDeployer() {
+        return graphicalDeployer;
+    }
+
+    public void setDistributionBased(boolean distributionBased) {
+        this.distributionBased = distributionBased;
     }
 
     public boolean isDistributionBased() {
@@ -88,10 +104,6 @@ public class ApplicationInfo {
 
     public String getVersion() {
         return vars.get("VERSION");
-    }
-
-    public void setDistributionBased(boolean distributionBased) {
-        this.distributionBased = distributionBased;
     }
 
     public String updatePath(String path) {

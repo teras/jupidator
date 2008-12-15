@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import javax.swing.JFrame;
 
 /**
  *
@@ -60,26 +61,37 @@ public class JupidatorDeployer {
                 debug("  #" + i + ": " + args[i]);
             }
 
+            int pos = 0;
+
+            if (Character.toLowerCase(args[pos++].charAt(0)) == 'g') {
+                JFrame f = new JFrame();
+                f.setSize(300, 100);
+                f.setLocationRelativeTo(null);
+                f.setVisible(true);
+            }
+
+            int files = Integer.valueOf(args[pos++]);
+            debug("Number of affected files: " + files);
+
             /* Under windows it is important to wait a bit before deleting files */
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 Thread.sleep(3000);
                 debug("Waiting 3 seconds before starting updating");
             }
 
-            int files = Integer.valueOf(args[0]);
-            debug("Number of affected files: " + files);
-
-            for (int i = 1; i <= files; i++) {
-                if (args[i].length() > 0) {
-                    String data = args[i].substring(1, args[i].length());
-                    debug("Working with " + data + "");
-                    switch (args[i].charAt(0)) {
+            files += pos;
+            for (; pos < files; pos++) {
+                if (args[pos].length() > 0) {
+                    String data = args[pos].substring(1, args[pos].length());
+                    switch (args[pos].charAt(0)) {
                         case '-':
+                            debug("Removing file " + data);
                             debug("  Deleting file " + data);
                             if (!rmTree(new File(data)))
                                 debug("*ERROR* Unable to delete file " + data);
                             break;
                         case '+':
+                            debug("Installing file " + data);
                             String oldpath = data.substring(0, data.length() - EXTENSION.length());
                             File oldfile = new File(oldpath);
                             File newfile = new File(data);
@@ -91,19 +103,24 @@ public class JupidatorDeployer {
                             newfile.renameTo(oldfile);
                             break;
                         case 'c':
+                            debug("Executing command");
                             exec(data);
                             break;
+                        case 'w':
+                            debug("Waiting msecs=" + data);
+                            Thread.sleep(Integer.parseInt(data));
+                            break;
                     }
-                    debug("End of works with " + data);
+                    debug("End of works");
                 }
             }
 
-            files++;
-            String exec[] = new String[args.length - files];
+            int initpos = pos;
+            String exec[] = new String[args.length - pos];
             debug("Restarting application with following arguments:");
-            for (int i = files; i < args.length; i++) {
-                exec[i - files] = args[i];
-                debug("  #" + (i - files) + ": " + exec[i - files]);
+            for (; pos < args.length; pos++) {
+                exec[pos - initpos] = args[pos];
+                debug("  #" + (pos - initpos) + ": " + exec[pos - initpos]);
             }
             try {
                 Runtime.getRuntime().exec(exec);

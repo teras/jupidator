@@ -79,7 +79,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!--
     Architecture dependent actions. For every architecture, as defined as tag with the architect element, a set of actions are defined. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this architecture can be skipped.
 -->
-<!ELEMENT arch (file|rm|chmod|chown|exec)*>
+<!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait|gui)*>
 <!--
     @attr name The name of this architecture, as defines with the architect element above.
 -->
@@ -154,6 +154,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     file CDATA #REQUIRED
     attr CDATA #REQUIRED
     recursive CDATA "false"
+    forceinstall CDATA "false"
   >
 
 <!--
@@ -170,3 +171,34 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     input CDATA ""
     forceinstall CDATA "false"
   >
+
+<!--
+    Kill a specified task. This element works in both Windows and Unix-like systems
+-->
+<!ELEMENT kill EMPTY>
+<!--
+    @attrib process The name of the process. This could be a regular expression which will match the running process. When applied, could match more than one running process.
+    @attrib signal The signal to send. This is platform specific information. In unix-like is the "TERM" signal
+    @attr forceinstall If enabled, the command is executed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
+-->
+<!ATTLIST kill
+    process CDATA #REQUIRED
+    signal CDATA "TERM"
+    forceinstall CDATA "false"
+  >
+
+<!--
+    This element is used in the last stage of the installation, to pause the installer for the specified number of milliseconds
+-->
+<!ELEMENT wait EMPTY>
+<!--
+    @attrib msec The number of milliseconds the installer should wait
+-->
+<!ATTLIST wait
+    msecs CDATA "1000"
+  >
+
+<!--
+    The installer will present a graphical window spinning. If this element is not present, no GUI will be presented.
+-->
+<!ELEMENT gui EMPTY>

@@ -146,20 +146,21 @@ public class Updater {
                 return;
             }
 
-            String args[] = new String[5 + vers.size() + arch.countArguments()];
+            int header = 6;
+            String args[] = new String[header + vers.size() + arch.countArguments()];
             args[0] = FileUtils.JAVABIN;
             args[1] = "-cp";
             args[2] = temppath;
             args[3] = classname;
+            args[4] = appinfo.isGraphicalDeployer() ? "g" : "t";
+            args[5] = String.valueOf(vers.size());
 
-            args[4] = String.valueOf(vers.size());
-            int counter = 5;
             for (String key : vers.keySet()) {
-                args[counter++] = vers.get(key).getArgument();
+                args[header++] = vers.get(key).getArgument();
             }
 
             for (int i = 0; i < arch.countArguments(); i++) {
-                args[counter++] = arch.getArgument(i);
+                args[header++] = arch.getArgument(i, appinfo);
             }
 
             try {
