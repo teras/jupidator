@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.UIManager;
 
 /**
  *
@@ -135,12 +136,17 @@ public class JupidatorDeployer {
     }
 
     private static void showGUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
+
         JFrame frame = new JFrame();
         JPanel jPanel1 = new javax.swing.JPanel();
         JLabel TextL = new javax.swing.JLabel();
         JProgressBar ProgressBar = new javax.swing.JProgressBar();
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12)));
         jPanel1.setLayout(new java.awt.BorderLayout(12, 0));
 
         TextL.setText("Please wait while deploying files");

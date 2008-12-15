@@ -95,8 +95,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
             lastSeenExecElement = new FileExec(attr.getValue("executable"), attr.getValue("input"), elements, appinfo);
             current.put(lastSeenExecElement);
         } else if (qName.equals("gui")) {
+            if (shouldIgnore(null))
+                return;
             appinfo.setGraphicalDeployer(true);
         } else if (qName.equals("wait")) {
+            if (shouldIgnore(null))
+                return;
             current.put(new FileWait(attr.getValue("msecs"), elements, appinfo));
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
@@ -112,14 +116,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             return true;
         if (appinfo == null)
             return true;
-
         if (!appinfo.isDistributionBased())
             return false;
-        if (force != null) {
-            force = force.toLowerCase().trim();
-            return !TextUtils.isTrue(force);
-        }
-        return true;
+        return !TextUtils.isTrue(force);
     }
 
     public void endElement(String uri, String localName, String qName) {
