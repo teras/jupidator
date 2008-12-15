@@ -14,6 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 /**
  *
@@ -63,12 +66,8 @@ public class JupidatorDeployer {
 
             int pos = 0;
 
-            if (Character.toLowerCase(args[pos++].charAt(0)) == 'g') {
-                JFrame f = new JFrame();
-                f.setSize(300, 100);
-                f.setLocationRelativeTo(null);
-                f.setVisible(true);
-            }
+            if (Character.toLowerCase(args[pos++].charAt(0)) == 'g')
+                showGUI();
 
             int files = Integer.valueOf(args[pos++]);
             debug("Number of affected files: " + files);
@@ -98,7 +97,7 @@ public class JupidatorDeployer {
 
                             debug("  Deleting file " + oldfile);
                             if (!rmTree(oldfile))
-                                debug("*ERROR* Unable to remove old file " + oldpath);
+                                debug("  *ERROR* Unable to remove old file " + oldpath);
                             debug("  Renaming " + data + " to " + oldfile);
                             newfile.renameTo(oldfile);
                             break;
@@ -135,6 +134,31 @@ public class JupidatorDeployer {
         }
     }
 
+    private static void showGUI() {
+        JFrame frame = new JFrame();
+        JPanel jPanel1 = new javax.swing.JPanel();
+        JLabel TextL = new javax.swing.JLabel();
+        JProgressBar ProgressBar = new javax.swing.JProgressBar();
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        jPanel1.setLayout(new java.awt.BorderLayout(12, 0));
+
+        TextL.setText("Please wait while deploying files");
+        jPanel1.add(TextL, java.awt.BorderLayout.WEST);
+
+        ProgressBar.setIndeterminate(true);
+        ProgressBar.putClientProperty("JProgressBar.style", "circular");
+        ProgressBar.setPreferredSize(new java.awt.Dimension(20, 20));
+        jPanel1.add(ProgressBar, java.awt.BorderLayout.CENTER);
+
+        frame.setUndecorated(true);
+        frame.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    /* This method is also called from cancel action by FileAdd */
     public static boolean rmTree(File f) {
         if (!f.exists())
             return true;
