@@ -26,6 +26,7 @@ public class Version {
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
     private Arch arch;
+    private boolean graphical_gui;
 
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
@@ -84,6 +85,7 @@ public class Version {
                 elements.put(tag, fnew);
             }
         }
+        graphical_gui |= other.graphical_gui;
     }
 
     public Arch getArch() {
@@ -92,6 +94,14 @@ public class Version {
 
     public void setArch(Arch arch) {
         this.arch = arch;
+    }
+
+    void setGraphicalDeployer(boolean graphical_gui) {
+        this.graphical_gui = graphical_gui;
+    }
+    
+    public boolean isGraphicalDeployer() {
+        return graphical_gui;
     }
 
     private void sort() {

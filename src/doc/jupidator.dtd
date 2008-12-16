@@ -79,12 +79,14 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!--
     Architecture dependent actions. For every architecture, as defined as tag with the architect element, a set of actions are defined. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this architecture can be skipped.
 -->
-<!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait|gui)*>
+<!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait)*>
 <!--
     @attr name The name of this architecture, as defines with the architect element above.
+    @attr gui The installer will present a graphical window spinning for this version onwards. If this attribute is not present, no GUI is requested.
 -->
 <!ATTLIST arch
     name CDATA #REQUIRED
+    gui     CDATA "false"
   >
 
 <!--
@@ -195,12 +197,9 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT wait EMPTY>
 <!--
     @attrib msec The number of milliseconds the installer should wait
+    @attr forceinstall If enabled, waiting is performed in any case (and installation information is displayed). For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
 -->
 <!ATTLIST wait
     msecs CDATA "1000"
+    forceinstall CDATA "false"
   >
-
-<!--
-    The installer will present a graphical window spinning. If this element is not present, no GUI will be presented.
--->
-<!ELEMENT gui EMPTY>

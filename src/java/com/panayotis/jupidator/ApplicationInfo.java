@@ -27,10 +27,6 @@ public class ApplicationInfo {
     false: All files should be  updated
      */
     private boolean distributionBased = false;
-    /**
-     * if the deployer will visually display something while installing
-     */
-    private boolean graphicalDeployer = false;
 
     public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
@@ -66,14 +62,6 @@ public class ApplicationInfo {
         if (value == null)
             value = "";
         vars.put(name, value);
-    }
-
-    public void setGraphicalDeployer(boolean graphicalDeployer) {
-        this.graphicalDeployer = graphicalDeployer;
-    }
-
-    public boolean isGraphicalDeployer() {
-        return graphicalDeployer;
     }
 
     public void setDistributionBased(boolean distributionBased) {

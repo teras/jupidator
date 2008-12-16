@@ -63,9 +63,10 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("arch")) {
             if (ignore_version)
                 return;
-            if (arch.isTag(attr.getValue("name"))) {  // Found current architecture
+            if (arch.isTag(attr.getValue("name"))) // Found current architecture
                 current = new Version();
-            }
+            if (current != null)    // If this version is valid, check if GUI is required
+                current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui")));
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
@@ -94,12 +95,8 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 return;
             lastSeenExecElement = new FileExec(attr.getValue("executable"), attr.getValue("input"), attr.getValue("time"), elements, appinfo);
             current.put(lastSeenExecElement);
-        } else if (qName.equals("gui")) {
-            if (shouldIgnore(null))
-                return;
-            appinfo.setGraphicalDeployer(true);
         } else if (qName.equals("wait")) {
-            if (shouldIgnore(null))
+            if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             current.put(new FileWait(attr.getValue("msecs"), elements, appinfo));
         } else if (qName.equals("updatelist")) {

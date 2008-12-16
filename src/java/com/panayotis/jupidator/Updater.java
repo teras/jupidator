@@ -152,7 +152,7 @@ public class Updater {
             args[1] = "-cp";
             args[2] = temppath;
             args[3] = classname;
-            args[4] = appinfo.isGraphicalDeployer() ? "g" : "t";
+            args[4] = vers.isGraphicalDeployer() ? "g" : "t";
             args[5] = String.valueOf(vers.size());
 
             for (String key : vers.keySet()) {
