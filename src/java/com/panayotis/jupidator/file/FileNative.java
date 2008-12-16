@@ -39,12 +39,12 @@ public abstract class FileNative extends FileElement {
         return isLinux;
     }
 
-    public FileNative(String command, String file, String input, UpdaterAppElements elements, ApplicationInfo info) {
-        super(file, elements, info, ExecutionTime.AFTER);
+    public FileNative(String command, String file, String input, ExecutionTime time, UpdaterAppElements elements, ApplicationInfo appinfo) {
+        super(file, elements, appinfo, time);
         if (command != null)
-            this.command = command;
+            this.command = appinfo.updatePath(command);
         if (input != null)
-            this.input = input;
+            this.input = appinfo.updatePath(input);
     }
 
     /* Nothing to do while fetching.

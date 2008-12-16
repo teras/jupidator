@@ -163,11 +163,13 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT exec (argument*)>
 <!--
     @attr executable The filename of the executable
-    @attr the input of this command, if needed by the application
+    @attr time When this command will be executed. Should be "BEFORE" "AFTER" or "MID". By default "MID" parameter is used. This property <b>is</b> case sensitive.
+    @attr input The input of this command, if needed by the application
     @attr forceinstall If enabled, the command is executed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
 -->
 <!ATTLIST exec
     executable CDATA #REQUIRED
+    time CDATA "MID"
     input CDATA ""
     forceinstall CDATA "false"
   >

@@ -12,13 +12,13 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public class FileChstatus extends FileNative {
+public abstract class FileChstatus extends FileNative {
 
     private String attr = "";
     private boolean recursive = false;
 
     public FileChstatus(String command, String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
-        super(command, file, null, elements, info);
+        super(command, file, null, ExecutionTime.AFTER, elements, info);
         if (attr != null)
             this.attr = attr;
         this.recursive = TextUtils.isTrue(recursive);
