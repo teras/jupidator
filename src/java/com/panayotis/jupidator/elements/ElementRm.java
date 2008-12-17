@@ -16,7 +16,7 @@ import java.io.File;
  *
  * @author teras
  */
-public class ElementRm extends FileElement {
+public class ElementRm extends JupidatorElement {
 
     public ElementRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
         super(file, elements, info, ExecutionTime.MID);

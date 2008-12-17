@@ -4,7 +4,7 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.panayotis.jupidator.elements.FileElement;
+import com.panayotis.jupidator.elements.JupidatorElement;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.elements.ExecutionTime;
@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class Version {
 
-    private LinkedHashMap<String, FileElement> elements = new LinkedHashMap<String, FileElement>();
+    private LinkedHashMap<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
     private Arch arch;
@@ -74,7 +74,7 @@ public class Version {
         if (other == null)
             return;
 
-        FileElement fother, fthis, fnew;
+        JupidatorElement fother, fthis, fnew;
         for (String tag : other.elements.keySet()) {
             fother = other.elements.get(tag);
             fthis = elements.get(tag);
@@ -105,11 +105,11 @@ public class Version {
     }
 
     private void sort() {
-        FileElement element;
+        JupidatorElement element;
         ExecutionTime time;
-        LinkedHashMap<String, FileElement> before = new LinkedHashMap<String, FileElement>();
-        LinkedHashMap<String, FileElement> mid = new LinkedHashMap<String, FileElement>();
-        LinkedHashMap<String, FileElement> after = new LinkedHashMap<String, FileElement>();
+        LinkedHashMap<String, JupidatorElement> before = new LinkedHashMap<String, JupidatorElement>();
+        LinkedHashMap<String, JupidatorElement> mid = new LinkedHashMap<String, JupidatorElement>();
+        LinkedHashMap<String, JupidatorElement> after = new LinkedHashMap<String, JupidatorElement>();
         for (String key : elements.keySet()) {
             element = elements.get(key);
             time = element.getExectime();
@@ -120,7 +120,7 @@ public class Version {
             else
                 mid.put(key, element);
         }
-        elements = new LinkedHashMap<String, FileElement>();
+        elements = new LinkedHashMap<String, JupidatorElement>();
         elements.putAll(before);
         elements.putAll(mid);
         elements.putAll(after);
@@ -134,11 +134,11 @@ public class Version {
         return elements.keySet();
     }
 
-    public FileElement get(String key) {
+    public JupidatorElement get(String key) {
         return elements.get(key);
     }
 
-    public void put(FileElement element) {
+    public void put(JupidatorElement element) {
         elements.put(element.getHash(), element);
     }
 }

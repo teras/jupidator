@@ -25,7 +25,7 @@ import java.net.URL;
  * 
  * @author teras
  */
-public class ElementAdd extends FileElement {
+public class ElementAdd extends JupidatorElement {
 
     /** This is actually a URL */
     private String source;

@@ -17,7 +17,7 @@ import java.io.File;
  *
  * @author teras
  */
-public abstract class FileElement {
+public abstract class JupidatorElement {
 
     private String filename = "";
     private String destdir = "";
@@ -30,15 +30,15 @@ public abstract class FileElement {
     }
     protected ApplicationInfo info;
 
-    public FileElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
+    public JupidatorElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         this(new File(file).getName(), new File(file).getParent(), elements, appinfo, exectime);
     }
 
-    public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
+    public JupidatorElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         this(name, dest, "0", elements, appinfo, exectime);
     }
 
-    public FileElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
+    public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         if (name != null)
             this.filename = appinfo.updatePath(name);
         if (destdir != null)
@@ -74,7 +74,7 @@ public abstract class FileElement {
         return filename;
     }
 
-    public FileElement getNewestRelease(FileElement fother) {
+    public JupidatorElement getNewestRelease(JupidatorElement fother) {
         if (release > fother.release)
             return this;
         else

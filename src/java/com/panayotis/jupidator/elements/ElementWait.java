@@ -13,7 +13,7 @@ import com.panayotis.jupidator.gui.BufferListener;
  *
  * @author teras
  */
-public class ElementWait extends FileElement {
+public class ElementWait extends JupidatorElement {
 
     private int msecs = 1000;
 

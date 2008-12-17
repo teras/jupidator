@@ -13,7 +13,7 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public abstract class ElementNative extends FileElement {
+public abstract class ElementNative extends JupidatorElement {
 
     private static final boolean isWindows,  isLinux,  isMac;
     private String command = "";
