@@ -171,7 +171,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 -->
 <!ATTLIST exec
     executable CDATA #REQUIRED
-    time CDATA "MID"
+    time CDATA "AFTER"
     input CDATA ""
     forceinstall CDATA "false"
   >
@@ -197,9 +197,11 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT wait EMPTY>
 <!--
     @attrib msec The number of milliseconds the installer should wait
+    @attr time When this command will be executed. Should be "BEFORE" "AFTER" or "MID". By default "BEFORE" parameter is used. This property is not case sensitive.
     @attr forceinstall If enabled, waiting is performed in any case (and installation information is displayed). For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
 -->
 <!ATTLIST wait
     msecs CDATA "1000"
+    time CDATA "BEFORE"
     forceinstall CDATA "false"
   >

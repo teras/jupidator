@@ -99,7 +99,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("wait")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileWait(attr.getValue("msecs"), elements, appinfo));
+            current.put(new FileWait(attr.getValue("msecs"), attr.getValue("time"), elements, appinfo));
         } else if (qName.equals("kill")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;

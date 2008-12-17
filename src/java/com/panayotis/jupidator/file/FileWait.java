@@ -17,8 +17,9 @@ public class FileWait extends FileElement {
 
     private int msecs = 1000;
 
-    public FileWait(String msecs, UpdaterAppElements elements, ApplicationInfo appinfo) {
-        super(String.valueOf(Math.random()), elements, appinfo, ExecutionTime.MID);
+    public FileWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
+        super(String.valueOf(Math.random()), elements, appinfo,
+                ExecutionTime.valueOf(exectime.toUpperCase()) == null ? ExecutionTime.BEFORE : ExecutionTime.valueOf(exectime.toUpperCase()));
         try {
             this.msecs = Integer.parseInt(msecs);
         } catch (NumberFormatException n) {
@@ -37,6 +38,6 @@ public class FileWait extends FileElement {
     }
 
     public String getArgument() {
-        return "w"+Integer.toString(msecs);
+        return "w" + Integer.toString(msecs);
     }
 }

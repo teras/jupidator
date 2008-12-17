@@ -17,7 +17,9 @@ public class FileExec extends FileNative {
     private ArrayList<String> arguments;
 
     public FileExec(String command, String input, String exectime, UpdaterAppElements elements, ApplicationInfo info) {
-        super(command, String.valueOf(Math.random()), input, ExecutionTime.valueOf(exectime.toUpperCase()), elements, info);  // No hash for this exec
+        super(command, String.valueOf(Math.random()), input,
+                ExecutionTime.valueOf(exectime.toUpperCase()) == null ? ExecutionTime.AFTER : ExecutionTime.valueOf(exectime.toUpperCase()),
+                elements, info);  // No hash for this exec
         arguments = new ArrayList<String>();
     }
 
