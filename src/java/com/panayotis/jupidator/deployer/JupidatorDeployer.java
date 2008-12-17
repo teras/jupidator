@@ -5,14 +5,17 @@
  */
 package com.panayotis.jupidator.deployer;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -104,12 +107,18 @@ public class JupidatorDeployer {
                             break;
                         case 'c':
                             debug("Executing command");
-                            exec(data);
+                            execCmd(data);
                             break;
                         case 'w':
                             debug("Waiting msecs=" + data);
                             Thread.sleep(Integer.parseInt(data));
                             break;
+                        case 'k':
+                            debug("Killing process");
+                            killProc(data);
+                            break;
+                        default:
+                            debug("Unknown command " + args[pos]);
                     }
                     debug("End of works");
                 }
@@ -178,27 +187,71 @@ public class JupidatorDeployer {
         return f.delete();
     }
 
-    private static void exec(String arguments) {
+
+    private static void killProc(String data) {
+        ArrayList<String> args = buildArgs(data);
+        args.remove(args.size() - 1);
+        String pattern = args.get(args.size() - 1);
+
+        ArrayList<String> ids = new ArrayList<String>();
+
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("ps");
+        list.add("aux");
+        StringTokenizer tok = new StringTokenizer(exec(list, null), "\n");
+        String token;
+        while (tok.hasMoreTokens()) {
+            token = tok.nextToken();
+            if (token.indexOf(pattern) >= 0 && token.indexOf("com.panayotis.jupidator.deployer.JupidatorDeployer") < 0) {
+                debug("  Killing " + token);
+                StringTokenizer tok2 = new StringTokenizer(token);
+                tok2.nextToken();
+                ids.add(tok2.nextToken());
+            }
+        }
+        ArrayList<String> kill = new ArrayList<String>();
+        kill.add("kill");
+        kill.add("ID");
+        for (String id : ids) {
+            kill.set(1, id);
+
+            exec(kill, null);
+        }
+    }
+
+    private static void execCmd(String arguments) {
         ArrayList<String> list = buildArgs(arguments);
         String input = list.get(list.size() - 1);
         list.remove(list.size() - 1);
+        exec(list, input);
+    }
+
+    private static String exec(ArrayList<String> list, String input) {
         String[] cmd = list.toArray(new String[]{});
+        StringBuffer output = new StringBuffer();
         try {
             Process p = Runtime.getRuntime().exec(cmd);
-            if (input.length() > 0) {
+            if (input != null && input.length() > 0) {
                 BufferedWriter w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
                 w.write(input);
                 w.close();
             }
+            String line;
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = r.readLine()) != null) {
+                output.append(line).append('\n');
+            }
+
             p.waitFor();
             if (p.exitValue() == 0) {
                 debug("  Successfully executed " + cmd[0]);
-                return;
+                return output.toString();
             }
         } catch (Exception ex) {
             debug(ex.getMessage());
         }
         debug("  Error while executing " + cmd[0]);
+        return output.toString();
     }
 
     private static ArrayList<String> buildArgs(String arguments) throws NumberFormatException, StringIndexOutOfBoundsException {

@@ -10,6 +10,7 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.file.FileChmod;
 import com.panayotis.jupidator.file.FileChown;
 import com.panayotis.jupidator.file.FileExec;
+import com.panayotis.jupidator.file.FileKill;
 import com.panayotis.jupidator.file.FileWait;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -99,6 +100,10 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             current.put(new FileWait(attr.getValue("msecs"), elements, appinfo));
+        } else if (qName.equals("kill")) {
+            if (shouldIgnore(attr.getValue("forceinstall")))
+                return;
+            current.put(new FileKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));

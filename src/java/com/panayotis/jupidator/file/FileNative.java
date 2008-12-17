@@ -63,7 +63,7 @@ public abstract class FileNative extends FileElement {
         String[] args = getExecArguments();
         StringBuffer b = new StringBuffer();
 
-        b.append('c');
+        b.append(getCommandTag());
         b.append(command.length()).append('#');
         for (int i = 0; i < args.length; i++) {
             b.append(args[i].length()).append('#');
@@ -77,6 +77,10 @@ public abstract class FileNative extends FileElement {
         }
         b.append(input);
         return b.toString();
+    }
+
+    protected String getCommandTag(){
+        return "c";
     }
 
     /* Nothing to do when deploying */

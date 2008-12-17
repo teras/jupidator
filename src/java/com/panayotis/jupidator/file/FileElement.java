@@ -65,6 +65,8 @@ public abstract class FileElement {
     }
 
     public String getDestinationFile() {
+        if (destdir.equals(""))
+            return filename;
         return destdir + FS + filename;
     }
 
