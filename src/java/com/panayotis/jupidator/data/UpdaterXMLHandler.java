@@ -12,7 +12,7 @@ import com.panayotis.jupidator.elements.ElementExec;
 import com.panayotis.jupidator.elements.ElementKill;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.ElementWait;
-import java.util.jar.Attributes;
+import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
 

@@ -18,8 +18,7 @@ public class ElementWait extends JupidatorElement {
     private int msecs = 1000;
 
     public ElementWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
-        super(String.valueOf(Math.random()), elements, appinfo,
-                ExecutionTime.valueOf(exectime.toUpperCase()) == null ? ExecutionTime.BEFORE : ExecutionTime.valueOf(exectime.toUpperCase()));
+        super(String.valueOf(Math.random()), elements, appinfo, ExecutionTime.parse(exectime, ExecutionTime.BEFORE));
         try {
             this.msecs = Integer.parseInt(msecs);
         } catch (NumberFormatException n) {
