@@ -192,6 +192,8 @@ public class JupidatorDeployer {
         ArrayList<String> kill = new ArrayList<String>();
         ArrayList<String> procid = new ArrayList<String>();
         ArrayList<String> args = buildArgs(data);
+        String signal = args.get(args.size() - 1);
+        String pattern = args.get(args.size() - 2);
         int pid_column;
         int pid_idx;
         String kill_token;
@@ -203,24 +205,31 @@ public class JupidatorDeployer {
             pid_column = 3;
             remove_quotes = true;
 
+            kill_token = "\"";
+            pid_idx = 2;
             kill.add("taskkill.exe");
             kill.add("/PID");
             kill.add("ID");
-            kill_token = "\"";
-            pid_idx = 2;
+            kill.add(data);
+            if (!signal.equals("")) {
+                kill.add(signal);
+            }
         } else {
             ps.add("ps");
             ps.add("aux");
             pid_column = 2;
             remove_quotes = false;
 
-            kill.add("kill");
-            kill.add("ID");
             kill_token = " ";
             pid_idx = 1;
+            kill.add("kill");
+            if (!signal.equals("")) {
+                pid_idx++;
+                kill.add("-" + signal);
+            }
+            kill.add("ID");
         }
 
-        String pattern = args.get(args.size() - 2);
         StringTokenizer tok = new StringTokenizer(exec(ps, null), "\n");
         String token;
         while (tok.hasMoreTokens()) {
@@ -232,7 +241,7 @@ public class JupidatorDeployer {
                     col.nextToken();
                 String next_pid = col.nextToken();
                 if (remove_quotes)
-                    next_pid = next_pid.substring(1, next_pid.length()-1);
+                    next_pid = next_pid.substring(1, next_pid.length() - 1);
                 procid.add(next_pid);
             }
         }
