@@ -187,34 +187,57 @@ public class JupidatorDeployer {
         return f.delete();
     }
 
-
     private static void killProc(String data) {
+        ArrayList<String> ps = new ArrayList<String>();
+        ArrayList<String> kill = new ArrayList<String>();
+        ArrayList<String> procid = new ArrayList<String>();
         ArrayList<String> args = buildArgs(data);
-        args.remove(args.size() - 1);
-        String pattern = args.get(args.size() - 1);
+        int pid_column;
+        int pid_idx;
+        String kill_token;
+        boolean remove_quotes;
+        if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+            ps.add("tasklist.exe");
+            ps.add("/FO");
+            ps.add("CSV");
+            pid_column = 3;
+            remove_quotes = true;
 
-        ArrayList<String> ids = new ArrayList<String>();
+            kill.add("taskkill.exe");
+            kill.add("/PID");
+            kill.add("ID");
+            kill_token = "\"";
+            pid_idx = 2;
+        } else {
+            ps.add("ps");
+            ps.add("aux");
+            pid_column = 2;
+            remove_quotes = false;
 
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("ps");
-        list.add("aux");
-        StringTokenizer tok = new StringTokenizer(exec(list, null), "\n");
+            kill.add("kill");
+            kill.add("ID");
+            kill_token = " ";
+            pid_idx = 1;
+        }
+
+        String pattern = args.get(args.size() - 2);
+        StringTokenizer tok = new StringTokenizer(exec(ps, null), "\n");
         String token;
         while (tok.hasMoreTokens()) {
             token = tok.nextToken();
             if (token.indexOf(pattern) >= 0 && token.indexOf("com.panayotis.jupidator.deployer.JupidatorDeployer") < 0) {
                 debug("  Killing " + token);
-                StringTokenizer tok2 = new StringTokenizer(token);
-                tok2.nextToken();
-                ids.add(tok2.nextToken());
+                StringTokenizer col = new StringTokenizer(token, kill_token);
+                for (int i = 0; i < pid_column - 1; i++)
+                    col.nextToken();
+                String next_pid = col.nextToken();
+                if (remove_quotes)
+                    next_pid = next_pid.substring(1, next_pid.length()-1);
+                procid.add(next_pid);
             }
         }
-        ArrayList<String> kill = new ArrayList<String>();
-        kill.add("kill");
-        kill.add("ID");
-        for (String id : ids) {
-            kill.set(1, id);
-
+        for (String id : procid) {
+            kill.set(pid_idx, id);
             exec(kill, null);
         }
     }
