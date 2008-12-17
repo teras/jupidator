@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.file;
+package com.panayotis.jupidator.elements;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.file.FileUtils.FS;
+import static com.panayotis.jupidator.elements.FileUtils.FS;
 
 import com.panayotis.jupidator.data.*;
 import com.panayotis.jupidator.ApplicationInfo;

@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.file.compression;
+package com.panayotis.jupidator.elements.compression;
 
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
-import com.panayotis.jupidator.file.FileUtils;
+import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.file;
+package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.gui.BufferListener;

@@ -4,16 +4,17 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.panayotis.jupidator.file.FileAdd;
-import com.panayotis.jupidator.file.FileRm;
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.file.FileChmod;
-import com.panayotis.jupidator.file.FileChown;
-import com.panayotis.jupidator.file.FileExec;
-import com.panayotis.jupidator.file.FileKill;
-import com.panayotis.jupidator.file.FileWait;
-import org.xml.sax.Attributes;
+import com.panayotis.jupidator.elements.FileAdd;
+import com.panayotis.jupidator.elements.FileChmod;
+import com.panayotis.jupidator.elements.FileChown;
+import com.panayotis.jupidator.elements.FileExec;
+import com.panayotis.jupidator.elements.FileKill;
+import com.panayotis.jupidator.elements.FileRm;
+import com.panayotis.jupidator.elements.FileWait;
+import java.util.jar.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 /**
  *

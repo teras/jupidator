@@ -3,12 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
         <file>file:/Users/teras/Works/Development/Java/jupidator/src/doc/jupidator.dtd</file>
-        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java</file>
         <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/data/UpdaterXMLHandler.java</file>
         <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/data/Version.java</file>
-        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/deployer/JupidatorDeployer.java</file>
-        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/file/FileElement.java</file>
-        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/file/FileExec.java</file>
-        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/file/FileNative.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/ExecutionTime.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileAdd.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileChmod.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileChown.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileChstatus.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileElement.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileKill.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileNative.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileRm.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/FileWait.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/compression/BZip2Compression.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/compression/CompressionMethod.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/compression/GZipCompression.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/compression/NullCompression.java</file>
+        <file>file:/Users/teras/Works/Development/Java/jupidator/src/java/com/panayotis/jupidator/elements/compression/ZipCompression.java</file>
     </open-files>
 </project-private>

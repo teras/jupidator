@@ -6,7 +6,7 @@ package com.panayotis.jupidator;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
-import com.panayotis.jupidator.file.FileUtils;
+import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.data.Arch;

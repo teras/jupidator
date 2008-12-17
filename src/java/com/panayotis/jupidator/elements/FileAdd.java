@@ -2,19 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.file;
+package com.panayotis.jupidator.elements;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
-import com.panayotis.jupidator.file.compression.CompressionMethod;
-import com.panayotis.jupidator.data.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.deployer.JupidatorDeployer;
-import com.panayotis.jupidator.file.compression.BZip2Compression;
-import com.panayotis.jupidator.file.compression.GZipCompression;
-import com.panayotis.jupidator.file.compression.NullCompression;
-import com.panayotis.jupidator.file.compression.ZipCompression;
+import com.panayotis.jupidator.elements.compression.BZip2Compression;
+import com.panayotis.jupidator.elements.compression.CompressionMethod;
+import com.panayotis.jupidator.elements.compression.GZipCompression;
+import com.panayotis.jupidator.elements.compression.NullCompression;
+import com.panayotis.jupidator.elements.compression.ZipCompression;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;

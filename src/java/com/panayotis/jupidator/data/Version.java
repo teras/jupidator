@@ -4,10 +4,10 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.panayotis.jupidator.file.FileElement;
+import com.panayotis.jupidator.elements.FileElement;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.file.ExecutionTime;
+import com.panayotis.jupidator.elements.ExecutionTime;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Set;

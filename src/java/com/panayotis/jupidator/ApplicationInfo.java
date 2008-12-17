@@ -5,9 +5,9 @@
 package com.panayotis.jupidator;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.file.FileUtils.FS;
+import static com.panayotis.jupidator.elements.FileUtils.FS;
 
-import com.panayotis.jupidator.file.FileUtils;
+import com.panayotis.jupidator.elements.FileUtils;
 
 import java.io.File;
 import java.util.HashMap;

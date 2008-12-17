@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.file.compression;
+package com.panayotis.jupidator.elements.compression;
 
 import java.io.File;
 
