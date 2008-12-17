@@ -200,7 +200,6 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i.png"))); // NOI18N
-        InfoB.setBorder(null);
         InfoB.setBorderPainted(false);
         InfoB.setMaximumSize(new java.awt.Dimension(20, 20));
         InfoB.setMinimumSize(new java.awt.Dimension(20, 20));
@@ -245,7 +244,6 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
         LaterB.setText(_("Remind me later"));
-        LaterB.setSelected(true);
         LaterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LaterBActionPerformed(evt);
