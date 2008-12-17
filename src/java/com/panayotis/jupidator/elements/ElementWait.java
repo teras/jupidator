@@ -13,11 +13,11 @@ import com.panayotis.jupidator.gui.BufferListener;
  *
  * @author teras
  */
-public class FileWait extends FileElement {
+public class ElementWait extends FileElement {
 
     private int msecs = 1000;
 
-    public FileWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
+    public ElementWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(String.valueOf(Math.random()), elements, appinfo,
                 ExecutionTime.valueOf(exectime.toUpperCase()) == null ? ExecutionTime.BEFORE : ExecutionTime.valueOf(exectime.toUpperCase()));
         try {

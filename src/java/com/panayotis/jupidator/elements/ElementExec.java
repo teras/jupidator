@@ -12,11 +12,11 @@ import java.util.ArrayList;
  *
  * @author teras
  */
-public class FileExec extends FileNative {
+public class ElementExec extends ElementNative {
 
     private ArrayList<String> arguments;
 
-    public FileExec(String command, String input, String exectime, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementExec(String command, String input, String exectime, UpdaterAppElements elements, ApplicationInfo info) {
         super(command, String.valueOf(Math.random()), input,
                 ExecutionTime.valueOf(exectime.toUpperCase()) == null ? ExecutionTime.AFTER : ExecutionTime.valueOf(exectime.toUpperCase()),
                 elements, info);  // No hash for this exec

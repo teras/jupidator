@@ -11,11 +11,11 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public class FileKill extends FileNative {
+public class ElementKill extends ElementNative {
 
     private String signal = "";
 
-    public FileKill(String application, String signal, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementKill(String application, String signal, UpdaterAppElements elements, ApplicationInfo info) {
         super("kill", application, null, ExecutionTime.BEFORE, elements, info);
         if (signal != null)
             this.signal = signal.toUpperCase();

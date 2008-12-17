@@ -16,9 +16,9 @@ import java.io.File;
  *
  * @author teras
  */
-public class FileRm extends FileElement {
+public class ElementRm extends FileElement {
 
-    public FileRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
         super(file, elements, info, ExecutionTime.MID);
     }
 

@@ -13,7 +13,7 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public abstract class FileNative extends FileElement {
+public abstract class ElementNative extends FileElement {
 
     private static final boolean isWindows,  isLinux,  isMac;
     private String command = "";
@@ -39,7 +39,7 @@ public abstract class FileNative extends FileElement {
         return isLinux;
     }
 
-    public FileNative(String command, String file, String input, ExecutionTime time, UpdaterAppElements elements, ApplicationInfo appinfo) {
+    public ElementNative(String command, String file, String input, ExecutionTime time, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(file, elements, appinfo, time);
         if (command != null)
             this.command = appinfo.updatePath(command);

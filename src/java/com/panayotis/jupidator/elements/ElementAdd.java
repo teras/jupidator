@@ -25,13 +25,13 @@ import java.net.URL;
  * 
  * @author teras
  */
-public class FileAdd extends FileElement {
+public class ElementAdd extends FileElement {
 
     /** This is actually a URL */
     private String source;
     private CompressionMethod compression = null;
 
-    public FileAdd(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementAdd(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
         if (source == null)
             source = "";

@@ -11,9 +11,9 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public class FileChmod extends FileChstatus {
+public class ElementChmod extends ElementChstatus {
 
-    public FileChmod(String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementChmod(String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
         super("chmod", file, attr, recursive, elements, info);
     }
 }

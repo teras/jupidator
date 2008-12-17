@@ -5,13 +5,13 @@
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.elements.FileAdd;
-import com.panayotis.jupidator.elements.FileChmod;
-import com.panayotis.jupidator.elements.FileChown;
-import com.panayotis.jupidator.elements.FileExec;
-import com.panayotis.jupidator.elements.FileKill;
-import com.panayotis.jupidator.elements.FileRm;
-import com.panayotis.jupidator.elements.FileWait;
+import com.panayotis.jupidator.elements.ElementAdd;
+import com.panayotis.jupidator.elements.ElementChmod;
+import com.panayotis.jupidator.elements.ElementChown;
+import com.panayotis.jupidator.elements.ElementExec;
+import com.panayotis.jupidator.elements.ElementKill;
+import com.panayotis.jupidator.elements.ElementRm;
+import com.panayotis.jupidator.elements.ElementWait;
 import java.util.jar.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -30,7 +30,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
-    private FileExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
+    private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
@@ -72,7 +72,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"),
+            ElementAdd f = new ElementAdd(attr.getValue("name"), attr.getValue("sourcedir"),
                     attr.getValue("destdir"), attr.getValue("size"),
                     attr.getValue("compress"), elements, appinfo);
             if (TextUtils.isTrue(attr.getValue("ifexists")) && (!f.exists()))
@@ -81,30 +81,30 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileRm(attr.getValue("file"), elements, appinfo));
+            current.put(new ElementRm(attr.getValue("file"), elements, appinfo));
         } else if (qName.equals("chmod")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileChmod(attr.getValue("file"), attr.getValue("attr"),
+            current.put(new ElementChmod(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("chown")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileChown(attr.getValue("file"), attr.getValue("attr"),
+            current.put(new ElementChown(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("exec")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            lastSeenExecElement = new FileExec(attr.getValue("executable"), attr.getValue("input"), attr.getValue("time"), elements, appinfo);
+            lastSeenExecElement = new ElementExec(attr.getValue("executable"), attr.getValue("input"), attr.getValue("time"), elements, appinfo);
             current.put(lastSeenExecElement);
         } else if (qName.equals("wait")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileWait(attr.getValue("msecs"), attr.getValue("time"), elements, appinfo));
+            current.put(new ElementWait(attr.getValue("msecs"), attr.getValue("time"), elements, appinfo));
         } else if (qName.equals("kill")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            current.put(new FileKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
+            current.put(new ElementKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));

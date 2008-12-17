@@ -11,9 +11,9 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  *
  * @author teras
  */
-public class FileChown extends FileChstatus {
+public class ElementChown extends ElementChstatus {
 
-    public FileChown(String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementChown(String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {
         super("chown", file, attr, recursive, elements, info);
     }
 }
