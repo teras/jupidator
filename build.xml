@@ -98,12 +98,25 @@
 	</DTDDoc>
 </target>
 
+<target name="dist" depends="clean,doc,i18n,jar,doc">
+	<delete dir="build"/>
+	<tar includes="jupidator" excludes=".svn" compression="bzip2" destfile="../jupidator.0.2.0.tar.bz2">
+		<tarfileset dir="../jupidator"/>
+	</tar>
+	<move file="../jupidator.0.2.0.tar.bz2" todir="."/>
+</target>
+
 <target name="-post-clean">
         <delete>
 			<fileset dir="src/java/com/panayotis/jupidator/i18n" includes="Messages*" />
 			<fileset dir="i18n" includes="*.mo"/>
+			<fileset dir="." includes="*.tar.bz2"/>
 		</delete>
 		<delete dir="dist/doc" />
+</target>
+
+<target name="-post-jar">
+	<delete file="dist/README.txt"/>
 </target>
 
 <target name="jubler" depends="clean,i18n,jar">

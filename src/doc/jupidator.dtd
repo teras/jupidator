@@ -181,8 +181,8 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 -->
 <!ELEMENT kill EMPTY>
 <!--
-    @attrib process The name of the process. This could be a regular expression which will match the running process. When applied, could match more than one running process.
-    @attrib signal The signal to send. This is platform specific information. In unix-like is the "TERM" signal. There is no need to preceed the signal name/number with a "-" sybol.
+    @attr process The name of the process. This could be a regular expression which will match the running process. When applied, could match more than one running process.
+    @attr signal The signal to send. This is platform specific information. In unix-like is the "TERM" signal. There is no need to preceed the signal name/number with a "-" sybol.
     @attr forceinstall If enabled, the application is killed in any case. For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
 -->
 <!ATTLIST kill
@@ -196,7 +196,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 -->
 <!ELEMENT wait EMPTY>
 <!--
-    @attrib msec The number of milliseconds the installer should wait
+    @attr msecs The number of milliseconds the installer should 6Await
     @attr time When this command will be executed. Should be "BEFORE" "AFTER" or "MID". By default "BEFORE" parameter is used. This property is not case sensitive.
     @attr forceinstall If enabled, waiting is performed in any case (and installation information is displayed). For discussion about this parameter, see <a href="jupidator.dtd.html#file_forceinstall">forceinstall</a> under the <a href="jupidator.dtd.html#file">file</a> element.
 -->
