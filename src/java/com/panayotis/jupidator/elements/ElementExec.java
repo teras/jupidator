@@ -17,13 +17,14 @@ public class ElementExec extends ElementNative {
     private ArrayList<String> arguments;
 
     public ElementExec(String command, String input, String exectime, UpdaterAppElements elements, ApplicationInfo info) {
-        super(command, String.valueOf(Math.random()), input,              // Random hash for this exec
+        super(command, String.valueOf(Math.random()), input, // Random hash for this exec
                 ExecutionTime.parse(exectime, ExecutionTime.AFTER), elements, info);
         arguments = new ArrayList<String>();
     }
 
-    public void addArgument(String value, ApplicationInfo appinfo) {
-        arguments.add(appinfo.updatePath(value));
+    public void addArgument(String argument, ApplicationInfo appinfo) {
+        if (appinfo != null && argument != null)
+            arguments.add(appinfo.updatePath(argument));
     }
 
     protected String[] getExecArguments() {

@@ -106,4 +106,8 @@
 		<delete dir="dist/doc" />
 </target>
 
+<target name="jubler" depends="clean,i18n,jar">
+	<copy file="dist/jupidator.jar" todir="../Jubler/stable/resources/jupidator"/>
+</target>
+
 </project>

@@ -43,7 +43,8 @@ public class Arch {
     }
 
     void addArgument(String argument, ApplicationInfo appinfo) {
-        arguments.add(appinfo.updatePath(argument));
+        if (appinfo != null && argument != null)
+            arguments.add(appinfo.updatePath(argument));
     }
 
     public int countArguments() {
