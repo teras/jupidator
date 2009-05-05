@@ -9,3 +9,4 @@ syntax:glob
 syntax: regexp
 ^dist/
 ^build/
+^nbproject/private/
