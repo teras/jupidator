@@ -25,7 +25,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
   -->
 <!ELEMENT architect (launcher)>
 <!--
-    @attr tag The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator.
+    @attr tag The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator. A special tag "any" can be used to define any other architecture not strictly described.
     @attr os The operating system of this machine. This variable matches current operating system if System property "os.name" starts with this value. This attribute is not case sensitive.
     @attr arch The machine architecture. This variable matches current operating system if System property "os.arch" starts with this value. This attribute is not case sensitive.
 -->
@@ -81,7 +81,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 -->
 <!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait)*>
 <!--
-    @attr name The name of this architecture, as defines with the architect element above.
+    @attr name The name of this architecture, as defines with the architect element above. It could be "any", which will match all architectures, not having a special arch tag.
     @attr gui The installer will present a graphical window spinning for this version onwards. If this attribute is not present, no GUI is requested.
 -->
 <!ATTLIST arch

@@ -26,8 +26,17 @@ public class Arch {
         arguments = new ArrayList<String>();
     }
 
-    boolean isTag(String tag) {
-        return this.tag.toLowerCase().equals(tag);
+    Version getVersion(String tag) {
+        if (tag.toLowerCase().equals(this.tag)) {
+            Version found = new Version();
+            return found;
+        }
+        if (tag.equals("any")) {
+            Version found = new Version();
+            found.list_from_any_tag = true;
+            return found;
+        }
+        return null;
     }
 
     boolean isCurrent() {

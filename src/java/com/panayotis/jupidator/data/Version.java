@@ -28,6 +28,8 @@ public class Version {
     private Arch arch;
     private boolean graphical_gui;
 
+    boolean list_from_any_tag = false;  // This is used by arch to distinguish versions which were produced from "any" tags
+
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
             UpdaterProperties prop = new UpdaterProperties(appinfo);

@@ -25,8 +25,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
     private Arch arch;  // The stored architecture of the running system - null if unknown
     private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
+
     private Version latest; // The full aggregated list of the latest files, in order to upgrade
     private Version current;    // The list of files for the current reading "version" object
+    private Version current_exact; // Version of "current" made with exact arch match
+    private Version current_any;   // Version of "current" made with "any" arch match
+
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
@@ -66,8 +70,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("arch")) {
             if (ignore_version)
                 return;
-            if (arch.isTag(attr.getValue("name"))) // Found current architecture
-                current = new Version();
+            current = arch.getVersion(attr.getValue("name")); // Check if current architecture was found
             if (current != null)    // If this version is valid, check if GUI is required
                 current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui")));
         } else if (qName.equals("file")) {
@@ -150,14 +153,27 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName) {
         if (qName.equals("arch")) {
-            if (latest == null) {
-                latest = current;
-            } else {
-                latest.merge(current);
+            if (current != null) {
+                if (current.list_from_any_tag)
+                    current_any = current;
+                else
+                    current_exact = current;
             }
             current = null;
         } else if (qName.equals("version")) {
             ignore_version = false;
+            Version working = current_any;
+            if (current_exact != null)
+                working = current_exact;
+            current_any = current_exact = null;
+            if (working != null) {
+                if (latest == null) {
+                    latest = working;
+                    latest.list_from_any_tag = false;
+                } else {
+                    latest.merge(working);
+                }
+            }
         } else if (qName.equals("description")) {
             if (ignore_version)
                 return;
