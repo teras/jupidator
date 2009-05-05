@@ -92,7 +92,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!--
     Download a file from the remote location, relative to base URL. The latest file from every version will be taken into account, as discussed before.
 -->
-<!ELEMENT file EMPTY>
+<!ELEMENT file (sha1|sha2|md5)*>
 <!--
     @attr sourcedir The directory in the source location where this file exists. This is appended to the base URL.
     @attr destdir The destination directory of the file. This directory is <i>not</i> relative to anything.
@@ -111,6 +111,42 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
     ifexists CDATA "false"
     forceinstall CDATA "false"
   >
+
+<!--
+   SHA1 checksum of the specified file
+-->
+<!ELEMENT sha1 EMPTY>
+<!--
+    @attr value Value of SHA1 checksum in HEX
+-->
+<!ATTLIST sha1
+    value CDATA #REQUIRED
+  >
+
+<!--
+   SHA2 checksum of the specified file. Defaults to to SHA-256, but the developer can use other methods
+-->
+<!ELEMENT sha2 EMPTY>
+<!--
+    @attr type The type of the SHA2 algorithm. Defaults to 256. Other valid values are 384 and 512
+    @attr value Value of SHA2 checksum in HEX
+-->
+<!ATTLIST sha2
+    type CDATA "256"
+    value CDATA #REQUIRED
+  >
+
+<!--
+   MD5 checksum of the specified file
+-->
+<!ELEMENT md5 EMPTY>
+<!--
+    @attr value Value of MD5 checksum in HEX
+-->
+<!ATTLIST md5
+    value CDATA #REQUIRED
+  >
+
 
 <!--
     Remove a local file.

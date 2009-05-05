@@ -5,16 +5,16 @@
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.elements.ElementAdd;
+import com.panayotis.jupidator.elements.ElementFile;
 import com.panayotis.jupidator.elements.ElementChmod;
 import com.panayotis.jupidator.elements.ElementChown;
 import com.panayotis.jupidator.elements.ElementExec;
 import com.panayotis.jupidator.elements.ElementKill;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.ElementWait;
+import com.panayotis.jupidator.elements.security.Digester;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
-
 
 /**
  *
@@ -31,6 +31,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
+    private ElementFile lastFileElement = null;   // Remember last Add element, to add digesters later on
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
@@ -72,12 +73,14 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            ElementAdd f = new ElementAdd(attr.getValue("name"), attr.getValue("sourcedir"),
+            lastFileElement = new ElementFile(attr.getValue("name"), attr.getValue("sourcedir"),
                     attr.getValue("destdir"), attr.getValue("size"),
                     attr.getValue("compress"), elements, appinfo);
-            if (TextUtils.isTrue(attr.getValue("ifexists")) && (!f.exists()))
+            if (TextUtils.isTrue(attr.getValue("ifexists")) && (!lastFileElement.exists())) {
+                lastFileElement = null;
                 return;
-            current.put(f);
+            }
+            current.put(lastFileElement);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
@@ -105,6 +108,27 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             current.put(new ElementKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
+        } else if (qName.equals("md5")) {
+            if (lastFileElement == null)
+                return;
+            Digester d = Digester.getDigester("MD5");
+            d.setHash(attr.getValue("value"));
+            lastFileElement.addDigester(d);
+        } else if (qName.equals("sha1")) {
+            if (lastFileElement == null)
+                return;
+            Digester d = Digester.getDigester("SHA1");
+            d.setHash(attr.getValue("value"));
+            lastFileElement.addDigester(d);
+        } else if (qName.equals("sha2")) {
+            if (lastFileElement == null)
+                return;
+            String type = attr.getValue("type");
+            if (type == null)
+                type = "256";
+            Digester d = Digester.getDigester("SHA-" + attr.getValue("type"));
+            d.setHash(attr.getValue("value"));
+            lastFileElement.addDigester(d);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));
@@ -140,6 +164,8 @@ public class UpdaterXMLHandler extends DefaultHandler {
             elements.addLogItem(elements.getLastVersion(), descbuffer.toString());
         } else if (qName.equals("exec")) {
             lastSeenExecElement = null; // Forget it, we don't need it any more
+        } else if (qName.equals("file")) {
+            lastFileElement = null;
         }
     }
 

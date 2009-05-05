@@ -15,28 +15,31 @@ import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
+import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * 
  * @author teras
  */
-public class ElementAdd extends JupidatorElement {
+public class ElementFile extends JupidatorElement {
 
     /** This is actually a URL */
     private String source;
-    private CompressionMethod compression = null;
+    private CompressionMethod compression;
+    private ArrayList<Digester> digesters;
 
-    public ElementAdd(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
         if (source == null)
             source = "";
         this.source = info.updatePath(elements.getBaseURL() + source);
-        
+
         if (compress == null)
             compress = "none";
         compress = compress.toLowerCase();
@@ -48,10 +51,16 @@ public class ElementAdd extends JupidatorElement {
             compression = new GZipCompression();
         else
             compression = new NullCompression();
+        digesters = new ArrayList<Digester>();
     }
 
     public boolean exists() {
         return new File(getDestinationFile()).exists();
+    }
+
+    public void addDigester(Digester digester) {
+        if (digester != null)
+            digesters.add(digester);
     }
 
     private String getSourceFile() {
@@ -91,8 +100,16 @@ public class ElementAdd extends JupidatorElement {
         try {
             error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
                     new FileOutputStream(downloadfilename), watcher);
-            if (downloadfile.length() != getSize())
+            if (downloadfile.length() != getSize()) {
                 error = _("Size of file {0} does not match. Reported {1}, required {2}", downloadfilename, downloadfile.length(), getSize());
+            } else {
+                for (Digester d : digesters) {
+                    if (!d.checkFile(downloadfile)) {
+                        error = _("Checksumming {0} with algorithm {1} failed.", downloadfilename, d.getAlgorithm());
+                        break;
+                    }
+                }
+            }
         } catch (IOException ex) {
             error = ex.getMessage();
         }
