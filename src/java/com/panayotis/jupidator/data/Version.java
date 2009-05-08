@@ -27,7 +27,7 @@ public class Version {
     private UpdaterProperties appprop;
     private Arch arch;
     private boolean graphical_gui;
-    private boolean is_visible = true;
+    private boolean is_visible = false;
 
     boolean list_from_any_tag = false;  // This is used by arch to distinguish versions which were produced from "any" tags
 
@@ -47,7 +47,7 @@ public class Version {
         } catch (SAXException ex) {
             throw new UpdaterException(ex.getMessage());
         } catch (IOException ex) {
-            throw new UpdaterException(ex.getMessage());
+            throw new UpdaterException(ex.getClass().getName()+" "+ex.getMessage());
         } catch (ParserConfigurationException ex) {
             throw new UpdaterException(ex.getMessage());
         }
