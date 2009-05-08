@@ -17,8 +17,8 @@ import java.util.Properties;
  */
 public class UpdaterProperties {
 
-    private final static String TIMECHECK = "Updater.Version.LastCheck";
-    private final static String VERSIONCHECK = "Updater.Version.Release";
+    private final static String TIMEIGNORE = "Updater.Version.LastCheck";
+    private final static String VERSIONIGNORE = "Updater.Version.Ignore";
     private final Properties opts;
     private ApplicationInfo appinfo;
 
@@ -29,15 +29,17 @@ public class UpdaterProperties {
         this.appinfo = appinfo;
         try {
             opts.loadFromXML(new FileInputStream(appinfo.getUpdaterConfigFile()));
+            opts.remove("Updater.Version.Release");
+            storeOptions();
         } catch (IOException ex) {
         }
-        appinfo.updateRelease(opts.getProperty(VERSIONCHECK, "0"));
+        appinfo.updateIgnoreRelease(opts.getProperty(VERSIONIGNORE, "0"));
     }
 
     public boolean isTooSoon() {
         long now = Calendar.getInstance().getTimeInMillis();
         try {
-            long last = Long.parseLong(opts.getProperty(TIMECHECK, "-1"));
+            long last = Long.parseLong(opts.getProperty(TIMEIGNORE, "-1"));
             long next = last + 1000 * 60 * 60 * 24;
             if (now < next)
                 return true;
@@ -48,12 +50,12 @@ public class UpdaterProperties {
     }
 
     public void defer() {
-        opts.put(TIMECHECK, Long.toString(Calendar.getInstance().getTimeInMillis()));
+        opts.put(TIMEIGNORE, Long.toString(Calendar.getInstance().getTimeInMillis()));
         storeOptions();
     }
 
     public void ignore(int newrelease) {
-        opts.put(VERSIONCHECK, Integer.toString(newrelease));
+        opts.put(VERSIONIGNORE, Integer.toString(newrelease));
         storeOptions();
     }
 

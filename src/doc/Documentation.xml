@@ -201,6 +201,7 @@ public class MyAppUpdate implements UpdatedApplication {
 	<listitem><para><varname>APPSUPPORTDIR</varname></para><para>Support directory of the application, as given to the <link linkend="appsupportdir">runtime environment</link></para></listitem>
 	<listitem><para><varname>VERSION</varname></para><para>Human readable version, as given to the <link linkend="version">runtime environment</link></para></listitem>
 	<listitem><para><varname>RELEASE</varname></para><para>Numeric release, as given to the <link linkend="release">runtime environment</link></para></listitem>
+	<listitem><para><varname>IGNORERELEASE</varname></para><para>Last release, which the user requested not to upgrade.</para></listitem>
 	<listitem><para><varname>JAVABIN</varname></para><para>Path to Java executable.</para></listitem>
 	<listitem><para>Any Java System property, i.e. <varname>${java.io.tmpdir}</varname></para></listitem>
 	<listitem><para>Any environmental variable, i.e. <varname>${UID}</varname></para></listitem>
@@ -209,7 +210,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <para>The developer can define it's own variables and use them inside the XML file. New variables are stored inside the <varname>com.panayotis.jupidator.ApplicationInfo</varname> object, by calling the method <varname>setProperty(String name, String value)</varname></para>
 
 <para>In order to use these variables, should be enclosed in curly brackets and prepended with a dollar sign. For example, to define a directory inside application support directory, with the username in the path, the following expression should be written:</para>
-<para><varname>${APPSUPPORT}${file.separator}${user.name}${file.separator}myfile.txt</varname></para>
+<para><varname>${APPSUPPORTDIR}${file.separator}${user.name}${file.separator}myfile.txt</varname></para>
 </sect2>
 
 <sect2>

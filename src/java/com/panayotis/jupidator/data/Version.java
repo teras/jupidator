@@ -27,6 +27,7 @@ public class Version {
     private UpdaterProperties appprop;
     private Arch arch;
     private boolean graphical_gui;
+    private boolean is_visible = true;
 
     boolean list_from_any_tag = false;  // This is used by arch to distinguish versions which were produced from "any" tags
 
@@ -88,6 +89,7 @@ public class Version {
             }
         }
         graphical_gui |= other.graphical_gui;
+        is_visible |= other.is_visible;
     }
 
     public Arch getArch() {
@@ -142,5 +144,13 @@ public class Version {
 
     public void put(JupidatorElement element) {
         elements.put(element.getHash(), element);
+    }
+
+    public boolean isVisible() {
+        return is_visible;
+    }
+
+    public void setVisible(boolean visible) {
+        is_visible = visible;
     }
 }

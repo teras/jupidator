@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class ApplicationInfo {
 
     private HashMap<String, String> vars;
-    private int release;
+
     /**
     true:  Some files can be ignored, if they are taken care by a distribution
     false: All files should be  updated
@@ -47,11 +47,14 @@ public class ApplicationInfo {
             version = "0.0.0.0";
         vars.put("VERSION", version);
 
+        int currelease = 0;
         try {
-            this.release = Integer.parseInt(release);
+            currelease = Integer.parseInt(release);
         } catch (NumberFormatException ex) {
         }
-        vars.put("RELEASE", Integer.toString(this.release));
+        vars.put("RELEASE", Integer.toString(currelease));
+
+        updateIgnoreRelease("0");
 
         vars.put("JAVABIN", FileUtils.JAVABIN);
     }
@@ -77,18 +80,23 @@ public class ApplicationInfo {
     }
 
     /* This new release has to do with ignoring a specific version */
-    public void updateRelease(String lastrelease) {
+    public void updateIgnoreRelease(String release) {
+        int ignorerelease = 0;
         try {
-            int lastrel = Integer.parseInt(lastrelease);
-            if (lastrel > release)
-                release = lastrel;
+            ignorerelease = Integer.parseInt(release);
         } catch (NumberFormatException ex) {
         }
+        vars.put("IGNORERELEASE", Integer.toString(ignorerelease));
     }
 
     public int getRelease() {
-        return release;
+        return Integer.parseInt(vars.get("RELEASE"));
     }
+
+    public int getIgnoreRelease() {
+        return Integer.parseInt(vars.get("IGNORERELEASE"));
+    }
+
 
     public String getVersion() {
         return vars.get("VERSION");

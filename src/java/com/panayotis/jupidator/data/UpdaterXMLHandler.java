@@ -31,7 +31,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private Version current_exact; // Version of "current" made with exact arch match
     private Version current_any;   // Version of "current" made with "any" arch match
 
-    private boolean ignore_version; // true, if this version is too old and should be ignored
+    private boolean old_version; // true, if this version is too old and should be ignored
+    private boolean visible_version; // true, if this version should be displayed to the user
+
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
@@ -39,7 +41,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
-        ignore_version = false;
+        old_version = false;
         this.appinfo = appinfo;
         arch = new Arch("any", "", ""); // Default arch is selected by default
     }
@@ -64,15 +66,18 @@ public class UpdaterXMLHandler extends DefaultHandler {
             }
             String version_last = attr.getValue("version");
             elements.updateVersion(release_last, version_last);
-            ignore_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
+            old_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
+            visible_version = (appinfo == null) ? true : release_last > appinfo.getIgnoreRelease();
         } else if (qName.equals("description")) {
             descbuffer = new StringBuffer();
         } else if (qName.equals("arch")) {
-            if (ignore_version)
+            if (old_version)
                 return;
             current = arch.getVersion(attr.getValue("name")); // Check if current architecture was found
-            if (current != null)    // If this version is valid, check if GUI is required
-                current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui")));
+            if (current != null) { // Check if this version is valid
+                current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui"))); // check if GUI is required
+                current.setVisible(visible_version);    // Mark if this version should be visible or not
+            }
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
@@ -140,7 +145,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     }
 
     private boolean shouldIgnore(String force) {
-        if (ignore_version)
+        if (old_version)
             return true;
         if (current == null)
             return true;
@@ -161,7 +166,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             }
             current = null;
         } else if (qName.equals("version")) {
-            ignore_version = false;
+            old_version = false;
             Version working = current_any;
             if (current_exact != null)
                 working = current_exact;
@@ -175,7 +180,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 }
             }
         } else if (qName.equals("description")) {
-            if (ignore_version)
+            if (old_version)
                 return;
             elements.addLogItem(elements.getLastVersion(), descbuffer.toString());
         } else if (qName.equals("exec")) {
@@ -188,7 +193,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
 //    public void endDocument() {
 //    }
     public void characters(char[] ch, int start, int length) {
-        if (ignore_version)
+        if (old_version)
             return;
         if (descbuffer == null)
             return;
