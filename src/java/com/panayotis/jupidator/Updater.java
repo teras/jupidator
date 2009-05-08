@@ -38,7 +38,6 @@ public class Updater {
         if (application == null)
             application = new SimpleApplication();
         this.application = application;
-        watcher = new UpdateWatcher();
     }
 
     /** Return JupidatorGUI, and create it if it does not exist.
@@ -63,6 +62,7 @@ public class Updater {
     public void actionDisplay() throws UpdaterException {
         if (vers.isVisible()) {
             getGUI();  /* GUI is created lazily, when needed */
+            watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
             watcher.setCallBack(gui);
             gui.setInformation(this, vers.getAppElements(), appinfo);
             gui.startDialog();
