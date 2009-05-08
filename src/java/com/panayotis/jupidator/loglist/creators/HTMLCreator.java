@@ -29,7 +29,7 @@ public class HTMLCreator {
         data.append("<body>\n");
 
         data.append("<div class=\"releaseinfo\">");
-        data.append(list.getReleaseInfo());
+        data.append(list.getApplicationInfo());
         data.append("</div>\n");
         
         for (LogItem item : list) {

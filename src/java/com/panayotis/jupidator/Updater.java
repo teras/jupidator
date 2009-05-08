@@ -42,7 +42,7 @@ public class Updater {
             vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
             appinfo.setSelfUpdate();
             vers.getAppElements().setSelfUpdate(oldname);
-            vers.getAppElements().setReleaseInfo(_("This update is required for the smooth updating of {0}", oldname));
+            vers.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
         }
 
         this.appinfo = appinfo;
