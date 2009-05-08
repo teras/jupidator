@@ -37,7 +37,7 @@ public class Version {
             if (prop.isTooSoon()) {
                 Version v = new Version();
                 v.appel = new UpdaterAppElements();
-                return new Version();
+                return v;
             }
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);

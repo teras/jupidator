@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public class UpdaterProperties {
 
-    private final static String TIMEIGNORE = "Updater.Version.LastCheck";
+    private final static String TIMEIGNORE = "Updater.Version.NextCheck";
     private final static String VERSIONIGNORE = "Updater.Version.Ignore";
     private final Properties opts;
     private ApplicationInfo appinfo;
@@ -30,6 +30,7 @@ public class UpdaterProperties {
         try {
             opts.loadFromXML(new FileInputStream(appinfo.getUpdaterConfigFile()));
             opts.remove("Updater.Version.Release");
+            opts.remove("Updater.Version.LastCheck");
             storeOptions();
         } catch (IOException ex) {
         }
