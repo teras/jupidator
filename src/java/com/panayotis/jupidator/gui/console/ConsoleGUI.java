@@ -26,6 +26,8 @@ public class ConsoleGUI implements JupidatorGUI {
     private String info1,  info2,  loglist;
     private Updater callback;
     private boolean is_loglist_enabled = true;
+    private boolean can_not_ignore = false;
+
     private BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
@@ -34,6 +36,7 @@ public class ConsoleGUI implements JupidatorGUI {
         if (is_loglist_enabled)
             loglist = TextCreator.getList(el.getLogList());
         this.callback = callback;
+        can_not_ignore = info.isSelfUpdate();
     }
 
     public void startDialog() {
@@ -43,19 +46,28 @@ public class ConsoleGUI implements JupidatorGUI {
             System.out.println();
             System.out.println(loglist);
         }
+        String question = _("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] ");
+        String valid_ans = "sri";
+        if (can_not_ignore) {
+            question = _("Do you want to (R)emind later or (I)nstall? [r/i] ");
+            valid_ans = "ri";
+        }
+
         boolean valid = false;
         while (!valid) {
             valid = true;   // Be optimistic; will handle this in default section
-            switch (getAnswer(_("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] "), "sri")) {
-                case 's':
-                    callback.actionIgnore();
-                    break;
+            switch (getAnswer(question, valid_ans)) {
                 case 'r':
                     callback.actionDefer();
                     break;
                 case 'i':
                     callback.actionCommit();
                     break;
+                case 's':
+                    if (!can_not_ignore) {
+                        callback.actionIgnore();
+                        break;
+                    }
                 default:
                     System.out.println(_("Wrong answer."));
                     valid = false;

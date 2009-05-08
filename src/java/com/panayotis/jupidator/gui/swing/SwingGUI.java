@@ -63,6 +63,9 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         } catch (MalformedURLException ex) {
             throw new UpdaterException("Unable to load  icon " + ex.getMessage());
         }
+
+        if (info.isSelfUpdate())
+            SkipB.setVisible(false);
     }
 
     public void startDialog() {

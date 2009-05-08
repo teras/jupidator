@@ -28,10 +28,12 @@ public class HTMLCreator {
         data.append("</head>\n");
         data.append("<body>\n");
 
-        data.append("<div class=\"releaseinfo\">");
-        data.append(list.getApplicationInfo());
-        data.append("</div>\n");
-        
+        if (!list.getApplicationInfo().equals("")) {
+            data.append("<div class=\"releaseinfo\">");
+            data.append(list.getApplicationInfo());
+            data.append("</div>\n");
+        }
+
         for (LogItem item : list) {
             data.append("<div class=\"version\">");
             data.append(_("Version"));

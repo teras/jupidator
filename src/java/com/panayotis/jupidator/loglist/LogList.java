@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class LogList extends ArrayList<LogItem> {
 
-    private String application_info;
+    private String application_info = "";
 
     /**
      * @return the release_info

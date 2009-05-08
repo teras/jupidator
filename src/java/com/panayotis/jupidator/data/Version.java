@@ -34,8 +34,11 @@ public class Version {
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
             UpdaterProperties prop = new UpdaterProperties(appinfo);
-            if (prop.isTooSoon())
+            if (prop.isTooSoon()) {
+                Version v = new Version();
+                v.appel = new UpdaterAppElements();
                 return new Version();
+            }
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);
             parser.parse(xml, handler);
