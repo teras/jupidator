@@ -11,11 +11,13 @@
     @attr baseurl The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.
     @attr icon The image icon of the application. It should be in a format that the JRE will be able to understand.
         For example, if baseurl is http://www.myserver.org/files and icon is icons/mascot.png then the icon URL is http://www.myserver.org/files/icons/mascot.png 
+    @attr jupidator The minimum required version of jupidator If no version is provided, no implicit library updates will be performed.
  -->
 <!ATTLIST updatelist
     application CDATA #REQUIRED
     baseurl CDATA #REQUIRED
     icon CDATA #IMPLIED
+    jupidator CDATA #IMPLIED
   >
   
 <!--

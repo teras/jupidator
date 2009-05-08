@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.panayotis.jupidator.SystemVersion;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
@@ -21,6 +22,7 @@ public class UpdaterAppElements {
     private String newversion = "0.0.0";
     private String lastversion = "0.0.0.0"; // Last known version, read from XML
     private LogList loglist = new LogList();
+    private boolean needs_update = false;
 
     public String getAppName() {
         return AppName;
@@ -66,6 +68,14 @@ public class UpdaterAppElements {
             this.iconpath = baseURL + iconpath;
     }
 
+    void setJupidatorVersion(String jupidator_version) {
+        if (jupidator_version != null)
+            try {
+                needs_update = Integer.parseInt(jupidator_version) > SystemVersion.RELEASE;
+            } catch (NumberFormatException ex) {
+            }
+    }
+
     void updateVersion(int lastrelease, String lastversion) {
         this.lastrelease = lastrelease;
         this.lastversion = lastversion;
@@ -80,8 +90,12 @@ public class UpdaterAppElements {
     public String getNewVersion() {
         return newversion;
     }
-    
+
     public int getNewRelease() {
         return newrelease;
+    }
+
+    public boolean shouldUpdateLibrary() {
+        return needs_update;
     }
 }

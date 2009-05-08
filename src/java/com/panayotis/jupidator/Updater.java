@@ -26,15 +26,22 @@ import javax.swing.JOptionPane;
 public class Updater {
 
     private Version vers;
-    private JupidatorGUI gui;
-    private UpdateWatcher watcher;
     private UpdatedApplication application;
     private ApplicationInfo appinfo;
     private Thread download;
+    /* Lazy components */
+    private JupidatorGUI gui;
+    private UpdateWatcher watcher;
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
-        this.appinfo = appinfo;
         vers = Version.loadVersion(xmlurl, appinfo);
+        if (vers.getAppElements().shouldUpdateLibrary()) {
+            String JUPIDATORHOME = ".";
+            appinfo = new ApplicationInfo(JUPIDATORHOME, null, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
+            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
+        }
+
+        this.appinfo = appinfo;
         if (application == null)
             application = new SimpleApplication();
         this.application = application;
@@ -45,12 +52,11 @@ public class Updater {
      *  GUI is created lazily, when needed
      */
     public JupidatorGUI getGUI() {
-        if (gui == null) {
+        if (gui == null)
             if (GraphicsEnvironment.isHeadless())
                 gui = new ConsoleGUI();
             else
                 gui = new SwingGUI();
-        }
         return gui;
     }
 
@@ -71,9 +77,8 @@ public class Updater {
 
     public void actionCommit() {
         long size = 0;
-        for (String key : vers.keySet()) {
+        for (String key : vers.keySet())
             size += vers.get(key).getSize();
-        }
         watcher.setAllBytes(size);
         download = new Thread() {
 
@@ -113,9 +118,8 @@ public class Updater {
             download.join();
         } catch (InterruptedException ex) {
         }
-        for (String key : vers.keySet()) {
+        for (String key : vers.keySet())
             vers.get(key).cancel(application);
-        }
     }
 
     /* Do nothing - wait for next cycle */
@@ -155,13 +159,11 @@ public class Updater {
             args[4] = vers.isGraphicalDeployer() ? "g" : "t";
             args[5] = String.valueOf(vers.size());
 
-            for (String key : vers.keySet()) {
+            for (String key : vers.keySet())
                 args[header++] = vers.get(key).getArgument();
-            }
 
-            for (int i = 0; i < arch.countArguments(); i++) {
+            for (int i = 0; i < arch.countArguments(); i++)
                 args[header++] = arch.getArgument(i, appinfo);
-            }
 
             try {
                 StringBuffer buf = new StringBuffer();

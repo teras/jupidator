@@ -11,6 +11,7 @@
 
 package com.panayotis.jupidator.gui.swing;
 
+import com.panayotis.jupidator.SystemVersion;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
@@ -42,7 +43,7 @@ public class AboutDialog extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        VersionL = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -79,9 +80,9 @@ public class AboutDialog extends javax.swing.JDialog {
         jLabel2.setText(_("Version:"));
         jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jLabel3.setText("0.2.0");
-        jLabel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
-        jPanel4.add(jLabel3, java.awt.BorderLayout.CENTER);
+        VersionL.setText(SystemVersion.VERSION);
+        VersionL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        jPanel4.add(VersionL, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
@@ -113,9 +114,9 @@ public class AboutDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseB;
+    private javax.swing.JLabel VersionL;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

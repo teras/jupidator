@@ -141,6 +141,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));
             elements.setIconpath(attr.getValue("icon"));
+            elements.setJupidatorVersion(attr.getValue("jupidator"));
         }
     }
 
