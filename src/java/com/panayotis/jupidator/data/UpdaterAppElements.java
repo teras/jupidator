@@ -4,6 +4,8 @@
  */
 package com.panayotis.jupidator.data;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.SystemVersion;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
@@ -34,6 +36,10 @@ public class UpdaterAppElements {
 
     public String getLastVersion() {
         return lastversion;
+    }
+
+    public void setSelfUpdate(String appname) {
+        setAppName(_("Jupidator for {0}", appname));
     }
 
     void setAppName(String AppName) {

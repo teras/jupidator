@@ -38,7 +38,10 @@ public class Updater {
         if (vers.getAppElements().shouldUpdateLibrary()) {
             String JUPIDATORHOME = ".";
             appinfo = new ApplicationInfo(JUPIDATORHOME, null, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
-            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
+            Version jvers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
+            appinfo.setSelfUpdate();
+            jvers.getAppElements().setSelfUpdate(vers.getAppElements().getAppName());
+            vers = jvers;
         }
 
         this.appinfo = appinfo;

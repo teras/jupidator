@@ -21,12 +21,12 @@ import java.util.regex.Pattern;
 public class ApplicationInfo {
 
     private HashMap<String, String> vars;
-
     /**
     true:  Some files can be ignored, if they are taken care by a distribution
     false: All files should be  updated
      */
     private boolean distributionBased = false;
+    private boolean selfupdate;
 
     public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
@@ -97,7 +97,6 @@ public class ApplicationInfo {
         return Integer.parseInt(vars.get("IGNORERELEASE"));
     }
 
-
     public String getVersion() {
         return vars.get("VERSION");
     }
@@ -115,9 +114,8 @@ public class ApplicationInfo {
                 String value = vars.get(name);
                 if (value == null) {
                     value = System.getProperty(name);
-                    if (value == null) {
+                    if (value == null)
                         value = System.getenv(name);
-                    }
                 }
                 if (value != null) {
                     value = value.replace("\\", "\\\\").replace("$", "\\$");
@@ -128,5 +126,13 @@ public class ApplicationInfo {
         m.appendTail(sb);
 //        System.out.println(path + " -> " + sb.toString());
         return sb.toString();
+    }
+
+    public boolean isSelfUpdate() {
+        return selfupdate;
+    }
+
+    public void setSelfUpdate() {
+        this.selfupdate = true;
     }
 }
