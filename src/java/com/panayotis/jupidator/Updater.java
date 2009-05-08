@@ -36,12 +36,13 @@ public class Updater {
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         vers = Version.loadVersion(xmlurl, appinfo);
         if (vers.getAppElements().shouldUpdateLibrary()) {
+            String oldname = vers.getAppElements().getAppName();
             String JUPIDATORHOME = ".";
             appinfo = new ApplicationInfo(JUPIDATORHOME, null, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
-            Version jvers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
+            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
             appinfo.setSelfUpdate();
-            jvers.getAppElements().setSelfUpdate(vers.getAppElements().getAppName());
-            vers = jvers;
+            vers.getAppElements().setSelfUpdate(oldname);
+            vers.getAppElements().setReleaseInfo(_("This update is required for the smooth updating of {0}", oldname));
         }
 
         this.appinfo = appinfo;

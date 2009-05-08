@@ -65,6 +65,10 @@ public class UpdaterAppElements {
         loglist.add(new LogItem(version, information));
     }
 
+    public void setReleaseInfo(String release_info) {
+        loglist.setReleaseInfo(release_info);
+    }
+
     public String getIconpath() {
         return iconpath;
     }

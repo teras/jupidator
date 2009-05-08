@@ -19,6 +19,7 @@ public class TextCreator {
     public static String getList(LogList list) {
         StringBuffer data;
         data = new StringBuffer();
+        data.append(list.getReleaseInfo()).append(NL);
         data.append(_("List of changes:")).append(NL);
         for (LogItem item : list) {
             data.append(" * ");
