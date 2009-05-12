@@ -89,6 +89,43 @@ public class FileUtils {
         String FILEDIR = FILEHOME + FS + CLASSDIR.replace('/', FS);
         String FILEOUT = FILEDIR + FS + CLASSFILE;
 
+        /* Create Java path */
+        File depdir = new File(FILEDIR);
+        depdir.mkdirs();
+        if ((!depdir.isDirectory()) || (!depdir.canWrite()))
+            return _("Deployer path {0} is not writable.", depdir.getPath());
+
+        Vector<String> jars = new Vector<String>();
+        Vector<String> dirs = new Vector<String>();
+        getClassPaths(jars, dirs);
+
+        for (String jar : jars) {
+            listener.receiveMessage(_("Checking JAR {0} for Deployer class.", jar));
+            try {
+                ZipFile zip = new ZipFile(jar);
+                ZipEntry entry = zip.getEntry(CLASSPATH);
+                if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null) == null) {
+                    listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
+                    return null;
+                }
+            } catch (IOException ex) {
+            }
+        }
+        for (String path : dirs) {
+            listener.receiveMessage(_("Checking Directory {0} for Deployer class.", path));
+            path = path + CLASSPATHSYSTEM;
+            try {
+                if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null) {
+                    listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
+                    return null;
+                }
+            } catch (FileNotFoundException ex) {
+            }
+        }
+        return _("Unable to create Deployer");
+    }
+
+    private static void getClassPaths(Vector<String> jarpaths, Vector<String> dirpaths) {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
         Vector<String> classpaths = new Vector<String>();
         StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"),
@@ -96,42 +133,23 @@ public class FileUtils {
         while (tok.hasMoreElements())
             classpaths.add(tok.nextToken());
 
-        /* Create Java path */
-        File dir = new File(FILEDIR);
-        dir.mkdirs();
-        if ((!dir.isDirectory()) || (!dir.canWrite()))
-            return _("Deployer path {0} is not writable.", dir.getPath());
-
-        /* Find JAR/EXE with the desired .class file */
         String path;
         while (classpaths.size() > 0) {
             path = classpaths.get(0);
             classpaths.remove(0);
-            listener.receiveMessage(_("Checking path {0} for Deployer class.", path));
-            if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")))
+            if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
+                jarpaths.add(path);
                 try {
-                    ZipFile zip = new ZipFile(path);
-                    ZipEntry entry = zip.getEntry(CLASSPATH);
-                    if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null) == null)
-                        return null;
                     /* make sure that in this zip entry there is no classpath definition */
-                    getClassPathFromManifest(zip, classpaths, new File(path).getParent());
+                    getClassPathFromManifest(new ZipFile(path), classpaths, new File(path).getParent());
                 } catch (IOException ex) {
                 }
-            else {
+            } else {
                 if (path.length() > 0 && path.charAt(path.length() - 1) != FS)
                     path = path + FS;
-                path = path + CLASSPATHSYSTEM;
-                try {
-                    if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null) {
-                        listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
-                        return null;
-                    }
-                } catch (FileNotFoundException ex) {
-                }
+                dirpaths.add(path);
             }
         }
-        return _("Unable to create Deployer");
     }
 
     private static void getClassPathFromManifest(ZipFile zip, Vector<String> classpaths, String parent) {
@@ -195,14 +213,13 @@ public class FileUtils {
         if (f.exists())
             /* we are sure that a parent exists for this file */
             return p.canWrite();
-        else
-            if (p.exists()) {
-                /* Check if parent file is directory AND can write in it */
-                if (p.isDirectory() && p.canWrite())
-                    return true;
-                return false;
-            } else
-                /* directories created (?) */
-                return p.mkdirs();
+        else if (p.exists()) {
+            /* Check if parent file is directory AND can write in it */
+            if (p.isDirectory() && p.canWrite())
+                return true;
+            return false;
+        } else
+            /* directories created (?) */
+            return p.mkdirs();
     }
 }
