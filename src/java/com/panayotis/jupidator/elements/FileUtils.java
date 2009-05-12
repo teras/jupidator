@@ -51,9 +51,8 @@ public class FileUtils {
 
         try {
             while ((count = in.read(buffer)) != -1) {
-                if (Thread.interrupted()) {
+                if (Thread.interrupted())
                     throw new IOException("User asked to cancel update");
-                }
                 out.write(buffer, 0, count);
                 if (blisten != null)
                     blisten.addBytes(count);
@@ -109,7 +108,7 @@ public class FileUtils {
             path = classpaths.get(0);
             classpaths.remove(0);
             listener.receiveMessage(_("Checking path {0} for Deployer class.", path));
-            if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
+            if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")))
                 try {
                     ZipFile zip = new ZipFile(path);
                     ZipEntry entry = zip.getEntry(CLASSPATH);
@@ -119,7 +118,7 @@ public class FileUtils {
                     getClassPathFromManifest(zip, classpaths, new File(path).getParent());
                 } catch (IOException ex) {
                 }
-            } else {
+            else {
                 if (path.length() > 0 && path.charAt(path.length() - 1) != FS)
                     path = path + FS;
                 path = path + CLASSPATHSYSTEM;
@@ -136,7 +135,7 @@ public class FileUtils {
     }
 
     private static void getClassPathFromManifest(ZipFile zip, Vector<String> classpaths, String parent) {
-        if (parent==null)
+        if (parent == null)
             parent = "";
         else
             parent = parent + FS;
@@ -147,7 +146,7 @@ public class FileUtils {
             try {
                 String line;
                 cpin = new BufferedReader(new InputStreamReader(zip.getInputStream(manifest)));
-                while ((line = cpin.readLine()) != null) {
+                while ((line = cpin.readLine()) != null)
                     if (line.toLowerCase().startsWith("class-path:")) {
                         String nextline;
                         while ((nextline = cpin.readLine()) != null && nextline.startsWith(" "))
@@ -157,7 +156,6 @@ public class FileUtils {
                             classpaths.add(parent + tok.nextToken());
                         return;
                     }
-                }
             } catch (IOException ex) {
             } finally {
                 try {
@@ -182,33 +180,29 @@ public class FileUtils {
     private static boolean isWritableLoop(File f) {
         if (f.isDirectory()) {
             File dir[] = f.listFiles();
-            for (int i = 0; i < dir.length; i++) {
+            for (int i = 0; i < dir.length; i++)
                 if (!isWritable(dir[i]))
                     return false;
-            }
             return true;
-        } else {
+        } else
             return f.canWrite();
-        }
     }
 
     private static boolean isParentWritable(File f) {
         File p = f.getParentFile();
         if (p == null)  // No parent file - can't work on root files
             return false;
-        if (f.exists()) {
+        if (f.exists())
             /* we are sure that a parent exists for this file */
             return p.canWrite();
-        } else {
+        else
             if (p.exists()) {
                 /* Check if parent file is directory AND can write in it */
                 if (p.isDirectory() && p.canWrite())
                     return true;
                 return false;
-            } else {
+            } else
                 /* directories created (?) */
                 return p.mkdirs();
-            }
-        }
     }
 }
