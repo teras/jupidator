@@ -41,7 +41,7 @@ public class Updater {
 
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getParent();
             appinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
-            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
+            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", appinfo);
             appinfo.setSelfUpdate();
             vers.getAppElements().setSelfUpdate(oldname);
             vers.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
