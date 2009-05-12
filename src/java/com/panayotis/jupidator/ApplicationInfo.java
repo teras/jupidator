@@ -35,12 +35,16 @@ public class ApplicationInfo {
             throw new NullPointerException(_("Application path can not be null."));
         if (!new File(AppHome).isDirectory())
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
+        if (!AppHome.endsWith("/"))
+            AppHome += "/";
         vars.put("APPHOME", AppHome);
 
         if (AppSupportDir == null || (!new File(AppSupportDir).isDirectory()))
             AppSupportDir = AppHome;
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
             AppSupportDir = AppSupportDir + FS;
+        if (!AppSupportDir.endsWith("/"))
+            AppSupportDir += "/";
         vars.put("APPSUPPORTDIR", AppSupportDir);
 
         if (version == null || version.equals(""))

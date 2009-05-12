@@ -16,6 +16,7 @@ import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.data.Version;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
@@ -37,9 +38,9 @@ public class Updater {
         vers = Version.loadVersion(xmlurl, appinfo);
         if (vers.getAppElements().shouldUpdateLibrary()) {
             String oldname = vers.getAppElements().getAppName();
-            String JUPIDATORHOME = ".";
-            String JUPIDATORCONFIGDIR = null;
-            appinfo = new ApplicationInfo(JUPIDATORHOME, JUPIDATORCONFIGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
+
+            String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getParent();
+            appinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
             vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator.xml", appinfo);
             appinfo.setSelfUpdate();
             vers.getAppElements().setSelfUpdate(oldname);

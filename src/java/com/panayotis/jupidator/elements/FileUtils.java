@@ -125,6 +125,25 @@ public class FileUtils {
         return _("Unable to create Deployer");
     }
 
+    public static String getJupidatorHome() {
+        String JUPIDATORHOME = ".";
+        String jupidatorpath = getJarPath("jupidator");
+        if (jupidatorpath != null)
+            JUPIDATORHOME = new File(jupidatorpath).getParent();
+        return JUPIDATORHOME;
+    }
+
+    private static String getJarPath(String JarName) {
+        Vector<String> jars = new Vector<String>();
+        getClassPaths(jars, null);
+        String jarjar = JarName + ".jar";
+        String jarexe = JarName + ".exe";
+        for (String jar : jars)
+            if (jar.endsWith(jarjar) || jar.endsWith(jarexe))
+                return jar;
+        return null;
+    }
+
     private static void getClassPaths(Vector<String> jarpaths, Vector<String> dirpaths) {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
         Vector<String> classpaths = new Vector<String>();
@@ -138,7 +157,8 @@ public class FileUtils {
             path = classpaths.get(0);
             classpaths.remove(0);
             if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
-                jarpaths.add(path);
+                if (jarpaths != null)
+                    jarpaths.add(path);
                 try {
                     /* make sure that in this zip entry there is no classpath definition */
                     getClassPathFromManifest(new ZipFile(path), classpaths, new File(path).getParent());
@@ -147,7 +167,8 @@ public class FileUtils {
             } else {
                 if (path.length() > 0 && path.charAt(path.length() - 1) != FS)
                     path = path + FS;
-                dirpaths.add(path);
+                if (dirpaths != null)
+                    dirpaths.add(path);
             }
         }
     }
