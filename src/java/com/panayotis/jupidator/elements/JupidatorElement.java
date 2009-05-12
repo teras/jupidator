@@ -5,7 +5,6 @@
 package com.panayotis.jupidator.elements;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.elements.FileUtils.FS;
 
 import com.panayotis.jupidator.data.*;
 import com.panayotis.jupidator.ApplicationInfo;
@@ -67,7 +66,7 @@ public abstract class JupidatorElement {
     public String getDestinationFile() {
         if (destdir.equals(""))
             return filename;
-        return destdir + FS + filename;
+        return destdir + filename;
     }
 
     public String getFileName() {
