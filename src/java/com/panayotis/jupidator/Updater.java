@@ -39,7 +39,7 @@ public class Updater {
         if (vers.getAppElements().shouldUpdateLibrary()) {
             String oldname = vers.getAppElements().getAppName();
 
-            String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getParent();
+            String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
             appinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
             vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", appinfo);
             appinfo.setSelfUpdate();

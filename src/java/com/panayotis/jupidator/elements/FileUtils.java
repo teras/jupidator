@@ -129,7 +129,7 @@ public class FileUtils {
         String JUPIDATORHOME = ".";
         String jupidatorpath = getJarPath("jupidator");
         if (jupidatorpath != null)
-            JUPIDATORHOME = new File(jupidatorpath).getParent();
+            JUPIDATORHOME = new File(jupidatorpath).getAbsoluteFile().getParent();
         return JUPIDATORHOME;
     }
 
