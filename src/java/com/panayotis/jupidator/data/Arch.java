@@ -19,7 +19,12 @@ public class Arch {
     private String exec;
     private ArrayList<String> arguments;
 
-    public Arch(String tag, String os, String arch) {
+    /* Default arch "any" */
+    public Arch() {
+        this("any", "", "");
+    }
+
+    private Arch(String tag, String os, String arch) {
         this.tag = tag.toLowerCase();
         this.os = os.toLowerCase();
         this.arch = arch.toLowerCase();
@@ -39,12 +44,19 @@ public class Arch {
         return null;
     }
 
-    boolean isCurrent() {
-        if (tag.equals("any"))  // Never match "any" architecture
-            return false;
+    Arch getArchitect(String tag, String os, String arch) {
+        if (tag.equals("any"))
+            if (this.tag.equals("any"))
+                return this;
+            else
+                return null;
+
         String c_os = System.getProperty("os.name");
         String c_arch = System.getProperty("os.arch");
-        return (c_os.toLowerCase().startsWith(os) && c_arch.toLowerCase().startsWith(arch));
+        if (c_os.toLowerCase().startsWith(os) && c_arch.toLowerCase().startsWith(arch))
+            return new Arch(tag, os, arch);
+        else
+            return null;
     }
 
     void setExec(String exec) {

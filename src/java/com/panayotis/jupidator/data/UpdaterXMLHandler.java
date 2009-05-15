@@ -40,13 +40,13 @@ public class UpdaterXMLHandler extends DefaultHandler {
         elements = new UpdaterAppElements();
         old_version = false;
         this.appinfo = appinfo;
-        arch = new Arch("any", "", ""); // Default arch is selected by default
+        arch = new Arch(); // "Any" arch is selected by default
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attr) {
         if (qName.equals("architect")) {
-            lastarch = new Arch(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
-            if (lastarch.isCurrent())
+            lastarch = arch.getArchitect(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
+            if (lastarch != null)
                 arch = lastarch;
         } else if (qName.equals("launcher")) {
             if (lastarch != null)
