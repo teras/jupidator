@@ -29,6 +29,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private Version current;    // The list of files for the current reading "version" object
     private Version current_exact; // Version of "current" made with exact arch match
     private Version current_any;   // Version of "current" made with "any" arch match
+    private Version current_all;   // Version of "current" made with "all" arch match
     private boolean old_version; // true, if this version is too old and should be ignored
     private boolean visible_version; // true, if this version should be displayed to the user
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
@@ -158,22 +159,35 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName) {
         if (qName.equals("arch")) {
-            if (current != null)
-                if (current.list_from_any_tag)
+            if (current == null)
+                return;
+            switch (current.tag_type) {
+                case Version.ANYTAG:
                     current_any = current;
-                else
+                    break;
+                case Version.ALLTAGS:
+                    current_all = current;
+                    break;
+                default:
                     current_exact = current;
+                    break;
+            }
             current = null;
         } else if (qName.equals("version")) {
             old_version = false;
             Version working = current_any;
             if (current_exact != null)
                 working = current_exact;
-            current_any = current_exact = null;
+            if (working == null)
+                working = current_all;
+            else
+                working.merge(current_all);
+
+            current_any = current_exact = current_all = null;
             if (working != null)
                 if (latest == null) {
                     latest = working;
-                    latest.list_from_any_tag = false;
+                    latest.tag_type = Version.UNKNOWN;
                 } else
                     latest.merge(working);
         } else if (qName.equals("description")) {

@@ -32,13 +32,9 @@ public class Arch {
     }
 
     Version getVersion(String tag) {
-        if (tag.toLowerCase().equals(this.tag)) {
+        if (tag.toLowerCase().equals(this.tag) || tag.equals("any") || tag.equals("all") ) {
             Version found = new Version();
-            return found;
-        }
-        if (tag.equals("any")) {
-            Version found = new Version();
-            found.list_from_any_tag = true;
+            found.updateTagStatus(tag);
             return found;
         }
         return null;

@@ -83,7 +83,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 -->
 <!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait)*>
 <!--
-    @attr name The name of this architecture, as defines with the architect element above. It could be "any", which will match all architectures, not having a special arch tag.
+    @attr name The name of this architecture, as defines with the architect element above, or special tags "any" and "all". When "any" is used,it matchs all architectures, not having a specific arch tag defined. Tag "all" matches all targets, and adds it's child elements to the currently most appropriate arch target. So, the final elements are a combination of (a) those either specifically mentioned with "architect" comatible tags or the "any" tag and (b) elements defined by "all" tags.
     @attr gui The installer will present a graphical window spinning for this version onwards. If this attribute is not present, no GUI is requested.
 -->
 <!ATTLIST arch

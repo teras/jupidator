@@ -28,8 +28,12 @@ public class Version {
     private Arch arch;
     private boolean graphical_gui;
     private boolean is_visible = false;
-
-    boolean list_from_any_tag = false;  // This is used by arch to distinguish versions which were produced from "any" tags
+    /* This is used by arch to distinguish versions which were produced with special tags */
+    public final static int UNKNOWN = 0;
+    public final static int MATCH = 1;
+    public final static int ANYTAG = 2;
+    public final static int ALLTAGS = 3;
+    int tag_type = UNKNOWN; // 
 
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
@@ -50,7 +54,7 @@ public class Version {
         } catch (SAXException ex) {
             throw new UpdaterException(ex.getMessage());
         } catch (IOException ex) {
-            throw new UpdaterException(ex.getClass().getName()+" "+ex.getMessage());
+            throw new UpdaterException(ex.getClass().getName() + " " + ex.getMessage());
         } catch (ParserConfigurationException ex) {
             throw new UpdaterException(ex.getMessage());
         }
@@ -84,9 +88,9 @@ public class Version {
         for (String tag : other.elements.keySet()) {
             fother = other.elements.get(tag);
             fthis = elements.get(tag);
-            if (fthis == null) {
+            if (fthis == null)
                 elements.put(tag, fother);
-            } else {
+            else {
                 fnew = fthis.getNewestRelease(fother);
                 elements.put(tag, fnew);
             }
@@ -106,9 +110,18 @@ public class Version {
     void setGraphicalDeployer(boolean graphical_gui) {
         this.graphical_gui = graphical_gui;
     }
-    
+
     public boolean isGraphicalDeployer() {
         return graphical_gui;
+    }
+
+    void updateTagStatus(String tag) {
+        if (tag.equals("any"))
+            tag_type = ANYTAG;
+        else if (tag.equals("all"))
+            tag_type = ALLTAGS;
+        else
+            tag_type = MATCH;
     }
 
     private void sort() {
