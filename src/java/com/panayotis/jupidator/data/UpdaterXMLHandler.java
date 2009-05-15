@@ -25,15 +25,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
     private Arch arch;  // The stored architecture of the running system - null if unknown
     private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
-
     private Version latest; // The full aggregated list of the latest files, in order to upgrade
     private Version current;    // The list of files for the current reading "version" object
     private Version current_exact; // Version of "current" made with exact arch match
     private Version current_any;   // Version of "current" made with "any" arch match
-
     private boolean old_version; // true, if this version is too old and should be ignored
     private boolean visible_version; // true, if this version should be displayed to the user
-
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
@@ -54,13 +51,13 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("launcher")) {
             if (lastarch != null)
                 lastarch.setExec(attr.getValue("exec"));
-        } else if (qName.equals("argument")) {
+        } else if (qName.equals("argument"))
             if (lastSeenExecElement == null) {
                 if (lastarch != null)
                     lastarch.addArgument(attr.getValue("value"), appinfo);
             } else
                 lastSeenExecElement.addArgument(attr.getValue("value"), appinfo);
-        } else if (qName.equals("version")) {
+        else if (qName.equals("version")) {
             int release_last = 0;
             try {
                 release_last = Integer.parseInt(attr.getValue("release"));
@@ -70,9 +67,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             elements.updateVersion(release_last, version_last);
             old_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
             visible_version = (appinfo == null) ? true : release_last > appinfo.getIgnoreRelease();
-        } else if (qName.equals("description")) {
+        } else if (qName.equals("description"))
             descbuffer = new StringBuffer();
-        } else if (qName.equals("arch")) {
+        else if (qName.equals("arch")) {
             if (old_version)
                 return;
             current = arch.getVersion(attr.getValue("name")); // Check if current architecture was found
@@ -161,12 +158,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     public void endElement(String uri, String localName, String qName) {
         if (qName.equals("arch")) {
-            if (current != null) {
+            if (current != null)
                 if (current.list_from_any_tag)
                     current_any = current;
                 else
                     current_exact = current;
-            }
             current = null;
         } else if (qName.equals("version")) {
             old_version = false;
@@ -174,23 +170,20 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (current_exact != null)
                 working = current_exact;
             current_any = current_exact = null;
-            if (working != null) {
+            if (working != null)
                 if (latest == null) {
                     latest = working;
                     latest.list_from_any_tag = false;
-                } else {
+                } else
                     latest.merge(working);
-                }
-            }
         } else if (qName.equals("description")) {
             if (old_version)
                 return;
             elements.addLogItem(elements.getLastVersion(), descbuffer.toString());
-        } else if (qName.equals("exec")) {
-            lastSeenExecElement = null; // Forget it, we don't need it any more
-        } else if (qName.equals("file")) {
+        } else if (qName.equals("exec"))
+            lastSeenExecElement = null;
+        else if (qName.equals("file"))
             lastFileElement = null;
-        }
     }
 
 //    public void endDocument() {
