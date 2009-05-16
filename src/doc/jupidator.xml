@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updatelist application="Jupidator" baseurl="http://www.panayotis.com/versions/jupidator" icon="icons/jubler.png">
 
-     <architect tag="any" os="" arch="">
-        <launcher exec="${JAVABIN}">
-            <argument value="-jar"/>
-            <argument value="${APPHOME}/Jubler.jar"/>
-        </launcher>
-    </architect>
-
-
-
-    <version release="400" version="0.4.0">
-        <description>Some fuzzy updates</description>
-        <arch name="any">
-            <file name="jupidator.jar" sourcedir="0.4" destdir="${APPHOME}" size="104076"/>
-        </arch>
-    </version>
-
     <version release="300" version="0.3.0">
-        <description>Checksumming support of downloaded files. Improved support of "any" tag. Fixed issues when ignoring ver
-sion.</description>
+        <description>Checksumming support of downloaded files. Improved support of "any" tag. Introduced support of "all" tag. Fixed issues when ignoring versions. Self-update of jupidator support.</description>
     </version>
 
     <version release="200" version="0.2.0">
