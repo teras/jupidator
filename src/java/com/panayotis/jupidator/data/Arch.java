@@ -25,14 +25,15 @@ public class Arch {
     }
 
     private Arch(String tag, String os, String arch) {
-        this.tag = tag.toLowerCase();
-        this.os = os.toLowerCase();
-        this.arch = arch.toLowerCase();
+        this.tag = tag;
+        this.os = os;
+        this.arch = arch;
         arguments = new ArrayList<String>();
     }
 
     Version getVersion(String tag) {
-        if (tag.toLowerCase().equals(this.tag) || tag.equals("any") || tag.equals("all") ) {
+        tag = tag.toLowerCase();
+        if (tag.equals(this.tag) || tag.equals("any") || tag.equals("all") ) {
             Version found = new Version();
             found.updateTagStatus(tag);
             return found;
@@ -41,15 +42,19 @@ public class Arch {
     }
 
     Arch getArchitect(String tag, String os, String arch) {
+        tag = tag.toLowerCase();
+        os = os.toLowerCase();
+        arch = arch.toLowerCase();
+
         if (tag.equals("any"))
             if (this.tag.equals("any"))
                 return this;
             else
                 return null;
 
-        String c_os = System.getProperty("os.name");
-        String c_arch = System.getProperty("os.arch");
-        if (c_os.toLowerCase().startsWith(os) && c_arch.toLowerCase().startsWith(arch))
+        String c_os = System.getProperty("os.name").toLowerCase();
+        String c_arch = System.getProperty("os.arch").toLowerCase();
+        if (c_os.startsWith(os) && c_arch.startsWith(arch))
             return new Arch(tag, os, arch);
         else
             return null;
