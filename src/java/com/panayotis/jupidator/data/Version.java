@@ -60,6 +60,11 @@ public class Version {
         }
     }
 
+    public void replaceArch(Arch arch) {
+        if (arch != null)
+            this.arch = arch;
+    }
+
     public String toString() {
         StringBuffer b = new StringBuffer();
         b.append("[Version").append('\n');

@@ -45,6 +45,7 @@ public class Updater {
 
             Version selfvers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", selfappinfo);
             if (selfvers.isVisible()) {
+                selfvers.replaceArch(vers.getArch());
                 vers = selfvers;
                 appinfo = selfappinfo;
                 vers.getAppElements().setSelfUpdate(oldname);
