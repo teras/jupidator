@@ -100,10 +100,10 @@
 
 <target name="dist" depends="clean,doc,i18n,jar,doc">
 	<delete dir="build"/>
-	<tar includes="jupidator" excludes=".svn" compression="bzip2" destfile="../jupidator.0.2.0.tar.bz2">
+	<tar includes="jupidator" excludes=".svn" compression="bzip2" destfile="../jupidator.0.3.0.tar.bz2">
 		<tarfileset dir="../jupidator"/>
 	</tar>
-	<move file="../jupidator.0.2.0.tar.bz2" todir="."/>
+	<move file="../jupidator.0.3.0.tar.bz2" todir="."/>
 </target>
 
 <target name="-post-clean">
