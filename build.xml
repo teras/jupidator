@@ -98,10 +98,14 @@
 	</DTDDoc>
 </target>
 
-<target name="dist" depends="clean,doc,i18n,jar,doc">
+<target name="dist" depends="clean,doc,i18n,jar">
 	<delete dir="build"/>
-	<tar includes="jupidator" excludes=".svn" compression="bzip2" destfile="../jupidator.0.3.0.tar.bz2">
-		<tarfileset dir="../jupidator"/>
+	<tar compression="bzip2" destfile="../jupidator.0.3.0.tar.bz2">
+		<tarfileset dir="../jupidator" prefix="jupidator">
+			<exclude name=".hgignore"/>
+			<exclude name=".hgtags"/>
+			<exclude name="**/.hg/**"/>
+		</tarfileset>
 	</tar>
 	<move file="../jupidator.0.3.0.tar.bz2" todir="."/>
 </target>
