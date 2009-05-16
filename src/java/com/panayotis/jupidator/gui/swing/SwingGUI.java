@@ -109,7 +109,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
 
     public void setDownloadRatio(String ratio, float percent) {
         PBar.setValue(Math.round(percent * 100));
-        PBar.setToolTipText("Download speed: " + ratio);
+        PBar.setToolTipText(_("Download speed: {0}", ratio));
         PBar.setString(ratio);
     }
 
