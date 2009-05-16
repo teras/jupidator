@@ -81,6 +81,8 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
     public void setIndetermined() {
         ActionB.setEnabled(false);
         PBar.setIndeterminate(true);
+        PBar.setToolTipText(_("Processing update"));
+        PBar.setString("");
         InfoL.setText(_("Deploying files..."));
     }
 

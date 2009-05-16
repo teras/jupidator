@@ -105,16 +105,15 @@ public class Updater {
                     }
                 }
                 /* Deploy */
+                watcher.stopWatcher();
                 gui.setIndetermined();
                 for (String key : vers.keySet()) {
                     String result = vers.get(key).deploy(application);
                     if (result != null) {
-                        watcher.stopWatcher();
                         gui.errorOnCommit(result);
                         return;
                     }
                 }
-                watcher.stopWatcher();
                 gui.successOnCommit();
             }
         };
