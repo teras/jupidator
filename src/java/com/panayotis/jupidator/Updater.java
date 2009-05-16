@@ -38,13 +38,18 @@ public class Updater {
         vers = Version.loadVersion(xmlurl, appinfo);
         if (vers.getAppElements().shouldUpdateLibrary()) {
             String oldname = vers.getAppElements().getAppName();
-
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
-            appinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
-            vers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", appinfo);
-            appinfo.setSelfUpdate();
-            vers.getAppElements().setSelfUpdate(oldname);
-            vers.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
+
+            ApplicationInfo selfappinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
+            selfappinfo.setSelfUpdate();
+
+            Version selfvers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", selfappinfo);
+            if (selfvers.isVisible()) {
+                vers = selfvers;
+                appinfo = selfappinfo;
+                vers.getAppElements().setSelfUpdate(oldname);
+                vers.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
+            }
         }
 
         this.appinfo = appinfo;

@@ -19,10 +19,10 @@ public class UpdaterAppElements {
     private String AppName = "Unknown";
     private String baseURL = "";
     private String iconpath = "";
-    private int newrelease = -1;
-    private int lastrelease = -1;   // Last known release, read from XML
-    private String newversion = "0.0.0";
-    private String lastversion = "0.0.0.0"; // Last known version, read from XML
+    private int newrelease = -1;    // Latest release overall, read form XML
+    private int lastrelease = -1;   // Last value we read from XML
+    private String newversion = "0.0.0";    // Latest version overall, read form XML
+    private String lastversion = "0.0.0.0"; // Last value we read from XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
 

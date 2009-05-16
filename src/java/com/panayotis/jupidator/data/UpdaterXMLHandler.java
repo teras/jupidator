@@ -73,7 +73,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         else if (qName.equals("arch")) {
             if (old_version)
                 return;
-            current = arch.getVersion(attr.getValue("name")); // Check if current architecture was found
+            current = arch.getVersion(attr.getValue("name")); // If current architecture was found, return a new Version object
             if (current != null) { // Check if this version is valid
                 current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui"))); // check if GUI is required
                 current.setVisible(visible_version);    // Mark if this version should be visible or not

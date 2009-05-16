@@ -168,6 +168,9 @@ public class MyAppUpdate implements UpdatedApplication {
         <arch name="any">
             <file name="Jubler.jar" sourcedir="0.2.0" destdir="${APPHOME}" size="1138527" compress="gzip"/>
         </arch>
+        <arch name="all">
+            <file name="ReadMe.html" sourcedir="0.2.0" destdir="${APPHOME}/lib" size="4298" compress="gzip" />
+        </arch>
     </version>
 
     <version release="10" version="0.1.0-RC1">
@@ -183,7 +186,7 @@ public class MyAppUpdate implements UpdatedApplication {
     
 </updatelist>]]></screen>
 </para>
-<para>The URL of the file to-be-downloaded is <varname>http://www.jubler.org/files/0.1.0/Jubler.exe.gz</varname></para>
+<para>The URL of the file to-be-downloaded is <varname>http://www.jubler.org/files/0.2.0/Jubler.exe.gz</varname> or <varname>http://www.jubler.org/files/0.2.0/Jubler.jar.gz</varname> depending on the architecture. Additionally, all architectures will download the <varname>http://www.jubler.org/files/0.2.0/ReadMe.html.gz</varname> file.</para>
 <para>Description of this XML file can be found in <ulink url="dtd/index.html">DTD documentation</ulink>.</para>
 
 </sect1>

@@ -6,9 +6,9 @@ package com.panayotis.jupidator.elements;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
-import com.panayotis.jupidator.data.*;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 
