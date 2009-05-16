@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.helpers;
 
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.SystemVersion;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
@@ -16,6 +17,7 @@ import com.panayotis.jupidator.gui.console.ConsoleGUI;
 public class Launcher {
 
     public static void usage() {
+        System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
         System.err.println("Usage:");
         System.err.println("java -jar jupidator.jar URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
         System.err.println();
