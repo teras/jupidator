@@ -10,3 +10,4 @@ syntax: regexp
 ^dist/
 ^build/
 ^nbproject/private/
+.DS_Store
