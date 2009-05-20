@@ -124,7 +124,7 @@
 </target>
 
 <target name="jubler" depends="clean,i18n,jar">
-	<copy file="dist/jupidator.jar" todir="../Jubler/stable/resources/jupidator"/>
+	<copy file="dist/jupidator.jar" todir="../Jubler/stable/resources/libs/jupidator"/>
 </target>
 
 </project>
