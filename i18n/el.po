@@ -233,11 +233,11 @@ msgstr	"Πληροφορίες εκδόσεων"
 
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:234
 msgid	"Skip this version"
-msgstr	"Προσπέραση έκδοσης"
+msgstr	"Προσπέραση"
 
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:247
 msgid	"Remind me later"
-msgstr	"Αναβολή ενημέρωσης"
+msgstr	"Αναβολή"
 
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:256
 msgid	"Install Update"
