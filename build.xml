@@ -79,12 +79,6 @@
 	classpath="../../Tools/dtddoc/DTDDoc.jar"/>
 
 
-<target name="i18n">
-        <exec dir="i18n" executable="bash" failonerror="true">
-            <arg line="compile"/>
-        </exec>
-</target>
-
 <target name="doc" depends="dtddoc">
 	<mkdir dir="dist/doc"/>
 	<exec dir="dist/doc" executable="docbook2html" failonerror="false">
@@ -98,7 +92,7 @@
 	</DTDDoc>
 </target>
 
-<target name="dist" depends="clean,doc,i18n,jar">
+<target name="dist" depends="clean,doc,jar">
 	<delete dir="build"/>
 	<tar compression="bzip2" destfile="../jupidator.0.3.0.tar.bz2">
 		<tarfileset dir="../jupidator" prefix="jupidator">
@@ -111,21 +105,23 @@
 </target>
 
 <target name="-post-clean">
-        <delete>
-			<fileset dir="src/java/com/panayotis/jupidator/i18n" includes="Messages*" />
-			<fileset dir="i18n" includes="*.mo"/>
-			<fileset dir="." includes="*.tar.bz2"/>
-		</delete>
-		<delete dir="dist/doc" />
+    <delete>
+	<fileset dir="." includes="*.tar.bz2"/>
+	</delete>
+	<delete dir="dist/doc" />
+	<exec dir="i18n" executable="bash" failonerror="true">
+		<arg line="make.sh clean"/>
+	</exec>
 </target>
 
+<target name="-post-compile">
+	<exec dir="i18n" executable="bash" failonerror="true">
+		<arg line="make.sh"/>
+	</exec>
+</target>
 
 <target name="-post-jar">
 	<delete file="dist/README.txt"/>
-</target>
-
-<target name="jubler" depends="clean,i18n,jar">
-	<copy file="dist/jupidator.jar" todir="../Jubler/dist/lib"/>
 </target>
 
 </project>
