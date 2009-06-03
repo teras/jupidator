@@ -31,7 +31,7 @@ public abstract class JupidatorElement {
     protected ApplicationInfo info;
 
     public JupidatorElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
-        this(new File(file).getName(), new File(file).getParent(), elements, appinfo, exectime);
+        this((file == null) ? null : new File(file).getName(), (file == null) ? null : new File(file).getParent(), elements, appinfo, exectime);
     }
 
     public JupidatorElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
