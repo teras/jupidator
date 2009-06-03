@@ -4,7 +4,8 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.panayotis.jupidator.*;
+import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdaterException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;

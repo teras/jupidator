@@ -38,7 +38,7 @@ public class ApplicationInfo {
         if (!new File(AppHome).isDirectory())
             throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
         if (AppHome.charAt(AppHome.length() - 1) == FS)
-            AppHome = AppHome.substring(0, AppHome.length()-1);
+            AppHome = AppHome.substring(0, AppHome.length() - 1);
         vars.put("APPHOME", AppHome);
 
         if (AppSupportDir == null || (!new File(AppSupportDir).isDirectory()))
@@ -46,7 +46,7 @@ public class ApplicationInfo {
         if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
             AppSupportDir = AppSupportDir + FS;
         if (AppSupportDir.charAt(AppSupportDir.length() - 1) == FS)
-            AppSupportDir = AppSupportDir.substring(0, AppSupportDir.length()-1);
+            AppSupportDir = AppSupportDir.substring(0, AppSupportDir.length() - 1);
         vars.put("APPSUPPORTDIR", AppSupportDir);
 
         if (version == null || version.equals(""))
@@ -82,7 +82,7 @@ public class ApplicationInfo {
     }
 
     public String getUpdaterConfigFile() {
-        return vars.get("APPSUPPORTDIR") + "updater.xml";
+        return vars.get("APPSUPPORTDIR") + FS + "updater.xml";
     }
 
     /* This new release has to do with ignoring a specific version */
