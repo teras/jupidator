@@ -151,7 +151,9 @@ public class DiffCreator {
     private void compressFile(File source, File dest) throws IOException {
         if (source.equals(dest))
             throw new IOException("Source and destination file should not be the same");
-
+        if (dest.exists())
+            throw new IOException("File "+dest.getName()+" already exists!");
+        
         debug("Compressing " + source.getPath() + " to " + dest.getPath());
         BufferedInputStream i = new BufferedInputStream(new FileInputStream(source));
         BufferedOutputStream o = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(dest)));
