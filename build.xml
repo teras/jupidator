@@ -109,6 +109,7 @@
 	<fileset dir="." includes="*.tar.bz2"/>
 	</delete>
 	<delete dir="dist/doc" />
+	<delete dir="update" />
 	<exec dir="i18n" executable="bash" failonerror="true">
 		<arg line="make.sh clean"/>
 	</exec>
