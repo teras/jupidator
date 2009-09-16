@@ -124,4 +124,11 @@
 	<delete file="dist/README.txt"/>
 </target>
 
+<target name="ignore_i18n">
+	<exec executable="hg" failonerror="true">
+		<arg line="revert i18n --no-backup --all"/>
+	</exec>
+</target>
+
+
 </project>

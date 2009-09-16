@@ -5,13 +5,18 @@
 package com.panayotis.jupidator.helpers;
 
 import com.panayotis.jupidator.elements.security.Digester;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.zip.GZIPOutputStream;
 
 /**
  *
@@ -19,21 +24,24 @@ import java.util.HashSet;
  */
 public class DiffCreator {
 
-    private String server_dir;
-    private String arch;
     private File newer_dir;
     private File older_dir;
-    private BufferedWriter out;
+    private String arch;
+    private String server_dir;
+    private String local_dir_name;
+    //
+    private File local_dir;
+    private BufferedWriter xmlout;
 
     public static void main(String[] args) {
         DiffCreator diff = new DiffCreator("/Users/teras/Desktop/Jubler.app", "/Users/teras/Desktop/Jubler-old.app");
         diff.setSeverDir("4.2");
         StringWriter out = new StringWriter();
         try {
-            diff.produce(out);
+            diff.produce();
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
-        System.out.print(out);
     }
 
     public DiffCreator(String newdirname, String olddirname) {
@@ -41,6 +49,7 @@ public class DiffCreator {
         this.older_dir = new File(olddirname);
         this.arch = System.getProperty("os.name").toLowerCase().replace(" ", "");
         this.server_dir = "update";
+        this.local_dir_name = this.server_dir;
     }
 
     public void setArch(String arch) {
@@ -51,21 +60,28 @@ public class DiffCreator {
         this.server_dir = server_dir;
     }
 
-    public void produce(Writer output) throws IOException {
+    public void setLocalDir(String local_dir) {
+        this.local_dir_name = local_dir;
+    }
+
+    public void produce() throws IOException {
         if (!newer_dir.exists())
             exitOnError(newer_dir.getPath() + " does not exist!");
         if (!older_dir.exists())
             exitOnError(older_dir.getPath() + " does not exist!");
 
-        if (out instanceof BufferedWriter)
-            out = (BufferedWriter) output;
-        else
-            out = new BufferedWriter(output);
+        local_dir = new File(local_dir_name);
+        local_dir.mkdirs();
+        if ((!local_dir.exists()) || (!local_dir.isDirectory()))
+            exitOnError("Local_directory is not a directory");
 
-        out.write("<arch name=\"" + arch + "\">\n");
+        xmlout = new BufferedWriter(new FileWriter(new File(local_dir, "update.xml")));
+
+        xmlout.write("<arch name=\"" + arch + "\">\n");
         parseDir(newer_dir, older_dir, "");
-        out.write("</arch>\n");
-        out.flush();
+        xmlout.write("</arch>\n");
+        debug("Closing XML file");
+        xmlout.close();
     }
 
     private void parseDir(File newer, File older, String history) throws IOException {
@@ -99,7 +115,7 @@ public class DiffCreator {
                     exitOnError("Not supported change from directory to file");
 
             } else    // old set does not have this file, only new set has it
-                addFileEntry(cfile, history);
+                addFileEntry(narray[i], history);
         }
 
         for (String ofilename : oset) // new set does not have this file, only new set has it
@@ -110,23 +126,45 @@ public class DiffCreator {
         byte[] nmd5 = Digester.getMD5Sum(nfile);
         byte[] omd5 = Digester.getMD5Sum(ofile);
         if (!Arrays.equals(nmd5, omd5))
-            addFileEntry(nfile.getName(), history);
+            addFileEntry(nfile, history);
     }
 
-    private void addFileEntry(String fname, String history) throws IOException {
-        out.append("  <file name=\"").append(fname);
-        out.append("\" sourcedir=\"").append(server_dir);
-        out.append("\" destdir=\"").append(history);
-        out.append("\" size=\"").append("0");
-        out.append("\" compress=\"gz\"/>\n");
+    private void addFileEntry(File file, String history) throws IOException {
+        File gz = new File(local_dir, file.getName() + ".gz");
+        compressFile(file, gz);
+        xmlout.append("  <file name=\"").append(file.getName());
+        xmlout.append("\" sourcedir=\"").append(server_dir);
+        xmlout.append("\" destdir=\"").append(history);
+        xmlout.append("\" size=\"").append(String.valueOf(gz.length()));
+        xmlout.append("\" compress=\"gz\"/>\n");
     }
 
     private void addRmEntry(String fname, String history) throws IOException {
-        out.write("  <rm file=\"" + history + "/" + fname + "\">\n");
+        xmlout.write("  <rm file=\"" + history + "/" + fname + "\">\n");
     }
 
     private void exitOnError(String error) {
         System.err.println(error);
         System.exit(1);
+    }
+
+    private void compressFile(File source, File dest) throws IOException {
+        if (source.equals(dest))
+            throw new IOException("Source and destination file should not be the same");
+
+        debug("Compressing " + source.getPath() + " to " + dest.getPath());
+        BufferedInputStream i = new BufferedInputStream(new FileInputStream(source));
+        BufferedOutputStream o = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(dest)));
+
+        byte[] buffer = new byte[1024];
+        int hm;
+        while ((hm = i.read(buffer)) > 0)
+            o.write(buffer, 0, hm);
+        i.close();
+        o.close();
+    }
+
+    private static void debug(String info) {
+        System.out.println(info);
     }
 }
