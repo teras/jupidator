@@ -10,4 +10,5 @@ syntax: regexp
 ^dist/
 ^build/
 ^nbproject/private/
+.*pbxuser
 .DS_Store
