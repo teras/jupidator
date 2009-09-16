@@ -27,7 +27,6 @@ public class DiffCreator {
 
     public static void main(String[] args) {
         DiffCreator diff = new DiffCreator("/Users/teras/Desktop/Jubler.app", "/Users/teras/Desktop/Jubler-old.app");
-        diff.setArch("macosx");
         diff.setSeverDir("4.2");
         StringWriter out = new StringWriter();
         try {
@@ -40,6 +39,8 @@ public class DiffCreator {
     public DiffCreator(String newdirname, String olddirname) {
         this.newer_dir = new File(newdirname);
         this.older_dir = new File(olddirname);
+        this.arch = System.getProperty("os.name").toLowerCase().replace(" ", "");
+        this.server_dir = "update";
     }
 
     public void setArch(String arch) {
