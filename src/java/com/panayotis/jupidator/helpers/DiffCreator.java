@@ -16,28 +16,21 @@ import java.util.HashSet;
 public class DiffCreator {
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.err.println("Two argument required:\n  New directory\n  Old directory");
-            System.exit(1);
-        }
+        if (args.length < 2)
+            exitOnError("Two argument required:\n  New directory\n  Old directory");
 
         File newer = new File(args[0]);
         File older = new File(args[1]);
 
-        if (!newer.exists()) {
-            System.out.println(newer.getPath() + " does not exist!");
-            System.exit(2);
-        }
-        if (!older.exists()) {
-            System.out.println(older.getPath() + " does not exist!");
-            System.exit(2);
-        }
+        if (!newer.exists())
+            exitOnError(newer.getPath() + " does not exist!");
+        if (!older.exists())
+            exitOnError(older.getPath() + " does not exist!");
 
-        System.out.println("Finding changes between older " + older.getPath() + " and newer " + newer.getPath());
-        parseDir(newer, older);
+        parseDir(newer, older, "");
     }
 
-    private static void parseDir(File newer, File older) {
+    private static void parseDir(File newer, File older, String history) {
 
         File[] narray = newer.listFiles();
         File[] oarray = older.listFiles();
@@ -58,36 +51,42 @@ public class DiffCreator {
                 ofile = new File(older, cfile);
 
                 if (nfile.isFile() && ofile.isFile())   // Bot are files, thus can be checked
-                    checkFileDiff(nfile, ofile);
-                else if (nfile.isDirectory() && ofile.isDirectory())    // Both are files, dive in
-                    parseDir(nfile, ofile);
-                else {  // Unsupported
-                    System.out.println("Not supported change from directory to file");
-                    System.exit(1);
-                }
+                    checkFileDiff(nfile, ofile, history);
+                else if (nfile.isDirectory() && ofile.isDirectory()) {   // Both are files, dive in
+                    if (!history.equals(""))
+                        history += "/";
+                    history += cfile;
+                    parseDir(nfile, ofile, history);
+                } else  // Unsupported
+                    exitOnError("Not supported change from directory to file");
 
             } else    // old set does not have this file, only new set has it
-                addFileEntry(cfile);
+                addFileEntry(cfile, history);
         }
 
         for (String ofilename : oset) // new set does not have this file, only new set has it
-            addRmEntry(ofilename);
+            addRmEntry(ofilename, history);
     }
 
-    private static void checkFileDiff(File nfile, File ofile) {
+    private static void checkFileDiff(File nfile, File ofile, String history) {
         byte[] nmd5 = Digester.getMD5Sum(nfile);
         byte[] omd5 = Digester.getMD5Sum(ofile);
         if (!Arrays.equals(nmd5, omd5))
-            addFileEntry(nfile.getName());
+            addFileEntry(nfile.getName(), history);
         else
-            System.out.println("  "+nfile.getName());
+            System.out.println("  " + history + "/" + nfile.getName());
     }
 
-    private static void addFileEntry(String fname) {
-        System.out.println("+ " + fname);
+    private static void addFileEntry(String fname, String history) {
+        System.out.println("+ " + history + "/" + fname);
     }
 
-    private static void addRmEntry(String fname) {
-        System.out.println("- " + fname);
+    private static void addRmEntry(String fname, String history) {
+        System.out.println("- " + history + "/" + fname);
+    }
+
+    public static void exitOnError(String error) {
+        System.err.println(error);
+        System.exit(1);
     }
 }
