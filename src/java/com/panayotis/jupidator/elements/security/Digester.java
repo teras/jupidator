@@ -64,4 +64,21 @@ public class Digester {
     public String getAlgorithm() {
         return algorithm;
     }
+
+    public static byte[] getMD5Sum(File file) {
+        byte[] result = null;
+        try {
+            int read;
+            byte[] buffer = new byte[1024];
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+
+            digest.reset();
+            FileInputStream fis = new FileInputStream(file);
+            while ((read = fis.read(buffer)) >= 0)
+                digest.update(buffer, 0, read);
+            result = digest.digest();
+        } catch (Exception ex) {
+        }
+        return result;
+    }
 }
