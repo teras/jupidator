@@ -5,7 +5,11 @@
 package com.panayotis.jupidator.helpers;
 
 import com.panayotis.jupidator.elements.security.Digester;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -15,22 +19,55 @@ import java.util.HashSet;
  */
 public class DiffCreator {
 
+    private String server_dir;
+    private String arch;
+    private File newer_dir;
+    private File older_dir;
+    private BufferedWriter out;
+
     public static void main(String[] args) {
-        if (args.length < 2)
-            exitOnError("Two argument required:\n  New directory\n  Old directory");
-
-        File newer = new File(args[0]);
-        File older = new File(args[1]);
-
-        if (!newer.exists())
-            exitOnError(newer.getPath() + " does not exist!");
-        if (!older.exists())
-            exitOnError(older.getPath() + " does not exist!");
-
-        parseDir(newer, older, "");
+        DiffCreator diff = new DiffCreator("/Users/teras/Desktop/Jubler.app", "/Users/teras/Desktop/Jubler-old.app");
+        diff.setArch("macosx");
+        diff.setSeverDir("4.2");
+        StringWriter out = new StringWriter();
+        try {
+            diff.produce(out);
+        } catch (IOException ex) {
+        }
+        System.out.print(out);
     }
 
-    private static void parseDir(File newer, File older, String history) {
+    public DiffCreator(String newdirname, String olddirname) {
+        this.newer_dir = new File(newdirname);
+        this.older_dir = new File(olddirname);
+    }
+
+    public void setArch(String arch) {
+        this.arch = arch;
+    }
+
+    public void setSeverDir(String server_dir) {
+        this.server_dir = server_dir;
+    }
+
+    public void produce(Writer output) throws IOException {
+        if (!newer_dir.exists())
+            exitOnError(newer_dir.getPath() + " does not exist!");
+        if (!older_dir.exists())
+            exitOnError(older_dir.getPath() + " does not exist!");
+
+        if (out instanceof BufferedWriter)
+            out = (BufferedWriter) output;
+        else
+            out = new BufferedWriter(output);
+
+        out.write("<arch name=\"" + arch + "\">\n");
+        parseDir(newer_dir, older_dir, "");
+        out.write("</arch>\n");
+        out.flush();
+    }
+
+    private void parseDir(File newer, File older, String history) throws IOException {
 
         File[] narray = newer.listFiles();
         File[] oarray = older.listFiles();
@@ -68,24 +105,26 @@ public class DiffCreator {
             addRmEntry(ofilename, history);
     }
 
-    private static void checkFileDiff(File nfile, File ofile, String history) {
+    private void checkFileDiff(File nfile, File ofile, String history) throws IOException {
         byte[] nmd5 = Digester.getMD5Sum(nfile);
         byte[] omd5 = Digester.getMD5Sum(ofile);
         if (!Arrays.equals(nmd5, omd5))
             addFileEntry(nfile.getName(), history);
-        else
-            System.out.println("  " + history + "/" + nfile.getName());
     }
 
-    private static void addFileEntry(String fname, String history) {
-        System.out.println("+ " + history + "/" + fname);
+    private void addFileEntry(String fname, String history) throws IOException {
+        out.append("  <file name=\"").append(fname);
+        out.append("\" sourcedir=\"").append(server_dir);
+        out.append("\" destdir=\"").append(history);
+        out.append("\" size=\"").append("0");
+        out.append("\" compress=\"gz\"/>\n");
     }
 
-    private static void addRmEntry(String fname, String history) {
-        System.out.println("- " + history + "/" + fname);
+    private void addRmEntry(String fname, String history) throws IOException {
+        out.write("  <rm file=\"" + history + "/" + fname + "\">\n");
     }
 
-    public static void exitOnError(String error) {
+    private void exitOnError(String error) {
         System.err.println(error);
         System.exit(1);
     }
