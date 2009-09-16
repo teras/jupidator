@@ -6,7 +6,7 @@
 msgid	""
 msgstr	"Project-Id-Version: Jupidator 0.1\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2009-06-04 02:33+0300\n"
+	"POT-Creation-Date: 2009-09-01 16:14+0300\n"
 	"PO-Revision-Date: 2008-12-10 12:17+0200\n"
 	"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
 	"Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
@@ -285,14 +285,14 @@ msgstr	"Έκδοση"
 msgid	"List of changes:"
 msgstr	""
 
-#~ msgid	"Successfully cleanup downloaded file {0}"
-#~ msgstr	"Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid	"Unable to cleanup downloaded file {0}"
-#~ msgstr	"Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+#~ msgid	"Checking path {0} for Deployer class."
+#~ msgstr	"Έλεγχος της διαδρομής {0} για τον εκκινητή."
 
 #~ msgid	"File {0} sucessfully downloaded."
 #~ msgstr	"Το αρχείο {0} κατέβηκε με επιτυχία"
 
-#~ msgid	"Checking path {0} for Deployer class."
-#~ msgstr	"Έλεγχος της διαδρομής {0} για τον εκκινητή."
+#~ msgid	"Unable to cleanup downloaded file {0}"
+#~ msgstr	"Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+
+#~ msgid	"Successfully cleanup downloaded file {0}"
+#~ msgstr	"Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"

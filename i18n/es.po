@@ -6,7 +6,7 @@
 msgid	""
 msgstr	"Project-Id-Version: jupidator\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2009-06-04 02:33+0300\n"
+	"POT-Creation-Date: 2009-09-01 16:14+0300\n"
 	"PO-Revision-Date: 2008-12-16 21:36+0100\n"
 	"Last-Translator: Alfredo Quesada Sánchez <freddy@um.es>\n"
 	"Language-Team:  <es@li.org>\n"
