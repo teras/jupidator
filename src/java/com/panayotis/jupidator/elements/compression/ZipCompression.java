@@ -4,7 +4,7 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.deployer.JupidatorDeployer;
+import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;

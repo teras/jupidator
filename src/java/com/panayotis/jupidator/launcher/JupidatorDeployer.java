@@ -3,7 +3,7 @@
  *
  * Created on September 29, 2008, 5:10 PM
  */
-package com.panayotis.jupidator.deployer;
+package com.panayotis.jupidator.launcher;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

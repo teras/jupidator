@@ -54,7 +54,7 @@ public class Version {
         } catch (SAXException ex) {
             throw new UpdaterException(ex.getMessage());
         } catch (IOException ex) {
-            throw new UpdaterException(ex.getClass().getName() + " " + ex.getMessage());
+            throw new UpdaterException(ex.getClass().getName() + ": " + ex.getMessage());
         } catch (ParserConfigurationException ex) {
             throw new UpdaterException(ex.getMessage());
         }

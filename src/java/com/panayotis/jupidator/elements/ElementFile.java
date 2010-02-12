@@ -9,7 +9,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
-import com.panayotis.jupidator.deployer.JupidatorDeployer;
+import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.compression.BZip2Compression;
 import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;

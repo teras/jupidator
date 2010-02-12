@@ -12,3 +12,4 @@ syntax: regexp
 ^nbproject/private/
 .*pbxuser
 .DS_Store
+^priviledges

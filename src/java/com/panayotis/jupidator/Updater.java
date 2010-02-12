@@ -15,9 +15,11 @@ import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.data.Version;
+import com.panayotis.jupidator.launcher.Closure;
+import com.panayotis.jupidator.launcher.JupidatorDeployer;
+import com.panayotis.jupidator.launcher.LaunchManager;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -150,7 +152,7 @@ public class Updater {
         watcher.stopWatcher();
         gui.endDialog();
         if (application.requestRestart()) {
-            String classname = "com.panayotis.jupidator.deployer.JupidatorDeployer";
+            String classname = JupidatorDeployer.class.getName();
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
 
@@ -176,15 +178,17 @@ public class Updater {
             for (int i = 0; i < arch.countArguments(); i++)
                 args[header++] = arch.getArgument(i, appinfo);
 
-            try {
-                StringBuffer buf = new StringBuffer();
-                for (int i = 0; i < args.length; i++)
-                    buf.append(args[i]).append(' ');
-                application.receiveMessage(_("Executing {0}", buf.toString()));
-                Runtime.getRuntime().exec(args);
-            } catch (IOException ex) {
-                application.receiveMessage(ex.getMessage());
-            }
+            Closure callback = new Closure() {
+
+                public void exec(Object data) {
+                    application.receiveMessage(data.toString());
+                }
+            };
+            StringBuffer buf = new StringBuffer();
+            for (int i = 0; i < args.length; i++)
+                buf.append(args[i]).append(' ');
+            application.receiveMessage(_("Executing {0}", buf.toString()));
+            LaunchManager.execute(args, callback, callback, null);
             System.exit(0);
         }
     }
