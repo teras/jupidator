@@ -17,8 +17,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -76,6 +79,54 @@ public class FileUtils {
             }
         }
         return message;
+    }
+
+    public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
+        String PACKAGEDIR = PACKAGENAME.replace('.', '/') + FS;
+        File depdir = new File(FILEHOME + FS + PACKAGEDIR.replace('/', FS));
+        depdir.mkdirs();
+        if ((!depdir.isDirectory()) || (!depdir.canWrite()))
+            return _("Path {0} is not writable.", depdir.getPath());
+
+        /* Get class paths */
+        Vector<String> jars = new Vector<String>();
+        Vector<String> dirs = new Vector<String>();
+        getClassPaths(jars, dirs);
+
+        for (String jar : jars) {
+            listener.receiveMessage(_("Checking JAR {0} for classes.", jar));
+            try {
+                ZipFile zip = new ZipFile(jar);
+                for (Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zip.entries(); e.hasMoreElements();) {
+                    ZipEntry entry = e.nextElement();
+                    String name = entry.getName();
+                    if (name.startsWith(PACKAGEDIR) && (!name.endsWith("/"))) {
+                        String FILEOUT = FILEHOME + FS + entry.getName().replace('/', FS);
+                        String status = copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null);
+                        if (status != null)
+                            return status;
+                    }
+                }
+            } catch (IOException ex) {
+                return _("Unable to extract files from JAR {0}", jar);
+            }
+        }
+        for (String path : dirs) {
+            listener.receiveMessage(_("Checking directory {0} for classes.", path));
+            File[] entries = new File(path + FS + PACKAGEDIR).listFiles();
+            for (int i = 0; i < entries.length; i++) {
+                String status;
+                try {
+                    String FILEOUTS = depdir.getPath() + FS + entries[i].getName();
+                    status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null);
+                    if (status != null)
+                        return status;
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return null;
     }
 
     public static String copyClass(String CLASSNAME, String FILEHOME, UpdatedApplication listener) {

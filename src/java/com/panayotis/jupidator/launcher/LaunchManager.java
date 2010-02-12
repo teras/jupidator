@@ -33,8 +33,6 @@ public class LaunchManager {
                 return false;
             cmd = combineStrings(sudocmd, command);
         }
-        for (int i = 0; i < cmd.length; i++)
-            System.out.println(cmd[i] + " ");
         if (true)
             return true;
 
@@ -110,6 +108,13 @@ public class LaunchManager {
         while (tk.hasMoreTokens())
             res.add(tk.nextToken());
         return res.toArray(emptyString);
+    }
+
+    public final static String ArrayToString(String[] array, String delimeter) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < array.length; i++)
+            buf.append(array[i]).append(delimeter);
+        return buf.toString();
     }
     private final static String[] emptyString = new String[]{};
 }

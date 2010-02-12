@@ -152,11 +152,10 @@ public class Updater {
         watcher.stopWatcher();
         gui.endDialog();
         if (application.requestRestart()) {
-            String classname = JupidatorDeployer.class.getName();
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
 
-            String message = FileUtils.copyClass(classname, temppath, application);
+            String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), temppath, application);
             if (message != null) {
                 application.receiveMessage(message);
                 JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);
@@ -168,7 +167,7 @@ public class Updater {
             args[0] = FileUtils.JAVABIN;
             args[1] = "-cp";
             args[2] = temppath;
-            args[3] = classname;
+            args[3] = JupidatorDeployer.class.getName();
             args[4] = vers.isGraphicalDeployer() ? "g" : "t";
             args[5] = String.valueOf(vers.size());
 
@@ -184,10 +183,7 @@ public class Updater {
                     application.receiveMessage(data.toString());
                 }
             };
-            StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < args.length; i++)
-                buf.append(args[i]).append(' ');
-            application.receiveMessage(_("Executing {0}", buf.toString()));
+            application.receiveMessage(_("Executing {0}", LaunchManager.ArrayToString(args, " ")));
             LaunchManager.execute(args, callback, callback, null);
             System.exit(0);
         }
