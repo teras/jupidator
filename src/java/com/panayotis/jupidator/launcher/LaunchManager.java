@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
  */
 public class LaunchManager {
 
-    private static final String[] pipedsudo = {
+    private static final String[] sudocmd = {
         "sudo",
         "-S",
         "-p",
@@ -31,8 +31,12 @@ public class LaunchManager {
             pass = LaunchManager.getPassword();
             if (pass == null)
                 return false;
-            cmd = combineStrings(pipedsudo, command);
+            cmd = combineStrings(sudocmd, command);
         }
+        for (int i = 0; i < cmd.length; i++)
+            System.out.println(cmd[i] + " ");
+        if (true)
+            return true;
 
         Commander com = new Commander(cmd);
         com.setOutListener(out);

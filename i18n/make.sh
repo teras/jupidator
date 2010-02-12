@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo I18N disabled, please edit i18n/make.sh and enable it again.
+exit 0
+
 
 PROJECT=jupidator
 TARGET=../build/classes

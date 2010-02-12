@@ -86,7 +86,7 @@ public class JSudo extends JDialog {
 
         CentralPanel.setLayout(new java.awt.BorderLayout());
 
-        InfoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
+        InfoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/launcher/lock.png"))); // NOI18N
         InfoLabel.setText("CaféPorts requires your password.");
         InfoLabel.setIconTextGap(20);
         CentralPanel.add(InfoLabel, java.awt.BorderLayout.NORTH);

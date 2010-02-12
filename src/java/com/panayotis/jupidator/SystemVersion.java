@@ -10,6 +10,6 @@ package com.panayotis.jupidator;
  */
 public class SystemVersion {
 
-    public final static int RELEASE = 400;
-    public final static String VERSION = "0.4.0";
+    public final static int RELEASE = 500;
+    public final static String VERSION = "0.5.0";
 }
