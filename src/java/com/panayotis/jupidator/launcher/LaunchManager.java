@@ -19,6 +19,7 @@ public class LaunchManager {
         "-p",
         ""
     };
+    private static final int FILESIZE_LOCATION = 2;
     private static JSudo inst;
     private static boolean sudo_is_ok;
     private final static Closure status = new Closure() {
@@ -29,7 +30,7 @@ public class LaunchManager {
 
     public static void main(String[] command) {
         String pass = null;
-        boolean asAdmin = false;
+        boolean asAdmin = needsSudo(splitArray(command, FILESIZE_LOCATION, FILESIZE_LOCATION + Integer.parseInt(command[1])));
 
         String[] cmd = command;
         if (asAdmin) {
@@ -38,7 +39,6 @@ public class LaunchManager {
                 return;
             cmd = combineStrings(sudocmd, command);
         }
-        System.out.println(ArrayToString(cmd, " "));
         if (true)
             return;
 
@@ -51,6 +51,15 @@ public class LaunchManager {
             com.sendLine(pass);
             com.waitFor();
         }
+    }
+
+    private static boolean needsSudo(String[] files) {
+        for (int i = 0; i < files.length; i++)
+            if (files[i].startsWith("-") || files[i].startsWith("+")) {
+                String fname = files[i].substring(1);
+                System.out.println("check " + fname);
+            }
+        return false;
     }
 
     static boolean testSudo(String pass) {
@@ -101,6 +110,15 @@ public class LaunchManager {
         String[] result = new String[one.length + two.length];
         System.arraycopy(one, 0, result, 0, one.length);
         System.arraycopy(two, 0, result, one.length, two.length);
+        return result;
+    }
+
+    private final static String[] splitArray(String[] pool, int from, int to) {
+        if (from < 0 || to > pool.length || from >= to)
+            return emptyString;
+        String[] result = new String[to - from];
+        for (int i = from; i < to; i++)
+            result[i - from] = pool[i];
         return result;
     }
 

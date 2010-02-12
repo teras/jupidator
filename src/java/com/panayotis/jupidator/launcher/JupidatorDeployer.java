@@ -31,7 +31,6 @@ public class JupidatorDeployer {
     public static final String EXTENSION = ".jupidator";
     private static BufferedWriter out;
 
-
     static {
         try {
             String filename = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "jupidator." + new SimpleDateFormat("yyyyMMdd_hhmmss").format(Calendar.getInstance().getTime()) + ".log";
@@ -52,21 +51,19 @@ public class JupidatorDeployer {
     }
 
     private static void endDebug() {
-        if (out != null) {
+        if (out != null)
             try {
                 out.close();
             } catch (IOException ex) {
             }
-        }
     }
 
     public static void main(String[] args) {
         try {
             new JupidatorDeployer();
             debug("Start log of Jupidator Deployer with arguments:");
-            for (int i = 0; i < args.length; i++) {
+            for (int i = 0; i < args.length; i++)
                 debug("  #" + i + ": " + args[i]);
-            }
 
             int pos = 0;
 
@@ -83,7 +80,7 @@ public class JupidatorDeployer {
             }
 
             files += pos;
-            for (; pos < files; pos++) {
+            for (; pos < files; pos++)
                 if (args[pos].length() > 0) {
                     String data = args[pos].substring(1, args[pos].length());
                     switch (args[pos].charAt(0)) {
@@ -122,7 +119,6 @@ public class JupidatorDeployer {
                     }
                     debug("End of works");
                 }
-            }
 
             int initpos = pos;
             String exec[] = new String[args.length - pos];
@@ -179,10 +175,9 @@ public class JupidatorDeployer {
             return true;
         if (f.isDirectory()) {
             File dir[] = f.listFiles();
-            for (int i = 0; i < dir.length; i++) {
+            for (int i = 0; i < dir.length; i++)
                 if (!rmTree(dir[i]))
                     return false;
-            }
         }
         return f.delete();
     }
@@ -211,9 +206,8 @@ public class JupidatorDeployer {
             kill.add("/PID");
             kill.add("ID");
             kill.add(data);
-            if (!signal.equals("")) {
+            if (!signal.equals(""))
                 kill.add(signal);
-            }
         } else {
             ps.add("ps");
             ps.add("aux");
@@ -270,9 +264,8 @@ public class JupidatorDeployer {
             }
             String line;
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = r.readLine()) != null) {
+            while ((line = r.readLine()) != null)
                 output.append(line).append('\n');
-            }
 
             p.waitFor();
             if (p.exitValue() == 0) {
