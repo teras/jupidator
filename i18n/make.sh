@@ -11,7 +11,7 @@ PREFIX=Messages_
 pushd . >/dev/null ; cd `dirname $0` ; SELF=`pwd` ; popd >/dev/null
 CLASSDIR=`echo $CLASSPATH | sed -e 's/\./\//g'`
 
-
+export PATH=$PATH:/opt/local/bin/
 
 # Cleanup if desired
 if [ "$1" == "clean" ] ; then
