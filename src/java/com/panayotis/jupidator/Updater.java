@@ -20,6 +20,9 @@ import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.launcher.LaunchManager;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -155,7 +158,7 @@ public class Updater {
             String temppath = System.getProperty("java.io.tmpdir");
             Arch arch = vers.getArch();
 
-            String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), temppath, application);
+            String message = FileUtils.copyPackage(LaunchManager.class.getPackage().getName(), temppath, application);
             if (message != null) {
                 application.receiveMessage(message);
                 JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);
@@ -167,7 +170,7 @@ public class Updater {
             args[0] = FileUtils.JAVABIN;
             args[1] = "-cp";
             args[2] = temppath;
-            args[3] = JupidatorDeployer.class.getName();
+            args[3] = LaunchManager.class.getName();
             args[4] = vers.isGraphicalDeployer() ? "g" : "t";
             args[5] = String.valueOf(vers.size());
 
@@ -184,7 +187,11 @@ public class Updater {
                 }
             };
             application.receiveMessage(_("Executing {0}", LaunchManager.ArrayToString(args, " ")));
-            LaunchManager.execute(args, callback, callback, null);
+            try {
+                Runtime.getRuntime().exec(args);
+            } catch (IOException ex) {
+                application.receiveMessage(ex.getMessage());
+            }
             System.exit(0);
         }
     }

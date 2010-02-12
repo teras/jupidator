@@ -21,32 +21,36 @@ public class LaunchManager {
     };
     private static JSudo inst;
     private static boolean sudo_is_ok;
+    private final static Closure status = new Closure() {
 
-    public static boolean execute(String[] command, Closure out, Closure err, Closure begin) {
+        public void exec(Object data) {
+        }
+    };
+
+    public static void main(String[] command) {
         String pass = null;
-        boolean asAdmin = true;
+        boolean asAdmin = false;
 
         String[] cmd = command;
         if (asAdmin) {
             pass = LaunchManager.getPassword();
             if (pass == null)
-                return false;
+                return;
             cmd = combineStrings(sudocmd, command);
         }
+        System.out.println(ArrayToString(cmd, " "));
         if (true)
-            return true;
+            return;
 
         Commander com = new Commander(cmd);
-        com.setOutListener(out);
-        com.setErrListener(err);
+        com.setOutListener(status);
+        com.setErrListener(status);
 
-        begin.exec(com);
         com.exec();
         if (com.isActive()) {
             com.sendLine(pass);
             com.waitFor();
         }
-        return true;
     }
 
     static boolean testSudo(String pass) {
