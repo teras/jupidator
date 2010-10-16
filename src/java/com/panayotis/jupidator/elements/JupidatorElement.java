@@ -5,7 +5,6 @@
 package com.panayotis.jupidator.elements;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.elements.FileUtils.FS;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
@@ -19,11 +18,12 @@ import java.io.File;
  */
 public abstract class JupidatorElement {
 
-    private String filename = "";
-    private String destdir = "";
-    private long size = 0;
-    private int release;
-    private ExecutionTime exectime;
+    private final String filename;
+    private final String destdir;
+    private final long size;
+    private final long release;
+    private final ExecutionTime exectime;
+    private final boolean requiresPrivileges;
 
     public ExecutionTime getExectime() {
         return exectime;
@@ -39,25 +39,28 @@ public abstract class JupidatorElement {
     }
 
     public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
-        if (name != null)
-            this.filename = appinfo.updatePath(name);
-        if (destdir != null)
-            this.destdir = appinfo.updatePath(dest);
-        release = elements.getLastRelease();
-
-        info = appinfo;
-        if (info == null) {
+        if (info == null)
             throw new NullPointerException(_("Application info not provided."));
-        }
+        if (elements == null)
+            throw new NullPointerException(_("UpdaterAppElements not provided."));
+
+        this.info = appinfo;
+        this.filename = appinfo.applyVariables(name);
+        this.destdir = appinfo.applyVariables(dest);
+        this.release = elements.getLastRelease();
+
+        long nsize = 0;
         try {
-            this.size = Long.parseLong(size);
-            if (this.size < 0)
-                this.size = 0;
+            nsize = Math.max(0, Long.parseLong(size));
         } catch (NumberFormatException ex) {
         }
+        this.size = nsize;
+
         if (exectime == null)
             exectime = ExecutionTime.MID;
         this.exectime = exectime;
+
+        requiresPrivileges = elements.validateFilePrivileges(destdir, filename);
     }
 
     public String getHash() {
@@ -67,7 +70,7 @@ public abstract class JupidatorElement {
     public String getDestinationFile() {
         if (destdir.equals(""))
             return filename;
-        return destdir + FS + filename;
+        return destdir + File.separator + filename;
     }
 
     public String getFileName() {
@@ -84,6 +87,9 @@ public abstract class JupidatorElement {
     public long getSize() {
         return size;
     }
+    public boolean requiresPrivileges() {
+        return requiresPrivileges;
+    }
 
     /**
      * This method downloads files for this element.
@@ -98,7 +104,7 @@ public abstract class JupidatorElement {
     public abstract String deploy(UpdatedApplication application);
 
     /**
-     * This mehtod cancels action and rollbacks everything
+     * This method cancels action and rollbacks everything
      * @param application
      */
     public abstract void cancel(UpdatedApplication application);

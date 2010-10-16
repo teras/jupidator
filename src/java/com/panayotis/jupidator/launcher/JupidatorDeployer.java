@@ -58,9 +58,9 @@ public class JupidatorDeployer {
             }
     }
 
+    @SuppressWarnings("SleepWhileHoldingLock")
     public static void main(String[] args) {
         try {
-            new JupidatorDeployer();
             debug("Start log of Jupidator Deployer with arguments:");
             for (int i = 0; i < args.length; i++)
                 debug("  #" + i + ": " + args[i]);
@@ -254,7 +254,7 @@ public class JupidatorDeployer {
 
     private static String exec(ArrayList<String> list, String input) {
         String[] cmd = list.toArray(new String[]{});
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
         try {
             Process p = Runtime.getRuntime().exec(cmd);
             if (input != null && input.length() > 0) {

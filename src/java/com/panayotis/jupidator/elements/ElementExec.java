@@ -24,7 +24,7 @@ public class ElementExec extends ElementNative {
 
     public void addArgument(String argument, ApplicationInfo appinfo) {
         if (appinfo != null && argument != null)
-            arguments.add(appinfo.updatePath(argument));
+            arguments.add(appinfo.applyVariables(argument));
     }
 
     protected String[] getExecArguments() {

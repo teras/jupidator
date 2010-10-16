@@ -10,7 +10,6 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
-import java.io.File;
 
 /**
  *
@@ -22,6 +21,7 @@ public class ElementRm extends JupidatorElement {
         super(file, elements, info, ExecutionTime.MID);
     }
 
+    @Override
     public String toString() {
         return "-" + getDestinationFile();
     }
@@ -30,20 +30,14 @@ public class ElementRm extends JupidatorElement {
         return "-" + getDestinationFile();
     }
 
-    /* Nothig to download, but it will be faster if we check files here */
+    /* Nothig to download */
     public String fetch(UpdatedApplication application, BufferListener blisten) {
-        File f = new File(getDestinationFile());
-        if ((!f.exists()) || (f.getParentFile().canWrite() && FileUtils.isWritable(f))) {
-            application.receiveMessage(_("File {0} will be deleted, if exists.", f.getPath()));
-            return null;
-        }
-        String msg = _("File {0} could not be deleted.", f.getPath());
-        application.receiveMessage(msg);
-        return msg;
+        return null;
     }
 
     /* Nothing to deploy */
     public String deploy(UpdatedApplication application) {
+        application.receiveMessage(_("File {0} will be deleted, if exists.", getDestinationFile()));
         return null;
     }
 

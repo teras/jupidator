@@ -17,7 +17,7 @@ public interface CompressionMethod {
      * @param f
      * @return error message
      */
-    public String decompress(File compressedfile, String outfile);
+    public String decompress(File compressedfile, File outfile);
     /**
      * 
      * @return source filename extension

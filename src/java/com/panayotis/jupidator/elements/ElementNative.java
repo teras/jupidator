@@ -42,9 +42,9 @@ public abstract class ElementNative extends JupidatorElement {
     public ElementNative(String command, String file, String input, ExecutionTime time, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(file, elements, appinfo, time);
         if (command != null)
-            this.command = appinfo.updatePath(command);
+            this.command = appinfo.applyVariables(command);
         if (input != null)
-            this.input = appinfo.updatePath(input);
+            this.input = appinfo.applyVariables(input);
     }
 
     /* Nothing to do while fetching.

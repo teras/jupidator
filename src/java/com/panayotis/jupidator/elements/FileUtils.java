@@ -17,9 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -31,17 +31,16 @@ import java.util.zip.ZipFile;
  */
 public class FileUtils {
 
-    public final static char FS = System.getProperty("file.separator").charAt(0);
     public final static String JAVAHOME = System.getProperty("java.home");
     public final static String JAVABIN = getJavaExec();
 
     private static String getJavaExec() {
         String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "java.exe" : "java";
         String file;
-        file = JAVAHOME + FS + "bin" + FS + EXEC;
+        file = JAVAHOME + File.separator + "bin" + File.separator + EXEC;
         if (new File(file).isFile())
             return file;
-        file = JAVAHOME + FS + "jre" + FS + "bin" + FS + EXEC;
+        file = JAVAHOME + File.separator + "jre" + File.separator + "bin" + File.separator + EXEC;
         if (new File(file).isFile())
             return file;
         return null;
@@ -82,15 +81,15 @@ public class FileUtils {
     }
 
     public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
-        String PACKAGEDIR = PACKAGENAME.replace('.', '/') + FS;
-        File depdir = new File(FILEHOME + FS + PACKAGEDIR.replace('/', FS));
+        String PACKAGEDIR = PACKAGENAME.replace('.', '/') + File.separator;
+        File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
         depdir.mkdirs();
         if ((!depdir.isDirectory()) || (!depdir.canWrite()))
             return _("Path {0} is not writable.", depdir.getPath());
 
         /* Get class paths */
-        Vector<String> jars = new Vector<String>();
-        Vector<String> dirs = new Vector<String>();
+        ArrayList<String> jars = new ArrayList<String>();
+        ArrayList<String> dirs = new ArrayList<String>();
         getClassPaths(jars, dirs);
 
         for (String jar : jars) {
@@ -101,7 +100,7 @@ public class FileUtils {
                     ZipEntry entry = e.nextElement();
                     String name = entry.getName();
                     if (name.startsWith(PACKAGEDIR) && (!name.endsWith("/"))) {
-                        String FILEOUT = FILEHOME + FS + entry.getName().replace('/', FS);
+                        String FILEOUT = FILEHOME + File.separator + entry.getName().replace("/", File.separator);
                         String status = copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null);
                         if (status != null)
                             return status;
@@ -113,11 +112,11 @@ public class FileUtils {
         }
         for (String path : dirs) {
             listener.receiveMessage(_("Checking directory {0} for classes.", path));
-            File[] entries = new File(path + FS + PACKAGEDIR).listFiles();
+            File[] entries = new File(path + File.separator + PACKAGEDIR).listFiles();
             for (int i = 0; i < entries.length; i++) {
                 String status;
                 try {
-                    String FILEOUTS = depdir.getPath() + FS + entries[i].getName();
+                    String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
                     status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null);
                     if (status != null)
                         return status;
@@ -135,10 +134,10 @@ public class FileUtils {
 
         String CLASSFILE = CLASS + ".class";
         String CLASSPATH = CLASSDIR + "/" + CLASSFILE;
-        String CLASSPATHSYSTEM = CLASSPATH.replace('/', FS);
+        String CLASSPATHSYSTEM = CLASSPATH.replace("/", File.separator);
 
-        String FILEDIR = FILEHOME + FS + CLASSDIR.replace('/', FS);
-        String FILEOUT = FILEDIR + FS + CLASSFILE;
+        String FILEDIR = FILEHOME + File.separator + CLASSDIR.replace("/", File.separator);
+        String FILEOUT = FILEDIR + File.separator + CLASSFILE;
 
         /* Create Java path */
         File depdir = new File(FILEDIR);
@@ -146,8 +145,8 @@ public class FileUtils {
         if ((!depdir.isDirectory()) || (!depdir.canWrite()))
             return _("Deployer path {0} is not writable.", depdir.getPath());
 
-        Vector<String> jars = new Vector<String>();
-        Vector<String> dirs = new Vector<String>();
+        ArrayList<String> jars = new ArrayList<String>();
+        ArrayList<String> dirs = new ArrayList<String>();
         getClassPaths(jars, dirs);
 
         for (String jar : jars) {
@@ -185,7 +184,7 @@ public class FileUtils {
     }
 
     private static String getJarPath(String JarName) {
-        Vector<String> jars = new Vector<String>();
+        ArrayList<String> jars = new ArrayList<String>();
         getClassPaths(jars, null);
         String jarjar = JarName + ".jar";
         String jarexe = JarName + ".exe";
@@ -195,9 +194,9 @@ public class FileUtils {
         return null;
     }
 
-    private static void getClassPaths(Vector<String> jarpaths, Vector<String> dirpaths) {
+    private static void getClassPaths(ArrayList<String> jarpaths, ArrayList<String> dirpaths) {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
-        Vector<String> classpaths = new Vector<String>();
+        ArrayList<String> classpaths = new ArrayList<String>();
         StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"),
                 System.getProperty("path.separator"));
         while (tok.hasMoreElements())
@@ -216,19 +215,19 @@ public class FileUtils {
                 } catch (IOException ex) {
                 }
             } else {
-                if (path.length() > 0 && path.charAt(path.length() - 1) != FS)
-                    path = path + FS;
+                if (path.length() > 0 && path.endsWith(File.separator))
+                    path = path + File.separator;
                 if (dirpaths != null)
                     dirpaths.add(path);
             }
         }
     }
 
-    private static void getClassPathFromManifest(ZipFile zip, Vector<String> classpaths, String parent) {
+    private static void getClassPathFromManifest(ZipFile zip, ArrayList<String> classpaths, String parent) {
         if (parent == null)
             parent = "";
         else
-            parent = parent + FS;
+            parent = parent + File.separator;
 
         ZipEntry manifest = zip.getEntry("META-INF/MANIFEST.MF");
         if (manifest != null) {
@@ -241,7 +240,7 @@ public class FileUtils {
                         String nextline;
                         while ((nextline = cpin.readLine()) != null && nextline.startsWith(" "))
                             line = line + nextline.substring(1);
-                        StringTokenizer tok = new StringTokenizer(line.substring(11).replace('/', FS));
+                        StringTokenizer tok = new StringTokenizer(line.substring(11).replace("/", File.separator));
                         while (tok.hasMoreElements())
                             classpaths.add(parent + tok.nextToken());
                         return;

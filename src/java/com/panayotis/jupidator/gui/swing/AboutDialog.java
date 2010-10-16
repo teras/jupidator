@@ -11,7 +11,7 @@
 
 package com.panayotis.jupidator.gui.swing;
 
-import com.panayotis.jupidator.SystemVersion;
+import com.panayotis.jupidator.statics.SystemVersion;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 /**

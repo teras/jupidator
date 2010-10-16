@@ -81,8 +81,8 @@
 
 <target name="doc" depends="dtddoc">
 	<mkdir dir="dist/doc"/>
-	<exec dir="dist/doc" executable="docbook2html" failonerror="false">
-		<arg line="../../src/doc/Documentation.xml"/>
+	<exec dir="dist/doc" executable="xmlto" failonerror="false">
+		<arg line="html-nochunks ../../src/doc/Documentation.xml"/>
 	</exec>
 </target>
 

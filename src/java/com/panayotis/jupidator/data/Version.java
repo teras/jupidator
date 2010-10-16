@@ -65,8 +65,9 @@ public class Version {
             this.arch = arch;
     }
 
+    @Override
     public String toString() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append("[Version").append('\n');
         for (String tag : elements.keySet()) {
             b.append("  ");

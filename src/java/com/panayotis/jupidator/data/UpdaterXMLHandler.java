@@ -44,6 +44,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         arch = new Arch(); // "Any" arch is selected by default
     }
 
+    @Override
     public void startElement(String uri, String localName, String qName, Attributes attr) {
         if (qName.equals("architect")) {
             lastarch = arch.getArchitect(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
@@ -157,6 +158,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         return !TextUtils.isTrue(force);
     }
 
+    @Override
     public void endElement(String uri, String localName, String qName) {
         if (qName.equals("arch")) {
             if (current == null)
@@ -202,6 +204,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
 //    public void endDocument() {
 //    }
+    @Override
     public void characters(char[] ch, int start, int length) {
         if (old_version)
             return;

@@ -66,7 +66,7 @@ public class Arch {
 
     void addArgument(String argument, ApplicationInfo appinfo) {
         if (appinfo != null && argument != null)
-            arguments.add(appinfo.updatePath(argument));
+            arguments.add(appinfo.applyVariables(argument));
     }
 
     public int countArguments() {
@@ -75,7 +75,7 @@ public class Arch {
 
     public String getArgument(int index, ApplicationInfo appinfo) {
         if (index == 0)
-            return appinfo.updatePath(exec);
+            return appinfo.applyVariables(exec);
         if (index > 0 && index <= arguments.size())
             return arguments.get(index - 1);
         throw new ArrayIndexOutOfBoundsException("Not valid index for architecture arguments: " + index);

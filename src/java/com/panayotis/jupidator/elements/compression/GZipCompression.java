@@ -4,8 +4,8 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,9 +18,9 @@ import java.util.zip.GZIPInputStream;
  */
 public class GZipCompression implements CompressionMethod {
 
-    public String decompress(File compressedfile, String outfile) {
+    public String decompress(File compressedfile, File outfile) {
         try {
-            return FileUtils.copyFile(new GZIPInputStream(new FileInputStream(compressedfile)), new FileOutputStream(compressedfile.getParent() + FileUtils.FS + outfile + JupidatorDeployer.EXTENSION), null);
+            return FileUtils.copyFile(new GZIPInputStream(new FileInputStream(compressedfile)), new FileOutputStream(outfile.getPath() + JupidatorDeployer.EXTENSION), null);
         } catch (IOException ex) {
             return ex.getMessage();
         }

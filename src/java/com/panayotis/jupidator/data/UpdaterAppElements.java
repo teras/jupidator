@@ -4,9 +4,10 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import static com.panayotis.jupidator.i18n.I18N._;
 
-import com.panayotis.jupidator.SystemVersion;
+import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
@@ -25,6 +26,7 @@ public class UpdaterAppElements {
     private String lastversion = "0.0.0.0"; // Last value we read from XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
+    private PermissionManager perms = new PermissionManager();
 
     public String getAppName() {
         return AppName;
@@ -107,5 +109,13 @@ public class UpdaterAppElements {
 
     public boolean shouldUpdateLibrary() {
         return needs_update;
+    }
+
+    public boolean requirePrivileges() {
+        return perms.requirePrivileges();
+    }
+
+    public boolean validateFilePrivileges(String destdir, String filename) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

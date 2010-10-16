@@ -5,7 +5,6 @@
 package com.panayotis.jupidator;
 
 import static com.panayotis.jupidator.i18n.I18N._;
-import static com.panayotis.jupidator.elements.FileUtils.FS;
 
 import com.panayotis.jupidator.elements.FileUtils;
 
@@ -28,26 +27,24 @@ public class ApplicationInfo {
     private boolean distributionBased = false;
     private boolean selfupdate;
 
-    public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version) {
+    public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
 
-        if (AppHome == null)
+        if (appHome == null)
             throw new NullPointerException(_("Application path can not be null."));
-        if (AppHome.equals(""))
-            AppHome = ".";
-        if (!new File(AppHome).isDirectory())
-            throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
-        if (AppHome.charAt(AppHome.length() - 1) == FS)
-            AppHome = AppHome.substring(0, AppHome.length() - 1);
-        vars.put("APPHOME", AppHome);
+        if (appHome.equals(""))
+            appHome = ".";
+        if (!new File(appHome).isDirectory())
+            throw new IllegalArgumentException(_("Unable to find Application path {0}.", appHome));
+        if (appHome.endsWith(File.separator))
+            appHome = appHome.substring(0, appHome.length() - 1);
+        vars.put("APPHOME", appHome);
 
-        if (AppSupportDir == null || (!new File(AppSupportDir).isDirectory()))
-            AppSupportDir = AppHome;
-        if (AppSupportDir.length() > 0 && AppSupportDir.charAt(AppSupportDir.length() - 1) != FS)
-            AppSupportDir = AppSupportDir + FS;
-        if (AppSupportDir.charAt(AppSupportDir.length() - 1) == FS)
-            AppSupportDir = AppSupportDir.substring(0, AppSupportDir.length() - 1);
-        vars.put("APPSUPPORTDIR", AppSupportDir);
+        if (appSupportDir == null || (!new File(appSupportDir).isDirectory()))
+            appSupportDir = appHome;
+        if (appSupportDir.endsWith(File.separator))
+            appSupportDir = appSupportDir.substring(0, appSupportDir.length() - 1);
+        vars.put("APPSUPPORTDIR", appSupportDir);
 
         if (version == null || version.equals(""))
             version = "0.0.0.0";
@@ -82,11 +79,11 @@ public class ApplicationInfo {
     }
 
     public String getUpdaterConfigFile() {
-        return vars.get("APPSUPPORTDIR") + FS + "updater.xml";
+        return vars.get("APPSUPPORTDIR") + File.separator + "updater.xml";
     }
 
     /* This new release has to do with ignoring a specific version */
-    public void updateIgnoreRelease(String release) {
+    public final void updateIgnoreRelease(String release) {
         int ignorerelease = 0;
         try {
             ignorerelease = Integer.parseInt(release);
@@ -107,7 +104,7 @@ public class ApplicationInfo {
         return vars.get("VERSION");
     }
 
-    public String updatePath(String path) {
+    public String applyVariables(String path) {
         if (path == null)
             path = "";
 

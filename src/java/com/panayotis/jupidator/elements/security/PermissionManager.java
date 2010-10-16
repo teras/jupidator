@@ -2,17 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.launcher;
+package com.panayotis.jupidator.elements.security;
 
+import com.panayotis.jupidator.UpdaterException;
 import java.io.File;
+import java.io.IOException;
 
 /**
  *
  * @author teras
  */
-public class Permissions {
+public class PermissionManager {
 
-    static boolean isWritable(File f) {
+    private boolean reqprev = false;
+
+    public boolean requirePrivileges() {
+        return reqprev;
+    }
+
+    public void validateFile(String filename) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public static boolean isWritable(File f) {
         if (f == null)
             throw new NullPointerException("Updated file could not be null.");
         if (!isParentWritable(f))

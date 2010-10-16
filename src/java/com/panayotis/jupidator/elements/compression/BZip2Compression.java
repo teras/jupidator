@@ -18,14 +18,14 @@ import org.apache.tools.bzip2.CBZip2InputStream;
  */
 public class BZip2Compression implements CompressionMethod {
 
-    public String decompress(File compressedfile, String outfile) {
+    public String decompress(File compressedfile, File outfile) {
         try {
             FileInputStream fin = new FileInputStream(compressedfile);
             char b = (char) fin.read();
             char z = (char) fin.read();
             if (b != 'B' && z != 'Z')
                 fin.reset();
-            return FileUtils.copyFile(new CBZip2InputStream(fin), new FileOutputStream(compressedfile.getParent() + FileUtils.FS + outfile + JupidatorDeployer.EXTENSION), null);
+            return FileUtils.copyFile(new CBZip2InputStream(fin), new FileOutputStream(outfile.getPath() + JupidatorDeployer.EXTENSION), null);
         } catch (IOException ex) {
             return ex.getMessage();
         }

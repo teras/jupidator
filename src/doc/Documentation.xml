@@ -142,7 +142,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <sect2><title>Element architect</title>
 <para>A list of architectures is currently required with element name <function><ulink url="dtd/jupidator.dtd.html#architect">architect</ulink></function>, in order to distinguish between different architectures and machines. Required arguments are:</para>
 <itemizedlist>
-	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_tag">tag</ulink></function> : The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator. A special tag "any" can be used to define any other architecture not strictly described.</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_tag">tag</ulink></function> : The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator. Two special tags exist: "any" to define any other architecture not strictly described and "all" to perform work for all architectures, in addition to their specialized entries.</para></listitem>
 	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_os">os</ulink></function> : The operating system of this machine.</para></listitem>
 	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_arch">arch</ulink></function> : The machine architecture.</para></listitem>
 </itemizedlist>
@@ -163,7 +163,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <itemizedlist>
 	<listitem><para><ulink url="dtd/jupidator.dtd.html#arch_name">name</ulink><function></function> : The name of this architecture, as defines with the architect element.</para></listitem>
 </itemizedlist>
-<para>Please have a look at <ulink url="dtd/jupidator.dtd.html#arch">the list of supported nested elements</ulink>. The most common element is <function><ulink url="dtd/jupidator.dtd.html#file">file</ulink></function>.</para>
+<para>Please have a look at <ulink url="dtd/jupidator.dtd.html#arch">the list of supported nested elements</ulink>. The most common element is <function><ulink url="dtd/jupidator.dtd.html#file">file</ulink></function>. This element is responsible to download files, or even packages if the <function><ulink url="dtd/jupidator.dtd.html#file_compress">compress="zip"</ulink></function> attribute is used.</para>
 </sect2>
 
 <sect2><title>XML example</title>

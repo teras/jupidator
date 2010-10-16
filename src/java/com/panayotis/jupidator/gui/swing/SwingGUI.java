@@ -66,6 +66,9 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
 
         if (info.isSelfUpdate())
             SkipB.setVisible(false);
+
+        PrevL.setVisible(el.requirePrivileges());
+        pack();
     }
 
     public void startDialog() {
@@ -151,6 +154,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         jPanel4 = new javax.swing.JPanel();
         LaterB = new javax.swing.JButton();
         UpdateB = new javax.swing.JButton();
+        PrevL = new javax.swing.JLabel();
 
         ProgressP.setLayout(new java.awt.BorderLayout());
 
@@ -266,6 +270,11 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
 
         CommandP.add(jPanel4, java.awt.BorderLayout.EAST);
 
+        PrevL.setForeground(java.awt.Color.blue);
+        PrevL.setText(_("WARNING! This update requires elevated privileges!"));
+        PrevL.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 12, 4, 12));
+        CommandP.add(PrevL, java.awt.BorderLayout.NORTH);
+
         MainPanel.add(CommandP, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
@@ -314,6 +323,7 @@ private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
     private javax.swing.JLabel NewVerL;
     private javax.swing.JLabel NotesL;
     private javax.swing.JProgressBar PBar;
+    private javax.swing.JLabel PrevL;
     private javax.swing.JPanel ProgressP;
     private javax.swing.JButton SkipB;
     private javax.swing.JButton UpdateB;

@@ -4,6 +4,8 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.statics.SelfUpdate;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.elements.FileUtils;
@@ -16,13 +18,10 @@ import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.data.Version;
 import com.panayotis.jupidator.launcher.Closure;
-import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.launcher.LaunchManager;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,6 +38,10 @@ public class Updater {
     private JupidatorGUI gui;
     private UpdateWatcher watcher;
 
+    public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
+        this(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application);
+    }
+
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         vers = Version.loadVersion(xmlurl, appinfo);
         if (vers.getAppElements().shouldUpdateLibrary()) {
@@ -48,7 +51,7 @@ public class Updater {
             ApplicationInfo selfappinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
             selfappinfo.setSelfUpdate();
 
-            Version selfvers = Version.loadVersion("http://www.panayotis.com/versions/jupidator/jupidator.xml", selfappinfo);
+            Version selfvers = Version.loadVersion(SelfUpdate.URL, selfappinfo);
             if (selfvers.isVisible()) {
                 selfvers.replaceArch(vers.getArch());
                 vers = selfvers;
@@ -99,8 +102,9 @@ public class Updater {
         watcher.setAllBytes(size);
         download = new Thread() {
 
+            @Override
             public void run() {
-                /* Download */
+                /* Fetch */
                 for (String key : vers.keySet()) {
                     String result = vers.get(key).fetch(application, watcher);
                     if (result != null) {

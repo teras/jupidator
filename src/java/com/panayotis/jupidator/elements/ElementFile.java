@@ -20,6 +20,7 @@ import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -30,15 +31,18 @@ import java.util.ArrayList;
 public class ElementFile extends JupidatorElement {
 
     /** This is actually a URL */
-    private String source;
-    private CompressionMethod compression;
-    private ArrayList<Digester> digesters;
+    private final String source;
+    private final CompressionMethod compression;
+    private final ArrayList<Digester> digesters;
+    //
+    private final URL source_location;
+    private final File download_location;
 
     public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
         if (source == null)
             source = "";
-        this.source = info.updatePath(elements.getBaseURL() + source);
+        this.source = info.applyVariables(elements.getBaseURL() + source);
 
         if (compress == null)
             compress = "none";
@@ -52,6 +56,27 @@ public class ElementFile extends JupidatorElement {
         else
             compression = new NullCompression();
         digesters = new ArrayList<Digester>();
+
+        // Find download URL
+        URL url = null;
+        try {
+            url = new URL(getSourceFile() + compression.getFilenameExtension());
+        } catch (MalformedURLException ex) {
+        }
+        source_location = url;
+
+        // Find download location
+        String dl = getDestinationFile();
+        if (requiresPrivileges())
+            try {
+                File temp = File.createTempFile("jupidator.", ".temp");
+                dl = temp.getAbsolutePath();
+                if (!temp.delete())
+                    dl = null;
+            } catch (IOException ex) {
+                dl = null;
+            }
+        download_location = (dl == null) ? null : new File(dl + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
     }
 
     public boolean exists() {
@@ -67,6 +92,7 @@ public class ElementFile extends JupidatorElement {
         return source + "/" + getFileName();
     }
 
+    @Override
     public String toString() {
         return "+" + getSourceFile() + ">" + getDestinationFile();
     }
@@ -76,65 +102,55 @@ public class ElementFile extends JupidatorElement {
     }
 
     public String fetch(UpdatedApplication application, BufferListener watcher) {
-        String fromfilename = getSourceFile() + compression.getFilenameExtension();
-        String tofilename = getDestinationFile();
-        String downloadfilename = tofilename + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION;
-        File tofile = new File(tofilename);
-        File downloadfile = new File(downloadfilename);
-        String msg;
+        if (source_location == null)
+            return _("Unable to initialize URL {0}", getSourceFile());
+        if (download_location == null)
+            return _("Can not initialize download file {0}", getFileName());
 
-        /* Check if (new) destination file is writable */
-        if (!FileUtils.isWritable(tofile)) {
-            application.receiveMessage(_("Destination file {0} is not writable.", tofilename));
-            return _("Destination file {0} is not writable.", getFileName());
-        }
-        /* Remove old download file. Whether parent directory is writable, was checked with tofile */
-        downloadfile.delete();
-        if (downloadfile.exists()) {
-            application.receiveMessage(_("Could not remove old downloaded file {0}", downloadfilename));
-            return _("Could not remove old downloaded file {0}", getFileName());
+        /* Remove old download file, in case it is there.*/
+        download_location.delete();
+        if (download_location.exists()) {
+            application.receiveMessage(_("Could not remove old downloaded file {0}", download_location.getPath()));
+            return _("Could not remove old downloaded file {0}", download_location.getPath());
         }
 
         /* Download file */
         String error = null;
         try {
-            error = FileUtils.copyFile(new URL(fromfilename).openConnection().getInputStream(),
-                    new FileOutputStream(downloadfilename), watcher);
-            if (downloadfile.length() != getSize()) {
-                error = _("Size of file {0} does not match. Reported {1}, required {2}", downloadfilename, downloadfile.length(), getSize());
-            } else {
-                for (Digester d : digesters) {
-                    if (!d.checkFile(downloadfile)) {
-                        error = _("Checksumming {0} with algorithm {1} failed.", downloadfilename, d.getAlgorithm());
+            error = FileUtils.copyFile(source_location.openConnection().getInputStream(),
+                    new FileOutputStream(download_location), watcher);
+            if (download_location.length() != getSize())
+                error = _("Size of file {0} does not match. Reported {1}, required {2}", download_location.getPath(), download_location.length(), getSize());
+            else
+                for (Digester d : digesters)
+                    if (!d.checkFile(download_location)) {
+                        error = _("Checksumming {0} with algorithm {1} failed.", download_location, d.getAlgorithm());
                         break;
                     }
-                }
-            }
         } catch (IOException ex) {
             error = ex.getMessage();
         }
-        /* Successfully downloaded file */
+
         if (error == null) {
-            application.receiveMessage(_("File {0} sucessfully downloaded", downloadfile.getPath()));
+            /* Successfully downloaded file */
+            application.receiveMessage(_("File {0} sucessfully downloaded", getFileName()));
             return null;
+        } else {
+            /* Error while downloading */
+            String msg = _("Unable to download file {0}", getFileName());
+            application.receiveMessage(msg + " - " + error);
+            return msg;
         }
-        /* Error while downloading */
-        msg = _("Unable to download file {0}", getFileName());
-        application.receiveMessage(msg + " - " + error);
-        return msg;
     }
 
     public String deploy(UpdatedApplication application) {
-        File downloadfile = new File(getDestinationFile() + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
-        String status = compression.decompress(downloadfile, getFileName());
+        String status = compression.decompress(download_location, new File(getDestinationFile()));
         if (status == null) {
-            if (!compression.getFilenameExtension().equals("")) {
-                if (!downloadfile.delete()) {
-                    application.receiveMessage(_("Unable to delete downloaded file {0}", downloadfile.getPath()));
-                } else {
-                    application.receiveMessage(_("Successfully deleted downloaded file {0}", downloadfile.getPath()));
-                }
-            }
+            if (!compression.getFilenameExtension().equals(""))
+                if (!download_location.delete())
+                    application.receiveMessage(_("Unable to delete downloaded file {0}", download_location.getPath()));
+                else
+                    application.receiveMessage(_("Successfully deleted downloaded file {0}", download_location.getPath()));
             return null;
         }
         application.receiveMessage(status);
@@ -143,17 +159,15 @@ public class ElementFile extends JupidatorElement {
 
     public void cancel(UpdatedApplication application) {
         File del = new File(getDestinationFile() + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
-        if (!del.delete()) {
+        if (!del.delete())
             application.receiveMessage(_("Unable to delete downloaded file {0}", del.getPath()));
-        } else {
+        else
             application.receiveMessage(_("Successfully deleted downloaded file {0}", del.getPath()));
-        }
 
         File depfile = new File(getDestinationFile() + JupidatorDeployer.EXTENSION);
-        if (!JupidatorDeployer.rmTree(depfile)) {
+        if (!JupidatorDeployer.rmTree(depfile))
             application.receiveMessage(_("Unable to delete file {0}", depfile));
-        } else {
+        else
             application.receiveMessage(_("Successfully deleted file {0}", depfile));
-        }
     }
 }

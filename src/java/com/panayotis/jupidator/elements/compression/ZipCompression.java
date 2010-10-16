@@ -22,28 +22,30 @@ import java.util.zip.ZipFile;
 public class ZipCompression implements CompressionMethod {
 
     @SuppressWarnings("unchecked")
-    public String decompress(File file, String outfile) {
+    public String decompress(File file, File outfile) {
         try {
             ZipFile zip = new ZipFile(file);
             ArrayList<ZipEntry> files = getFileList(zip);
+            if (files.size() < 1)
+                return null;
             if (files.size() == 1) {
-                return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(file.getParent()+FileUtils.FS+outfile+JupidatorDeployer.EXTENSION), null);
+                File parent = outfile.getParentFile();
+                if (!parent.mkdirs())
+                    return "Unable to create directory structure under " + parent.getPath();
+                return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(outfile.getPath() + JupidatorDeployer.EXTENSION), null);
             } else {
-                String status;
-                File out;
-                int fsize = outfile.length() + 1;
-                String parent = file.getParent() + FileUtils.FS;
-                File parentfile = new File(parent);
-                boolean embedded = isOutFileEmbedded(files, outfile);
-                
-                parentfile.mkdirs();
+                /**
+                 * We have a package.
+                 * Since we are using a lazy installation scheme, unzip all files in a temporary folder one level deep than the actual required folder.
+                 * Thus, if the output file is a regular file, just perform a rename. If it is a directory (thus we have a package), move all files one directory up.
+                 * With this trick, it is possible to refrain the actual file manipulation in a latter time.
+                 */
+                String outdir = outfile.getPath() + JupidatorDeployer.EXTENSION + File.separator;
                 for (ZipEntry entry : files) {
-                    if (embedded)
-                        out = new File(parent + outfile + JupidatorDeployer.EXTENSION + FileUtils.FS + entry.getName().substring(fsize).replace('/', FileUtils.FS));
-                    else
-                        out = new File(parent + outfile + JupidatorDeployer.EXTENSION + FileUtils.FS + entry.getName().replace('/', FileUtils.FS));
-                    out.getParentFile().mkdirs();
-                    status = FileUtils.copyFile(zip.getInputStream(entry), new FileOutputStream(out), null);
+                    File out = new File(outdir + entry.getName().replace("/", File.separator));
+                    if (!out.getParentFile().mkdirs())
+                        return "Unable to create directory structure under " + out.getParent();
+                    String status = FileUtils.copyFile(zip.getInputStream(entry), new FileOutputStream(out), null);
                     if (status != null)
                         return status;
                 }
@@ -53,11 +55,9 @@ public class ZipCompression implements CompressionMethod {
         } catch (IOException ex) {
             return ex.getMessage();
         }
-
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     private ArrayList<ZipEntry> getFileList(ZipFile zip) {
         ArrayList<ZipEntry> files = new ArrayList<ZipEntry>();
         ZipEntry entry;
@@ -68,15 +68,6 @@ public class ZipCompression implements CompressionMethod {
                 files.add(entry);
         }
         return files;
-    }
-
-    private boolean isOutFileEmbedded(ArrayList<ZipEntry> files, String outfile) {
-        String outdir = outfile + "/";
-        for (ZipEntry entry : files) {
-            if (!entry.getName().startsWith(outdir))
-                return false;
-        }
-        return true;
     }
 
     public String getFilenameExtension() {
