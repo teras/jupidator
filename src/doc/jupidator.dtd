@@ -8,10 +8,10 @@
 <!ELEMENT updatelist (architect*, version+)>
 <!--
     @attr application The application name
-    @attr baseurl The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.
-    @attr icon The image icon of the application. It should be in a format that the JRE will be able to understand.
+    @attr baseurl The base URL of the files to be downloaded. This is the reference "parent" URL, where all remote URL addresses are defined.
+    @attr icon The image icon of the application. It should be in a format that the JRE will be able to understand (e.g. PNG).
         For example, if baseurl is http://www.myserver.org/files and icon is icons/mascot.png then the icon URL is http://www.myserver.org/files/icons/mascot.png 
-    @attr jupidator The minimum required version of jupidator If no version is provided, no implicit library updates will be performed.
+    @attr jupidator The minimum required version of Jupidator If no version is provided, no implicit jubler library updates will be performed.
  -->
 <!ATTLIST updatelist
     application CDATA #REQUIRED
@@ -65,7 +65,7 @@ One special tag exists: the "any" tag. This is used as a failsafe mechanism to s
 <!ELEMENT version (description, (arch)*)>
 <!--
     @attr release <p>The integer value of the current release. This number is checked against the "release" value of the runtime environment.<p>
-        <p>Remember that release files are incrementally defined. <i>All</i> versions with release number greater than the one defined at runtime environment are taken into account. <i>Not</i> not only the last one!</p>
+        <p>Remember that release files are incrementally defined. <i>All</i> versions with release number greater than the one defined at runtime environment are taken into account. <i>Not</i> only the last one!</p>
     @attr version Human readable display of the current release version
 -->
 <!ATTLIST version

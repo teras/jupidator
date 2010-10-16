@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "docbook/dtd/xml/4.2/docbookx.dtd">
  
 <article>
  
@@ -20,7 +21,7 @@
 
 <para>A few applications have an integrated update feature. The user is informed of the new version, the application is downloaded in the background and when ready, the application is restarted. The user experience is much improved then. With this approach newer version is automatically installed and the user doesn't need to go to a specific page in order to download it. In big and complicated applications, the updater is able to fetch only parts of the application, or "packages", which have been upgraded from one version to the other.</para>
 
-<para>Jupidator is a library to intergrade the update feature to any program, written in Java. It goes though one step further. Instead of fetching the complete application or separated packages, it is able to fine grain the update procedure by working with files. Although it is still possible to work with packages or complete replace of the application, the developer can work with file groups or even single files, while keeping track of the change-log in the desired granularity. Files that have been updated through more than one version, only the latest version is brought. Even if a file exists in one version, and is missing in a future version, the system is able to delete this file - and bring it back if this file appears again.</para>
+<para>Jupidator is a library to intergrade the update feature to any program, written in Java. It goes though one step further. Instead of fetching the complete application or separated packages, it is able to fine grain the update procedure by working with files. Although it is still possible to work with packages or a complete replacement of the whole application, the developer can work with file groups or even single files, while keeping track of the change-log in the desired granularity. Files that have been updated through more than one version, only the latest version is brought. Even if a file exists in one version, and is missing in a future version, the system is able to delete this file - and bring it back if this file appears again.</para>
 
 <para>Granularity in various levels is not the only advanced feature of Jupidator. It uses a single centralized XML configuration file to simultaneously support all desired platforms. Platform support is not limited by it's popularity. The developer is able to define the platform he is interested in, or even revert to the general non-specific platform for all other cases. The platform manipulation is flexible to completely fit the developer needs.</para>
 
@@ -52,30 +53,31 @@
 <sect1>
 <title>Bindings with the running application</title>
 
-<para>The bindings with the actual application are divided in the following 3 parts:</para>
+<para>The bindings with the actual application are divided in the following 2 parts:</para>
 
 <itemizedlist>
-    <listitem><para>Run time application information</para></listitem>
-    <listitem><para>Feedback mechanism of the updater</para></listitem>
     <listitem><para>Execution of the updater</para></listitem>
+    <listitem><para>Feedback mechanism of the updater</para></listitem>
 </itemizedlist>
 
 <sect2>
-<title id="runtimeinfo">Run-time application information</title>
-
-<para>In order to properly update the application, it is important to provide some run-time information for the current application. This information is encapsulated inside a <classname>com.panayotis.jupidator.ApplicationInfo</classname> object. The constructor of this object is:</para>
-<para><function>public ApplicationInfo(String AppHome, String AppSupportDir, String release, String version)</function></para>
+<title>Execution of the updater</title>
+<para>A <classname>com.panayotis.jupidator.Updater</classname> object is required to start the actual updating procedure. The user only needs to create a new object of this class, and everything else is handled by the updater automatically. It is constructed as follows:</para>
+<para><function>public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException</function></para>
 <itemizedlist>
+	<listitem><para><varname>xmlurl</varname> the URL of the XML file which describes the updated parts. See <link linkend="xmlscheme">next section.</link></para></listitem>
 	<listitem><para id="apphome"><varname>AppHome</varname> the directory path of the application. Typically is where the JAR file is found. It is writable mostly by a user with elevated privileges.</para></listitem>
-	<listitem><para id="appsupportdir"><varname>AppSupportDir</varname> is the directory path where application locally stores files. Typically the user has write permissions in it.</para></listitem>
+	<listitem><para id="appsupportdir"><varname>AppSupportDir</varname> is the directory path where application locally stores files. Typically resides in the $HOME directory of the user, and thus the user has write permissions in it.</para></listitem>
 	<listitem><para id="release"><varname>release</varname> the numerical version of the application. This should be an increasing integer number which marks every release.</para></listitem>
 	<listitem><para id="version"><varname>version</varname> the human readable version of the application. This is a free text versioning scheme, for displaying reasons.</para></listitem>
+	<listitem><para><varname>UpdatedApplication</varname> the object implementing the <classname>com.panayotis.jupidator.UpdatedApplication</classname> interface, as <link linkend="feedback">described below</link>.</para></listitem>
 </itemizedlist>
-<para>All arguments are mandatory, for the updater to work correctly.</para>
+
+<para>To start the actual updating procedure, the <function>actionDisplay()</function> should be called. All further actions are handled by Jupidator, in a separated thread if needed. All arguments, except UpdatedApplication, are required for the updater to work correctly.</para>
 </sect2>
 
-<sect2>
-<title id="feedback">Feedback mechanism of the updater</title>
+<sect2 id="feedback">
+<title>Feedback mechanism of the updater</title>
 <para>The main program needs to receive some feedback of the updater process. Firstly, it needs to receive debugging information and secondly it needs to be informed that application restart is needed. Thus an object implementing <classname>com.panayotis.jupidator.UpdatedApplication</classname> is required. The two required methods are defined as follows:</para>
 
 <itemizedlist>
@@ -84,19 +86,6 @@
 	<listitem><para><function>public boolean requestRestart()</function> </para>
 	<para>The updater requests to restart the application. No actual restart is performed. This method is used to do the necessary housekeeping, like for example to save open files. If the application returns "true" then housekeeping is successful and the updater is allowed to restart the application. Or else the updating procedure is stopped.</para></listitem>
 </itemizedlist>
-</sect2>
-
-<sect2>
-<title>Execution of the updater</title>
-<para>A <classname>com.panayotis.jupidator.Updater</classname> object is required to start the actual updating procedure. It is constructed as follows:</para>
-<para><function>public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application)</function></para>
-<itemizedlist>
-	<listitem><para><varname>xmlurl</varname> the location of the XML file which describes the updated parts. See next section.</para></listitem>
-	<listitem><para><varname>ApplicationInfo</varname> the runtime information as <link linkend="runtimeinfo">described above</link>.</para></listitem>
-	<listitem><para><varname>UpdatedApplication</varname> the object implementing the <classname>com.panayotis.jupidator.UpdatedApplication</classname> interface, as <link linkend="feedback">described above</link>.</para></listitem>
-</itemizedlist>
-
-<para>To start the actual updating procedure, the <function>actionDisplay()</function> should be called. All further actions are handled by Jupidator, in a separated thread if needed.</para>
 </sect2>
 
 <sect2>
@@ -111,12 +100,13 @@ public class MyAppUpdate implements UpdatedApplication {
 
     public MyAppUpdate() {
         try {
-            ApplicationInfo ap = new ApplicationInfo(
+            new Updater(
+                    "http://www.myapp.com/update/update.xml",
                     "/usr/lib/myapp",
                     System.getProperty("user.home") + System.getProperty("file.separator") + ".myapp",
                     "413",
-                    "4.1.3");
-            new Updater("http://www.myapp.com/update/update.xml", ap, this).actionDisplay();
+                    "4.1.3",
+                    this).actionDisplay();
         } catch (UpdaterException ex) {
             ex.printStackTrace();
         }
@@ -135,10 +125,49 @@ public class MyAppUpdate implements UpdatedApplication {
 
 </sect1>
 
-<sect1>
+<sect1 id="xmlscheme">
 <title>XML updater description</title>
 
-<para>Jupidator needs a XML file to store the various updated files. Here is an example of this file:</para>
+<para>Jupidator needs a XML file to store the various updated files. In this section a brief introduction to core elements will be presented. For more information amd detailed documentation please refer to the <ulink url="dtd/index.html">DTD documentation</ulink> of this XML file.</para>
+
+<sect2><title>Element updatelist</title>
+<para>The root element of this XML should be <function><ulink url="dtd/jupidator.dtd.html#updatelist">updatelist</ulink></function>. Required arguments are:</para>
+<itemizedlist>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#updatelist_application">application</ulink></function> : The application name</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#updatelist_baseurl">baseurl</ulink></function> : The base URL of the downloading files. This is the reference "parent" URL, where all remote URL addresses are defined.</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#updatelist_icon">icon</ulink></function> : The image icon of the application. It should be in a format that the JRE will be able to understand (e.g. PNG).</para></listitem>
+</itemizedlist>
+</sect2>
+
+<sect2><title>Element architect</title>
+<para>A list of architectures is currently required with element name <function><ulink url="dtd/jupidator.dtd.html#architect">architect</ulink></function>, in order to distinguish between different architectures and machines. Required arguments are:</para>
+<itemizedlist>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_tag">tag</ulink></function> : The tag which marks this architecture. More than one architectures can share the same tag and are used the same by Jupidator. A special tag "any" can be used to define any other architecture not strictly described.</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_os">os</ulink></function> : The operating system of this machine.</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#architect_arch">arch</ulink></function> : The machine architecture.</para></listitem>
+</itemizedlist>
+<para>Element architect hosts exactly one <ulink url="dtd/jupidator.dtd.html#launcher">launcher</ulink> element.</para>
+</sect2>
+
+<sect2><title>Element version</title>
+<para>For every new version of the application, a new element <function><ulink url="dtd/jupidator.dtd.html#version">version</ulink></function> is required. It is preffered to list all older version elements, since this will also serve as a changelog of your application. Required attributes are:</para>
+<itemizedlist>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#version_release">release</ulink></function> : The integer value of the current release.</para></listitem>
+	<listitem><para><function><ulink url="dtd/jupidator.dtd.html#version_version">version</ulink></function> : Human readable display of the current release version</para></listitem>
+</itemizedlist>
+<para>For every architecture (even the "any" architecture), an <function><link linkend="archelement">arch</link></function> element is required.</para>
+</sect2>
+
+<sect2 id="archelement"><title>Element arch</title>
+<para>The element <function><ulink url="dtd/jupidator.dtd.html#arch">arch</ulink></function> is the core container of actions, that will be performed when updating from this architecture. There is one required attribute:</para>
+<itemizedlist>
+	<listitem><para><ulink url="dtd/jupidator.dtd.html#arch_name">name</ulink><function></function> : The name of this architecture, as defines with the architect element.</para></listitem>
+</itemizedlist>
+<para>Please have a look at <ulink url="dtd/jupidator.dtd.html#arch">the list of supported nested elements</ulink>. The most common element is <function><ulink url="dtd/jupidator.dtd.html#file">file</ulink></function>.</para>
+</sect2>
+
+<sect2><title>XML example</title>
+<para>Here is an example of the jupidator XML file:</para>
 <para><screen><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <updatelist application="Jubler" baseurl="http://www.jubler.org/files" icon="icons/jubler.png">
 
@@ -188,6 +217,7 @@ public class MyAppUpdate implements UpdatedApplication {
 </para>
 <para>The URL of the file to-be-downloaded is <varname>http://www.jubler.org/files/0.2.0/Jubler.exe.gz</varname> or <varname>http://www.jubler.org/files/0.2.0/Jubler.jar.gz</varname> depending on the architecture. Additionally, all architectures will download the <varname>http://www.jubler.org/files/0.2.0/ReadMe.html.gz</varname> file.</para>
 <para>Description of this XML file can be found in <ulink url="dtd/index.html">DTD documentation</ulink>.</para>
+</sect2>
 
 </sect1>
 
