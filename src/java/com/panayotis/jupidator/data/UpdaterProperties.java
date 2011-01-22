@@ -9,6 +9,7 @@ import com.panayotis.jupidator.UpdaterException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Properties;
 
@@ -16,7 +17,7 @@ import java.util.Properties;
  *
  * @author teras
  */
-public class UpdaterProperties {
+public class UpdaterProperties implements Serializable  {
 
     private final static String TIMEIGNORE = "Updater.Version.NextCheck";
     private final static String VERSIONIGNORE = "Updater.Version.Ignore";

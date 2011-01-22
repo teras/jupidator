@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.BufferedReader;
 import static com.panayotis.jupidator.i18n.I18N._;
@@ -84,7 +85,7 @@ public class FileUtils {
         String PACKAGEDIR = PACKAGENAME.replace('.', '/') + File.separator;
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
         depdir.mkdirs();
-        if ((!depdir.isDirectory()) || (!depdir.canWrite()))
+        if ((!depdir.isDirectory()) || (!PermissionManager.canWrite(depdir)))
             return _("Path {0} is not writable.", depdir.getPath());
 
         /* Get class paths */
@@ -142,7 +143,7 @@ public class FileUtils {
         /* Create Java path */
         File depdir = new File(FILEDIR);
         depdir.mkdirs();
-        if ((!depdir.isDirectory()) || (!depdir.canWrite()))
+        if ((!depdir.isDirectory()) || (!PermissionManager.canWrite(depdir)))
             return _("Deployer path {0} is not writable.", depdir.getPath());
 
         ArrayList<String> jars = new ArrayList<String>();

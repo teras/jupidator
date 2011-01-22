@@ -11,12 +11,13 @@ import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
+import java.io.Serializable;
 
 /**
  *
  * @author teras
  */
-public abstract class JupidatorElement {
+public abstract class JupidatorElement implements Serializable {
 
     private final String filename;
     private final String destdir;
@@ -28,7 +29,6 @@ public abstract class JupidatorElement {
     public ExecutionTime getExectime() {
         return exectime;
     }
-    protected ApplicationInfo info;
 
     public JupidatorElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         this((file == null) ? null : new File(file).getName(), (file == null) ? null : new File(file).getParent(), elements, appinfo, exectime);
@@ -39,12 +39,11 @@ public abstract class JupidatorElement {
     }
 
     public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
-        if (info == null)
+        if (appinfo == null)
             throw new NullPointerException(_("Application info not provided."));
         if (elements == null)
             throw new NullPointerException(_("UpdaterAppElements not provided."));
 
-        this.info = appinfo;
         this.filename = appinfo.applyVariables(name);
         this.destdir = appinfo.applyVariables(dest);
         this.release = elements.getLastRelease();
@@ -60,14 +59,18 @@ public abstract class JupidatorElement {
             exectime = ExecutionTime.MID;
         this.exectime = exectime;
 
-        requiresPrivileges = elements.validateFilePrivileges(destdir, filename);
+        requiresPrivileges = estimatePrivileges(elements);
+    }
+
+    protected boolean estimatePrivileges(UpdaterAppElements elements) {
+        return elements.permissionManager.estimatePrivileges(new File(getDestinationFile()));
     }
 
     public String getHash() {
         return getDestinationFile();
     }
 
-    public String getDestinationFile() {
+    public final String getDestinationFile() {
         if (destdir.equals(""))
             return filename;
         return destdir + File.separator + filename;
@@ -87,6 +90,7 @@ public abstract class JupidatorElement {
     public long getSize() {
         return size;
     }
+
     public boolean requiresPrivileges() {
         return requiresPrivileges;
     }

@@ -5,13 +5,14 @@
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class Arch {
+public class Arch implements Serializable  {
 
     private String tag;
     private String os;

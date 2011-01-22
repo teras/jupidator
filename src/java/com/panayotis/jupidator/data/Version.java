@@ -9,6 +9,7 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.elements.ExecutionTime;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,7 +21,7 @@ import org.xml.sax.SAXException;
  *
  * @author teras
  */
-public class Version {
+public class Version implements Serializable {
 
     private LinkedHashMap<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
     private UpdaterAppElements appel;

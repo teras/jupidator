@@ -8,7 +8,7 @@ package com.panayotis.jupidator.launcher;
  *
  * @author teras
  */
-public interface Closure {
+public interface Closure<T> {
 
-    public void exec(Object data);
+    public void exec(T data);
 }

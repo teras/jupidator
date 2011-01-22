@@ -27,7 +27,8 @@ public class Commander {
     private static final int INVALID_EXIT_VALUE = Integer.MIN_VALUE;
     private final String[] command;
     /* */
-    private Closure out, err, finish;
+    private Closure<String> out, err;
+    private Closure<Integer> finish;
     private Process proc;
     private BufferedWriter bufferin = null;
     private OutputProxy procout = null;
@@ -45,15 +46,15 @@ public class Commander {
             throw new NullPointerException("Command should not be null");
     }
 
-    public void setOutListener(Closure out) {
+    public void setOutListener(Closure<String> out) {
         this.out = out;
     }
 
-    public void setErrListener(Closure err) {
+    public void setErrListener(Closure<String> err) {
         this.err = err;
     }
 
-    public void setEndListener(Closure finish) {
+    public void setEndListener(Closure<Integer> finish) {
         this.finish = finish;
     }
 
@@ -69,7 +70,7 @@ public class Commander {
             if (err != null)
                 err.exec("Process can not start: " + ex.getMessage());
             if (finish != null)
-                finish.exec("");
+                finish.exec(null);
             return;
         }
         bufferin = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
@@ -82,6 +83,21 @@ public class Commander {
 
     public boolean isActive() {
         return proc != null;
+    }
+
+    public void sendData(byte[] data) {
+        if (bufferin == null) {
+            if (err != null)
+                err.exec("Request to send data inappropriate: process not active");
+            return;
+        }
+        if (data == null)
+            return;
+        try {
+            proc.getOutputStream().write(data);
+            bufferin.flush();
+        } catch (IOException ex) {
+        }
     }
 
     public void sendLine(String line) {
@@ -135,6 +151,8 @@ public class Commander {
          */
         waitThread = new Thread() {
 
+            @Override
+            @SuppressWarnings({"SleepWhileHoldingLock", "SleepWhileInLoop"})
             public void run() {
                 doWaitFor();
                 if (SYNC_WITH_STREAMS)
@@ -210,6 +228,7 @@ public class Commander {
         private final OutputProxy self;
         private Commander cmdr;
 
+        @SuppressWarnings("LeakingThisInConstructor")
         private OutputProxy(Closure listener, InputStream inputStream, Commander commander) {
             in = new BufferedReader(new InputStreamReader(inputStream));
             this.listen = listener;
@@ -217,6 +236,7 @@ public class Commander {
             this.self = this;
             worker = new Thread() {
 
+                @Override
                 public void run() {
                     String line;
                     try {

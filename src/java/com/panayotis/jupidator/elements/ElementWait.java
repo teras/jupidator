@@ -25,6 +25,11 @@ public class ElementWait extends JupidatorElement {
         }
     }
 
+    @Override
+    protected boolean estimatePrivileges(UpdaterAppElements elements) {
+        return false;
+    }
+
     public String fetch(UpdatedApplication application, BufferListener blisten) {
         return null;
     }

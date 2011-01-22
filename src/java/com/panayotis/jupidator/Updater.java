@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.data.Arch;
 import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.statics.SelfUpdate;
 import static com.panayotis.jupidator.i18n.I18N._;
@@ -11,14 +12,14 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
-import com.panayotis.jupidator.data.Arch;
 import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
-import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.data.Version;
+import com.panayotis.jupidator.launcher.ElevatedDeployer;
 import com.panayotis.jupidator.launcher.Closure;
 import com.panayotis.jupidator.launcher.LaunchManager;
+import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
@@ -116,14 +117,11 @@ public class Updater {
                 /* Deploy */
                 watcher.stopWatcher();
                 gui.setIndetermined();
-                for (String key : vers.keySet()) {
-                    String result = vers.get(key).deploy(application);
-                    if (result != null) {
-                        gui.errorOnCommit(result);
-                        return;
-                    }
-                }
-                gui.successOnCommit();
+                String result = ElevatedDeployer.deploy(vers, application);
+                if (result != null)
+                    gui.errorOnCommit(result);
+                else
+                    gui.successOnCommit();
             }
         };
         download.start();

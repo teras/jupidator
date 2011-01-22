@@ -9,6 +9,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.elements.FileUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
  * This information is given to the library from the runtime environment
  * @author teras
  */
-public class ApplicationInfo {
+public class ApplicationInfo implements Serializable {
 
     private HashMap<String, String> vars;
     /**

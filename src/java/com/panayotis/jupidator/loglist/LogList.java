@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.loglist;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**

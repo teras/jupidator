@@ -4,11 +4,13 @@
  */
 package com.panayotis.jupidator.loglist;
 
+import java.io.Serializable;
+
 /**
  *
  * @author teras
  */
-public class LogItem {
+public class LogItem implements Serializable {
 
     private String version;
     private String info;

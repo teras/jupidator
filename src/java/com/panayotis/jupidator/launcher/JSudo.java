@@ -87,7 +87,7 @@ public class JSudo extends JDialog {
         CentralPanel.setLayout(new java.awt.BorderLayout());
 
         InfoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/launcher/lock.png"))); // NOI18N
-        InfoLabel.setText("CaféPorts requires your password.");
+        InfoLabel.setText("Application requires your password.");
         InfoLabel.setIconTextGap(20);
         CentralPanel.add(InfoLabel, java.awt.BorderLayout.NORTH);
 
@@ -176,6 +176,7 @@ public class JSudo extends JDialog {
     private javax.swing.JPanel Viewport;
     // End of variables declaration//GEN-END:variables
 
+    @Override
     public void setEnabled(boolean status) {
         super.setEnabled(status);
         PLabel.setEnabled(status);
@@ -188,6 +189,7 @@ public class JSudo extends JDialog {
         return pass;
     }
 
+    @Override
     public void setVisible(boolean status) {
         super.setVisible(status);
         Password.requestFocus();

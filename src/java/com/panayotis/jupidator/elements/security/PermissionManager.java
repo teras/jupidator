@@ -4,27 +4,33 @@
  */
 package com.panayotis.jupidator.elements.security;
 
-import com.panayotis.jupidator.UpdaterException;
 import java.io.File;
-import java.io.IOException;
+import java.io.Serializable;
 
 /**
  *
  * @author teras
  */
-public class PermissionManager {
+public class PermissionManager implements Serializable {
 
     private boolean reqprev = false;
 
-    public boolean requirePrivileges() {
+    public boolean isRequiredPrivileges() {
         return reqprev;
     }
 
-    public void validateFile(String filename) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public boolean estimatePrivileges(File file) {
+        boolean estimation = !isWritable(file);
+        reqprev |= estimation;
+        return estimation;
     }
 
-    public static boolean isWritable(File f) {
+    public boolean forcePrivileges() {
+        reqprev = true;
+        return true;
+    }
+
+    private static boolean isWritable(File f) {
         if (f == null)
             throw new NullPointerException("Updated file could not be null.");
         if (!isParentWritable(f))
@@ -42,7 +48,7 @@ public class PermissionManager {
                     return false;
             return true;
         } else
-            return f.canWrite();
+            return canWrite(f);
     }
 
     private static boolean isParentWritable(File f) {
@@ -51,14 +57,18 @@ public class PermissionManager {
             return false;
         if (f.exists())
             /* we are sure that a parent exists for this file */
-            return p.canWrite();
+            return canWrite(p);
         else if (p.exists()) {
             /* Check if parent file is directory AND can write in it */
-            if (p.isDirectory() && p.canWrite())
+            if (p.isDirectory() && canWrite(p))
                 return true;
             return false;
         } else
             /* directories created (?) */
             return p.mkdirs();
+    }
+
+    public static boolean canWrite(File f) {
+        return f.canWrite();
     }
 }

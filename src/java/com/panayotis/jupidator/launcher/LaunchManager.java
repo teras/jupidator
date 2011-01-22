@@ -106,14 +106,14 @@ public class LaunchManager {
         return inst.getUserPass();
     }
 
-    private final static String[] combineStrings(String[] one, String[] two) {
+    private static String[] combineStrings(String[] one, String[] two) {
         String[] result = new String[one.length + two.length];
         System.arraycopy(one, 0, result, 0, one.length);
         System.arraycopy(two, 0, result, one.length, two.length);
         return result;
     }
 
-    private final static String[] splitArray(String[] pool, int from, int to) {
+    private static String[] splitArray(String[] pool, int from, int to) {
         if (from < 0 || to > pool.length || from >= to)
             return emptyString;
         String[] result = new String[to - from];
@@ -122,7 +122,7 @@ public class LaunchManager {
         return result;
     }
 
-    private final static String[] StringToArray(String array, String delimeter) {
+    private static String[] StringToArray(String array, String delimeter) {
         if (array == null || array.equals(""))
             return emptyString;
         ArrayList<String> res = new ArrayList<String>();
@@ -132,8 +132,8 @@ public class LaunchManager {
         return res.toArray(emptyString);
     }
 
-    public final static String ArrayToString(String[] array, String delimeter) {
-        StringBuffer buf = new StringBuffer();
+    public static String ArrayToString(String[] array, String delimeter) {
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < array.length; i++)
             buf.append(array[i]).append(delimeter);
         return buf.toString();

@@ -10,12 +10,13 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
+import java.io.Serializable;
 
 /**
  * This information is gathered for the library from the XML file
  * @author teras
  */
-public class UpdaterAppElements {
+public class UpdaterAppElements implements Serializable {
 
     private String AppName = "Unknown";
     private String baseURL = "";
@@ -26,7 +27,7 @@ public class UpdaterAppElements {
     private String lastversion = "0.0.0.0"; // Last value we read from XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
-    private PermissionManager perms = new PermissionManager();
+    public final PermissionManager permissionManager = new PermissionManager();
 
     public String getAppName() {
         return AppName;
@@ -109,13 +110,5 @@ public class UpdaterAppElements {
 
     public boolean shouldUpdateLibrary() {
         return needs_update;
-    }
-
-    public boolean requirePrivileges() {
-        return perms.requirePrivileges();
-    }
-
-    public boolean validateFilePrivileges(String destdir, String filename) {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

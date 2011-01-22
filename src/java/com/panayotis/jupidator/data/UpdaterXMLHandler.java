@@ -32,7 +32,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private Version current_all;   // Version of "current" made with "all" arch match
     private boolean old_version; // true, if this version is too old and should be ignored
     private boolean visible_version; // true, if this version should be displayed to the user
-    private StringBuffer descbuffer;    // Temporary buffer to store descriptions
+    private StringBuilder descbuffer;    // Temporary buffer to store descriptions
     private ApplicationInfo appinfo;    // Remember information about the current running application
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
     private ElementFile lastFileElement = null;   // Remember last Add element, to add digesters later on
@@ -70,7 +70,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             old_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();
             visible_version = (appinfo == null) ? true : release_last > appinfo.getIgnoreRelease();
         } else if (qName.equals("description"))
-            descbuffer = new StringBuffer();
+            descbuffer = new StringBuilder();
         else if (qName.equals("arch")) {
             if (old_version)
                 return;

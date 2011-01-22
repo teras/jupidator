@@ -17,8 +17,7 @@ import static com.panayotis.jupidator.data.TextUtils.NL;
 public class TextCreator {
 
     public static String getList(LogList list) {
-        StringBuffer data;
-        data = new StringBuffer();
+        StringBuilder data = new StringBuilder();
         data.append(list.getApplicationInfo()).append(NL);
         data.append(_("List of changes:")).append(NL);
         for (LogItem item : list) {

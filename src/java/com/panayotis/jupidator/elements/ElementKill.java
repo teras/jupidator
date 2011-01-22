@@ -21,6 +21,11 @@ public class ElementKill extends ElementNative {
             this.signal = signal.toUpperCase();
     }
 
+    @Override
+    protected boolean estimatePrivileges(UpdaterAppElements elements) {
+        return elements.permissionManager.forcePrivileges();
+    }
+
     protected String[] getExecArguments() {
         String res[] = new String[2];
         res[0] = signal;
@@ -28,6 +33,7 @@ public class ElementKill extends ElementNative {
         return res;
     }
 
+    @Override
     protected String getCommandTag() {
         return "k";
     }

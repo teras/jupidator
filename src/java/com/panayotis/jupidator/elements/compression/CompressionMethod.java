@@ -5,12 +5,13 @@
 package com.panayotis.jupidator.elements.compression;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  *
  * @author teras
  */
-public interface CompressionMethod {
+public interface CompressionMethod extends Serializable {
 
     /**
      * 

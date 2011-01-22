@@ -27,15 +27,15 @@ public abstract class ElementNative extends JupidatorElement {
         isLinux = OS.startsWith("linux");
     }
 
-    protected final static boolean isWindows() {
+    protected static boolean isWindows() {
         return isWindows;
     }
 
-    protected final static boolean isMac() {
+    protected static boolean isMac() {
         return isMac;
     }
 
-    protected final static boolean isLinux() {
+    protected static boolean isLinux() {
         return isLinux;
     }
 
@@ -61,7 +61,7 @@ public abstract class ElementNative extends JupidatorElement {
 
     public String getArgument() {
         String[] args = getExecArguments();
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
 
         b.append(getCommandTag());
         b.append(command.length()).append('#');
@@ -88,6 +88,7 @@ public abstract class ElementNative extends JupidatorElement {
         return null;
     }
 
+    @Override
     public String getHash() {
         return command + ":" + super.getHash();
     }

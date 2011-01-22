@@ -67,7 +67,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         if (info.isSelfUpdate())
             SkipB.setVisible(false);
 
-        PrevL.setVisible(el.requirePrivileges());
+        PrevL.setVisible(el.permissionManager.isRequiredPrivileges());
         pack();
     }
 
@@ -270,7 +270,8 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
 
         CommandP.add(jPanel4, java.awt.BorderLayout.EAST);
 
-        PrevL.setForeground(java.awt.Color.blue);
+        PrevL.setForeground(java.awt.Color.red);
+        PrevL.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         PrevL.setText(_("WARNING! This update requires elevated privileges!"));
         PrevL.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 12, 4, 12));
         CommandP.add(PrevL, java.awt.BorderLayout.NORTH);
