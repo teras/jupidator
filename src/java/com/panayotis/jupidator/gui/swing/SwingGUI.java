@@ -57,11 +57,14 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         InfoPane.setText(HTMLCreator.getList(el.getLogList()));
 
         try {
-            URL icon = new URL(el.getIconpath());
-            if (icon != null)
-                IconL.setIcon(new ImageIcon(icon));
+            String iconpath = el.getIconpath();
+            if (iconpath != null && (!iconpath.equals(""))) {
+                URL icon = new URL(iconpath);
+                if (icon != null)
+                    IconL.setIcon(new ImageIcon(icon));
+            }
         } catch (MalformedURLException ex) {
-            throw new UpdaterException("Unable to load  icon " + ex.getMessage());
+            throw new UpdaterException("Unable to load icon: " + ex.getMessage());
         }
 
         if (info.isSelfUpdate())
@@ -183,7 +186,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         InfoL.setText(_("Downloading..."));
         ProgressP.add(InfoL, java.awt.BorderLayout.LINE_START);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         MainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));

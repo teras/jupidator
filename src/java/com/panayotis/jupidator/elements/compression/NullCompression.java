@@ -4,11 +4,7 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 /**
  *
@@ -21,16 +17,6 @@ public class NullCompression implements CompressionMethod {
     }
 
     public String decompress(File compressedfile, File outfile) {
-        if (compressedfile.equals(outfile))
-            return null;
-
-        if (!outfile.getParentFile().mkdirs())
-            return "Unable to create directory structure under " + outfile.getParentFile().getPath();
-        try {
-            FileUtils.copyFile(new FileInputStream(compressedfile), new FileOutputStream(outfile), null);
-        } catch (FileNotFoundException ex) {
-            return ex.getMessage();
-        }
         return null;
     }
 }

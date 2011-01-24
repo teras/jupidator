@@ -36,7 +36,7 @@ public class ElementRm extends JupidatorElement {
     }
 
     /* Nothing to deploy */
-    public String deploy(UpdatedApplication application) {
+    public String prepare(UpdatedApplication application) {
         application.receiveMessage(_("File {0} will be deleted, if exists.", getDestinationFile()));
         return null;
     }

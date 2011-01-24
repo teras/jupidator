@@ -4,7 +4,9 @@
  */
 package com.panayotis.jupidator.elements.security;
 
+import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,8 @@ import java.io.Serializable;
 public class PermissionManager implements Serializable {
 
     private boolean reqprev = false;
+    private int slots = 0;
+    private File download_slots = null;
 
     public boolean isRequiredPrivileges() {
         return reqprev;
@@ -28,6 +32,17 @@ public class PermissionManager implements Serializable {
     public boolean forcePrivileges() {
         reqprev = true;
         return true;
+    }
+
+    public File requestSlot() {
+        if (download_slots == null)
+            try {
+                download_slots = File.createTempFile("jupidator_download_", "");
+                download_slots.delete();
+            } catch (IOException ex) {
+                return null;
+            }
+        return new File(download_slots, "slot" + (++slots));
     }
 
     private static boolean isWritable(File f) {
@@ -65,7 +80,7 @@ public class PermissionManager implements Serializable {
             return false;
         } else
             /* directories created (?) */
-            return p.mkdirs();
+            return FileUtils.makeDirectory(p);
     }
 
     public static boolean canWrite(File f) {

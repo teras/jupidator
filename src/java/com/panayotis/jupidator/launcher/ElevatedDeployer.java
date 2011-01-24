@@ -22,7 +22,8 @@ public class ElevatedDeployer {
         try {
             ObjectInputStream in = new ObjectInputStream(System.in);
             Version vers = (Version) in.readObject();
-            doDeploy(vers, new UpdatedApplication() {
+            System.out.println("Result is: "
+                    + doDeploy(vers, new UpdatedApplication()  {
 
                 public boolean requestRestart() {
                     return false;
@@ -31,7 +32,7 @@ public class ElevatedDeployer {
                 public void receiveMessage(String message) {
                     System.out.println("O " + message);
                 }
-            });
+            }));
         } catch (Exception ex) {
             System.out.println("E " + ex.getMessage());
         }
@@ -43,7 +44,7 @@ public class ElevatedDeployer {
 
         String[] args = {FileUtils.JAVABIN, "-cp", System.getProperty("java.class.path"), "com.panayotis.jupidator.launcher.ElevatedDeployer"};
         Commander com = new Commander(args);
-        com.setOutListener(new Closure<String>() {
+        com.setOutListener(new Closure<String>()  {
 
             public void exec(String data) {
                 System.out.println(data);
@@ -58,7 +59,7 @@ public class ElevatedDeployer {
 
     private static String doDeploy(Version vers, UpdatedApplication application) {
         for (String key : vers.keySet()) {
-            String result = vers.get(key).deploy(application);
+            String result = vers.get(key).prepare(application);
             if (result != null)
                 return result;
         }

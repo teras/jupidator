@@ -4,7 +4,6 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,34 +21,29 @@ import java.util.zip.ZipFile;
 public class ZipCompression implements CompressionMethod {
 
     @SuppressWarnings("unchecked")
-    public String decompress(File file, File outfile) {
+    public String decompress(File compressedfile, File outfile) {
         try {
-            ZipFile zip = new ZipFile(file);
+            ZipFile zip = new ZipFile(compressedfile);
             ArrayList<ZipEntry> files = getFileList(zip);
             if (files.size() < 1)
                 return null;
-            if (files.size() == 1) {
-                File parent = outfile.getParentFile();
-                if (!parent.mkdirs())
-                    return "Unable to create directory structure under " + parent.getPath();
-                return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(outfile.getPath() + JupidatorDeployer.EXTENSION), null);
-            } else {
+            else if (files.size() == 1)
+                return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(outfile), null);
+            else
                 /**
                  * We have a package.
                  * Since we are using a lazy installation scheme, unzip all files in a temporary folder one level deep than the actual required folder.
                  * Thus, if the output file is a regular file, just perform a rename. If it is a directory (thus we have a package), move all files one directory up.
                  * With this trick, it is possible to refrain the actual file manipulation in a latter time.
                  */
-                String outdir = outfile.getPath() + JupidatorDeployer.EXTENSION + File.separator;
                 for (ZipEntry entry : files) {
-                    File out = new File(outdir + entry.getName().replace("/", File.separator));
-                    if (!out.getParentFile().mkdirs())
-                        return "Unable to create directory structure under " + out.getParent();
+                    File out = new File(outfile, entry.getName().replace("/", File.separator));
+                    if (!FileUtils.makeDirectory(out.getParentFile()))
+                        return "Unable to create directory structure under " + out.getParentFile().getPath();
                     String status = FileUtils.copyFile(zip.getInputStream(entry), new FileOutputStream(out), null);
                     if (status != null)
                         return status;
                 }
-            }
         } catch (ZipException ex) {
             return ex.getMessage();
         } catch (IOException ex) {

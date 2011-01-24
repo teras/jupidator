@@ -4,7 +4,6 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +24,7 @@ public class BZip2Compression implements CompressionMethod {
             char z = (char) fin.read();
             if (b != 'B' && z != 'Z')
                 fin.reset();
-            return FileUtils.copyFile(new CBZip2InputStream(fin), new FileOutputStream(outfile.getPath() + JupidatorDeployer.EXTENSION), null);
+            return FileUtils.copyFile(new CBZip2InputStream(fin), new FileOutputStream(outfile), null);
         } catch (IOException ex) {
             return ex.getMessage();
         }

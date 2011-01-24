@@ -84,7 +84,7 @@ public abstract class ElementNative extends JupidatorElement {
     }
 
     /* Nothing to do when deploying */
-    public String deploy(UpdatedApplication application) {
+    public String prepare(UpdatedApplication application) {
         return null;
     }
 

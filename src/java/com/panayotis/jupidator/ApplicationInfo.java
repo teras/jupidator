@@ -31,20 +31,10 @@ public class ApplicationInfo implements Serializable {
     public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
 
-        if (appHome == null)
-            throw new NullPointerException(_("Application path can not be null."));
-        if (appHome.equals(""))
-            appHome = ".";
-        if (!new File(appHome).isDirectory())
-            throw new IllegalArgumentException(_("Unable to find Application path {0}.", appHome));
-        if (appHome.endsWith(File.separator))
-            appHome = appHome.substring(0, appHome.length() - 1);
-        vars.put("APPHOME", appHome);
-
+        appHome = fixDir(appHome, "Application");
         if (appSupportDir == null || (!new File(appSupportDir).isDirectory()))
-            appSupportDir = appHome;
-        if (appSupportDir.endsWith(File.separator))
-            appSupportDir = appSupportDir.substring(0, appSupportDir.length() - 1);
+            appSupportDir = appHome;        
+        vars.put("APPHOME", appHome);        
         vars.put("APPSUPPORTDIR", appSupportDir);
 
         if (version == null || version.equals(""))
@@ -128,8 +118,7 @@ public class ApplicationInfo implements Serializable {
             }
         }
         m.appendTail(sb);
-//        System.out.println(path + " -> " + sb.toString());
-        return sb.toString();
+        return sb.toString().replace("/./", "/");
     }
 
     public boolean isSelfUpdate() {
@@ -138,5 +127,18 @@ public class ApplicationInfo implements Serializable {
 
     public void setSelfUpdate() {
         this.selfupdate = true;
+    }
+
+    private String fixDir(String dir, String title) {
+        if (dir == null)
+            throw new NullPointerException(title + "directory can not be null.");
+        if (dir.equals("") || dir.equals("."))
+            dir = System.getProperty("user.dir");
+        dir = dir.replace("/./", "/");
+        if (dir.endsWith(File.separator))
+            dir = dir.substring(0, dir.length() - 1);
+        if (!new File(dir).isDirectory())
+            throw new IllegalArgumentException("Unable to find " + title + " directory " + dir);
+        return dir;
     }
 }

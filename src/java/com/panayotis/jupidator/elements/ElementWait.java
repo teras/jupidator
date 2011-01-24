@@ -34,7 +34,7 @@ public class ElementWait extends JupidatorElement {
         return null;
     }
 
-    public String deploy(UpdatedApplication application) {
+    public String prepare(UpdatedApplication application) {
         return null;
     }
 

@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.helpers;
 
+import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.Digester;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -71,7 +72,7 @@ public class DiffCreator {
             exitOnError(older_dir.getPath() + " does not exist!");
 
         local_dir = new File(local_dir_name);
-        local_dir.mkdirs();
+        FileUtils.makeDirectory(local_dir);
         if ((!local_dir.exists()) || (!local_dir.isDirectory()))
             exitOnError("Local_directory is not a directory");
 

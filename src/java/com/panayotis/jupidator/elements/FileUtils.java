@@ -84,7 +84,7 @@ public class FileUtils {
     public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
         String PACKAGEDIR = PACKAGENAME.replace('.', '/') + File.separator;
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
-        depdir.mkdirs();
+        makeDirectory(depdir);
         if ((!depdir.isDirectory()) || (!PermissionManager.canWrite(depdir)))
             return _("Path {0} is not writable.", depdir.getPath());
 
@@ -142,7 +142,7 @@ public class FileUtils {
 
         /* Create Java path */
         File depdir = new File(FILEDIR);
-        depdir.mkdirs();
+        makeDirectory(depdir);
         if ((!depdir.isDirectory()) || (!PermissionManager.canWrite(depdir)))
             return _("Deployer path {0} is not writable.", depdir.getPath());
 
@@ -254,6 +254,11 @@ public class FileUtils {
                 }
             }
         }
+    }
 
+    public static boolean makeDirectory(File dirname) {
+        if (dirname.exists())
+            return dirname.isDirectory();
+        return dirname.mkdirs();
     }
 }

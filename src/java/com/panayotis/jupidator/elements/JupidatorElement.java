@@ -102,13 +102,13 @@ public abstract class JupidatorElement implements Serializable {
     public abstract String fetch(UpdatedApplication application, BufferListener blisten);
 
     /**
-     * This method performs housekeeping (check permissions, unzip files etc.) work for this element.
+     * This method performs housekeeping work for this element (i.e. unzip files).
      * @return Error message, or null if everything is fine
      */
-    public abstract String deploy(UpdatedApplication application);
+    public abstract String prepare(UpdatedApplication application);
 
     /**
-     * This method cancels action and rollbacks everything
+     * This method cancels action and rolls back everything
      * @param application
      */
     public abstract void cancel(UpdatedApplication application);
