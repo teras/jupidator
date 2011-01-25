@@ -45,6 +45,10 @@ public class PermissionManager implements Serializable {
         return new File(download_slots, "slot" + (++slots));
     }
 
+    public void cleanUp() {
+        FileUtils.rmRecursive(download_slots);
+    }
+
     private static boolean isWritable(File f) {
         if (f == null)
             throw new NullPointerException("Updated file could not be null.");

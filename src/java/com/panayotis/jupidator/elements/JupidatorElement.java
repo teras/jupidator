@@ -10,6 +10,7 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
+import jupidator.launcher.XElement;
 import java.io.File;
 import java.io.Serializable;
 
@@ -113,5 +114,9 @@ public abstract class JupidatorElement implements Serializable {
      */
     public abstract void cancel(UpdatedApplication application);
 
-    public abstract String getArgument();
+    /**
+     * Use this method to provide the actual work to be done, when updating the application
+     * @return the object which will perform this work. It should be under package com.panayotis.jupidator.launcher
+     */
+    public abstract XElement getExecElement();
 }

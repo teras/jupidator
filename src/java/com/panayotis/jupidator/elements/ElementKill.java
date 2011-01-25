@@ -6,6 +6,8 @@ package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import jupidator.launcher.XEKill;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -13,12 +15,11 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  */
 public class ElementKill extends ElementNative {
 
-    private String signal = "";
+    private final String signal;
 
     public ElementKill(String application, String signal, UpdaterAppElements elements, ApplicationInfo info) {
         super("kill", application, null, ExecutionTime.BEFORE, elements, info);
-        if (signal != null)
-            this.signal = signal.toUpperCase();
+        this.signal = signal == null ? null : signal.toUpperCase();
     }
 
     @Override
@@ -26,15 +27,8 @@ public class ElementKill extends ElementNative {
         return elements.permissionManager.forcePrivileges();
     }
 
-    protected String[] getExecArguments() {
-        String res[] = new String[2];
-        res[0] = signal;
-        res[1] = getDestinationFile();
-        return res;
-    }
-
     @Override
-    protected String getCommandTag() {
-        return "k";
+    public XElement getExecElement() {
+        return new XEKill(getDestinationFile(), signal);
     }
 }

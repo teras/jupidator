@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template bufferin the editor.
  */
-package com.panayotis.jupidator.launcher;
+package jupidator.launcher;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

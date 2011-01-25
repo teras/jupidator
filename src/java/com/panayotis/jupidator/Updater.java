@@ -16,9 +16,8 @@ import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.data.Version;
-import com.panayotis.jupidator.launcher.ElevatedDeployer;
-import com.panayotis.jupidator.launcher.Closure;
-import com.panayotis.jupidator.launcher.LaunchManager;
+import jupidator.launcher.Closure;
+import jupidator.launcher.LaunchManager;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -114,14 +113,17 @@ public class Updater {
                         return;
                     }
                 }
-                /* Deploy */
+                /* Prepare */
                 watcher.stopWatcher();
                 gui.setIndetermined();
-                String result = ElevatedDeployer.deploy(vers, application);
-                if (result != null)
-                    gui.errorOnCommit(result);
-                else
-                    gui.successOnCommit();
+                for (String key : vers.keySet()) {
+                    String result = vers.get(key).prepare(application);
+                    if (result != null) {
+                        gui.errorOnCommit(result);
+                        return;
+                    }
+                }
+                gui.successOnCommit();
             }
         };
         download.start();
@@ -138,6 +140,7 @@ public class Updater {
         }
         for (String key : vers.keySet())
             vers.get(key).cancel(application);
+        vers.getAppElements().permissionManager.cleanUp();
     }
 
     /* Do nothing - wait for next cycle */
@@ -176,8 +179,8 @@ public class Updater {
             args[4] = vers.isGraphicalDeployer() ? "g" : "t";
             args[5] = String.valueOf(vers.size());
 
-            for (String key : vers.keySet())
-                args[header++] = vers.get(key).getArgument();
+//            for (String key : vers.keySet())
+//                args[header++] = vers.get(key).getArgument();
 
             for (int i = 0; i < arch.countArguments(); i++)
                 args[header++] = arch.getArgument(i, appinfo);
@@ -189,6 +192,7 @@ public class Updater {
                 }
             };
             application.receiveMessage(_("Executing {0}", LaunchManager.ArrayToString(args, " ")));
+            //LaunchManager.execute(args, callback, callback, null);
             try {
                 Runtime.getRuntime().exec(args);
             } catch (IOException ex) {

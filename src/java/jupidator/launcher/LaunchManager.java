@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.launcher;
+package jupidator.launcher;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

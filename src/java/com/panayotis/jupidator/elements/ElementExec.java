@@ -6,6 +6,8 @@ package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import jupidator.launcher.XEExec;
+import jupidator.launcher.XElement;
 import java.util.ArrayList;
 
 /**
@@ -27,10 +29,8 @@ public class ElementExec extends ElementNative {
             arguments.add(appinfo.applyVariables(argument));
     }
 
-    protected String[] getExecArguments() {
-        String[] args = new String[arguments.size()];
-        for (int i = 0; i < args.length; i++)
-            args[i] = arguments.get(i);
-        return args;
+    @Override
+    public XElement getExecElement() {
+        return new XEExec(command, input, arguments);
     }
 }

@@ -15,75 +15,22 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  */
 public abstract class ElementNative extends JupidatorElement {
 
-    private static final boolean isWindows,  isLinux,  isMac;
-    private String command = "";
-    private String input = "";
-
-
-    static {
-        String OS = System.getProperty("os.name").toLowerCase();
-        isWindows = OS.startsWith("windows");
-        isMac = OS.startsWith("mac");
-        isLinux = OS.startsWith("linux");
-    }
-
-    protected static boolean isWindows() {
-        return isWindows;
-    }
-
-    protected static boolean isMac() {
-        return isMac;
-    }
-
-    protected static boolean isLinux() {
-        return isLinux;
-    }
+    protected final String command;
+    protected final String input;
 
     public ElementNative(String command, String file, String input, ExecutionTime time, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(file, elements, appinfo, time);
-        if (command != null)
-            this.command = appinfo.applyVariables(command);
-        if (input != null)
-            this.input = appinfo.applyVariables(input);
+        this.command = command == null ? "" : appinfo.applyVariables(command);
+        this.input = input == null ? null : appinfo.applyVariables(input);
     }
 
-    /* Nothing to do while fetching.
-     * It is impossible to see if a file exists, BEFORE unzipping files, so work 
-     * is done in JupidatorDeployer class
-     */
     public String fetch(UpdatedApplication application, BufferListener blisten) {
         return null;
     }
 
-    /* Nothing to do when cancelling */
     public void cancel(UpdatedApplication application) {
     }
 
-    public String getArgument() {
-        String[] args = getExecArguments();
-        StringBuilder b = new StringBuilder();
-
-        b.append(getCommandTag());
-        b.append(command.length()).append('#');
-        for (int i = 0; i < args.length; i++) {
-            b.append(args[i].length()).append('#');
-        }
-        b.append(input.length()).append('#');
-        b.append(".");
-
-        b.append(command);
-        for (int i = 0; i < args.length; i++) {
-            b.append(args[i]);
-        }
-        b.append(input);
-        return b.toString();
-    }
-
-    protected String getCommandTag(){
-        return "c";
-    }
-
-    /* Nothing to do when deploying */
     public String prepare(UpdatedApplication application) {
         return null;
     }
@@ -92,6 +39,4 @@ public abstract class ElementNative extends JupidatorElement {
     public String getHash() {
         return command + ":" + super.getHash();
     }
-
-    protected abstract String[] getExecArguments();
 }

@@ -8,7 +8,7 @@
  *
  * Created on Nov 30, 2009, 6:10:46 PM
  */
-package com.panayotis.jupidator.launcher;
+package jupidator.launcher;
 
 import java.awt.Color;
 import javax.swing.JDialog;

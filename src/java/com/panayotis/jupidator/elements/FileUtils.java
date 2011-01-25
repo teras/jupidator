@@ -261,4 +261,22 @@ public class FileUtils {
             return dirname.isDirectory();
         return dirname.mkdirs();
     }
+
+    public static boolean rmFile(File file) {
+        if (file.exists())
+            return file.delete();
+        return true;
+    }
+
+    public static String rmRecursive(File req) {
+        if (req.isDirectory())
+            for (File file : req.listFiles()) {
+                String res = rmRecursive(file);
+                if (res != null)
+                    return res;
+            }
+        if (rmFile(req))
+            return null;
+        return _("Unable to delete file {0}", req.getPath());
+    }
 }

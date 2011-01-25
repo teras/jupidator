@@ -10,6 +10,8 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
+import jupidator.launcher.XERm;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -26,10 +28,6 @@ public class ElementRm extends JupidatorElement {
         return "-" + getDestinationFile();
     }
 
-    public String getArgument() {
-        return "-" + getDestinationFile();
-    }
-
     /* Nothig to download */
     public String fetch(UpdatedApplication application, BufferListener blisten) {
         return null;
@@ -42,6 +40,10 @@ public class ElementRm extends JupidatorElement {
     }
 
     public void cancel(UpdatedApplication application) {
-        application.receiveMessage(_("Cancel updating: Ignoring deleting of file {0}", getDestinationFile()));
+    }
+
+    @Override
+    public XElement getExecElement() {
+        return new XERm(getDestinationFile());
     }
 }

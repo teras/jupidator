@@ -8,6 +8,8 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
+import jupidator.launcher.XEWait;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -41,7 +43,8 @@ public class ElementWait extends JupidatorElement {
     public void cancel(UpdatedApplication application) {
     }
 
-    public String getArgument() {
-        return "w" + Integer.toString(msecs);
+    @Override
+    public XElement getExecElement() {
+        return new XEWait(msecs);
     }
 }
