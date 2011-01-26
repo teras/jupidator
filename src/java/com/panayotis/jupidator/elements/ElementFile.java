@@ -164,6 +164,6 @@ public class ElementFile extends JupidatorElement {
 
     @Override
     public XElement getExecElement() {
-        return new XEFile(getDestinationFile() + JupidatorDeployer.EXTENSION);
+        return new XEFile(download_location.getPath(), getDestinationFile());
     }
 }

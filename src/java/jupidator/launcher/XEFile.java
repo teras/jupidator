@@ -5,7 +5,6 @@
 package jupidator.launcher;
 
 import static jupidator.launcher.JupidatorDeployer.debug;
-import static jupidator.launcher.JupidatorDeployer.EXTENSION;
 
 import java.io.File;
 
@@ -15,21 +14,26 @@ import java.io.File;
  */
 public class XEFile extends XFileModElement {
 
-    public XEFile(String target) {
+    private final String source;
+
+    public XEFile(String target, String source) {
         super(target);
+        this.source = source;
     }
 
     // TODO : handle pachages and files in other locations
     public void perform() {
-        debug("Installing file " + target);
-        String oldpath = target.substring(0, target.length() - EXTENSION.length());
-        File oldfile = new File(oldpath);
-        File newfile = new File(target);
-
-        debug("  Deleting file " + oldfile);
-        if (!rmTree(oldfile))
-            debug("  *ERROR* Unable to remove old file " + oldpath);
-        debug("  Renaming " + target + " to " + oldfile);
-        newfile.renameTo(oldfile);
+        File input = new File(source);
+        File output = new File(target);
+        if (input.isDirectory()) {
+            debug("Installing package " + target);
+            for (File entry : input.listFiles())
+                if (!safeCopy(entry, output))
+                    debug("  *Error* Unable to install " + entry.getPath() + " to " + target);
+        } else {
+            debug("Installing file " + target);
+            if (!safeCopy(input, output))
+                debug("  *Error* Unable to install " + source + " to " + target);
+        }
     }
 }

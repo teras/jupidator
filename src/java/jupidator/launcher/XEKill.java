@@ -15,6 +15,24 @@ import java.util.ArrayList;
  */
 public class XEKill extends XNativeElement {
 
+    private static final XNativeCommand PS_CMD;
+    private static final int PS_COLUMN;
+
+    static {
+        if (isWindows) {
+            ArrayList args = new ArrayList();
+            args.add("/FO");
+            args.add("CSV");
+            PS_CMD = new XNativeCommand("tasklist.exe", args, null);
+            PS_COLUMN = 3;
+        } else {
+            ArrayList args = new ArrayList();
+            args.add("aux");
+            PS_CMD = new XNativeCommand("ps", args, null);
+            PS_COLUMN = 2;
+        }
+
+    }
     private final String signal;
 
     public XEKill(String target, String signal) {
@@ -25,30 +43,14 @@ public class XEKill extends XNativeElement {
     @Override
     public void perform() {
         debug("Killing process with pattern " + target);
-
-        XNativeCommand ps;
-        int ps_column;
-        if (isWindows) {
-            ArrayList args = new ArrayList();
-            args.add("/FO");
-            args.add("CSV");
-            ps = new XNativeCommand("tasklist.exe", args, null);
-            ps_column = 3;
-        } else {
-            ArrayList args = new ArrayList();
-            args.add("aux");
-            ps = new XNativeCommand("ps", args, null);
-            ps_column = 2;
-        }
-
         ArrayList<String> proclist = new ArrayList<String>();
-        StringTokenizer tok = new StringTokenizer(exec(ps), "\n\r");
+        StringTokenizer tok = new StringTokenizer(exec(PS_CMD), "\n\r");
         while (tok.hasMoreTokens()) {
             String line = tok.nextToken();
             if (line.indexOf(target) >= 0 && line.indexOf(JupidatorDeployer.class.getName()) < 0) {
                 debug("  Killing " + line);
                 StringTokenizer col = new StringTokenizer(line, isWindows ? "\"" : " ");
-                for (int i = 0; i < ps_column - 1; i++)
+                for (int i = 0; i < PS_COLUMN - 1; i++)
                     col.nextToken();
                 String next_pid = col.nextToken();
                 if (next_pid.startsWith("\""))
