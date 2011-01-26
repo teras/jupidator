@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * @author teras
  */
 public class ElementFile extends JupidatorElement {
+    private static final String EXTENSION = ".jupidator";
 
     /** This is actually a URL */
     private final String source;
@@ -70,10 +71,10 @@ public class ElementFile extends JupidatorElement {
 
         // Find download location
         if (requiresPrivileges())
-            download_location = new File(elements.permissionManager.requestSlot(), getFileName() + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
+            download_location = new File(elements.permissionManager.requestSlot(), getFileName() + compression.getFilenameExtension() + EXTENSION);
         else
-            download_location = new File(getDestinationFile() + compression.getFilenameExtension() + JupidatorDeployer.EXTENSION);
-        uncompress_location = new File(download_location.getParent(), getFileName() + JupidatorDeployer.EXTENSION);
+            download_location = new File(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
+        uncompress_location = new File(download_location.getParent(), getFileName() + EXTENSION);
         System.out.println("DL location is " + download_location.getPath());
     }
 

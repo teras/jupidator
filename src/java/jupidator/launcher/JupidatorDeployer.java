@@ -5,11 +5,7 @@
  */
 package jupidator.launcher;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,42 +18,12 @@ import javax.swing.UIManager;
  */
 public class JupidatorDeployer {
 
-    public static final String EXTENSION = ".jupidator";
-    private static BufferedWriter out;
-
-    static {
-        try {
-            String filename = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + "jupidator." + new SimpleDateFormat("yyyyMMdd_hhmmss").format(Calendar.getInstance().getTime()) + ".log";
-            out = new BufferedWriter(new FileWriter(filename));
-        } catch (IOException ex) {
-        }
-    }
-
-    public static void debug(String message) {
-        try {
-            if (out != null) {
-                out.write(message);
-                out.newLine();
-                out.flush();
-            }
-        } catch (IOException ex) {
-        }
-    }
-
-    private static void endDebug() {
-        if (out != null)
-            try {
-                out.close();
-            } catch (IOException ex) {
-            }
-    }
-
     @SuppressWarnings("SleepWhileHoldingLock")
     public static void main(String[] args) {
         try {
-            debug("Start log of Jupidator Deployer with arguments:");
+            Debug.info("Start log of Jupidator Deployer with arguments:");
             for (int i = 0; i < args.length; i++)
-                debug("  #" + i + ": " + args[i]);
+                Debug.info("  #" + i + ": " + args[i]);
 
             int pos = 0;
 
@@ -65,24 +31,20 @@ public class JupidatorDeployer {
                 showGUI();
 
             int files = Integer.valueOf(args[pos++]);
-            debug("Number of affected files: " + files);
+            Debug.info("Number of affected files: " + files);
 
             /* Under windows it is important to wait a bit before deleting files */
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 Thread.sleep(3000);
-                debug("Waiting 3 seconds before starting updating");
+                Debug.info("Waiting 3 seconds before starting updating");
             }
 
-
-            
-            
-            
             int initpos = pos;
             String exec[] = new String[args.length - pos];
-            debug("Restarting application with following arguments:");
+            Debug.info("Restarting application with following arguments:");
             for (; pos < args.length; pos++) {
                 exec[pos - initpos] = args[pos];
-                debug("  #" + (pos - initpos) + ": " + exec[pos - initpos]);
+                Debug.info("  #" + (pos - initpos) + ": " + exec[pos - initpos]);
             }
             try {
                 Runtime.getRuntime().exec(exec);
@@ -90,9 +52,9 @@ public class JupidatorDeployer {
             }
 
         } catch (Exception ex) {
-            debug("Exception found: " + ex.toString());
+            Debug.info("Exception found: " + ex.toString());
         } finally {
-            endDebug();
+            Debug.finish();
             System.exit(0);
         }
     }

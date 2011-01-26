@@ -4,8 +4,6 @@
  */
 package jupidator.launcher;
 
-import static jupidator.launcher.JupidatorDeployer.debug;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -47,13 +45,13 @@ public abstract class XNativeElement extends XTargetElement {
                 output.append(line).append('\n');
             p.waitFor();
             if (p.exitValue() == 0) {
-                debug("  Successfully executed " + command.command);
+                Debug.info("  Successfully executed " + command.command);
                 return output.toString();
             }
         } catch (Exception ex) {
-            debug(ex.getMessage());
+            Debug.info(ex.getMessage());
         }
-        debug("  Error while executing " + command.command);
+        Debug.info("  Error while executing " + command.command);
         return output.toString();
     }
 }

@@ -46,7 +46,8 @@ public class PermissionManager implements Serializable {
     }
 
     public void cleanUp() {
-        FileUtils.rmRecursive(download_slots);
+        if (download_slots != null)
+            FileUtils.rmRecursive(download_slots);
     }
 
     private static boolean isWritable(File f) {

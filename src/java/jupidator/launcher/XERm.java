@@ -5,7 +5,6 @@
 package jupidator.launcher;
 
 import java.io.File;
-import static jupidator.launcher.JupidatorDeployer.debug;
 
 /**
  *
@@ -18,8 +17,8 @@ public class XERm extends XFileModElement {
     }
 
     public void perform() {
-        debug("Removing file " + target);
+        Debug.info("Removing file " + target);
         if (!safeDelete(new File(target)))
-            debug("  *ERROR* Unable to delete file " + target);
+            Debug.error("  Unable to delete file " + target);
     }
 }

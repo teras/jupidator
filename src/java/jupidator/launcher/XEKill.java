@@ -4,8 +4,6 @@
  */
 package jupidator.launcher;
 
-import static jupidator.launcher.JupidatorDeployer.debug;
-
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 
@@ -42,13 +40,13 @@ public class XEKill extends XNativeElement {
 
     @Override
     public void perform() {
-        debug("Killing process with pattern " + target);
+        Debug.info("Killing process with pattern " + target);
         ArrayList<String> proclist = new ArrayList<String>();
         StringTokenizer tok = new StringTokenizer(exec(PS_CMD), "\n\r");
         while (tok.hasMoreTokens()) {
             String line = tok.nextToken();
             if (line.indexOf(target) >= 0 && line.indexOf(JupidatorDeployer.class.getName()) < 0) {
-                debug("  Killing " + line);
+                Debug.info("  Killing " + line);
                 StringTokenizer col = new StringTokenizer(line, isWindows ? "\"" : " ");
                 for (int i = 0; i < PS_COLUMN - 1; i++)
                     col.nextToken();

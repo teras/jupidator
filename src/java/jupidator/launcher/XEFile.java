@@ -4,8 +4,6 @@
  */
 package jupidator.launcher;
 
-import static jupidator.launcher.JupidatorDeployer.debug;
-
 import java.io.File;
 
 /**
@@ -26,14 +24,14 @@ public class XEFile extends XFileModElement {
         File input = new File(source);
         File output = new File(target);
         if (input.isDirectory()) {
-            debug("Installing package " + target);
+            Debug.info("Installing package " + target);
             for (File entry : input.listFiles())
                 if (!safeCopy(entry, output))
-                    debug("  *Error* Unable to install " + entry.getPath() + " to " + target);
+                    Debug.error("  Unable to install " + entry.getPath() + " to " + target);
         } else {
-            debug("Installing file " + target);
+            Debug.info("Installing file " + target);
             if (!safeCopy(input, output))
-                debug("  *Error* Unable to install " + source + " to " + target);
+                Debug.error("  Unable to install " + source + " to " + target);
         }
     }
 }

@@ -19,7 +19,6 @@ public class GZipCompression implements CompressionMethod {
 
     public String decompress(File compressedfile, File outfile) {
         try {
-            System.out.println(compressedfile.getPath() + " -> "  + outfile.getPath());
             return FileUtils.copyFile(new GZIPInputStream(new FileInputStream(compressedfile)), new FileOutputStream(outfile), null);
         } catch (IOException ex) {
             return ex.getMessage();

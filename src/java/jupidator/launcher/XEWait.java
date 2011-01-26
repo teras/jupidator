@@ -4,8 +4,6 @@
  */
 package jupidator.launcher;
 
-import static jupidator.launcher.JupidatorDeployer.debug;
-
 /**
  *
  * @author teras
@@ -19,7 +17,7 @@ public class XEWait implements XElement {
     }
 
     public void perform() {
-        debug("Waiting msecs=" + waittime);
+        Debug.info("Waiting msecs=" + waittime);
         try {
             Thread.sleep(waittime);
         } catch (InterruptedException ex) {
