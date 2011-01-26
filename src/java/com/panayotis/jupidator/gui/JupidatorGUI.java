@@ -22,6 +22,7 @@ public interface JupidatorGUI {
 
     public void errorOnCommit(String message);
     public void successOnCommit();
+    public void errorOnRestart(String message);
 
     public void setDownloadRatio(String ratio, float percent);
     public void setIndetermined();

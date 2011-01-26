@@ -31,7 +31,6 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
 
     private Updater callback;
 
-
     static {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -105,6 +104,15 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         ProgressP.revalidate();
     }
 
+    public void errorOnRestart(String message) {
+        if (message == null)
+            setInfoArea(_("Application cancelled restart"));
+        else
+            setInfoArea(message);
+        ActionB.setText(_("Cancel"));
+        ActionB.setActionCommand("cancel");
+    }
+
     private void setInfoArea(String message) {
         ActionB.setEnabled(true);
         BarPanel.remove(PBar);
@@ -120,9 +128,8 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
     }
 
     public void setProperty(String key, String value) {
-        if (key.toLowerCase().equals("about")) {
+        if (key.toLowerCase().equals("about"))
             InfoB.setVisible(TextUtils.isTrue(value));
-        }
     }
 
     /** This method is called from within the constructor to
@@ -312,7 +319,6 @@ private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoBActionPerformed
     new AboutDialog(this).setVisible(true);
 }//GEN-LAST:event_InfoBActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ActionB;
     private javax.swing.JPanel BarPanel;

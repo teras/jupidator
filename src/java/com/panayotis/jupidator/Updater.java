@@ -4,7 +4,6 @@
  */
 package com.panayotis.jupidator;
 
-import com.panayotis.jupidator.data.Arch;
 import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.statics.SelfUpdate;
 import static com.panayotis.jupidator.i18n.I18N._;
@@ -16,13 +15,16 @@ import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.data.Version;
-import jupidator.launcher.Closure;
-import jupidator.launcher.LaunchManager;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jupidator.launcher.DeployerParameters;
+import jupidator.launcher.JupidatorDeployer;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -100,7 +102,7 @@ public class Updater {
         for (String key : vers.keySet())
             size += vers.get(key).getSize();
         watcher.setAllBytes(size);
-        download = new Thread() {
+        download = new Thread()                         {
 
             @Override
             public void run() {
@@ -157,49 +159,50 @@ public class Updater {
     }
 
     public void actionRestart() {
+        /* Ask application if restart could be performed */
         watcher.stopWatcher();
-        gui.endDialog();
-        if (application.requestRestart()) {
-            String temppath = System.getProperty("java.io.tmpdir");
-            Arch arch = vers.getArch();
-
-            String message = FileUtils.copyPackage(LaunchManager.class.getPackage().getName(), temppath, application);
-            if (message != null) {
-                application.receiveMessage(message);
-                JOptionPane.showMessageDialog(null, message, message, JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int header = 6;
-            String args[] = new String[header + vers.size() + arch.countArguments()];
-            args[0] = FileUtils.JAVABIN;
-            args[1] = "-cp";
-            args[2] = temppath;
-            args[3] = LaunchManager.class.getName();
-            args[4] = vers.isGraphicalDeployer() ? "g" : "t";
-            args[5] = String.valueOf(vers.size());
-
-//            for (String key : vers.keySet())
-//                args[header++] = vers.get(key).getArgument();
-
-            for (int i = 0; i < arch.countArguments(); i++)
-                args[header++] = arch.getArgument(i, appinfo);
-
-            Closure callback = new Closure() {
-
-                public void exec(Object data) {
-                    application.receiveMessage(data.toString());
-                }
-            };
-            application.receiveMessage(_("Executing {0}", LaunchManager.ArrayToString(args, " ")));
-            //LaunchManager.execute(args, callback, callback, null);
-            try {
-                Runtime.getRuntime().exec(args);
-            } catch (IOException ex) {
-                application.receiveMessage(ex.getMessage());
-            }
-            System.exit(0);
+        if (!application.requestRestart()) {
+            gui.errorOnRestart(_("Application cancelled restart"));
+            return;
         }
+
+        /* Store requested working elements */
+        DeployerParameters params = new DeployerParameters();
+        params.setElements(vers);
+        params.setGUI(gui);
+        File paramfile = params.storeParameters(vers);
+        if (paramfile == null) {
+            String message = _("Unable to create restart environment");
+            application.receiveMessage(message);
+            gui.errorOnRestart(message);
+            return;
+        }
+
+        /* Copy Jupidator classes */
+        String temppath = System.getProperty("java.io.tmpdir");
+        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), temppath, application);
+        if (message != null) {
+            application.receiveMessage(message);
+            gui.errorOnRestart(message);
+            return;
+        }
+
+        /* Execute new Java environment */
+        try {
+            new ProcessBuilder(
+                    FileUtils.JAVABIN,
+                    "-cp",
+                    temppath,
+                    JupidatorDeployer.class.getName(),
+                    paramfile.getAbsolutePath()).start();
+        } catch (IOException ex) {
+            String error = ex.getMessage();
+            application.receiveMessage(error);
+            gui.errorOnRestart(error);
+            return;
+        }
+        gui.endDialog();
+        System.exit(0);  // Restarting
     }
 
     public String getChangeLog() {

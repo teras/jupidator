@@ -15,7 +15,7 @@ import java.io.OutputStreamWriter;
  */
 public abstract class XNativeElement extends XTargetElement {
 
-    protected static final boolean isWindows, isMac, isLinux;
+    public static final boolean isWindows, isMac, isLinux;
     protected final String input;
 
     static {

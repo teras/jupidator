@@ -17,7 +17,18 @@ public class PermissionManager implements Serializable {
 
     private boolean reqprev = false;
     private int slots = 0;
-    private File download_slots = null;
+    private final File downloadLocation;
+
+    public PermissionManager() {
+        File dl = null;
+        try {
+            dl = File.createTempFile("jupidator_download_", "");
+            dl.delete();
+        } catch (IOException ex) {
+        }
+        downloadLocation = dl;
+        System.out.println("Permission location is "+downloadLocation.getPath());
+    }
 
     public boolean isRequiredPrivileges() {
         return reqprev;
@@ -35,19 +46,15 @@ public class PermissionManager implements Serializable {
     }
 
     public File requestSlot() {
-        if (download_slots == null)
-            try {
-                download_slots = File.createTempFile("jupidator_download_", "");
-                download_slots.delete();
-            } catch (IOException ex) {
-                return null;
-            }
-        return new File(download_slots, "slot" + (++slots));
+        return new File(downloadLocation, "slot" + (++slots));
     }
 
     public void cleanUp() {
-        if (download_slots != null)
-            FileUtils.rmRecursive(download_slots);
+        FileUtils.rmRecursive(downloadLocation);
+    }
+
+    public File getRestartObject() {
+        return new File(downloadLocation, "parameters");
     }
 
     private static boolean isWritable(File f) {

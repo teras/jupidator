@@ -23,11 +23,10 @@ import java.io.InputStreamReader;
  */
 public class ConsoleGUI implements JupidatorGUI {
 
-    private String info1,  info2,  loglist;
+    private String info1, info2, loglist;
     private Updater callback;
     private boolean is_loglist_enabled = true;
     private boolean can_not_ignore = false;
-
     private BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
@@ -90,6 +89,12 @@ public class ConsoleGUI implements JupidatorGUI {
         callback.actionRestart();
     }
 
+    public void errorOnRestart(String message) {
+        System.out.println(_(message));
+        System.out.println(_("Cancel installation"));
+        callback.actionCancel();
+    }
+
     public void setDownloadRatio(String ratio, float percent) {
         System.out.println(_("Downloading {0}, {1} percent completed.", ratio, percent * 100));
     }
@@ -99,9 +104,8 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void setProperty(String key, String value) {
-        if (key.toLowerCase().equals("loglist")) {
+        if (key.toLowerCase().equals("loglist"))
             is_loglist_enabled = TextUtils.isTrue(value);
-        }
     }
 
     private char getAnswer(String message, String list) {
@@ -117,10 +121,9 @@ public class ConsoleGUI implements JupidatorGUI {
             list = list.toLowerCase();
             if (list.length() == 0 || input.length() == 0)
                 return 0;
-            for (int i = 0; i < list.length(); i++) {
+            for (int i = 0; i < list.length(); i++)
                 if (input.charAt(0) == list.charAt(i))
                     return input.charAt(0);
-            }
         } catch (IOException ex) {
         }
         return 0;

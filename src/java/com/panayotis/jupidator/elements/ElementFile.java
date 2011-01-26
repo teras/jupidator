@@ -75,7 +75,6 @@ public class ElementFile extends JupidatorElement {
         else
             download_location = new File(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
         uncompress_location = new File(download_location.getParent(), getFileName() + EXTENSION);
-        System.out.println("DL location is " + download_location.getPath());
     }
 
     public boolean exists() {

@@ -269,6 +269,8 @@ public class FileUtils {
     }
 
     public static String rmRecursive(File req) {
+        if (!req.exists())
+            return null;
         if (req.isDirectory())
             for (File file : req.listFiles()) {
                 String res = rmRecursive(file);
