@@ -9,6 +9,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XElement;
 import java.io.File;
@@ -64,7 +65,7 @@ public abstract class JupidatorElement implements Serializable {
     }
 
     protected boolean estimatePrivileges(UpdaterAppElements elements) {
-        return elements.permissionManager.estimatePrivileges(new File(getDestinationFile()));
+        return PermissionManager.manager.estimatePrivileges(new File(getDestinationFile()));
     }
 
     public String getHash() {

@@ -15,6 +15,7 @@ import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.data.Version;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -139,7 +140,7 @@ public class Updater {
         }
         for (String key : vers.keySet())
             vers.get(key).cancel(application);
-        vers.getAppElements().permissionManager.cleanUp();
+        PermissionManager.manager.cleanUp();
     }
 
     /* Do nothing - wait for next cycle */
@@ -173,7 +174,7 @@ public class Updater {
         
         /* Construct launcher command */
         try {
-            vers.getAppElements().permissionManager.getLaunchCommand(application, params).start();
+            PermissionManager.manager.getLaunchCommand(application, params).start();
         } catch (IOException ex) {
             String message = ex.getMessage();
             application.receiveMessage(message);

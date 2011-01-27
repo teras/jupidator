@@ -4,7 +4,6 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.panayotis.jupidator.elements.security.PermissionManager;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.statics.SystemVersion;
@@ -27,7 +26,6 @@ public class UpdaterAppElements implements Serializable {
     private String lastversion = "0.0.0.0"; // Last value we read from XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
-    public final PermissionManager permissionManager = new PermissionManager();
 
     public String getAppName() {
         return AppName;

@@ -14,6 +14,7 @@ import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Frame;
@@ -73,7 +74,7 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         if (info.isSelfUpdate())
             SkipB.setVisible(false);
 
-        PrevL.setVisible(el.permissionManager.isRequiredPrivileges());
+        PrevL.setVisible(PermissionManager.manager.isRequiredPrivileges());
         pack();
     }
 

@@ -6,6 +6,7 @@ package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import jupidator.launcher.XEKill;
 import jupidator.launcher.XElement;
 
@@ -24,7 +25,7 @@ public class ElementKill extends ElementNative {
 
     @Override
     protected boolean estimatePrivileges(UpdaterAppElements elements) {
-        return elements.permissionManager.forcePrivileges();
+        return PermissionManager.manager.forcePrivileges();
     }
 
     @Override

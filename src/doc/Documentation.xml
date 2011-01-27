@@ -236,6 +236,7 @@ public class MyAppUpdate implements UpdatedApplication {
 	<listitem><para><varname>RELEASE</varname></para><para>Numeric release, as given to the <link linkend="release">runtime environment</link></para></listitem>
 	<listitem><para><varname>IGNORERELEASE</varname></para><para>Last release, which the user requested not to upgrade.</para></listitem>
 	<listitem><para><varname>JAVABIN</varname></para><para>Path to Java executable.</para></listitem>
+	<listitem><para><varname>WORKDIR</varname></para><para>The current working location of Jupidator. It is usually in the temporary storage of the operating system. Its value change every time Jupidator is launched.</para></listitem>
 	<listitem><para>Any Java System property, i.e. <varname>${java.io.tmpdir}</varname></para></listitem>
 	<listitem><para>Any environmental variable, i.e. <varname>${UID}</varname></para></listitem>
 </itemizedlist>

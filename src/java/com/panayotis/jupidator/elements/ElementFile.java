@@ -15,6 +15,7 @@ import com.panayotis.jupidator.elements.compression.GZipCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
 import com.panayotis.jupidator.elements.security.Digester;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
@@ -70,7 +71,7 @@ public class ElementFile extends JupidatorElement {
 
         // Find download location
         if (requiresPrivileges())
-            download_location = new File(elements.permissionManager.requestSlot(), getFileName() + compression.getFilenameExtension() + EXTENSION);
+            download_location = new File(PermissionManager.manager.requestSlot(), getFileName() + compression.getFilenameExtension() + EXTENSION);
         else
             download_location = new File(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
         uncompress_location = new File(download_location.getParent(), getFileName() + EXTENSION);

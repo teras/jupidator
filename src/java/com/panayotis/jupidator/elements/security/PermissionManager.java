@@ -21,18 +21,19 @@ import jupidator.launcher.JupidatorDeployer;
  */
 public class PermissionManager implements Serializable {
 
+    public static final PermissionManager manager = new PermissionManager();
     private boolean reqprev = false;
     private int slots = 0;
-    private final File downloadLocation;
+    private final File workdir;
 
     public PermissionManager() {
-        File dl = null;
+        File wd = null;
         try {
-            dl = File.createTempFile("jupidator_download_", "");
-            dl.delete();
+            wd = File.createTempFile("jupidator_download_", "");
+            wd.delete();
         } catch (IOException ex) {
         }
-        downloadLocation = dl;
+        workdir = wd;
     }
 
     public boolean isRequiredPrivileges() {
@@ -51,20 +52,24 @@ public class PermissionManager implements Serializable {
     }
 
     public File requestSlot() {
-        return new File(downloadLocation, "slot" + (++slots));
+        return new File(workdir, "slot" + (++slots));
     }
 
     public void cleanUp() {
-        FileUtils.rmRecursive(downloadLocation);
+        FileUtils.rmRecursive(workdir);
+    }
+
+    public String getWorkDir() {
+        return workdir.getAbsolutePath();
     }
 
     public ProcessBuilder getLaunchCommand(UpdatedApplication application, DeployerParameters params) throws IOException {
         /* Copy Jupidator classes */
-        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), downloadLocation.getPath());
+        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), workdir.getPath());
         if (message != null)
             throw new IOException(message);
         /* Store requested working elements */
-        File paramfile = new File(downloadLocation, "parameters");
+        File paramfile = new File(workdir, "parameters");
         if (!params.storeParameters(paramfile))
             throw new IOException(_("Unable to initialize restart"));
 
@@ -72,7 +77,7 @@ public class PermissionManager implements Serializable {
         ArrayList<String> command = new ArrayList<String>();
         command.add(FileUtils.JAVABIN);
         command.add("-cp");
-        command.add(downloadLocation.getAbsolutePath());
+        command.add(workdir.getAbsolutePath());
         command.add(JupidatorDeployer.class.getName());
         command.add(paramfile.getAbsolutePath());
 
@@ -85,7 +90,7 @@ public class PermissionManager implements Serializable {
         return new ProcessBuilder(command);
     }
 
-    private static boolean isWritable(File f) {
+    private boolean isWritable(File f) {
         if (f == null)
             throw new NullPointerException("Updated file could not be null.");
         if (!isParentWritable(f))
@@ -95,7 +100,7 @@ public class PermissionManager implements Serializable {
         return isWritableLoop(f);
     }
 
-    private static boolean isWritableLoop(File f) {
+    private boolean isWritableLoop(File f) {
         if (f.isDirectory()) {
             File dir[] = f.listFiles();
             for (int i = 0; i < dir.length; i++)
@@ -106,7 +111,7 @@ public class PermissionManager implements Serializable {
             return canWrite(f);
     }
 
-    private static boolean isParentWritable(File f) {
+    private boolean isParentWritable(File f) {
         File p = f.getParentFile();
         if (p == null)  // No parent file - can't work on root files
             return false;
@@ -123,7 +128,7 @@ public class PermissionManager implements Serializable {
             return FileUtils.makeDirectory(p);
     }
 
-    public static boolean canWrite(File f) {
+    public boolean canWrite(File f) {
         return f.canWrite();
     }
 }

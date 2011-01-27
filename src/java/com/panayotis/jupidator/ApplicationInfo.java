@@ -7,6 +7,7 @@ package com.panayotis.jupidator;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 
 import java.io.File;
 import java.io.Serializable;
@@ -33,8 +34,8 @@ public class ApplicationInfo implements Serializable {
 
         appHome = fixDir(appHome, "Application");
         if (appSupportDir == null || (!new File(appSupportDir).isDirectory()))
-            appSupportDir = appHome;        
-        vars.put("APPHOME", appHome);        
+            appSupportDir = appHome;
+        vars.put("APPHOME", appHome);
         vars.put("APPSUPPORTDIR", appSupportDir);
 
         if (version == null || version.equals(""))
@@ -51,6 +52,7 @@ public class ApplicationInfo implements Serializable {
         updateIgnoreRelease("0");
 
         vars.put("JAVABIN", FileUtils.JAVABIN);
+        vars.put("WORKDIR", PermissionManager.manager.getWorkDir());
     }
 
     public void setProperty(String name, String value) {
