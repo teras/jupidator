@@ -9,7 +9,6 @@ import static com.panayotis.jupidator.i18n.I18N._;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
-import jupidator.launcher.JupidatorDeployer;
 import com.panayotis.jupidator.elements.compression.BZip2Compression;
 import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;
@@ -31,8 +30,8 @@ import java.util.ArrayList;
  * @author teras
  */
 public class ElementFile extends JupidatorElement {
-    private static final String EXTENSION = ".jupidator";
 
+    private static final String EXTENSION = ".jupidator";
     /** This is actually a URL */
     private final String source;
     private final CompressionMethod compression;
@@ -164,6 +163,9 @@ public class ElementFile extends JupidatorElement {
 
     @Override
     public XElement getExecElement() {
-        return new XEFile(uncompress_location.getPath(), getDestinationFile());
+        File destination = new File(getDestinationFile());
+        if (compression.isPackageBased())
+            destination = destination.getParentFile();
+        return new XEFile(uncompress_location.getPath(), destination.getAbsolutePath());
     }
 }

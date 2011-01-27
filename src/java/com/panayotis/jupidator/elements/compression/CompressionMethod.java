@@ -24,4 +24,11 @@ public interface CompressionMethod extends Serializable {
      * @return source filename extension
      */
     public String getFilenameExtension();
+    
+    /**
+     * Check if the specified compression method is actually a package (currently only with Zip).
+     * <b>WARNING</b>: This method is practically useful ONLY after decompress has been performed and evaluated.
+     * @return 
+     */
+    public boolean isPackageBased() ;
 }

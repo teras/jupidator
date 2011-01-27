@@ -15,7 +15,7 @@ import org.apache.tools.bzip2.CBZip2InputStream;
  *
  * @author teras
  */
-public class BZip2Compression implements CompressionMethod {
+public class BZip2Compression extends SingleFileCompression {
 
     public String decompress(File compressedfile, File outfile) {
         try {

@@ -15,7 +15,7 @@ import java.util.zip.GZIPInputStream;
  *
  * @author teras
  */
-public class GZipCompression implements CompressionMethod {
+public class GZipCompression extends SingleFileCompression {
 
     public String decompress(File compressedfile, File outfile) {
         try {

@@ -10,7 +10,7 @@ import java.io.File;
  *
  * @author teras
  */
-public class NullCompression implements CompressionMethod {
+public class NullCompression extends SingleFileCompression {
 
     public String getFilenameExtension() {
         return "";

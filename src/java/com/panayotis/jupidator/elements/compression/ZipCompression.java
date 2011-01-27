@@ -20,6 +20,8 @@ import java.util.zip.ZipFile;
  */
 public class ZipCompression implements CompressionMethod {
 
+    private boolean packageBased = false;
+
     @SuppressWarnings("unchecked")
     public String decompress(File compressedfile, File outfile) {
         try {
@@ -29,13 +31,14 @@ public class ZipCompression implements CompressionMethod {
                 return null;
             else if (files.size() == 1)
                 return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(outfile), null);
-            else
+            else {
                 /**
                  * We have a package.
                  * Since we are using a lazy installation scheme, unzip all files in a temporary folder one level deep than the actual required folder.
                  * Thus, if the output file is a regular file, just perform a rename. If it is a directory (thus we have a package), move all files one directory up.
                  * With this trick, it is possible to refrain the actual file manipulation in a latter time.
                  */
+                packageBased = true;
                 for (ZipEntry entry : files) {
                     File out = new File(outfile, entry.getName().replace("/", File.separator));
                     if (!FileUtils.makeDirectory(out.getParentFile()))
@@ -44,6 +47,7 @@ public class ZipCompression implements CompressionMethod {
                     if (status != null)
                         return status;
                 }
+            }
         } catch (ZipException ex) {
             return ex.getMessage();
         } catch (IOException ex) {
@@ -66,5 +70,9 @@ public class ZipCompression implements CompressionMethod {
 
     public String getFilenameExtension() {
         return ".zip";
+    }
+
+    public boolean isPackageBased() {
+        return packageBased;
     }
 }
