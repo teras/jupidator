@@ -81,7 +81,8 @@ public class FileUtils {
         return message;
     }
 
-    public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
+    public static String copyPackage(String PACKAGENAME, String FILEHOME) {
+//    public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
         String PACKAGEDIR = PACKAGENAME.replace('.', '/') + File.separator;
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
         makeDirectory(depdir);
@@ -93,8 +94,8 @@ public class FileUtils {
         ArrayList<String> dirs = new ArrayList<String>();
         getClassPaths(jars, dirs);
 
-        for (String jar : jars) {
-            listener.receiveMessage(_("Checking JAR {0} for classes.", jar));
+        for (String jar : jars)
+            //  listener.receiveMessage(_("Checking JAR {0} for classes.", jar));
             try {
                 ZipFile zip = new ZipFile(jar);
                 for (Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zip.entries(); e.hasMoreElements();) {
@@ -110,9 +111,8 @@ public class FileUtils {
             } catch (IOException ex) {
                 return _("Unable to extract files from JAR {0}", jar);
             }
-        }
         for (String path : dirs) {
-            listener.receiveMessage(_("Checking directory {0} for classes.", path));
+            //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
             File[] entries = new File(path + File.separator + PACKAGEDIR).listFiles();
             for (int i = 0; i < entries.length; i++) {
                 String status;

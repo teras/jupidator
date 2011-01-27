@@ -28,4 +28,6 @@ public interface JupidatorGUI {
     public void setIndetermined();
 
     public void setProperty(String key, String value);
+
+    public boolean isHeadless();
 }

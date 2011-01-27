@@ -17,8 +17,8 @@ public class XERm extends XFileModElement {
     }
 
     public void perform() {
-        Debug.info("Removing file " + target);
+        Visuals.info("Removing file " + target);
         if (!safeDelete(new File(target)))
-            Debug.error("  Unable to delete file " + target);
+            Visuals.error("Unable to delete file " + target);
     }
 }

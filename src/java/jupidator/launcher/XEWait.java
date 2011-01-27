@@ -17,7 +17,7 @@ public class XEWait implements XElement {
     }
 
     public void perform() {
-        Debug.info("Waiting msecs=" + waittime);
+        Visuals.info("Waiting for " + waittime + "msecs=");
         try {
             Thread.sleep(waittime);
         } catch (InterruptedException ex) {

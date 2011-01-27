@@ -14,7 +14,7 @@ public class XEFile extends XFileModElement {
 
     private final String source;
 
-    public XEFile(String target, String source) {
+    public XEFile(String source, String target) {
         super(target);
         this.source = source;
     }
@@ -24,14 +24,15 @@ public class XEFile extends XFileModElement {
         File input = new File(source);
         File output = new File(target);
         if (input.isDirectory()) {
-            Debug.info("Installing package " + target);
+            Visuals.info("Installing package " + target);
             for (File entry : input.listFiles())
                 if (!safeCopy(entry, output))
-                    Debug.error("  Unable to install " + entry.getPath() + " to " + target);
+                    Visuals.error("Unable to install " + entry.getPath() + " to " + target);
+            input.delete();
         } else {
-            Debug.info("Installing file " + target);
+            Visuals.info("Installing file " + target);
             if (!safeCopy(input, output))
-                Debug.error("  Unable to install " + source + " to " + target);
+                Visuals.error("Unable to install " + source + " to " + target);
         }
     }
 }

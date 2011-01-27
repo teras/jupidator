@@ -4,15 +4,14 @@
  */
 package jupidator.launcher;
 
-import com.panayotis.jupidator.data.Version;
 import com.panayotis.jupidator.elements.FileUtils;
-import com.panayotis.jupidator.gui.JupidatorGUI;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,32 +19,53 @@ import java.util.ArrayList;
  */
 public class DeployerParameters implements Serializable {
 
-    ArrayList<XElement> elements = new ArrayList<XElement>();
+    private List<XElement> elements = new ArrayList<XElement>();
+    private List<String> relaunch = new ArrayList<String>();
+    private boolean headless = true;
 
-    public void setElements(Version vers) {
-        for (String key : vers.keySet())
-            elements.add(vers.get(key).getExecElement());
+    public void setElements(List<XElement> elements) {
+        this.elements = elements;
     }
 
-    public void setGUI(JupidatorGUI gui) {
+    public void setHeadless(boolean headless) {
+        this.headless = headless;
     }
 
-    public File storeParameters(Version vers) {
-        File file = vers.getAppElements().permissionManager.getRestartObject();
-        FileUtils.makeDirectory(file.getParentFile());
+    public void setRelaunchCommand(List<String> relaunch) {
+        this.relaunch = relaunch;
+    }
+
+    public List<XElement> getElements() {
+        return elements;
+    }
+
+    public boolean isHeadless() {
+        return headless;
+    }
+
+    public List<String> getRelaunchCommand() {
+        return relaunch;
+    }
+
+    public boolean storeParameters(File out) {
+        if (out == null)
+            return false;
+        FileUtils.makeDirectory(out.getParentFile());
         ObjectOutputStream output = null;
+        boolean status = false;
         try {
-            output = new ObjectOutputStream(new FileOutputStream(file));
-            output.writeObject(elements);
+            output = new ObjectOutputStream(new FileOutputStream(out));
+            output.writeObject(this);
+            status = true;
         } catch (IOException ex) {
-            file = null;
         } finally {
             if (output != null)
                 try {
                     output.close();
                 } catch (IOException ex) {
+                    status = false;
                 }
         }
-        return file;
+        return status;
     }
 }

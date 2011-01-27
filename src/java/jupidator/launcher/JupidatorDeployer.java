@@ -5,12 +5,9 @@
  */
 package jupidator.launcher;
 
-import java.io.IOException;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.UIManager;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.List;
 
 /**
  *
@@ -18,73 +15,54 @@ import javax.swing.UIManager;
  */
 public class JupidatorDeployer {
 
-    @SuppressWarnings("SleepWhileHoldingLock")
+    private static DeployerParameters params;
+
     public static void main(String[] args) {
+        ObjectInputStream in;
         try {
-            Debug.info("Start log of Jupidator Deployer with arguments:");
-            for (int i = 0; i < args.length; i++)
-                Debug.info("  #" + i + ": " + args[i]);
+            /* Recreate parameters */
+            in = new ObjectInputStream(new FileInputStream(args[0]));
+            params = (DeployerParameters) in.readObject();
+            Visuals.setHeadless(params.isHeadless());
+            Visuals.info("Start of Jupidator Deployer");
 
-            int pos = 0;
+            /* Run after visuals have been initialized */
+            Thread worker = new Thread() {
 
-            if (Character.toLowerCase(args[pos++].charAt(0)) == 'g')
-                showGUI();
+                @Override
+                public void run() {
+                    try {
+                        /* Under windows it is important to wait a bit before deleting files */
+                        if (System.getProperty("os.name").toLowerCase().contains("windows"))
+                            params.getElements().add(0, new XEWait(3000));
 
-            int files = Integer.valueOf(args[pos++]);
-            Debug.info("Number of affected files: " + files);
+                        /* Execute installer commands */
+                        for (XElement element : params.getElements())
+                            element.perform();
 
-            /* Under windows it is important to wait a bit before deleting files */
-            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                Thread.sleep(3000);
-                Debug.info("Waiting 3 seconds before starting updating");
-            }
-
-            int initpos = pos;
-            String exec[] = new String[args.length - pos];
-            Debug.info("Restarting application with following arguments:");
-            for (; pos < args.length; pos++) {
-                exec[pos - initpos] = args[pos];
-                Debug.info("  #" + (pos - initpos) + ": " + exec[pos - initpos]);
-            }
-            try {
-                Runtime.getRuntime().exec(exec);
-            } catch (IOException ex) {
-            }
-
+                        /* Relaunch application if applicable */
+                        List<String> command = params.getRelaunchCommand();
+                        if (command.size() >= 1)
+                            new ProcessBuilder(command).start();
+                        Visuals.finish();
+                        System.exit(0);
+                    } catch (Exception ex) {
+                        finishWithError(ex);
+                    }
+                }
+            };
+            worker.start();
         } catch (Exception ex) {
-            Debug.info("Exception found: " + ex.toString());
-        } finally {
-            Debug.finish();
-            System.exit(0);
+            finishWithError(ex);
         }
     }
 
-    private static void showGUI() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-        }
-
-        JFrame frame = new JFrame();
-        JPanel jPanel1 = new javax.swing.JPanel();
-        JLabel TextL = new javax.swing.JLabel();
-        JProgressBar ProgressBar = new javax.swing.JProgressBar();
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12)));
-        jPanel1.setLayout(new java.awt.BorderLayout(12, 0));
-
-        TextL.setText("Please wait while deploying files");
-        jPanel1.add(TextL, java.awt.BorderLayout.WEST);
-
-        ProgressBar.setIndeterminate(true);
-        ProgressBar.putClientProperty("JProgressBar.style", "circular");
-        ProgressBar.setPreferredSize(new java.awt.Dimension(20, 20));
-        jPanel1.add(ProgressBar, java.awt.BorderLayout.CENTER);
-
-        frame.setUndecorated(true);
-        frame.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    private static void finishWithError(Exception ex) {
+        StringBuilder buf = new StringBuilder("Exception found: ");
+        buf.append(ex.toString()).append("\n");
+        for (StackTraceElement stack : ex.getStackTrace())
+            buf.append("       at ").append(stack.toString()).append("\n");
+        Visuals.error(buf.toString());
+        Visuals.finish();
     }
 }

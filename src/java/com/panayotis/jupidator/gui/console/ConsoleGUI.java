@@ -128,4 +128,8 @@ public class ConsoleGUI implements JupidatorGUI {
         }
         return 0;
     }
+
+    public boolean isHeadless() {
+        return true;
+    }
 }

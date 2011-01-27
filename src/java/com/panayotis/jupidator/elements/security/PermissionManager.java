@@ -4,10 +4,16 @@
  */
 package com.panayotis.jupidator.elements.security;
 
+import com.panayotis.jupidator.UpdatedApplication;
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import jupidator.launcher.DeployerParameters;
+import jupidator.launcher.JupidatorDeployer;
 
 /**
  *
@@ -27,7 +33,6 @@ public class PermissionManager implements Serializable {
         } catch (IOException ex) {
         }
         downloadLocation = dl;
-        System.out.println("Permission location is "+downloadLocation.getPath());
     }
 
     public boolean isRequiredPrivileges() {
@@ -53,8 +58,31 @@ public class PermissionManager implements Serializable {
         FileUtils.rmRecursive(downloadLocation);
     }
 
-    public File getRestartObject() {
-        return new File(downloadLocation, "parameters");
+    public ProcessBuilder getLaunchCommand(UpdatedApplication application, DeployerParameters params) throws IOException {
+        /* Copy Jupidator classes */
+        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), downloadLocation.getPath());
+        if (message != null)
+            throw new IOException(message);
+        /* Store requested working elements */
+        File paramfile = new File(downloadLocation, "parameters");
+        if (!params.storeParameters(paramfile))
+            throw new IOException(_("Unable to initialize restart"));
+
+        /* Construct command */
+        ArrayList<String> command = new ArrayList<String>();
+        command.add(FileUtils.JAVABIN);
+        command.add("-cp");
+        command.add(downloadLocation.getAbsolutePath());
+        command.add(JupidatorDeployer.class.getName());
+        command.add(paramfile.getAbsolutePath());
+
+        /* Debug launch command */
+        StringBuilder debug = new StringBuilder("Launching command: ");
+        for (String cmd : command)
+            debug.append(cmd).append(" ");
+        application.receiveMessage(debug.toString());
+
+        return new ProcessBuilder(command);
     }
 
     private static boolean isWritable(File f) {

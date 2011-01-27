@@ -20,10 +20,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jupidator.launcher.DeployerParameters;
-import jupidator.launcher.JupidatorDeployer;
 import jupidator.launcher.XElement;
 
 /**
@@ -102,7 +99,7 @@ public class Updater {
         for (String key : vers.keySet())
             size += vers.get(key).getSize();
         watcher.setAllBytes(size);
-        download = new Thread()                         {
+        download = new Thread() {
 
             @Override
             public void run() {
@@ -166,39 +163,21 @@ public class Updater {
             return;
         }
 
-        /* Store requested working elements */
+        /* Construct parameters */
         DeployerParameters params = new DeployerParameters();
-        params.setElements(vers);
-        params.setGUI(gui);
-        File paramfile = params.storeParameters(vers);
-        if (paramfile == null) {
-            String message = _("Unable to create restart environment");
-            application.receiveMessage(message);
-            gui.errorOnRestart(message);
-            return;
-        }
-
-        /* Copy Jupidator classes */
-        String temppath = System.getProperty("java.io.tmpdir");
-        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), temppath, application);
-        if (message != null) {
-            application.receiveMessage(message);
-            gui.errorOnRestart(message);
-            return;
-        }
-
-        /* Execute new Java environment */
+        ArrayList<XElement> elements = new ArrayList<XElement>();
+        for (String key : vers.keySet())
+            elements.add(vers.get(key).getExecElement());
+        params.setElements(elements);
+        params.setHeadless(gui.isHeadless());
+        
+        /* Construct launcher command */
         try {
-            new ProcessBuilder(
-                    FileUtils.JAVABIN,
-                    "-cp",
-                    temppath,
-                    JupidatorDeployer.class.getName(),
-                    paramfile.getAbsolutePath()).start();
+            vers.getAppElements().permissionManager.getLaunchCommand(application, params).start();
         } catch (IOException ex) {
-            String error = ex.getMessage();
-            application.receiveMessage(error);
-            gui.errorOnRestart(error);
+            String message = ex.getMessage();
+            application.receiveMessage(message);
+            gui.errorOnRestart(message);
             return;
         }
         gui.endDialog();

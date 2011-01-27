@@ -45,6 +45,10 @@ public class SwingGUI extends JDialog implements JupidatorGUI {
         LaterB.requestFocus();
     }
 
+    public boolean isHeadless() {
+        return false;
+    }
+
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         this.callback = callback;
 

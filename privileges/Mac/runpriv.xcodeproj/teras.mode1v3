@@ -209,13 +209,12 @@
 			<key>ChosenToolbarItems</key>
 			<array>
 				<string>active-combo-popup</string>
-				<string>action</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
-				<string>servicesModuleSnapshots</string>
+				<string>debugger-enable-breakpoints</string>
+				<string>build-and-go</string>
 				<string>buildOrClean</string>
-				<string>build-and-goOrGo</string>
-				<string>com.apple.ide.PBXToolbarStopButton</string>
 				<string>clean</string>
+				<string>com.apple.ide.PBXToolbarStopButton</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
 				<string>com.apple.pbx.toolbar.searchfield</string>
 			</array>
@@ -238,7 +237,6 @@
 						<array>
 							<string>1C37FBAC04509CD000000102</string>
 							<string>1C37FAAC04509CD000000102</string>
-							<string>1C08E77C0454961000C914BD</string>
 							<string>1C37FABC05509CD000000102</string>
 							<string>1C37FABC05539CD112110102</string>
 							<string>E2644B35053B69B200211256</string>
@@ -329,10 +327,10 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>F6AF0AB01010B7460077B913</string>
+										<string>F6D1AFC212F16AC800DE71D1</string>
 										<key>history</key>
 										<array>
-											<string>F6AF0A9D1010B72F0077B913</string>
+											<string>F6AF0AB01010B7460077B913</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -390,12 +388,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>F6AF0AB11010B7460077B913</string>
+				<string>F6D1AFC312F16AC800DE71D1</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>F6AF0AB21010B7460077B913</string>
+				<string>F6D1AFC412F16AC800DE71D1</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
+			<key>ToolbarConfigUserDefaultsMinorVersion</key>
+			<string>2</string>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.defaultV3</string>
 		</dict>
@@ -526,7 +526,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>/Users/teras/ko/runpriv.xcodeproj</string>
+		<string>F6AA89500F1CA38100BF79E5</string>
+		<string>/Users/teras/Works/Development/Java/jupidator/privileges/Mac/runpriv.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>226 155 1072 789 0 0 1920 1178 </string>
@@ -572,7 +573,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Build</string>
+								<string>Build Results</string>
 								<key>XCBuildResultsTrigger_Collapse</key>
 								<integer>1021</integer>
 								<key>XCBuildResultsTrigger_Open</key>
@@ -606,7 +607,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>F6AA89500F1CA38100BF79E5</string>
-				<string>F6AF0AA01010B72F0077B913</string>
+				<string>F6D1AFC512F16AC800DE71D1</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

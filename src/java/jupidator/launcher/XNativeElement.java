@@ -32,6 +32,7 @@ public abstract class XNativeElement extends XTargetElement {
 
     protected static String exec(XNativeCommand command) {
         StringBuilder output = new StringBuilder();
+        Visuals.info("Executing " + command.command);
         try {
             Process p = Runtime.getRuntime().exec(command.getArgs());
             if (command.input != null && command.input.length() > 0) {
@@ -44,14 +45,11 @@ public abstract class XNativeElement extends XTargetElement {
             while ((line = r.readLine()) != null)
                 output.append(line).append('\n');
             p.waitFor();
-            if (p.exitValue() == 0) {
-                Debug.info("  Successfully executed " + command.command);
+            if (p.exitValue() == 0)
                 return output.toString();
-            }
         } catch (Exception ex) {
-            Debug.info(ex.getMessage());
+            Visuals.error("Exception while executing " + command.command + ": " + ex.toString());
         }
-        Debug.info("  Error while executing " + command.command);
         return output.toString();
     }
 }

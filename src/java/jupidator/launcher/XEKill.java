@@ -40,13 +40,13 @@ public class XEKill extends XNativeElement {
 
     @Override
     public void perform() {
-        Debug.info("Killing process with pattern " + target);
+        Visuals.info("Killing process with pattern " + target);
         ArrayList<String> proclist = new ArrayList<String>();
         StringTokenizer tok = new StringTokenizer(exec(PS_CMD), "\n\r");
         while (tok.hasMoreTokens()) {
             String line = tok.nextToken();
             if (line.indexOf(target) >= 0 && line.indexOf(JupidatorDeployer.class.getName()) < 0) {
-                Debug.info("  Killing " + line);
+                Visuals.info("Killing " + line);
                 StringTokenizer col = new StringTokenizer(line, isWindows ? "\"" : " ");
                 for (int i = 0; i < PS_COLUMN - 1; i++)
                     col.nextToken();
