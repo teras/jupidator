@@ -100,7 +100,7 @@ public class Updater {
         for (String key : vers.keySet())
             size += vers.get(key).getSize();
         watcher.setAllBytes(size);
-        download = new Thread() {
+        download = new Thread()  {
 
             @Override
             public void run() {
@@ -165,13 +165,18 @@ public class Updater {
         }
 
         /* Construct parameters */
-        DeployerParameters params = new DeployerParameters();
         ArrayList<XElement> elements = new ArrayList<XElement>();
         for (String key : vers.keySet())
             elements.add(vers.get(key).getExecElement());
+        ArrayList<String> relaunch = new ArrayList<String>();
+        for (int i = 0; i < vers.getArch().countArguments(); i++)
+            relaunch.add(vers.getArch().getArgument(i, appinfo));
+        DeployerParameters params = new DeployerParameters();
         params.setElements(elements);
+        params.setRelaunchCommand(relaunch);
         params.setHeadless(gui.isHeadless());
-        
+        params.setRelaunchCommand(null);
+
         /* Construct launcher command */
         try {
             PermissionManager.manager.getLaunchCommand(application, params).start();

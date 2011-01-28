@@ -44,6 +44,8 @@ public class JupidatorDeployer {
                         List<String> command = params.getRelaunchCommand();
                         if (command.size() >= 1)
                             new ProcessBuilder(command).start();
+                        
+                        /* Exit installer */
                         Visuals.finish();
                         System.exit(0);
                     } catch (Exception ex) {

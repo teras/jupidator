@@ -32,6 +32,8 @@ public class DeployerParameters implements Serializable {
     }
 
     public void setRelaunchCommand(List<String> relaunch) {
+        if (relaunch == null)
+            relaunch = new ArrayList<String>();
         this.relaunch = relaunch;
     }
 
