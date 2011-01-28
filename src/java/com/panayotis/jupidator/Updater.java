@@ -37,6 +37,7 @@ public class Updater {
     /* Lazy components */
     private JupidatorGUI gui;
     private UpdateWatcher watcher;
+    private ProcessBuilder procbuilder;
 
     public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
         this(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application);
@@ -123,6 +124,32 @@ public class Updater {
                         return;
                     }
                 }
+
+                /* Construct launcher parameters */
+                ArrayList<XElement> elements = new ArrayList<XElement>();
+                for (String key : vers.keySet())
+                    elements.add(vers.get(key).getExecElement());
+                ArrayList<String> relaunch = new ArrayList<String>();
+                for (int i = 0; i < vers.getArch().countArguments(); i++)
+                    relaunch.add(vers.getArch().getArgument(i, appinfo));
+                DeployerParameters params = new DeployerParameters();
+                params.setElements(elements);
+                params.setRelaunchCommand(relaunch);
+                params.setHeadless(gui.isHeadless());
+                params.setRelaunchCommand(null);
+
+                /* Construct launcher command */
+                try {
+                    procbuilder = PermissionManager.manager.getLaunchCommand(application, params);
+                    if (procbuilder == null)
+                        throw new IOException("Unable to create relauncer");
+                } catch (IOException ex) {
+                    String message = ex.getMessage();
+                    application.receiveMessage(message);
+                    gui.errorOnRestart(message);
+                    return;
+                }
+
                 gui.successOnCommit();
             }
         };
@@ -163,28 +190,9 @@ public class Updater {
             gui.errorOnRestart(_("Application cancelled restart"));
             return;
         }
-
-        /* Construct parameters */
-        ArrayList<XElement> elements = new ArrayList<XElement>();
-        for (String key : vers.keySet())
-            elements.add(vers.get(key).getExecElement());
-        ArrayList<String> relaunch = new ArrayList<String>();
-        for (int i = 0; i < vers.getArch().countArguments(); i++)
-            relaunch.add(vers.getArch().getArgument(i, appinfo));
-        DeployerParameters params = new DeployerParameters();
-        params.setElements(elements);
-        params.setRelaunchCommand(relaunch);
-        params.setHeadless(gui.isHeadless());
-        params.setRelaunchCommand(null);
-
-        /* Construct launcher command */
         try {
-            PermissionManager.manager.getLaunchCommand(application, params).start();
+            procbuilder.start();
         } catch (IOException ex) {
-            String message = ex.getMessage();
-            application.receiveMessage(message);
-            gui.errorOnRestart(message);
-            return;
         }
         gui.endDialog();
         System.exit(0);  // Restarting

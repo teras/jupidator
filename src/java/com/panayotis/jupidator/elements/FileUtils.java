@@ -281,4 +281,16 @@ public class FileUtils {
             return null;
         return _("Unable to delete file {0}", req.getPath());
     }
+
+    public static boolean setExecute(String path) {
+        try {
+            System.out.println(path);
+            Process proc = Runtime.getRuntime().exec(new String[]{"chmod", "a+x", path});
+            proc.waitFor();
+            return true;
+        } catch (InterruptedException ex) {
+        } catch (IOException ex) {
+        }
+        return false;
+    }
 }

@@ -77,12 +77,14 @@ public class PermissionManager implements Serializable {
 
         /* Construct command */
         ArrayList<String> command = new ArrayList<String>();
+        String bindir = workdir.getPath() + File.separator + "jupidator" + File.separator + "launcher" + File.separator;
         if (reqprev)
             if (OperatingSystem.isWindows)
-                command.add(workdir.getPath() + File.separator + "JublerUpdate.js");
-            else if (OperatingSystem.isMac)
-                command.add(workdir.getPath() + File.separator + "JublerUpdate");
-            else {
+                command.add(bindir + "JublerUpdate.js");
+            else if (OperatingSystem.isMac) {
+                command.add(bindir + "JublerUpdate");
+                FileUtils.setExecute(bindir + "JublerUpdate");
+            } else {
                 command.add(FileUtils.JAVABIN);
                 command.add("-cp");
                 command.add(workdir.getAbsolutePath());
@@ -95,7 +97,7 @@ public class PermissionManager implements Serializable {
         command.add(paramfile.getAbsolutePath());
 
         /* Debug launch command */
-        StringBuilder debug = new StringBuilder("Launching command: ");
+        StringBuilder debug = new StringBuilder("Relaunch command: ");
         for (String cmd : command)
             debug.append(cmd).append(" ");
         application.receiveMessage(debug.toString());
