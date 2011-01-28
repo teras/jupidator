@@ -34,6 +34,7 @@ public class DiffCreator {
     private File local_dir;
     private BufferedWriter xmlout;
 
+    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
         DiffCreator diff = new DiffCreator("/Users/teras/Desktop/Jubler.app", "/Users/teras/Desktop/Jubler-old.app");
         diff.setSeverDir("4.2");

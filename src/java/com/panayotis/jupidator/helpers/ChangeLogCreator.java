@@ -17,6 +17,7 @@ import java.io.IOException;
  */
 public class ChangeLogCreator {
 
+    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
         {
             FileWriter out = null;

@@ -17,7 +17,7 @@ public class XEKill extends XNativeElement {
     private static final int PS_COLUMN;
 
     static {
-        if (isWindows) {
+        if (OperatingSystem.isWindows) {
             ArrayList args = new ArrayList();
             args.add("/FO");
             args.add("CSV");
@@ -47,7 +47,7 @@ public class XEKill extends XNativeElement {
             String line = tok.nextToken();
             if (line.indexOf(target) >= 0 && line.indexOf(JupidatorDeployer.class.getName()) < 0) {
                 Visuals.info("Killing " + line);
-                StringTokenizer col = new StringTokenizer(line, isWindows ? "\"" : " ");
+                StringTokenizer col = new StringTokenizer(line, OperatingSystem.isWindows ? "\"" : " ");
                 for (int i = 0; i < PS_COLUMN - 1; i++)
                     col.nextToken();
                 String next_pid = col.nextToken();
@@ -62,7 +62,7 @@ public class XEKill extends XNativeElement {
 
     private XNativeCommand getKillCmd(String proc) {
         XNativeCommand kill;
-        if (isWindows) {
+        if (OperatingSystem.isWindows) {
             ArrayList args = new ArrayList();
             args.add("/PID");
             args.add(proc);

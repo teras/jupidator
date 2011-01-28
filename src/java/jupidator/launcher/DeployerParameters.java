@@ -24,6 +24,8 @@ public class DeployerParameters implements Serializable {
     private boolean headless = true;
 
     public void setElements(List<XElement> elements) {
+        if (elements == null)
+            elements = new ArrayList<XElement>();
         this.elements = elements;
     }
 
@@ -38,7 +40,12 @@ public class DeployerParameters implements Serializable {
     }
 
     public List<XElement> getElements() {
-        return elements;
+        /* Do all this, because windows demands a 3 second delay before starting updating */
+        ArrayList<XElement> oselements = new ArrayList<XElement>();
+        if (OperatingSystem.isWindows)
+            oselements.add(new XEWait(3000));
+        oselements.addAll(elements);
+        return oselements;
     }
 
     public boolean isHeadless() {

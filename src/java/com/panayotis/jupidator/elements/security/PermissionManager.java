@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import jupidator.launcher.DeployerParameters;
+import jupidator.launcher.JSudo;
 import jupidator.launcher.JupidatorDeployer;
+import jupidator.launcher.OperatingSystem;
 
 /**
  *
@@ -75,6 +77,17 @@ public class PermissionManager implements Serializable {
 
         /* Construct command */
         ArrayList<String> command = new ArrayList<String>();
+        if (reqprev)
+            if (OperatingSystem.isWindows)
+                command.add(workdir.getPath() + File.separator + "JublerUpdate.js");
+            else if (OperatingSystem.isMac)
+                command.add(workdir.getPath() + File.separator + "JublerUpdate");
+            else {
+                command.add(FileUtils.JAVABIN);
+                command.add("-cp");
+                command.add(workdir.getAbsolutePath());
+                command.add(JSudo.class.getName());
+            }
         command.add(FileUtils.JAVABIN);
         command.add("-cp");
         command.add(workdir.getAbsolutePath());

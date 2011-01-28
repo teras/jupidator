@@ -8,7 +8,6 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.gui.console.ConsoleGUI;
 
 /**
  *
@@ -23,6 +22,7 @@ public class Launcher {
         System.err.println();
     }
 
+    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
         String URL = null;
         String APPHOME = ".";
@@ -45,14 +45,10 @@ public class Launcher {
         if (args.length > 4)
             APPSUPPORTDIR = args[4];
 
-
         ApplicationInfo ap = new ApplicationInfo(APPHOME, APPSUPPORTDIR, RELEASE, VERSION);
 
         try {
             Updater upd = new Updater(URL, ap, null);
-//            upd.setGUI(new ConsoleGUI());
-//            upd.getGUI().setProperty("about", "disabled");
-//            upd.getGUI().setProperty("loglist", "disabled");
             upd.actionDisplay();
         } catch (UpdaterException ex) {
             ex.printStackTrace();

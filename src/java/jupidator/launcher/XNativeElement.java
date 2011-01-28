@@ -15,15 +15,7 @@ import java.io.OutputStreamWriter;
  */
 public abstract class XNativeElement extends XTargetElement {
 
-    public static final boolean isWindows, isMac, isLinux;
     protected final String input;
-
-    static {
-        String OS = System.getProperty("os.name").toLowerCase();
-        isWindows = OS.startsWith("windows");
-        isMac = OS.startsWith("mac");
-        isLinux = OS.startsWith("linux");
-    }
 
     public XNativeElement(String target, String input) {
         super(target);

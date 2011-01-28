@@ -11,8 +11,12 @@
 package jupidator.launcher;
 
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -21,10 +25,17 @@ import javax.swing.SwingUtilities;
 public class JSudo extends JDialog {
 
     private String pass = null;
+    private final String[] command;
+
+    public static void main(String[] args) {
+        JSudo sudo = new JSudo(args);
+        sudo.setVisible(true);
+    }
 
     /** Creates new form JSudo */
-    public JSudo() {
+    public JSudo(String[] command) {
         initComponents();
+        this.command = command;
     }
 
     /** This method is called from within the constructor to
@@ -86,7 +97,7 @@ public class JSudo extends JDialog {
 
         CentralPanel.setLayout(new java.awt.BorderLayout());
 
-        InfoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/launcher/lock.png"))); // NOI18N
+        InfoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jupidator/launcher/lock.png"))); // NOI18N
         InfoLabel.setText("Application requires your password.");
         InfoLabel.setIconTextGap(20);
         CentralPanel.add(InfoLabel, java.awt.BorderLayout.NORTH);
@@ -128,23 +139,23 @@ public class JSudo extends JDialog {
         setEnabled(false);
         MsgLabel.setForeground(Color.BLACK);
         MsgLabel.setText("Validating...");
-        SwingUtilities.invokeLater(new Runnable() {
+        final String newp = new String(Password.getPassword()) + "\n";
+        testSudo(newp, new Closure<String>() {
 
-            public void run() {
-                String newp = new String(Password.getPassword());
-                if (LaunchManager.testSudo(newp)) {
+            public void exec(String data) {
+                if (data == null) {
                     pass = newp;
                     MsgLabel.setForeground(Color.BLACK);
                     MsgLabel.setText(" ");
                     setVisible(false);
-                    dispose();
+                    launchApp();
                 } else {
                     Password.requestFocus();
                     Password.selectAll();
                     MsgLabel.setText("Wrong password!");
                     MsgLabel.setForeground(Color.RED);
+                    setEnabled(true);
                 }
-                setEnabled(true);
             }
         });
 }//GEN-LAST:event_AllowBActionPerformed
@@ -154,7 +165,7 @@ public class JSudo extends JDialog {
         MsgLabel.setForeground(Color.BLACK);
         MsgLabel.setText(" ");
         setVisible(false);
-        dispose();
+        System.exit(0);
 }//GEN-LAST:event_DenyBActionPerformed
 
     private void PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordActionPerformed
@@ -176,6 +187,17 @@ public class JSudo extends JDialog {
     private javax.swing.JPanel Viewport;
     // End of variables declaration//GEN-END:variables
 
+    private void launchApp() {
+        String[] launcher = new String[command.length + 4];
+        launcher[0] = "sudo";
+        launcher[1] = "-S";
+        launcher[2] = "-p";
+        launcher[3] = "";
+        System.arraycopy(command, 0, launcher, 4, command.length);
+        thinLauncher(launcher, pass, null);
+        System.exit(0);
+    }
+
     @Override
     public void setEnabled(boolean status) {
         super.setEnabled(status);
@@ -194,5 +216,59 @@ public class JSudo extends JDialog {
         super.setVisible(status);
         Password.requestFocus();
         Password.selectAll();
+    }
+
+    private void testSudo(String pass, final Closure<String> waiting) {
+        final String SIGNATURE = "_ALL_OK_";
+        pass += "\n";
+        thinLauncher(new String[]{"sudo", "-k"}, null, null);   // Clear sudo
+        thinLauncher(new String[]{"sudo", "-S", "echo", SIGNATURE}, pass, new Closure<String>() {
+
+            private boolean messageSent = false;
+
+            public void exec(String line) {
+                System.out.println(line);
+                if (messageSent)
+                    return;
+                if (line == null) {
+                    messageSent = true;
+                    waiting.exec("Password is not correct");
+                    return;
+                }
+                if (line.equals(SIGNATURE)) {
+                    messageSent = true;
+                    waiting.exec(null);
+                }
+            }
+        });
+    }
+
+    private static void thinLauncher(final String[] command, final String input, final Closure<String> output) {
+        try {
+            final Process proc = new ProcessBuilder(command).redirectErrorStream(true).start();
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));   // We need to do it anyways to consume it
+            if (input != null) {
+                out.write(input);
+                out.flush();
+            }
+            new Thread() {
+
+                @Override
+                public void run() {
+                    try {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), "UTF-8"));      // We need to do it anyways to consume it
+                        String line;
+                        while ((line = in.readLine()) != null)
+                            if (output != null)
+                                output.exec(line);
+                        // Finalize output
+                        if (output != null)
+                            output.exec(null);
+                    } catch (IOException ex) {
+                    }
+                }
+            }.start();
+        } catch (IOException ex) {
+        }
     }
 }

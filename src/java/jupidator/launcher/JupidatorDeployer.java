@@ -32,10 +32,6 @@ public class JupidatorDeployer {
                 @Override
                 public void run() {
                     try {
-                        /* Under windows it is important to wait a bit before deleting files */
-                        if (System.getProperty("os.name").toLowerCase().contains("windows"))
-                            params.getElements().add(0, new XEWait(3000));
-
                         /* Execute installer commands */
                         for (XElement element : params.getElements())
                             element.perform();
