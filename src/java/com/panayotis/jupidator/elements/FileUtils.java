@@ -36,7 +36,7 @@ public class FileUtils {
     public final static String JAVABIN = getJavaExec();
 
     private static String getJavaExec() {
-        String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "java.exe" : "java";
+        String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "javaw.exe" : "java";
         String file;
         file = JAVAHOME + File.separator + "bin" + File.separator + EXEC;
         if (new File(file).isFile())

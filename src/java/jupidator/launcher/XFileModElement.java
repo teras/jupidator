@@ -46,8 +46,6 @@ public abstract class XFileModElement extends XTargetElement {
             if (!safeMkDir(to)) // Make sure that the destination file is a directory and it exists
                 return false;
             to = new File(to, from.getName()); // Define actual destination directory
-            if (from.renameTo(to))  // Try to move instead of copy
-                return true;
             if (!safeMkDir(to)) // Fail if destination directory could not be created
                 return false;
 
@@ -62,8 +60,6 @@ public abstract class XFileModElement extends XTargetElement {
                 to = new File(to, from.getName());
             if (!safeMkDir(to.getParentFile())) // Fail if parent destination directory could not be created
                 return false;
-            if (from.renameTo(to))  // Try to move instead of copy
-                return true;
 
             boolean status = true;
             BufferedInputStream in = null;
