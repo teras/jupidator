@@ -18,10 +18,25 @@ import java.util.zip.GZIPInputStream;
 public class GZipCompression extends SingleFileCompression {
 
     public String decompress(File compressedfile, File outfile) {
+        FileInputStream fin = null;
+        FileOutputStream fout = null;
         try {
-            return FileUtils.copyFile(new GZIPInputStream(new FileInputStream(compressedfile)), new FileOutputStream(outfile), null);
+            fin = new FileInputStream(compressedfile);
+            fout = new FileOutputStream(outfile);
+            return FileUtils.copyFile(new GZIPInputStream(fin), fout, null);
         } catch (IOException ex) {
             return ex.getMessage();
+        } finally {
+            if (fin != null)
+                try {
+                    fin.close();
+                } catch (IOException ex) {
+                }
+            if (fout != null)
+                try {
+                    fout.close();
+                } catch (IOException ex) {
+                }
         }
     }
 

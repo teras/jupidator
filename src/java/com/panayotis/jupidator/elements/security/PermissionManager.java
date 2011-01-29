@@ -4,9 +4,9 @@
  */
 package com.panayotis.jupidator.elements.security;
 
-import com.panayotis.jupidator.UpdatedApplication;
 import static com.panayotis.jupidator.i18n.I18N._;
 
+import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class PermissionManager implements Serializable {
     }
 
     public void cleanUp() {
-        FileUtils.rmRecursive(workdir);
+        FileUtils.rmTree(workdir);
     }
 
     public String getWorkDir() {
@@ -79,11 +79,12 @@ public class PermissionManager implements Serializable {
         ArrayList<String> command = new ArrayList<String>();
         String bindir = workdir.getPath() + File.separator + "jupidator" + File.separator + "launcher" + File.separator;
         if (reqprev)
-            if (OperatingSystem.isWindows)
-                command.add(bindir + "JublerUpdate.js");
-            else if (OperatingSystem.isMac) {
-                command.add(bindir + "JublerUpdate");
-                FileUtils.setExecute(bindir + "JublerUpdate");
+            if (OperatingSystem.isWindows) {
+                command.add("wscript");
+                command.add(bindir + "JupidatorUpdate.js");
+            } else if (OperatingSystem.isMac) {
+                command.add(bindir + "JupidatorUpdate");
+                FileUtils.setExecute(bindir + "JupidatorUpdate");
             } else {
                 command.add(FileUtils.JAVABIN);
                 command.add("-cp");

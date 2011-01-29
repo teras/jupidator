@@ -153,8 +153,8 @@ public class Updater {
                 gui.successOnCommit();
             }
         };
-        download.start();
         watcher.startWatcher();
+        download.start();
     }
 
     public void actionCancel() {

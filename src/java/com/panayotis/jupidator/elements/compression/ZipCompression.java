@@ -4,6 +4,8 @@
  */
 package com.panayotis.jupidator.elements.compression;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
@@ -24,14 +25,27 @@ public class ZipCompression implements CompressionMethod {
 
     @SuppressWarnings("unchecked")
     public String decompress(File compressedfile, File outfile) {
+        ZipFile fin = null;
         try {
-            ZipFile zip = new ZipFile(compressedfile);
-            ArrayList<ZipEntry> files = getFileList(zip);
-            if (files.size() < 1)
-                return null;
-            else if (files.size() == 1)
-                return FileUtils.copyFile(zip.getInputStream(files.get(0)), new FileOutputStream(outfile), null);
-            else {
+            fin = new ZipFile(compressedfile);
+            ArrayList<ZipEntry> files = getFileList(fin);
+            if (files.size() == 1) {
+                /* We have a single file.
+                 * Treat it as a regular compressed file */
+                FileOutputStream fout = null;
+                try {
+                    fout = new FileOutputStream(outfile);
+                    return FileUtils.copyFile(fin.getInputStream(files.get(0)), fout, null);
+                } catch (IOException ex) {
+                    return ex.getMessage();
+                } finally {
+                    if (fout != null)
+                        try {
+                            fout.close();
+                        } catch (Exception ex) {
+                        }
+                }
+            } else if (files.size() > 1) {
                 /**
                  * We have a package.
                  * Since we are using a lazy installation scheme, unzip all files in a temporary folder one level deep than the actual required folder.
@@ -42,18 +56,35 @@ public class ZipCompression implements CompressionMethod {
                 for (ZipEntry entry : files) {
                     File out = new File(outfile, entry.getName().replace("/", File.separator));
                     if (!FileUtils.makeDirectory(out.getParentFile()))
-                        return "Unable to create directory structure under " + out.getParentFile().getPath();
-                    String status = FileUtils.copyFile(zip.getInputStream(entry), new FileOutputStream(out), null);
-                    if (status != null)
-                        return status;
+                        return _("Unable to unpack under {0}", out.getParentFile().getPath());
+                    FileOutputStream fout = null;
+                    try {
+                        String status = FileUtils.copyFile(fin.getInputStream(entry), new FileOutputStream(out), null);
+                        if (status != null)
+                            return status;
+                    } catch (IOException ex) {
+                        return ex.getMessage();
+                    } finally {
+                        if (fout != null)
+                            try {
+                                fout.close();
+                            } catch (Exception ex) {
+                            }
+                    }
                 }
-            }
-        } catch (ZipException ex) {
-            return ex.getMessage();
+                return null;
+            } else
+                /* Empty ZIP file */
+                return null;
         } catch (IOException ex) {
             return ex.getMessage();
+        } finally {
+            if (fin != null)
+                try {
+                    fin.close();
+                } catch (IOException ex) {
+                }
         }
-        return null;
     }
 
     private ArrayList<ZipEntry> getFileList(ZipFile zip) {

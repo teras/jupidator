@@ -19,7 +19,6 @@ public class XEFile extends XFileModElement {
         this.source = source;
     }
 
-    // TODO : handle pachages and files in other locations
     public void perform() {
         File input = new File(source);
         File output = new File(target);

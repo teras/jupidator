@@ -83,7 +83,8 @@ public class FileUtils {
 
     public static String copyPackage(String PACKAGENAME, String FILEHOME) {
 //    public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
-        String PACKAGEDIR = PACKAGENAME.replace('.', '/') + File.separator;
+        String PACKAGEZIP = PACKAGENAME.replace('.', '/') + '/';
+        String PACKAGEDIR = PACKAGEZIP.replace('/', File.separatorChar);
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
         makeDirectory(depdir);
         if ((!depdir.isDirectory()) || (!PermissionManager.manager.canWrite(depdir)))
@@ -94,23 +95,40 @@ public class FileUtils {
         ArrayList<String> dirs = new ArrayList<String>();
         getClassPaths(jars, dirs);
 
-        for (String jar : jars)
-            //  listener.receiveMessage(_("Checking JAR {0} for classes.", jar));
+        for (String jar : jars) {
+            ZipFile zip = null;
             try {
-                ZipFile zip = new ZipFile(jar);
+                zip = new ZipFile(jar);
                 for (Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zip.entries(); e.hasMoreElements();) {
                     ZipEntry entry = e.nextElement();
                     String name = entry.getName();
-                    if (name.startsWith(PACKAGEDIR) && (!name.endsWith("/"))) {
+                    if (name.startsWith(PACKAGEZIP) && (!name.endsWith(File.separator))) {
                         String FILEOUT = FILEHOME + File.separator + entry.getName().replace("/", File.separator);
-                        String status = copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null);
-                        if (status != null)
-                            return status;
+                        if (!FILEOUT.endsWith(File.separator)) {
+                            FileOutputStream fout = null;
+                            try {
+                                fout = new FileOutputStream(FILEOUT);
+                                String status = copyFile(zip.getInputStream(entry), fout, null);
+                                if (status != null)
+                                    return status;
+                            } catch (IOException ex) {
+                                return ex.getMessage();
+                            } finally {
+                                if (fout != null)
+                                    fout.close();
+                            }
+                        }
                     }
                 }
             } catch (IOException ex) {
-                return _("Unable to extract files from JAR {0}", jar);
+            } finally {
+                if (zip != null)
+                    try {
+                        zip.close();
+                    } catch (IOException ex) {
+                    }
             }
+        }
         for (String path : dirs) {
             //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
             File[] entries = new File(path + File.separator + PACKAGEDIR).listFiles();
@@ -262,22 +280,16 @@ public class FileUtils {
         return dirname.mkdirs();
     }
 
-    public static boolean rmFile(File file) {
-        if (file.exists())
-            return file.delete();
-        return true;
-    }
-
-    public static String rmRecursive(File req) {
-        if (!req.exists())
+    public static String rmTree(File req) {
+        if (!req.exists() || req == null)
             return null;
         if (req.isDirectory())
             for (File file : req.listFiles()) {
-                String res = rmRecursive(file);
+                String res = rmTree(file);
                 if (res != null)
                     return res;
             }
-        if (rmFile(req))
+        if (req.delete())
             return null;
         return _("Unable to delete file {0}", req.getPath());
     }

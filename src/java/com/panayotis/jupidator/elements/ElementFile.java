@@ -106,8 +106,7 @@ public class ElementFile extends JupidatorElement {
             return _("Unable to create directory structure under {0}", download_location.getParentFile().getPath());
 
         /* Remove old download file, in case it exists */
-        FileUtils.rmFile(download_location);
-        if (download_location.exists()) {
+        if (FileUtils.rmTree(download_location) != null) {
             application.receiveMessage(_("Could not remove old downloaded file {0}", download_location.getPath()));
             return _("Could not remove old downloaded file {0}", download_location.getPath());
         }
@@ -145,7 +144,7 @@ public class ElementFile extends JupidatorElement {
         String status = compression.decompress(download_location, uncompress_location);
         if (status == null) {
             if (!compression.getFilenameExtension().equals(""))
-                if (!FileUtils.rmFile(download_location))
+                if (FileUtils.rmTree(download_location) != null)
                     application.receiveMessage(_("Unable to delete downloaded file {0}", download_location.getPath()));
             return null;
         }
@@ -154,10 +153,10 @@ public class ElementFile extends JupidatorElement {
     }
 
     public void cancel(UpdatedApplication application) {
-        String res = FileUtils.rmRecursive(download_location);
+        String res = FileUtils.rmTree(download_location);
         if (res != null)
             application.receiveMessage(res);
-        res = FileUtils.rmRecursive(uncompress_location);
+        res = FileUtils.rmTree(uncompress_location);
         if (res != null)
             application.receiveMessage(res);
     }
