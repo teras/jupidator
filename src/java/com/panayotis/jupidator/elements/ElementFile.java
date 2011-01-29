@@ -105,10 +105,14 @@ public class ElementFile extends JupidatorElement {
         if (!FileUtils.makeDirectory(download_location.getParentFile()))
             return _("Unable to create directory structure under {0}", download_location.getParentFile().getPath());
 
-        /* Remove old download file, in case it exists */
+        /* Remove old download/uncompressed file, in case it exists */
         if (FileUtils.rmTree(download_location) != null) {
             application.receiveMessage(_("Could not remove old downloaded file {0}", download_location.getPath()));
             return _("Could not remove old downloaded file {0}", download_location.getPath());
+        }
+        if (FileUtils.rmTree(uncompress_location) != null) {
+            application.receiveMessage(_("Could not remove old temporary file {0}", uncompress_location.getPath()));
+            return _("Could not remove old downloaded file {0}", uncompress_location.getPath());
         }
 
         /* Download file */

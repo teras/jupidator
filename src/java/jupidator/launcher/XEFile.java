@@ -25,12 +25,12 @@ public class XEFile extends XFileModElement {
         if (input.isDirectory()) {
             Visuals.info("Installing package " + target);
             for (File entry : input.listFiles())
-                if (!safeCopy(entry, output))
+                if (!safeMv(entry, output))
                     Visuals.error("Unable to install " + entry.getPath() + " to " + target);
             input.delete();
         } else {
             Visuals.info("Installing file " + target);
-            if (!safeCopy(input, output))
+            if (!safeMv(input, output))
                 Visuals.error("Unable to install " + source + " to " + target);
         }
     }

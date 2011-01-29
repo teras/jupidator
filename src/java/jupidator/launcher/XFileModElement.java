@@ -39,12 +39,10 @@ public abstract class XFileModElement extends XTargetElement {
         return dir.mkdirs();
     }
 
-    protected static boolean safeCopy(File from, File to) {
-        if (from.renameTo(to))
-            return true;
+    protected static boolean safeMv(File from, File to) {
         if (from.isDirectory()) {
             /* The target is a directory, copy it recursively */
-            
+
             if (!safeMkDir(to)) // Make sure that the destination file is a directory and it exists
                 return false;
             to = new File(to, from.getName()); // Define actual destination directory
@@ -54,19 +52,19 @@ public abstract class XFileModElement extends XTargetElement {
                 return false;
 
             for (File entry : from.listFiles())
-                if (!safeCopy(entry, to))
+                if (!safeMv(entry, to))
                     return false;
-            return true;
+            return from.delete();
         } else {
             /* if it is not a directory, copy file */
-            
+
             if (to.isDirectory())   // If we copy to a directory, copy this file inside the directory
                 to = new File(to, from.getName());
             if (!safeMkDir(to.getParentFile())) // Fail if parent destination directory could not be created
-                return false;            
+                return false;
             if (from.renameTo(to))  // Try to move instead of copy
                 return true;
-            
+
             boolean status = true;
             BufferedInputStream in = null;
             BufferedOutputStream out = null;
@@ -93,6 +91,7 @@ public abstract class XFileModElement extends XTargetElement {
                     status = false;
                 }
             }
+            status &= from.delete();
             return status;
         }
     }

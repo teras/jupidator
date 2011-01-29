@@ -145,6 +145,14 @@ public class PermissionManager implements Serializable {
     }
 
     public boolean canWrite(File f) {
+        if (OperatingSystem.isWindows) {
+            if (!f.isDirectory())
+                f = f.getParentFile();
+            f = new File(f, String.valueOf(Math.random()));
+            boolean result = f.mkdir();
+            f.delete();
+            return result;
+        }
         return f.canWrite();
     }
 }
