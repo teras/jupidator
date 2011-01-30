@@ -97,6 +97,7 @@
 	<tar compression="bzip2" destfile="../jupidator.0.5.0.tar.bz2">
 		<tarfileset dir="../jupidator" prefix="jupidator">
 			<exclude name=".hgignore"/>
+			<exclude name="**/nbproject/private/**"/>
 			<exclude name=".hgtags"/>
 			<exclude name="**/.hg/**"/>
 		</tarfileset>
