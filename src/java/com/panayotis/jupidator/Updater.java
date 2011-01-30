@@ -136,7 +136,8 @@ public class Updater {
                 params.setElements(elements);
                 params.setRelaunchCommand(relaunch);
                 params.setHeadless(gui.isHeadless());
-                params.setRelaunchCommand(null);
+                params.setRelaunchCommand(relaunch);
+                params.setLogLocation(appinfo.getApplicationSupportDir());
 
                 /* Construct launcher command */
                 try {

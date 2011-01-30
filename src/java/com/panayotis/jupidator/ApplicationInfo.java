@@ -71,8 +71,12 @@ public class ApplicationInfo implements Serializable {
         return distributionBased;
     }
 
+    public String getApplicationSupportDir() {
+        return vars.get("APPSUPPORTDIR");
+    }
+
     public String getUpdaterConfigFile() {
-        return vars.get("APPSUPPORTDIR") + File.separator + "updater.xml";
+        return getApplicationSupportDir() + File.separator + "updater.xml";
     }
 
     /* This new release has to do with ignoring a specific version */

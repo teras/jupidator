@@ -17,6 +17,10 @@ public class JupidatorDeployer {
 
     private static DeployerParameters params;
 
+    /**
+     * arg[0] = location of streamed DeployerParameters file
+     * @param args 
+     */
     public static void main(String[] args) {
         ObjectInputStream in;
         try {
@@ -24,10 +28,11 @@ public class JupidatorDeployer {
             in = new ObjectInputStream(new FileInputStream(args[0]));
             params = (DeployerParameters) in.readObject();
             Visuals.setHeadless(params.isHeadless());
+            Visuals.setLogPath(params.getLogLocation());
             Visuals.info("Start of Jupidator Deployer");
 
             /* Run after visuals have been initialized */
-            Thread worker = new Thread() {
+            Thread worker = new Thread()    {
 
                 @Override
                 public void run() {
@@ -38,12 +43,16 @@ public class JupidatorDeployer {
 
                         /* Relaunch application if applicable */
                         List<String> command = params.getRelaunchCommand();
-                        if (command.size() >= 1)
-                            new ProcessBuilder(command).start();
-                        
-                        /* Exit installer */
-                        Visuals.finish();
-                        System.exit(0);
+                        if (command.size() < 1)
+                            Visuals.info("Unable to relaunch!");
+
+                        /* Check if the installer should finish or not */
+                        if (Visuals.finish()) {
+                            /* Exit installer */
+                            if (command.size() >= 1)
+                                new ProcessBuilder(command).start();
+                            System.exit(0);
+                        }
                     } catch (Exception ex) {
                         finishWithError(ex);
                     }

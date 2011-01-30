@@ -10,6 +10,11 @@
  */
 package jupidator.launcher;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +34,20 @@ public class Visuals extends javax.swing.JFrame {
     private static boolean headless = false;
     private static boolean foundErrors = false;
     private static JFrame frame;
+    private static String logpath;
+    private static final String logfile;
+
+    static {
+        /* Find log filename */
+        logfile = new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date());
+        setLogPath(null);
+    }
+
+    public static void setLogPath(String path) {
+        if (path == null)
+            path = System.getProperty("java.io.tmpdir");
+        logpath = path;
+    }
 
     public static void info(String message) {
         if (frame == null)
@@ -41,12 +60,16 @@ public class Visuals extends javax.swing.JFrame {
         info("  *ERROR* " + message);
     }
 
-    public static void finish() {
-        if (frame != null) {
-            frame.setVisible(false);
-            frame.dispose();
-        }
-        showResults();
+    public static boolean finish() {
+        storeLog();
+        if (frame == null || (!foundErrors))
+            return true;
+        frame.setVisible(false);
+        frame.dispose();
+        frame = new Visuals(info.toString());
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        return false;
     }
 
     public static void setHeadless(boolean headless) {
@@ -85,20 +108,30 @@ public class Visuals extends javax.swing.JFrame {
         frame.setVisible(true);
     }
 
-    private static void showResults() {
-        if (headless) {
-            System.out.println(info.toString());
+    /* 
+     *  private code to store output to a file
+     */
+    private static void storeLog() {
+        File out = new File(logpath, logfile);
+        if (!out.getParentFile().isDirectory())
             return;
+        FileWriter fout = null;
+        try {
+            fout = new FileWriter(out);
+            fout.write(info.toString());
+        } catch (IOException ex) {
+        } finally {
+            if (fout != null)
+                try {
+                    fout.close();
+                } catch (IOException ex) {
+                }
         }
-
-        if (!foundErrors)
-            return;
-
-        frame = new Visuals(info.toString());
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
+    /* 
+     * Following code requires a non-headless display 
+     */
     public Visuals(String error) {
         initComponents();
         ErrorP.setVisible(false);

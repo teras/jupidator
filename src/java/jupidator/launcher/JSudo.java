@@ -227,7 +227,6 @@ public class JSudo extends JDialog {
             private boolean messageSent = false;
 
             public void exec(String line) {
-                System.out.println(line);
                 if (messageSent)
                     return;
                 if (line == null) {
