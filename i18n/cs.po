@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-30 16:32+0200\n"
+        "POT-Creation-Date: 2011-02-01 01:12+0200\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Tomas Bambas <conyx@seznam.cz>\n"
         "Language-Team: cs <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:60
+#: com/panayotis/jupidator/ApplicationInfo.java:59
 msgid   "Property name could not be null"
 msgstr  ""
 
@@ -24,12 +24,12 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:191
+#: com/panayotis/jupidator/Updater.java:193
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
 msgid   "Application cancelled restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/data/UpdaterAppElements.java:43
+#: com/panayotis/jupidator/data/UpdaterAppElements.java:45
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
@@ -39,54 +39,32 @@ msgstr  ""
 msgid   "Unable to provide empty attribute for file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:100
-#, java-format
-msgid   "Unable to initialize URL {0}"
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:102
+#: com/panayotis/jupidator/elements/ElementFile.java:83
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:106
+#: com/panayotis/jupidator/elements/ElementFile.java:87
 #, java-format
 msgid   "Unable to create directory structure under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:110
-#: com/panayotis/jupidator/elements/ElementFile.java:111
-#: com/panayotis/jupidator/elements/ElementFile.java:115
+#: com/panayotis/jupidator/elements/ElementFile.java:91
 #, java-format
-msgid   "Could not remove old downloaded file {0}"
-msgstr  "Nemohu odstranit starý stažený soubor {0}"
+msgid   "Could not remove old download file {0}"
+msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:114
+#: com/panayotis/jupidator/elements/ElementFile.java:93
 #, java-format
 msgid   "Could not remove old temporary file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:124
-#, java-format
-msgid   "Size of file {0} does not match. Reported {1}, required {2}"
-msgstr  "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
-
-#: com/panayotis/jupidator/elements/ElementFile.java:128
-#, java-format
-msgid   "Checksumming {0} with algorithm {1} failed."
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:137
+#: com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "Soubor {0} úspěšně stažen."
 
-#: com/panayotis/jupidator/elements/ElementFile.java:141
-#, java-format
-msgid   "Unable to download file {0}"
-msgstr  "Nemohu stáhnout soubor {0}"
-
-#: com/panayotis/jupidator/elements/ElementFile.java:152
+#: com/panayotis/jupidator/elements/ElementFile.java:109
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "Nemohu odstranit stažený soubor {0}"
@@ -142,6 +120,15 @@ msgstr  ""
 #: com/panayotis/jupidator/elements/compression/ZipCompression.java:59
 #, java-format
 msgid   "Unable to unpack under {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/elements/mirror/Mirror.java:42
+#, java-format
+msgid   "Request URL {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:38
+msgid   "Unable to download file "
 msgstr  ""
 
 #: com/panayotis/jupidator/elements/security/PermissionManager.java:76
@@ -295,32 +282,41 @@ msgstr  "Verze"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
 
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Spouštím {0}"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
 
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "Soubor {0} nemůže být odstraněn."
 
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Nemohu stáhnout soubor {0}"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "Soubor úspěšně odstraněn {0}"
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Spouštím {0}"

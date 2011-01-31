@@ -8,6 +8,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,13 +28,21 @@ public class MirrorList {
             watcher.freezeSize();
             try {
                 String status = FileUtils.copyFile(mirror.getURL(file.getElements(), app).openStream(), new FileOutputStream(download_location), watcher);
-                if (status == null)
+                /* Check download status */
+                if (status == null && download_location.length() == file.getSize() && isProperlyDigested(file, download_location))
                     return null;
             } catch (IOException ex) {
             }
             watcher.rollbackSize();
         }
         return _("Unable to download file " + file.getFile());
+    }
+
+    private boolean isProperlyDigested(MirroredFile file, File download_location) {
+        for (Digester d : file.getDigesters())
+            if (!d.checkFile(download_location))
+                return false;
+        return true;
     }
 
     public void addMirror(Mirror mirror) {

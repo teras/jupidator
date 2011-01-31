@@ -22,7 +22,6 @@ import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * 
@@ -32,7 +31,6 @@ public class ElementFile extends JupidatorElement {
 
     private static final String EXTENSION = ".jupidator";
     private final CompressionMethod compression;
-    private final ArrayList<Digester> digesters;
     private final MirroredFile source_location;
     private final File download_location;
     private final File uncompress_location;
@@ -52,11 +50,11 @@ public class ElementFile extends JupidatorElement {
             compression = new GZipCompression();
         else
             compression = new NullCompression();
-        digesters = new ArrayList<Digester>();
 
         // Calculate source location
         source_location = new MirroredFile(source, getFileName(), info);
         source_location.setExtension(compression.getFilenameExtension());
+        source_location.setSize(getSize());
         mirrors = elements.getMirrors();
 
         // Find download location
@@ -72,8 +70,7 @@ public class ElementFile extends JupidatorElement {
     }
 
     public void addDigester(Digester digester) {
-        if (digester != null)
-            digesters.add(digester);
+        source_location.addDigester(digester);
     }
 
     @Override
@@ -99,16 +96,6 @@ public class ElementFile extends JupidatorElement {
         String error = mirrors.downloadFile(source_location, download_location, watcher, application);
         if (error != null)
             return error;
-
-        /* Check file size */
-        if (download_location.length() != getSize())
-            return _("Size of file {0} does not match. Reported {1}, required {2}", download_location.getPath(), download_location.length(), getSize());
-
-        /* Check sums */
-        for (Digester d : digesters)
-            if (!d.checkFile(download_location))
-                return _("Checksumming {0} with algorithm {1} failed.", download_location, d.getAlgorithm());
-
         /* Successfully downloaded file */
         application.receiveMessage(_("File {0} sucessfully downloaded", getFileName()));
         return null;

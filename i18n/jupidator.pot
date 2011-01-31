@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-30 16:32+0200\n"
+"POT-Creation-Date: 2011-02-01 01:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:60
+#: com/panayotis/jupidator/ApplicationInfo.java:59
 msgid "Property name could not be null"
 msgstr ""
 
-#: com/panayotis/jupidator/data/UpdaterAppElements.java:43
+#: com/panayotis/jupidator/data/UpdaterAppElements.java:45
 #, java-format
 msgid "Jupidator for {0}"
 msgstr ""
@@ -36,54 +36,32 @@ msgstr ""
 msgid "Unable to provide empty attribute for file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:100
-#, java-format
-msgid "Unable to initialize URL {0}"
-msgstr ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:102
+#: com/panayotis/jupidator/elements/ElementFile.java:83
 #, java-format
 msgid "Can not initialize download file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:106
+#: com/panayotis/jupidator/elements/ElementFile.java:87
 #, java-format
 msgid "Unable to create directory structure under {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:110
-#: com/panayotis/jupidator/elements/ElementFile.java:111
-#: com/panayotis/jupidator/elements/ElementFile.java:115
+#: com/panayotis/jupidator/elements/ElementFile.java:91
 #, java-format
-msgid "Could not remove old downloaded file {0}"
+msgid "Could not remove old download file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:114
+#: com/panayotis/jupidator/elements/ElementFile.java:93
 #, java-format
 msgid "Could not remove old temporary file {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:124
-#, java-format
-msgid "Size of file {0} does not match. Reported {1}, required {2}"
-msgstr ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:128
-#, java-format
-msgid "Checksumming {0} with algorithm {1} failed."
-msgstr ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:137
+#: com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid "File {0} sucessfully downloaded"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:141
-#, java-format
-msgid "Unable to download file {0}"
-msgstr ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:152
+#: com/panayotis/jupidator/elements/ElementFile.java:109
 #, java-format
 msgid "Unable to delete downloaded file {0}"
 msgstr ""
@@ -134,6 +112,15 @@ msgstr ""
 
 #: com/panayotis/jupidator/elements/JupidatorElement.java:47
 msgid "UpdaterAppElements not provided."
+msgstr ""
+
+#: com/panayotis/jupidator/elements/mirror/Mirror.java:42
+#, java-format
+msgid "Request URL {0}"
+msgstr ""
+
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:38
+msgid "Unable to download file "
 msgstr ""
 
 #: com/panayotis/jupidator/elements/security/PermissionManager.java:76
@@ -246,7 +233,7 @@ msgid "Restart application"
 msgstr ""
 
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
-#: com/panayotis/jupidator/Updater.java:191
+#: com/panayotis/jupidator/Updater.java:193
 msgid "Application cancelled restart"
 msgstr ""
 
