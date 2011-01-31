@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.panayotis.jupidator.elements.mirror.MirrorList;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.statics.SystemVersion;
@@ -19,6 +20,7 @@ public class UpdaterAppElements implements Serializable {
 
     private String AppName = "Unknown";
     private String baseURL = "";
+    private MirrorList mirrors = new MirrorList();
     private String iconpath = "";
     private int newrelease = -1;    // Latest release overall, read form XML
     private int lastrelease = -1;   // Last value we read from XML
@@ -60,6 +62,10 @@ public class UpdaterAppElements implements Serializable {
         if (base == null)
             throw new IllegalArgumentException("Base URL should be defined in XML.");
         baseURL = base + "/";
+    }
+
+    public MirrorList getMirrors() {
+        return mirrors;
     }
 
     void addLogItem(String version, String information) {

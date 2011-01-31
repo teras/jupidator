@@ -4,6 +4,10 @@
  */
 package com.panayotis.jupidator.data;
 
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author teras
@@ -17,5 +21,31 @@ public class TextUtils {
             return false;
         value = value.trim().toLowerCase();
         return value.equals("true") || value.equals("yes") || value.equals("1") || value.equals("on") || value.startsWith("enable");
+    }
+
+    public static String applyVariables(Map<String, String> set, String source) {
+        if (source == null)
+            source = "";
+
+        StringBuffer sb = new StringBuffer();
+        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(source);
+        while (m.find()) {
+            String group = m.group();
+            String name = group.substring(2, group.length() - 1);
+            if (name.length() > 0) {
+                String value = set.get(name);
+                if (value == null) {
+                    value = System.getProperty(name);
+                    if (value == null)
+                        value = System.getenv(name);
+                }
+                if (value != null) {
+                    value = value.replace("\\", "\\\\").replace("$", "\\$");
+                    m.appendReplacement(sb, value);
+                }
+            }
+        }
+        m.appendTail(sb);
+        return sb.toString().replace("/./", "/");
     }
 }

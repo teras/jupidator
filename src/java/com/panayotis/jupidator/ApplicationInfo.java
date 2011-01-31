@@ -6,14 +6,13 @@ package com.panayotis.jupidator;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 /**
  * This information is given to the library from the runtime environment
@@ -102,29 +101,7 @@ public class ApplicationInfo implements Serializable {
     }
 
     public String applyVariables(String path) {
-        if (path == null)
-            path = "";
-
-        StringBuffer sb = new StringBuffer();
-        Matcher m = Pattern.compile("\\$\\{.*?\\}").matcher(path);
-        while (m.find()) {
-            String group = m.group();
-            String name = group.substring(2, group.length() - 1);
-            if (name.length() > 0) {
-                String value = vars.get(name);
-                if (value == null) {
-                    value = System.getProperty(name);
-                    if (value == null)
-                        value = System.getenv(name);
-                }
-                if (value != null) {
-                    value = value.replace("\\", "\\\\").replace("$", "\\$");
-                    m.appendReplacement(sb, value);
-                }
-            }
-        }
-        m.appendTail(sb);
-        return sb.toString().replace("/./", "/");
+        return TextUtils.applyVariables(vars, path);
     }
 
     public boolean isSelfUpdate() {

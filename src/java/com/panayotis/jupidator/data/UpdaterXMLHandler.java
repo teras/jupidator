@@ -13,6 +13,7 @@ import com.panayotis.jupidator.elements.ElementKill;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.ElementWait;
 import com.panayotis.jupidator.elements.security.Digester;
+import com.panayotis.jupidator.elements.mirror.Mirror;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -138,8 +139,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
             Digester d = Digester.getDigester("SHA-" + attr.getValue("type"));
             d.setHash(attr.getValue("value"));
             lastFileElement.addDigester(d);
-        } else if (qName.equals("updatelist")) {
-            elements.setBaseURL(attr.getValue("baseurl"));
+        } else if (qName.equals("mirror"))
+            elements.getMirrors().addMirror(new Mirror(attr.getValue("constructor"), appinfo, attr.getValue("url")));
+        else if (qName.equals("updatelist")) {
+            String baseurl = attr.getValue("baseurl");
+            elements.setBaseURL(baseurl);
+            elements.getMirrors().addMirror(new Mirror(appinfo, baseurl));
             elements.setAppName(attr.getValue("application"));
             elements.setIconpath(attr.getValue("icon"));
             elements.setJupidatorVersion(attr.getValue("jupidator"));

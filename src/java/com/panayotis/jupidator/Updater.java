@@ -4,10 +4,10 @@
  */
 package com.panayotis.jupidator;
 
-import com.panayotis.jupidator.statics.SystemVersion;
-import com.panayotis.jupidator.statics.SelfUpdate;
 import static com.panayotis.jupidator.i18n.I18N._;
 
+import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.statics.SelfUpdate;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
@@ -101,7 +101,7 @@ public class Updater {
         for (String key : vers.keySet())
             size += vers.get(key).getSize();
         watcher.setAllBytes(size);
-        download = new Thread()  {
+        download = new Thread() {
 
             @Override
             public void run() {
@@ -110,6 +110,7 @@ public class Updater {
                     String result = vers.get(key).fetch(application, watcher);
                     if (result != null) {
                         watcher.stopWatcher();
+                        application.receiveMessage(result);
                         gui.errorOnCommit(result);
                         return;
                     }
@@ -120,6 +121,7 @@ public class Updater {
                 for (String key : vers.keySet()) {
                     String result = vers.get(key).prepare(application);
                     if (result != null) {
+                        application.receiveMessage(result);
                         gui.errorOnCommit(result);
                         return;
                     }

@@ -14,16 +14,14 @@ import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
+import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.elements.security.Digester;
+import com.panayotis.jupidator.elements.mirror.MirroredFile;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -33,20 +31,15 @@ import java.util.ArrayList;
 public class ElementFile extends JupidatorElement {
 
     private static final String EXTENSION = ".jupidator";
-    /** This is actually a URL */
-    private final String source;
     private final CompressionMethod compression;
     private final ArrayList<Digester> digesters;
-    //
-    private final URL source_location;
+    private final MirroredFile source_location;
     private final File download_location;
     private final File uncompress_location;
+    private final MirrorList mirrors;
 
     public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
-        if (source == null)
-            source = "";
-        this.source = info.applyVariables(elements.getBaseURL() + source);
 
         if (compress == null)
             compress = "none";
@@ -61,13 +54,10 @@ public class ElementFile extends JupidatorElement {
             compression = new NullCompression();
         digesters = new ArrayList<Digester>();
 
-        // Find download URL
-        URL url = null;
-        try {
-            url = new URL(getSourceFile() + compression.getFilenameExtension());
-        } catch (MalformedURLException ex) {
-        }
-        source_location = url;
+        // Calculate source location
+        source_location = new MirroredFile(source, getFileName(), info);
+        source_location.setExtension(compression.getFilenameExtension());
+        mirrors = elements.getMirrors();
 
         // Find download location
         if (requiresPrivileges())
@@ -86,18 +76,12 @@ public class ElementFile extends JupidatorElement {
             digesters.add(digester);
     }
 
-    private String getSourceFile() {
-        return source + "/" + getFileName();
-    }
-
     @Override
     public String toString() {
-        return "+" + getSourceFile() + ">" + getDestinationFile();
+        return "+" + source_location.toString() + ">" + getDestinationFile();
     }
 
     public String fetch(UpdatedApplication application, BufferListener watcher) {
-        if (source_location == null)
-            return _("Unable to initialize URL {0}", getSourceFile());
         if (download_location == null)
             return _("Can not initialize download file {0}", getFileName());
 
@@ -106,42 +90,28 @@ public class ElementFile extends JupidatorElement {
             return _("Unable to create directory structure under {0}", download_location.getParentFile().getPath());
 
         /* Remove old download/uncompressed file, in case it exists */
-        if (FileUtils.rmTree(download_location) != null) {
-            application.receiveMessage(_("Could not remove old downloaded file {0}", download_location.getPath()));
-            return _("Could not remove old downloaded file {0}", download_location.getPath());
-        }
-        if (FileUtils.rmTree(uncompress_location) != null) {
-            application.receiveMessage(_("Could not remove old temporary file {0}", uncompress_location.getPath()));
-            return _("Could not remove old downloaded file {0}", uncompress_location.getPath());
-        }
+        if (FileUtils.rmTree(download_location) != null)
+            return _("Could not remove old download file {0}", download_location.getPath());
+        if (FileUtils.rmTree(uncompress_location) != null)
+            return _("Could not remove old temporary file {0}", uncompress_location.getPath());
 
         /* Download file */
-        String error = null;
-        try {
-            error = FileUtils.copyFile(source_location.openConnection().getInputStream(),
-                    new FileOutputStream(download_location), watcher);
-            if (download_location.length() != getSize())
-                error = _("Size of file {0} does not match. Reported {1}, required {2}", download_location.getPath(), download_location.length(), getSize());
-            else
-                for (Digester d : digesters)
-                    if (!d.checkFile(download_location)) {
-                        error = _("Checksumming {0} with algorithm {1} failed.", download_location, d.getAlgorithm());
-                        break;
-                    }
-        } catch (IOException ex) {
-            error = ex.getMessage();
-        }
+        String error = mirrors.downloadFile(source_location, download_location, watcher, application);
+        if (error != null)
+            return error;
 
-        if (error == null) {
-            /* Successfully downloaded file */
-            application.receiveMessage(_("File {0} sucessfully downloaded", getFileName()));
-            return null;
-        } else {
-            /* Error while downloading */
-            String msg = _("Unable to download file {0}", getFileName());
-            application.receiveMessage(msg + " - " + error);
-            return msg;
-        }
+        /* Check file size */
+        if (download_location.length() != getSize())
+            return _("Size of file {0} does not match. Reported {1}, required {2}", download_location.getPath(), download_location.length(), getSize());
+
+        /* Check sums */
+        for (Digester d : digesters)
+            if (!d.checkFile(download_location))
+                return _("Checksumming {0} with algorithm {1} failed.", download_location, d.getAlgorithm());
+
+        /* Successfully downloaded file */
+        application.receiveMessage(_("File {0} sucessfully downloaded", getFileName()));
+        return null;
     }
 
     public String prepare(UpdatedApplication application) {
