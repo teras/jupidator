@@ -23,13 +23,16 @@ public class MirrorList {
     private ArrayList<Mirror> mirrors = new ArrayList<Mirror>();
 
     public String downloadFile(MirroredFile file, File download_location, BufferListener watcher, UpdatedApplication app) {
-        for (Mirror mirror : mirrors)
+        for (Mirror mirror : mirrors) {
+            watcher.freezeSize();
             try {
                 String status = FileUtils.copyFile(mirror.getURL(file.getElements(), app).openStream(), new FileOutputStream(download_location), watcher);
                 if (status == null)
                     return null;
             } catch (IOException ex) {
             }
+            watcher.rollbackSize();
+        }
         return _("Unable to download file " + file.getFile());
     }
 

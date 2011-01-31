@@ -18,6 +18,7 @@ public class UpdateWatcher extends TimerTask implements BufferListener {
     private long bytes;
     private long lastbytes;
     private long allbytes;
+    private long freezedbytes;
     private JupidatorGUI callback;
 
     public void run() {
@@ -26,15 +27,14 @@ public class UpdateWatcher extends TimerTask implements BufferListener {
 
         StringBuilder sb = new StringBuilder();
         Formatter formatter = new Formatter(sb);
-        if (diffbytes < 1e3) {
+        if (diffbytes < 1e3)
             formatter.format("%db/sec", diffbytes);
-        } else if (diffbytes < 1e6) {
+        else if (diffbytes < 1e6)
             formatter.format("%2.1fKb/sec", diffbytes / 1e3);
-        } else if (diffbytes < 1e9) {
+        else if (diffbytes < 1e9)
             formatter.format("%2.1fMb/sec", diffbytes / 1e6);
-        } else if (diffbytes < 1e12) {
+        else if (diffbytes < 1e12)
             formatter.format("%2.1fGb/sec", diffbytes / 1e9);
-        }
         callback.setDownloadRatio(sb.toString().trim(), ((float) lastbytes) / allbytes);
     }
 
@@ -56,5 +56,13 @@ public class UpdateWatcher extends TimerTask implements BufferListener {
 
     public void setAllBytes(long bytes) {
         allbytes = bytes;
+    }
+
+    public void freezeSize() {
+        freezedbytes = bytes;
+    }
+
+    public void rollbackSize() {
+        bytes = freezedbytes;
     }
 }
