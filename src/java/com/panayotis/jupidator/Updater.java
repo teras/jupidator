@@ -88,7 +88,7 @@ public class Updater {
 
     public void actionDisplay() throws UpdaterException {
         if (vers.isVisible()) {
-            getGUI();  /* GUI is created lazily, when needed */
+            getGUI();  /* GUI is created lazily, when needed (very important) */
             watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
             watcher.setCallBack(gui);
             gui.setInformation(this, vers.getAppElements(), appinfo);

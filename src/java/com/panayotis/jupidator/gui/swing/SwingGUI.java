@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
@@ -31,17 +32,23 @@ import javax.swing.UIManager;
 public class SwingGUI extends JDialog implements JupidatorGUI {
 
     private Updater callback;
+    private static boolean systemLook = true;
 
-    static {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-        }
+    /**
+     * @param systemLook if set, then the system look and feel will be used (defaults to true).
+     */
+    public static void setSystemLookAndFeel(boolean systemLook) {
+        SwingGUI.systemLook = systemLook;
     }
 
     /** Creates new form SwingGUI */
     public SwingGUI() {
         super((Frame) null, false);
+        try {
+            if (systemLook)
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
         initComponents();
         LaterB.requestFocus();
     }
