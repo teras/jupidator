@@ -13,6 +13,7 @@ import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +28,11 @@ public class MirrorList {
         for (Mirror mirror : mirrors) {
             watcher.freezeSize();
             try {
-                String status = FileUtils.copyFile(mirror.getURL(file.getElements(), app).openStream(), new FileOutputStream(download_location), watcher);
+                /* Create URL */
+                URL url = mirror.getURL(file.getElements());
+                app.receiveMessage(_("Request URL {0}", url.toString()));
+                /* Download file */
+                String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher);
                 /* Check download status */
                 if (status == null && download_location.length() == file.getSize() && isProperlyDigested(file, download_location))
                     return null;

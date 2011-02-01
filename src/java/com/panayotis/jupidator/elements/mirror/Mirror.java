@@ -4,10 +4,8 @@
  */
 package com.panayotis.jupidator.elements.mirror;
 
-import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.TextUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,11 +33,10 @@ public class Mirror {
         this.url = URL;
     }
 
-    public URL getURL(Map<String, String> elements, UpdatedApplication app) throws MalformedURLException {
+    public URL getURL(Map<String, String> elements) throws MalformedURLException {
         try {
             elements.put(COREURL, url);
             String request = appinfo.applyVariables(TextUtils.applyVariables(elements, parser));
-            app.receiveMessage(_("Request URL {0}", request));
             return new URL(request);
         } finally {
             elements.remove(COREURL);
