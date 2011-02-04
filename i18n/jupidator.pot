@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-01 01:12+0200\n"
+"POT-Creation-Date: 2011-02-05 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,12 +114,12 @@ msgstr ""
 msgid "UpdaterAppElements not provided."
 msgstr ""
 
-#: com/panayotis/jupidator/elements/mirror/Mirror.java:42
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
 #, java-format
 msgid "Request URL {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:38
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
 msgid "Unable to download file "
 msgstr ""
 
@@ -128,13 +128,13 @@ msgid "Unable to initialize restart"
 msgstr ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:56
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
 #, java-format
 msgid "A new version of {0} is available!"
 msgstr ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:57
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
 #, java-format
 msgid "{0} version {1} is now available - you have {2}."
 msgstr ""
@@ -211,63 +211,63 @@ msgstr ""
 msgid "More info can be found in: http://jupidator.sourceforge.net"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:58
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
 #, java-format
 msgid "New version of {0} found!"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:94
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:101
 msgid "Processing update"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:96
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:103
 msgid "Deploying files..."
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:106
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:113
 msgid "Successfully downloaded updates"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:107
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
 msgid "Restart application"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
-#: com/panayotis/jupidator/Updater.java:193
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
+#: com/panayotis/jupidator/Updater.java:197
 msgid "Application cancelled restart"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:117
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:187
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
 msgid "Cancel"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
 #, java-format
 msgid "Download speed: {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:198
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
 msgid "Downloading..."
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:220
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
 msgid "Release Notes"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:257
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
 msgid "Skip this version"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:270
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
 msgid "Remind me later"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:278
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
 msgid "Install Update"
 msgstr ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:290
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
 msgid "WARNING! This update requires elevated privileges!"
 msgstr ""
 
@@ -279,7 +279,7 @@ msgstr ""
 msgid "List of changes:"
 msgstr ""
 
-#: com/panayotis/jupidator/Updater.java:61
+#: com/panayotis/jupidator/Updater.java:65
 #, java-format
 msgid "This update is required for the smooth updating of {0}"
 msgstr ""

@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: jupidator\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-30 16:32+0200\n"
+        "POT-Creation-Date: 2011-02-05 00:02+0200\n"
         "PO-Revision-Date: 2008-12-16 21:36+0100\n"
         "Last-Translator: Alfredo Quesada Sánchez <freddy@um.es>\n"
         "Language-Team:  <es@li.org>\n"
@@ -16,21 +16,21 @@ msgstr  "Project-Id-Version: jupidator\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Generator: KBabel 1.11.4\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:60
+#: com/panayotis/jupidator/ApplicationInfo.java:59
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:61
+#: com/panayotis/jupidator/Updater.java:65
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:191
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+#: com/panayotis/jupidator/Updater.java:197
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
 msgid   "Application cancelled restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/data/UpdaterAppElements.java:43
+#: com/panayotis/jupidator/data/UpdaterAppElements.java:45
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
@@ -40,55 +40,32 @@ msgstr  ""
 msgid   "Unable to provide empty attribute for file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:100
-#, java-format
-msgid   "Unable to initialize URL {0}"
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:102
+#: com/panayotis/jupidator/elements/ElementFile.java:83
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:106
+#: com/panayotis/jupidator/elements/ElementFile.java:87
 #, java-format
 msgid   "Unable to create directory structure under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:110
-#: com/panayotis/jupidator/elements/ElementFile.java:111
-#: com/panayotis/jupidator/elements/ElementFile.java:115
+#: com/panayotis/jupidator/elements/ElementFile.java:91
 #, java-format
-msgid   "Could not remove old downloaded file {0}"
-msgstr  "No se ha podido eliminar el fichero más antiguo {0}"
+msgid   "Could not remove old download file {0}"
+msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:114
+#: com/panayotis/jupidator/elements/ElementFile.java:93
 #, java-format
 msgid   "Could not remove old temporary file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:124
-#, java-format
-msgid   "Size of file {0} does not match. Reported {1}, required {2}"
-msgstr  "El tamaño del fichero {0} no concuerda. Tamaño obtenido {1}, "
-        "requerido {2}"
-
-#: com/panayotis/jupidator/elements/ElementFile.java:128
-#, java-format
-msgid   "Checksumming {0} with algorithm {1} failed."
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/ElementFile.java:137
+#: com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "El fichero {0} ha sido descargado con éxito"
 
-#: com/panayotis/jupidator/elements/ElementFile.java:141
-#, java-format
-msgid   "Unable to download file {0}"
-msgstr  "No se ha podido descargar el fichero {0}"
-
-#: com/panayotis/jupidator/elements/ElementFile.java:152
+#: com/panayotis/jupidator/elements/ElementFile.java:109
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "No se ha podido eliminar el fichero descargado {0}"
@@ -147,18 +124,27 @@ msgstr  ""
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
+#, java-format
+msgid   "Request URL {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
+msgid   "Unable to download file "
+msgstr  ""
+
 #: com/panayotis/jupidator/elements/security/PermissionManager.java:76
 msgid   "Unable to initialize restart"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:56
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "¡Hay una nueva versión de {0} disponible!"
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:57
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  "{0} versión {1} está disponible - tienes la {2}."
@@ -235,58 +221,58 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:58
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "¡Se ha encontrado una nueva versión de {0}!"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:94
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:101
 msgid   "Processing update"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:96
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:103
 msgid   "Deploying files..."
 msgstr  "Desplegando ficheros..."
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:106
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:113
 msgid   "Successfully downloaded updates"
 msgstr  "Se han descargado las actualizaciones con éxito"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:107
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
 msgid   "Restart application"
 msgstr  "Reiniciar aplicación"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:117
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:187
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
 msgid   "Cancel"
 msgstr  "Cancelar"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
 #, java-format
 msgid   "Download speed: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:198
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
 msgid   "Downloading..."
 msgstr  "Descargando..."
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:220
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
 msgid   "Release Notes"
 msgstr  "Notas de la versión"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:257
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
 msgid   "Skip this version"
 msgstr  "Ignorar esta versión"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:270
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
 msgid   "Remind me later"
 msgstr  "Avisarme más tarde"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:278
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
 msgid   "Install Update"
 msgstr  "Instalar actualización"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:290
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -298,33 +284,43 @@ msgstr  "Versión"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "No se puede escribir en el fichero destino {0}."
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "No se ha podido encontrar la ruta de la aplicación {0}."
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Ejecutando {0}"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando la ruta {0} para la clase del gestor del "
-#~      "despliegue."
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
-
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Borrado con éxito el fichero {0}"
 
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "El fichero actualizado no podía ser nulo."
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Se ha eliminado con éxito el fichero descargado {0}"
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "No se ha podido eliminar el fichero más antiguo {0}"
 
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "No se ha podido borrar el fichero {0}."
 
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Se ha eliminado con éxito el fichero descargado {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "El fichero actualizado no podía ser nulo."
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Ejecutando {0}"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "No se ha podido encontrar la ruta de la aplicación {0}."
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "No se puede escribir en el fichero destino {0}."
+
 #~ msgid        "Application path can not be null."
 #~ msgstr       "La ruta de la aplicación no puede ser nula"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "No se ha podido descargar el fichero {0}"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "El tamaño del fichero {0} no concuerda. Tamaño obtenido {1}, "
+#~      "requerido {2}"
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando la ruta {0} para la clase del gestor del "
+#~      "despliegue."

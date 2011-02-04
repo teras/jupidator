@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-01 01:12+0200\n"
+        "POT-Creation-Date: 2011-02-05 00:02+0200\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Tomas Bambas <conyx@seznam.cz>\n"
         "Language-Team: cs <LL@li.org>\n"
@@ -19,13 +19,13 @@ msgstr  "Project-Id-Version: cs\n"
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:61
+#: com/panayotis/jupidator/Updater.java:65
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:193
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+#: com/panayotis/jupidator/Updater.java:197
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
 msgid   "Application cancelled restart"
 msgstr  ""
 
@@ -122,12 +122,12 @@ msgstr  ""
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/Mirror.java:42
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
 #, java-format
 msgid   "Request URL {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:38
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
 msgid   "Unable to download file "
 msgstr  ""
 
@@ -136,13 +136,13 @@ msgid   "Unable to initialize restart"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:56
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Nová verze programu {0} je k dispozici!"
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:57
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  "{0} verze programu {1} je k dispozici - máte {2}."
@@ -219,58 +219,58 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:58
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Nová verze programu {0} nalezena!"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:94
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:101
 msgid   "Processing update"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:96
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:103
 msgid   "Deploying files..."
 msgstr  "Rozmisťuji soubory..."
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:106
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:113
 msgid   "Successfully downloaded updates"
 msgstr  "Aktualizace úspěšně staženy"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:107
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:114
 msgid   "Restart application"
 msgstr  "Restartovat aplikaci"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:117
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:187
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
 msgid   "Cancel"
 msgstr  "Storno"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
 #, java-format
 msgid   "Download speed: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:198
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
 msgid   "Downloading..."
 msgstr  "Stahuji..."
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:220
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
 msgid   "Release Notes"
 msgstr  "Poznámky k vydání"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:257
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
 msgid   "Skip this version"
 msgstr  "Přeskočit tuto verzi"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:270
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
 msgid   "Remind me later"
 msgstr  "Připomenout později"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:278
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
 msgid   "Install Update"
 msgstr  "Instalovat Aktualizaci"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:290
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -282,8 +282,8 @@ msgstr  "Verze"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
@@ -291,26 +291,11 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "Soubor {0} nemůže být odstraněn."
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Nemohu stáhnout soubor {0}"
-
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Soubor úspěšně odstraněn {0}"
 
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
 
 #~ msgid        "Cancel updating: Ignoring deleting of file {0}"
 #~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
@@ -318,5 +303,20 @@ msgstr  ""
 #~ msgid        "Updated file could not be null."
 #~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
 
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
+
 #~ msgid        "Executing {0}"
 #~ msgstr       "Spouštím {0}"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Nemohu stáhnout soubor {0}"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"

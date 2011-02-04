@@ -31,8 +31,10 @@ import jupidator.launcher.XElement;
 public class Updater {
 
     private Version vers;
-    private UpdatedApplication application;
+    private Version orig_vers;
     private ApplicationInfo appinfo;
+    private ApplicationInfo orig_info;
+    private UpdatedApplication application;
     private Thread download;
     /* Lazy components */
     private JupidatorGUI gui;
@@ -45,6 +47,8 @@ public class Updater {
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
         vers = Version.loadVersion(xmlurl, appinfo);
+        orig_vers = vers;
+        orig_info = appinfo;
         if (vers.getAppElements().shouldUpdateLibrary()) {
             String oldname = vers.getAppElements().getAppName();
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
@@ -132,11 +136,11 @@ public class Updater {
                 for (String key : vers.keySet())
                     elements.add(vers.get(key).getExecElement());
                 ArrayList<String> relaunch = new ArrayList<String>();
-                for (int i = 0; i < vers.getArch().countArguments(); i++)
-                    relaunch.add(vers.getArch().getArgument(i, appinfo));
+                /* relaunch should be performed with original arguments, not jupidator update */
+                for (int i = 0; i < orig_vers.getArch().countArguments(); i++)
+                    relaunch.add(orig_vers.getArch().getArgument(i, orig_info));
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
-                params.setRelaunchCommand(relaunch);
                 params.setHeadless(gui.isHeadless());
                 params.setRelaunchCommand(relaunch);
                 params.setLogLocation(appinfo.getApplicationSupportDir());
