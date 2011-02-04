@@ -25,6 +25,7 @@ public class MirrorList {
     private ArrayList<Mirror> mirrors = new ArrayList<Mirror>();
 
     public String downloadFile(MirroredFile file, File download_location, BufferListener watcher, UpdatedApplication app) {
+        String reason = "";
         for (Mirror mirror : mirrors) {
             watcher.freezeSize();
             try {
@@ -34,13 +35,20 @@ public class MirrorList {
                 /* Download file */
                 String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher);
                 /* Check download status */
-                if (status == null && download_location.length() == file.getSize() && isProperlyDigested(file, download_location))
+                if (status != null)
+                    reason = status;
+                else if (download_location.length() != file.getSize())
+                    reason = "Wrong size, required " + file.getSize() + ", found " + download_location.length();
+                else if (!isProperlyDigested(file, download_location))
+                    reason = "Not properly digested";
+                else
                     return null;
             } catch (IOException ex) {
+                reason = ex.getMessage();
             }
             watcher.rollbackSize();
         }
-        return _("Unable to download file " + file.getFile());
+        return _("Unable to download file " + file.getFile() + " : " + reason);
     }
 
     private boolean isProperlyDigested(MirroredFile file, File download_location) {

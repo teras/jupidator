@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-05 00:02+0200\n"
+"POT-Creation-Date: 2011-02-05 00:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,12 +114,12 @@ msgstr ""
 msgid "UpdaterAppElements not provided."
 msgstr ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:34
 #, java-format
 msgid "Request URL {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:51
 msgid "Unable to download file "
 msgstr ""
 

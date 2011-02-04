@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:02+0200\n"
+        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
         "PO-Revision-Date: 2008-12-10 12:17+0200\n"
         "Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
         "Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
@@ -125,12 +125,12 @@ msgstr  ""
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:34
 #, java-format
 msgid   "Request URL {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:51
 msgid   "Unable to download file "
 msgstr  ""
 
@@ -285,42 +285,17 @@ msgstr  "Έκδοση"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
 
 #~ msgid        "Cancel updating: Ignoring deleting of file {0}"
 #~ msgstr       "Ακύρωση ενημέρωσης: Δε θα διαγραφεί το αρχείο {0}"
 
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Δε μπορεί να διαγραφεί το αρχείο {0}."
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
-
-#~ msgid        "Successfully cleanup downloaded file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Το  μέγεθος του αρχείου {0} είναι λάθος. Βρέθηκε {1}, "
-#~      "απαιτείται {2}"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "File {0} sucessfully downloaded."
-#~ msgstr       "Το αρχείο {0} κατέβηκε με επιτυχία"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Εκτέλεση {0}"
-
 #~ msgid        "Unable to download file {0}"
 #~ msgstr       "Αδυναμία κατά το κατέβασμα του {0}"
 
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Έλεγχος της διαδρομής {0} για τον εκκινητή."
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
 
 #~ msgid        "Unable to find Application path {0}."
 #~ msgstr       "Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
@@ -328,8 +303,33 @@ msgstr  ""
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Επιτυχής διαγραφή του αρχείου {0}"
 
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Το αρχείο ενημέρωσης δε μπορεί να είναι null"
+#~ msgid        "Executing {0}"
+#~ msgstr       "Εκτέλεση {0}"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Το  μέγεθος του αρχείου {0} είναι λάθος. Βρέθηκε {1}, "
+#~      "απαιτείται {2}"
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Έλεγχος της διαδρομής {0} για τον εκκινητή."
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Δε μπορεί να διαγραφεί το αρχείο {0}."
+
+#~ msgid        "Successfully cleanup downloaded file {0}"
+#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+
+#~ msgid        "File {0} sucessfully downloaded."
+#~ msgstr       "Το αρχείο {0} κατέβηκε με επιτυχία"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
 
 #~ msgid        "Unable to cleanup downloaded file {0}"
 #~ msgstr       "Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Το αρχείο ενημέρωσης δε μπορεί να είναι null"

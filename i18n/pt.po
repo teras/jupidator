@@ -7,7 +7,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:02+0200\n"
+        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
         "PO-Revision-Date: 2009-05-04 15:00-0300\n"
         "Last-Translator: doutor.zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@mail.kde.org>\n"
@@ -125,12 +125,12 @@ msgstr  ""
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:34
 #, java-format
 msgid   "Request URL {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:51
 msgid   "Unable to download file "
 msgstr  ""
 
@@ -285,8 +285,8 @@ msgstr  "Versão"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Não foi possível baixar o arquivo {0}"
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "Não foi possível remover o arquivo antigo baixado {0}"
@@ -294,33 +294,33 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "O arquivo {0} não pôde ser apagado."
 
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Executando {0}"
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "O arquivo de destino {0} não é gravável."
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Não foi possível baixar o arquivo {0}"
-
 #~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
 #~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
 #~      "exigido {2}"
 
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
+
 #~ msgid        "Checking path {0} for Deployer class."
 #~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Executando {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "O arquivo atualizado não pode ser nulo."
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "O arquivo de destino {0} não é gravável."
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."

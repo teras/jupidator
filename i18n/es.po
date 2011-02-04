@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: jupidator\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:02+0200\n"
+        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
         "PO-Revision-Date: 2008-12-16 21:36+0100\n"
         "Last-Translator: Alfredo Quesada Sánchez <freddy@um.es>\n"
         "Language-Team:  <es@li.org>\n"
@@ -124,12 +124,12 @@ msgstr  ""
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:33
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:34
 #, java-format
 msgid   "Request URL {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:43
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:51
 msgid   "Unable to download file "
 msgstr  ""
 
@@ -284,8 +284,8 @@ msgstr  "Versión"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Borrado con éxito el fichero {0}"
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "No se ha podido descargar el fichero {0}"
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "No se ha podido eliminar el fichero más antiguo {0}"
@@ -293,34 +293,34 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "No se ha podido borrar el fichero {0}."
 
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Se ha eliminado con éxito el fichero descargado {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "El fichero actualizado no podía ser nulo."
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Ejecutando {0}"
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "No se ha podido encontrar la ruta de la aplicación {0}."
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "No se puede escribir en el fichero destino {0}."
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "La ruta de la aplicación no puede ser nula"
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "No se ha podido descargar el fichero {0}"
-
 #~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
 #~ msgstr       "El tamaño del fichero {0} no concuerda. Tamaño obtenido {1}, "
 #~      "requerido {2}"
 
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Se ha eliminado con éxito el fichero descargado {0}"
+
 #~ msgid        "Checking path {0} for Deployer class."
 #~ msgstr       "Verificando la ruta {0} para la clase del gestor del "
 #~      "despliegue."
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "Borrado con éxito el fichero {0}"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Ejecutando {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "El fichero actualizado no podía ser nulo."
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "La ruta de la aplicación no puede ser nula"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "No se puede escribir en el fichero destino {0}."
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "No se ha podido encontrar la ruta de la aplicación {0}."
