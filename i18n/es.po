@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: jupidator\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
+        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2008-12-16 21:36+0100\n"
         "Last-Translator: Alfredo Quesada Sánchez <freddy@um.es>\n"
         "Language-Team:  <es@li.org>\n"
@@ -75,38 +75,38 @@ msgstr  "No se ha podido eliminar el fichero descargado {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "El fichero {0} será borrado, si existe."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:91
+#: com/panayotis/jupidator/elements/FileUtils.java:90
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:165
+#: com/panayotis/jupidator/elements/FileUtils.java:164
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "No se puede escribir en la ruta del gestor del gestor del despliegue "
         "{0}."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:172
+#: com/panayotis/jupidator/elements/FileUtils.java:171
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:177
-#: com/panayotis/jupidator/elements/FileUtils.java:188
+#: com/panayotis/jupidator/elements/FileUtils.java:176
+#: com/panayotis/jupidator/elements/FileUtils.java:187
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "El gestor del despliegue ha sido guardado en {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:184
+#: com/panayotis/jupidator/elements/FileUtils.java:183
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
+#: com/panayotis/jupidator/elements/FileUtils.java:193
 msgid   "Unable to create Deployer"
 msgstr  "No se ha podido crear el gestor del despliegue"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:294
+#: com/panayotis/jupidator/elements/FileUtils.java:293
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "No se ha podido eliminar el fichero {0}"
@@ -284,8 +284,8 @@ msgstr  "Versión"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "No se ha podido descargar el fichero {0}"
+#~ msgid        "Executing {0}"
+#~ msgstr       "Ejecutando {0}"
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "No se ha podido eliminar el fichero más antiguo {0}"
@@ -293,34 +293,34 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "No se ha podido borrar el fichero {0}."
 
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "El tamaño del fichero {0} no concuerda. Tamaño obtenido {1}, "
-#~      "requerido {2}"
+#~ msgid        "Application path can not be null."
+#~ msgstr       "La ruta de la aplicación no puede ser nula"
 
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "Se ha eliminado con éxito el fichero descargado {0}"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando la ruta {0} para la clase del gestor del "
-#~      "despliegue."
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Borrado con éxito el fichero {0}"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Ejecutando {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "El fichero actualizado no podía ser nulo."
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "La ruta de la aplicación no puede ser nula"
 
 #~ msgid        "Destination file {0} is not writable."
 #~ msgstr       "No se puede escribir en el fichero destino {0}."
 
 #~ msgid        "Unable to find Application path {0}."
 #~ msgstr       "No se ha podido encontrar la ruta de la aplicación {0}."
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando la ruta {0} para la clase del gestor del "
+#~      "despliegue."
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "El tamaño del fichero {0} no concuerda. Tamaño obtenido {1}, "
+#~      "requerido {2}"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "No se ha podido descargar el fichero {0}"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "Borrado con éxito el fichero {0}"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Actualización cancelada: se ignora el borrado del fichero {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "El fichero actualizado no podía ser nulo."

@@ -82,7 +82,6 @@ public class FileUtils {
     }
 
     public static String copyPackage(String PACKAGENAME, String FILEHOME) {
-//    public static String copyPackage(String PACKAGENAME, String FILEHOME, UpdatedApplication listener) {
         String PACKAGEZIP = PACKAGENAME.replace('.', '/') + '/';
         String PACKAGEDIR = PACKAGEZIP.replace('/', File.separatorChar);
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
@@ -102,7 +101,7 @@ public class FileUtils {
                 for (Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zip.entries(); e.hasMoreElements();) {
                     ZipEntry entry = e.nextElement();
                     String name = entry.getName();
-                    if (name.startsWith(PACKAGEZIP) && (!name.endsWith(File.separator))) {
+                    if (name.startsWith(PACKAGEZIP) && (!name.endsWith("/"))) {
                         String FILEOUT = FILEHOME + File.separator + entry.getName().replace("/", File.separator);
                         if (!FILEOUT.endsWith(File.separator)) {
                             FileOutputStream fout = null;
@@ -216,7 +215,7 @@ public class FileUtils {
     private static void getClassPaths(ArrayList<String> jarpaths, ArrayList<String> dirpaths) {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
         ArrayList<String> classpaths = new ArrayList<String>();
-        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"),
+        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path").replace("%20", " "),
                 System.getProperty("path.separator"));
         while (tok.hasMoreElements())
             classpaths.add(tok.nextToken());

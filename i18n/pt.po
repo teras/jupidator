@@ -7,7 +7,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
+        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2009-05-04 15:00-0300\n"
         "Last-Translator: doutor.zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@mail.kde.org>\n"
@@ -77,37 +77,37 @@ msgstr  "Não foi possível apagar o arquivo baixado {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "O arquivo {0} será apagado, se existir."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:91
+#: com/panayotis/jupidator/elements/FileUtils.java:90
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:165
+#: com/panayotis/jupidator/elements/FileUtils.java:164
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "O caminho do Instalador {0} não é gravável."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:172
+#: com/panayotis/jupidator/elements/FileUtils.java:171
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:177
-#: com/panayotis/jupidator/elements/FileUtils.java:188
+#: com/panayotis/jupidator/elements/FileUtils.java:176
+#: com/panayotis/jupidator/elements/FileUtils.java:187
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Instalador armazenado em {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:184
+#: com/panayotis/jupidator/elements/FileUtils.java:183
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
+#: com/panayotis/jupidator/elements/FileUtils.java:193
 msgid   "Unable to create Deployer"
 msgstr  "Não foi possível criar o Instalador"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:294
+#: com/panayotis/jupidator/elements/FileUtils.java:293
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "Não foi possível apagar o arquivo {0}"
@@ -285,8 +285,8 @@ msgstr  "Versão"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Não foi possível baixar o arquivo {0}"
+#~ msgid        "Executing {0}"
+#~ msgstr       "Executando {0}"
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "Não foi possível remover o arquivo antigo baixado {0}"
@@ -294,33 +294,33 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "O arquivo {0} não pôde ser apagado."
 
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
-#~      "exigido {2}"
+#~ msgid        "Application path can not be null."
+#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
 
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "O arquivo {0} foi apagado com sucesso"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Executando {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
 
 #~ msgid        "Destination file {0} is not writable."
 #~ msgstr       "O arquivo de destino {0} não é gravável."
 
 #~ msgid        "Unable to find Application path {0}."
 #~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
+#~      "exigido {2}"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Não foi possível baixar o arquivo {0}"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "O arquivo atualizado não pode ser nulo."

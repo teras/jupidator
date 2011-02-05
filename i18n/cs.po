@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
+        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Tomas Bambas <conyx@seznam.cz>\n"
         "Language-Team: cs <LL@li.org>\n"
@@ -74,37 +74,37 @@ msgstr  "Nemohu odstranit stažený soubor {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Soubor {0} bude odstraněn, pokud existuje."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:91
+#: com/panayotis/jupidator/elements/FileUtils.java:90
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:165
+#: com/panayotis/jupidator/elements/FileUtils.java:164
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Deployer cesta {0} není zapisovatelná."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:172
+#: com/panayotis/jupidator/elements/FileUtils.java:171
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:177
-#: com/panayotis/jupidator/elements/FileUtils.java:188
+#: com/panayotis/jupidator/elements/FileUtils.java:176
+#: com/panayotis/jupidator/elements/FileUtils.java:187
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Deployer uložen v {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:184
+#: com/panayotis/jupidator/elements/FileUtils.java:183
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
+#: com/panayotis/jupidator/elements/FileUtils.java:193
 msgid   "Unable to create Deployer"
 msgstr  "Nemohu vytvořit Deployer"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:294
+#: com/panayotis/jupidator/elements/FileUtils.java:293
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "Nemohu odstranit soubor {0}"
@@ -282,8 +282,8 @@ msgstr  "Verze"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
 
 #~ msgid        "Could not remove old downloaded file {0}"
 #~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
@@ -291,32 +291,32 @@ msgstr  ""
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "Soubor {0} nemůže být odstraněn."
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Nemohu stáhnout soubor {0}"
+#~ msgid        "Executing {0}"
+#~ msgstr       "Spouštím {0}"
 
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Spouštím {0}"
 
 #~ msgid        "Application path can not be null."
 #~ msgstr       "Cesta k aplikaci nemůže být prázdná."
 
 #~ msgid        "Destination file {0} is not writable."
 #~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Nemohu stáhnout soubor {0}"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "Soubor úspěšně odstraněn {0}"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"

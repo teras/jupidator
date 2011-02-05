@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 00:54+0200\n"
+        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2008-12-10 12:17+0200\n"
         "Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
         "Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
@@ -77,37 +77,37 @@ msgstr  "Αδυναμία αφαίρεσης του κατεβασμένου α�
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Το αρχείο {0} θα διαγραφεί, αν υπάρχει."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:91
+#: com/panayotis/jupidator/elements/FileUtils.java:90
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:165
+#: com/panayotis/jupidator/elements/FileUtils.java:164
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:172
+#: com/panayotis/jupidator/elements/FileUtils.java:171
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:177
-#: com/panayotis/jupidator/elements/FileUtils.java:188
+#: com/panayotis/jupidator/elements/FileUtils.java:176
+#: com/panayotis/jupidator/elements/FileUtils.java:187
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Ο εκκινητής αποθηκεύτηκε στο {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:184
+#: com/panayotis/jupidator/elements/FileUtils.java:183
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
+#: com/panayotis/jupidator/elements/FileUtils.java:193
 msgid   "Unable to create Deployer"
 msgstr  "Αδυναμία κατασκευής εκκινητή"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:294
+#: com/panayotis/jupidator/elements/FileUtils.java:293
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "Αδυναμία αφαίρεσης του αρχείου {0}"
@@ -285,51 +285,51 @@ msgstr  "Έκδοση"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
+#~ msgid        "Unable to cleanup downloaded file {0}"
+#~ msgstr       "Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
 
 #~ msgid        "Cancel updating: Ignoring deleting of file {0}"
 #~ msgstr       "Ακύρωση ενημέρωσης: Δε θα διαγραφεί το αρχείο {0}"
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Αδυναμία κατά το κατέβασμα του {0}"
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Δε μπορεί να διαγραφεί το αρχείο {0}."
 
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Το αρχείο ενημέρωσης δε μπορεί να είναι null"
 
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
+#~ msgid        "Successfully cleanup downloaded file {0}"
+#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
 
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Επιτυχής διαγραφή του αρχείου {0}"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Εκτέλεση {0}"
 
 #~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
 #~ msgstr       "Το  μέγεθος του αρχείου {0} είναι λάθος. Βρέθηκε {1}, "
 #~      "απαιτείται {2}"
 
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Έλεγχος της διαδρομής {0} για τον εκκινητή."
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Δε μπορεί να διαγραφεί το αρχείο {0}."
-
-#~ msgid        "Successfully cleanup downloaded file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "File {0} sucessfully downloaded."
-#~ msgstr       "Το αρχείο {0} κατέβηκε με επιτυχία"
-
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
+
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Εκτέλεση {0}"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Αδυναμία κατά το κατέβασμα του {0}"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
 
 #~ msgid        "Application path can not be null."
 #~ msgstr       "Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
 
-#~ msgid        "Unable to cleanup downloaded file {0}"
-#~ msgstr       "Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
+#~ msgid        "File {0} sucessfully downloaded."
+#~ msgstr       "Το αρχείο {0} κατέβηκε με επιτυχία"
 
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Το αρχείο ενημέρωσης δε μπορεί να είναι null"
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Έλεγχος της διαδρομής {0} για τον εκκινητή."
