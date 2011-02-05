@@ -27,11 +27,14 @@ public class ConsoleGUI implements JupidatorGUI {
     private Updater callback;
     private boolean is_loglist_enabled = true;
     private boolean can_not_ignore = false;
+    private boolean should_show_jupidator_about = true;
+    private String appname;
     private BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
-        info1 = _("A new version of {0} is available!", el.getAppName());
-        info2 = _("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion());
+        appname = el.getAppName();
+        info1 = _("A new version of {0} is available!", appname);
+        info2 = _("{0} version {1} is now available - you have {2}.", appname, el.getNewVersion(), info.getVersion());
         if (is_loglist_enabled)
             loglist = TextCreator.getList(el.getLogList());
         this.callback = callback;
@@ -39,6 +42,10 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void startDialog() {
+        System.out.println(_("Welcome to the installation of {0}", appname));
+        if (should_show_jupidator_about)
+            System.out.println(_("Install mechanism") + ": Jupidator (C) 2011 Panayotis Katsaloulis, panayotis@panayotis.com");
+        System.out.println();
         System.out.println(info1);
         System.out.println(info2);
         if (is_loglist_enabled && getAnswer(_("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
@@ -104,8 +111,11 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void setProperty(String key, String value) {
-        if (key.toLowerCase().equals("loglist"))
+        key = key.toLowerCase();
+        if (key.equals(LOGLIST))
             is_loglist_enabled = TextUtils.isTrue(value);
+        else if (key.equals(ABOUT))
+            should_show_jupidator_about = TextUtils.isTrue(value);
     }
 
     private char getAnswer(String message, String list) {

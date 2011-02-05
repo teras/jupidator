@@ -18,7 +18,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
  *
  * @author teras
  */
-public class AboutDialog extends javax.swing.JDialog {
+class AboutDialog extends javax.swing.JDialog {
 
     /** Creates new form AboutDialog */
     public AboutDialog(java.awt.Dialog parent) {

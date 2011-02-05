@@ -15,16 +15,24 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
  */
 public interface JupidatorGUI {
 
+    public static final String ABOUT = "about";
+    public static final String SYSTEMLOOK = "systemlook";
+    public static final String LOGLIST = "loglist";
+
     public void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo) throws UpdaterException;
 
     public void startDialog();
+
     public void endDialog();
 
     public void errorOnCommit(String message);
+
     public void successOnCommit();
+
     public void errorOnRestart(String message);
 
     public void setDownloadRatio(String ratio, float percent);
+
     public void setIndetermined();
 
     public void setProperty(String key, String value);
