@@ -21,7 +21,6 @@ public class Details extends JScrollPane {
             d.height = 120;
         if (d.height > 240)
             d.height = 240;
-        System.out.println(d);
         return d;
     }
 }
