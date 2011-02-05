@@ -139,10 +139,8 @@ class SwingDialog extends JDialog {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i.png"))); // NOI18N
+        InfoB.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 4, 0));
         InfoB.setBorderPainted(false);
-        InfoB.setMaximumSize(new java.awt.Dimension(20, 20));
-        InfoB.setMinimumSize(new java.awt.Dimension(20, 20));
-        InfoB.setPreferredSize(new java.awt.Dimension(20, 20));
         InfoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InfoBActionPerformed(evt);
