@@ -7,7 +7,6 @@ package com.panayotis.jupidator;
 import static com.panayotis.jupidator.i18n.I18N._;
 
 import com.panayotis.jupidator.statics.SystemVersion;
-import com.panayotis.jupidator.statics.SelfUpdate;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
@@ -56,7 +55,7 @@ public class Updater {
             ApplicationInfo selfappinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
             selfappinfo.setSelfUpdate();
 
-            Version selfvers = Version.loadVersion(SelfUpdate.URL, selfappinfo);
+            Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
             if (selfvers.isVisible()) {
                 selfvers.replaceArch(vers.getArch());
                 vers = selfvers;

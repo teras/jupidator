@@ -10,6 +10,7 @@
  */
 package jupidator.launcher;
 
+import com.panayotis.jupidator.data.TextUtils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class Visuals extends javax.swing.JFrame {
 
     public static void setLogPath(String path) {
         if (path == null)
-            path = System.getProperty("java.io.tmpdir");
+            path = TextUtils.getProperty("java.io.tmpdir");
         logpath = path;
     }
 

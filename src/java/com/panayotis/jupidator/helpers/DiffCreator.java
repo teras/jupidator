@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.helpers;
 
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.Digester;
 import java.io.BufferedInputStream;
@@ -49,7 +50,7 @@ public class DiffCreator {
     public DiffCreator(String newdirname, String olddirname) {
         this.newer_dir = new File(newdirname);
         this.older_dir = new File(olddirname);
-        this.arch = System.getProperty("os.name").toLowerCase().replace(" ", "");
+        this.arch = TextUtils.getSystemName().replace(" ", "");
         this.server_dir = "update";
         this.local_dir_name = this.server_dir;
     }
@@ -154,8 +155,8 @@ public class DiffCreator {
         if (source.equals(dest))
             throw new IOException("Source and destination file should not be the same");
         if (dest.exists())
-            throw new IOException("File "+dest.getName()+" already exists!");
-        
+            throw new IOException("File " + dest.getName() + " already exists!");
+
         debug("Compressing " + source.getPath() + " to " + dest.getPath());
         BufferedInputStream i = new BufferedInputStream(new FileInputStream(source));
         BufferedOutputStream o = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(dest)));

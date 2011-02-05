@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author teras
  */
-public class Arch implements Serializable  {
+public class Arch implements Serializable {
 
     private String tag;
     private String os;
@@ -34,7 +34,7 @@ public class Arch implements Serializable  {
 
     Version getVersion(String tag) {
         tag = tag.toLowerCase();
-        if (tag.equals(this.tag) || tag.equals("any") || tag.equals("all") ) {
+        if (tag.equals(this.tag) || tag.equals("any") || tag.equals("all")) {
             Version found = new Version();
             found.updateTagStatus(tag);
             return found;
@@ -53,9 +53,7 @@ public class Arch implements Serializable  {
             else
                 return null;
 
-        String c_os = System.getProperty("os.name").toLowerCase();
-        String c_arch = System.getProperty("os.arch").toLowerCase();
-        if (c_os.startsWith(os) && c_arch.startsWith(arch))
+        if (TextUtils.getSystemName().startsWith(os) && TextUtils.getSystemArch().startsWith(arch))
             return new Arch(tag, os, arch);
         else
             return null;

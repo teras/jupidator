@@ -16,6 +16,18 @@ public class TextUtils {
 
     public static final String NL = System.getProperty("line.separator");
 
+    public static String getProperty(String key) {
+        return System.getProperty(key).replace("%20", " ");
+    }
+
+    public static String getSystemName() {
+        return System.getProperty("os.name").toLowerCase();
+    }
+
+    public static String getSystemArch() {
+        return System.getProperty("os.arch").toLowerCase();
+    }
+
     public static boolean isTrue(String value) {
         if (value == null)
             return false;
@@ -35,7 +47,7 @@ public class TextUtils {
             if (name.length() > 0) {
                 String value = set.get(name);
                 if (value == null) {
-                    value = System.getProperty(name);
+                    value = getProperty(name);
                     if (value == null)
                         value = System.getenv(name);
                 }

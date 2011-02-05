@@ -116,7 +116,7 @@ public class ApplicationInfo implements Serializable {
         if (dir == null)
             throw new NullPointerException(title + "directory can not be null.");
         if (dir.equals("") || dir.equals("."))
-            dir = System.getProperty("user.dir");
+            dir = TextUtils.getProperty("user.dir");
         dir = dir.replace("/./", "/");
         if (dir.endsWith(File.separator))
             dir = dir.substring(0, dir.length() - 1);

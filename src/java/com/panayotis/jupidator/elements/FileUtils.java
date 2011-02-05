@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.BufferedReader;
@@ -32,11 +33,11 @@ import java.util.zip.ZipFile;
  */
 public class FileUtils {
 
-    public final static String JAVAHOME = System.getProperty("java.home");
+    public final static String JAVAHOME = TextUtils.getProperty("java.home");
     public final static String JAVABIN = getJavaExec();
 
     private static String getJavaExec() {
-        String EXEC = System.getProperty("os.name").toLowerCase().contains("windows") ? "javaw.exe" : "java";
+        String EXEC = TextUtils.getSystemName().contains("windows") ? "javaw.exe" : "java";
         String file;
         file = JAVAHOME + File.separator + "bin" + File.separator + EXEC;
         if (new File(file).isFile())
@@ -215,8 +216,7 @@ public class FileUtils {
     private static void getClassPaths(ArrayList<String> jarpaths, ArrayList<String> dirpaths) {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
         ArrayList<String> classpaths = new ArrayList<String>();
-        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path").replace("%20", " "),
-                System.getProperty("path.separator"));
+        StringTokenizer tok = new StringTokenizer(TextUtils.getProperty("java.class.path"), File.pathSeparator);
         while (tok.hasMoreElements())
             classpaths.add(tok.nextToken());
 
@@ -295,7 +295,6 @@ public class FileUtils {
 
     public static boolean setExecute(String path) {
         try {
-            System.out.println(path);
             Process proc = Runtime.getRuntime().exec(new String[]{"chmod", "a+x", path});
             proc.waitFor();
             return true;

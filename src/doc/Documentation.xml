@@ -91,7 +91,7 @@
 <sect2>
 <title>Minimum example</title>
 <para>Here is an example how to use Jupidator with a simple application. The developer just needs to create a new MyAppUpdate object with the desired information.</para>
-<screen>import com.panayotis.jupidator.ApplicationInfo;
+<screen>import java.io.File;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
@@ -103,7 +103,7 @@ public class MyAppUpdate implements UpdatedApplication {
             new Updater(
                     "http://www.myapp.com/update/update.xml",
                     "/usr/lib/myapp",
-                    System.getProperty("user.home") + System.getProperty("file.separator") + ".myapp",
+                    System.getProperty("user.home") + File.separator + ".myapp",
                     "413",
                     "4.1.3",
                     this).actionDisplay();
