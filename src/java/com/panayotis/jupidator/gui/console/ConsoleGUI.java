@@ -34,7 +34,8 @@ public class ConsoleGUI implements JupidatorGUI {
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         appname = el.getAppName();
         info1 = _("A new version of {0} is available!", appname);
-        info2 = _("{0} version {1} is now available - you have {2}.", appname, el.getNewVersion(), info.getVersion());
+        info2 = _("{0} version {1} is now available", el.getAppName(), el.getNewVersion())
+                + (info.getVersion() == null ? "" : " - " + _("you have {0}", info.getVersion())) + ".";
         if (is_loglist_enabled)
             loglist = TextCreator.getList(el.getLogList());
         this.callback = callback;
@@ -44,7 +45,7 @@ public class ConsoleGUI implements JupidatorGUI {
     public void startDialog() {
         System.out.println(_("Welcome to the installation of {0}", appname));
         if (should_show_jupidator_about)
-            System.out.println(_("Install mechanism") + ": Jupidator (C) 2011 Panayotis Katsaloulis, panayotis@panayotis.com");
+            System.out.println(_("Installation library") + ": Jupidator (C) 2011 Panayotis Katsaloulis, panayotis@panayotis.com");
         System.out.println();
         System.out.println(info1);
         System.out.println(info2);

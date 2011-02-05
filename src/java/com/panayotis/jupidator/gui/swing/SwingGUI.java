@@ -40,7 +40,8 @@ public class SwingGUI implements JupidatorGUI {
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         this.callback = callback;
         newver = _("A new version of {0} is available!", el.getAppName());
-        versinfo = _("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion());
+        versinfo = _("{0} version {1} is now available", el.getAppName(), el.getNewVersion())
+                + (info.getVersion() == null ? "" : " - " + _("you have {0}", info.getVersion())) + ".";
         title = _("New version of {0} found!", el.getAppName());
         infopane = HTMLCreator.getList(el.getLogList());
         try {

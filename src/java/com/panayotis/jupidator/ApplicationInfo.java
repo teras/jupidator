@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
 /**
  * This information is given to the library from the runtime environment
  * @author teras
@@ -37,9 +36,8 @@ public class ApplicationInfo implements Serializable {
         vars.put("APPHOME", appHome);
         vars.put("APPSUPPORTDIR", appSupportDir);
 
-        if (version == null || version.equals(""))
-            version = "0.0.0.0";
-        vars.put("VERSION", version);
+        if (version != null && (!version.equals("")))
+            vars.put("VERSION", version);
 
         int currelease = 0;
         try {
