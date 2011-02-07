@@ -42,10 +42,10 @@ public class CreatorFrame extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         nowT = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ItemsL = new javax.swing.JList();
         jPanel2 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ItemsT = new javax.swing.JTable();
 
         chooser.setDialogTitle("Select directory");
         chooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
@@ -88,10 +88,6 @@ public class CreatorFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        jScrollPane1.setViewportView(ItemsL);
-
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jButton3.setText("Calculate");
@@ -103,6 +99,10 @@ public class CreatorFrame extends javax.swing.JFrame {
         jPanel2.add(jButton3, java.awt.BorderLayout.EAST);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
+        jScrollPane1.setViewportView(ItemsT);
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -118,10 +118,11 @@ public class CreatorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ItemsL.setModel(new ChangeListModel(new ChangeList(oldT.getText(), nowT.getText())));
+        ItemsT.setModel(new PresentModel(new ChangeList(oldT.getText(), nowT.getText())));
+        ItemsT.getColumnModel().getColumn(0).setPreferredWidth(50);
     }//GEN-LAST:event_jButton3ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList ItemsL;
+    private javax.swing.JTable ItemsT;
     private javax.swing.JFileChooser chooser;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

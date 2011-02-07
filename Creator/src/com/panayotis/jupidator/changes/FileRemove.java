@@ -10,8 +10,9 @@ import com.panayotis.jupidator.FileItem;
  *
  * @author teras
  */
-public class FileRemove implements Change {
+public class FileRemove extends Change {
 
     public FileRemove(FileItem item) {
+        super(item);
     }
 }

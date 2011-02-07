@@ -114,6 +114,7 @@
 	<exec dir="i18n" executable="bash" failonerror="true">
 		<arg line="make.sh clean"/>
 	</exec>
+	<ant dir="Creator" target="clean" inheritAll="false"/>
 </target>
 
 <target name="-post-compile">

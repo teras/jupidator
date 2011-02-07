@@ -9,7 +9,7 @@ syntax:glob
 syntax: regexp
 ^dist/
 ^build/
-^nbproject/private/
+nbproject/private/
 .*pbxuser
 .DS_Store
 ^priviledges

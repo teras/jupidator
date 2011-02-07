@@ -107,8 +107,8 @@ public class DiffCreator {
                 nfile = new File(newer, cfile);
                 ofile = new File(older, cfile);
 
-                if (nfile.isFile() && ofile.isFile())   // Bot are files, thus can be checked
-                    checkFileDiff(nfile, ofile, history);
+                if (nfile.isFile() && ofile.isFile()) ;  // Bot are files, thus can be checked
+//                    checkFileDiff(nfile, ofile, history);
                 else if (nfile.isDirectory() && ofile.isDirectory()) {   // Both are files, dive in
                     if (!history.equals(""))
                         history += "/";
@@ -123,13 +123,6 @@ public class DiffCreator {
 
         for (String ofilename : oset) // new set does not have this file, only new set has it
             addRmEntry(ofilename, history);
-    }
-
-    private void checkFileDiff(File nfile, File ofile, String history) throws IOException {
-        byte[] nmd5 = Digester.getMD5Sum(nfile);
-        byte[] omd5 = Digester.getMD5Sum(ofile);
-        if (!Arrays.equals(nmd5, omd5))
-            addFileEntry(nfile, history);
     }
 
     private void addFileEntry(File file, String history) throws IOException {

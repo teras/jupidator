@@ -70,7 +70,15 @@ public class ChangeList {
         return list.size();
     }
 
-    public Object getItem(int index) {
-        return list.get(index);
+    public String getItem(int index) {
+        return list.get(index).toString();
+    }
+
+    public boolean isAcceptable(int index) {
+        return list.get(index).isAccepted();
+    }
+
+    public void setAcceptable(int index, boolean value) {
+        list.get(index).setAccepted(value);
     }
 }
