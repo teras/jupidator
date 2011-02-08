@@ -51,9 +51,12 @@ public class PresentModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex==0)
-            list.setAcceptable(rowIndex, ((Boolean)aValue));
+        if (columnIndex == 0)
+            list.setAcceptable(rowIndex, ((Boolean) aValue));
     }
-    
-    
+
+    @Override
+    public String getColumnName(int column) {
+        return column == 0 ? "Use" : "File";
+    }
 }

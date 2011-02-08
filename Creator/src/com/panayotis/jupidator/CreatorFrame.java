@@ -21,8 +21,8 @@ public class CreatorFrame extends javax.swing.JFrame {
     /** Creates new form CreatorFrame */
     public CreatorFrame() {
         initComponents();
-        oldT.setText("/Users/teras/Desktop/Pending");
-        nowT.setText("/Users/teras/Desktop/pg115");
+        oldT.setText("/Users/teras/Works/Development/Java/__jubler/Jubler4.6.1.app");
+        nowT.setText("/Users/teras/Works/Development/Java/__jubler/Jubler.app/");
     }
 
     /** This method is called from within the constructor to
@@ -57,7 +57,6 @@ public class CreatorFrame extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         oldT.setColumns(20);
-        oldT.setEditable(false);
         jPanel4.add(oldT, java.awt.BorderLayout.CENTER);
 
         jButton1.setText("Browse");
@@ -73,7 +72,6 @@ public class CreatorFrame extends javax.swing.JFrame {
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         nowT.setColumns(20);
-        nowT.setEditable(false);
         jPanel5.add(nowT, java.awt.BorderLayout.CENTER);
 
         jButton2.setText("Browse");
@@ -118,8 +116,10 @@ public class CreatorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ItemsT.setModel(new PresentModel(new ChangeList(oldT.getText(), nowT.getText())));
+        ItemsT.setModel(new PresentModel(new ChangeList(oldT.getText(), nowT.getText(), "Contents/Resources/Java")));
         ItemsT.getColumnModel().getColumn(0).setPreferredWidth(50);
+        ItemsT.getColumnModel().getColumn(0).setMaxWidth(32);
+        ItemsT.getColumnModel().getColumn(0).setMinWidth(32);
     }//GEN-LAST:event_jButton3ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable ItemsT;

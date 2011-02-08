@@ -12,16 +12,16 @@ import com.panayotis.jupidator.FileItem;
  */
 public class Change {
 
-    private final FileItem item;
+    private final String entry;
     private boolean accepted = true;
 
-    public Change(FileItem item) {
-        this.item = item;
+    public Change(FileItem item, FileItem base) {
+        entry = item.getRelative(base);
     }
 
     @Override
     public String toString() {
-        return item.toString();
+        return entry;
     }
 
     public boolean isAccepted() {

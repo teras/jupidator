@@ -12,7 +12,7 @@ import com.panayotis.jupidator.FileItem;
  */
 public class FileRemove extends Change {
 
-    public FileRemove(FileItem item) {
-        super(item);
+    public FileRemove(FileItem item, FileItem base) {
+        super(item, base);
     }
 }

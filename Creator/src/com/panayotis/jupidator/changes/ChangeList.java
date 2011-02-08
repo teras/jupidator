@@ -5,7 +5,6 @@
 package com.panayotis.jupidator.changes;
 
 import com.panayotis.jupidator.FileItem;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -16,9 +15,15 @@ import java.util.Map;
 public class ChangeList {
 
     private ArrayList<Change> list = new ArrayList<Change>();
+    private final FileItem base;
 
     public ChangeList(String f1, String f2) {
-        getChanges(new FileItem(new File(f1)), new FileItem(new File(f2)));
+        this(f1, f2, null);
+    }
+
+    public ChangeList(String f1, String f2, String base) {
+        this.base = new FileItem(f2, base);
+        getChanges(new FileItem(f1), new FileItem(f2));
     }
 
     private void getChanges(FileItem one, FileItem two) {
@@ -51,19 +56,19 @@ public class ChangeList {
     }
 
     private void removeItem(FileItem item) {
-        list.add(new FileRemove(item));
+        list.add(new FileRemove(item, base));
     }
 
     private void addItem(FileItem item) {
         if (item.isDirectory()) {
             Map<String, FileItem> childs = item.getChildren();
             if (childs.isEmpty())
-                list.add(new DirAdd(item));
+                list.add(new DirAdd(item, base));
             else
                 for (String key : childs.keySet())
                     addItem(childs.get(key));
         } else
-            list.add(new FileAdd(item));
+            list.add(new FileAdd(item, base));
     }
 
     public int getSize() {

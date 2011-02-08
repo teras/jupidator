@@ -12,7 +12,7 @@ import com.panayotis.jupidator.FileItem;
  */
 public class FileAdd extends Change {
 
-    public FileAdd(FileItem item) {
-        super(item);
+    public FileAdd(FileItem item, FileItem base) {
+        super(item, base);
     }
 }
