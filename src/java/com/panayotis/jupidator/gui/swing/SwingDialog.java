@@ -138,11 +138,11 @@ class SwingDialog extends JDialog {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i.png"))); // NOI18N
+        InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
         InfoB.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 4, 0));
         InfoB.setBorderPainted(false);
         InfoB.setContentAreaFilled(false);
-        InfoB.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/i_p.png"))); // NOI18N
+        InfoB.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info_sel.png"))); // NOI18N
         InfoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InfoBActionPerformed(evt);
