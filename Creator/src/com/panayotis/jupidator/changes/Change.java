@@ -16,7 +16,7 @@ public class Change {
     private boolean accepted = true;
 
     public Change(FileItem item, FileItem base) {
-        entry = item.getRelative(base);
+        entry = item.getRelativePath(base);
     }
 
     @Override

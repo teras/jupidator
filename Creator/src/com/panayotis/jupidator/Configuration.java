@@ -10,10 +10,21 @@ package com.panayotis.jupidator;
  */
 public class Configuration {
 
-    public static final Configuration current = new Configuration();
-    private boolean useMD5 = false;
-    private boolean useSHA1 = false;
-    private boolean useSHA2 = false;
+    private boolean useMD5;
+    private boolean useSHA1;
+    private boolean useSHA2;
+    private boolean useZip;
+    private boolean useZipRecursively;
+    //
+    public static final Configuration current = new Configuration(true, false, false, true, false);
+
+    public Configuration(boolean useMD5, boolean useSHA1, boolean useSHA2, boolean useZip, boolean useZipRecursively) {
+        this.useMD5 = useMD5;
+        this.useSHA1 = useSHA1;
+        this.useSHA2 = useSHA2;
+        this.useZip = useZip;
+        this.useZipRecursively = useZipRecursively;
+    }
 
     public boolean useMD5() {
         return useMD5;
@@ -37,5 +48,21 @@ public class Configuration {
 
     public void setSHA2(boolean useSHA2) {
         this.useSHA2 = useSHA2;
+    }
+
+    public boolean useZip() {
+        return useZip;
+    }
+
+    public void setZip(boolean useZip) {
+        this.useZip = useZip;
+    }
+
+    public boolean useZipRecursively() {
+        return useZipRecursively;
+    }
+
+    public void setZipRecursively(boolean useZipRecursively) {
+        this.useZipRecursively = useZipRecursively;
     }
 }

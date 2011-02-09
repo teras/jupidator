@@ -4,13 +4,22 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.changes.ChangeList;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.security.MessageDigest;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  *
@@ -56,11 +65,7 @@ public class FileItem {
         return file.toURI();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof FileItem))
-            return false;
-        FileItem other = (FileItem) o;
+    public boolean equals(FileItem other, boolean useZip) {
         if (file.isDirectory() || other.file.isDirectory())
             return false;
         if (!file.getName().equals(other.file.getName()))
@@ -68,6 +73,8 @@ public class FileItem {
         if (file.length() != other.file.length())
             return false;
 
+        if (useZip && isZip() && other.isZip())
+            return compareZip(other);
         if (Configuration.current.useMD5() && (!MD5().equals(other.MD5())))
             return false;
         if (Configuration.current.useSHA1() && (!SHA1().equals(other.SHA1())))
@@ -75,6 +82,13 @@ public class FileItem {
         if (Configuration.current.useSHA2() && (!SHA2().equals(other.SHA2())))
             return false;
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof FileItem))
+            return false;
+        return equals((FileItem) o, Configuration.current.useZip());
     }
 
     @Override
@@ -94,8 +108,56 @@ public class FileItem {
         return digest("sha-256");
     }
 
-    private String digest(String algorithm) {
-        if (file.isDirectory())
+    private boolean compareZip(FileItem other) {
+        try {
+            File out1 = File.createTempFile("creator", null);
+            File out2 = File.createTempFile("creator", null);
+            out1.delete();
+            out2.delete();
+            unzip(out1);
+            other.unzip(out2);
+            ChangeList list = new ChangeList(out1.getAbsolutePath(), out2.getAbsolutePath(), Configuration.current.useZipRecursively());
+            rmTree(out1);
+            rmTree(out2);
+            return list.getSize() == 0;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    public String getRelativePath(FileItem relative) {
+        String mine = file.getAbsolutePath();
+        String base = relative.isDirectory()
+                ? relative.file.getAbsolutePath() + "/"
+                : relative.file.getParentFile().getAbsolutePath() + "/";
+        int pos = 0;
+        int bl = base.length();
+        int ml = mine.length();
+        int last = 0;
+        char ch = 0;
+        while (bl > pos && ml > pos && (ch = base.charAt(pos)) == mine.charAt(pos)) {
+            if (ch == File.separatorChar)
+                last = pos;
+            pos++;
+        }
+        if (pos == 0)
+            return mine;
+        int countslash = 0;
+        pos = last + 1;
+        while (bl > pos) {
+            if (base.charAt(pos) == File.separatorChar)
+                countslash++;
+            pos++;
+        }
+        StringBuilder out = new StringBuilder();
+        while ((countslash--) > 0)
+            out.append("../");
+        out.append(mine.substring(last + 1));
+        return out.toString();
+    }
+
+    public String digest(String algorithm) {
+        if (isDirectory())
             return "";
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
@@ -112,49 +174,83 @@ public class FileItem {
         }
     }
 
-    private String bytesToString(byte[] digest) {
+    private static String bytesToString(byte[] digest) {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < digest.length; i++)
             out.append(Integer.toHexString(digest[i]));
         return out.toString();
     }
 
-    public String getRelative(FileItem relative) {
-        String mine = file.getAbsolutePath();
-        String base = relative.file.isDirectory()
-                ? relative.file.getAbsolutePath() + "/"
-                : relative.file.getParentFile().getAbsolutePath() + "/";
-        System.out.println("    M=" + mine);
-        System.out.println("    B=" + base);
+    private void unzip(File dirout) {
+        ZipFile zfile = null;
+        try {
+            zfile = new ZipFile(file);
+            Enumeration<? extends ZipEntry> entries = zfile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if (!entry.isDirectory()) {
+                    File fout = new File(dirout, entry.getName());
+                    fout.getParentFile().mkdirs();
+                    copyInputStream(zfile.getInputStream(entry), new FileOutputStream(fout));
+                }
+            }
 
-        int pos = 0;
-        int bl = base.length();
-        int ml = mine.length();
-        int last = 0;
-        char ch = 'a';
-        while (bl > pos && ml > pos && (ch = base.charAt(pos)) == mine.charAt(pos)) {
-            System.out.print(ch);
-            if (ch == File.separatorChar)
-                last = pos;
-            pos++;
+        } catch (IOException ex) {
+        } finally {
+            if (zfile != null)
+                try {
+                    zfile.close();
+                } catch (IOException ex) {
+                }
         }
-        System.out.println(" * " + ch);
-        if (pos == 0)
-            return mine;
-        System.out.println(">>" + mine.substring(last + 1));
+    }
 
-        int countslash = 0;
-        pos = last + 1;
-        while (bl > pos) {
-            if (base.charAt(pos) == File.separatorChar)
-                countslash++;
-            pos++;
+    private static void copyInputStream(InputStream in, OutputStream out) {
+        try {
+            byte[] buffer = new byte[4096];
+            int len;
+            while ((len = in.read(buffer)) >= 0)
+                out.write(buffer, 0, len);
+        } catch (IOException ex) {
+        } finally {
+            try {
+                in.close();
+            } catch (IOException ex) {
+            }
+            try {
+                out.close();
+            } catch (IOException ex) {
+            }
         }
+    }
 
-        StringBuilder out = new StringBuilder();
-        while ((countslash--) > 0)
-            out.append("../");
-        out.append(mine.substring(last + 1));
-        return out.toString();
+    private boolean isZip() {
+        ZipFile zfile = null;
+        try {
+            zfile = new ZipFile(file);
+            return true;
+        } catch (IOException ex) {
+            return false;
+        } finally {
+            if (zfile != null)
+                try {
+                    zfile.close();
+                } catch (IOException ex) {
+                }
+        }
+    }
+
+    private static String rmTree(File req) {
+        if (!req.exists() || req == null)
+            return null;
+        if (req.isDirectory())
+            for (File file : req.listFiles()) {
+                String res = rmTree(file);
+                if (res != null)
+                    return res;
+            }
+        if (req.delete())
+            return null;
+        return "Unable to delete file " + req.getPath();
     }
 }

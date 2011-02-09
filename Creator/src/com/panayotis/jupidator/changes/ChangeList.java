@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator.changes;
 
+import com.panayotis.jupidator.Configuration;
 import com.panayotis.jupidator.FileItem;
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,15 +19,23 @@ public class ChangeList {
     private final FileItem base;
 
     public ChangeList(String f1, String f2) {
-        this(f1, f2, null);
+        this(f1, f2, null, Configuration.current.useZip());
     }
 
     public ChangeList(String f1, String f2, String base) {
-        this.base = new FileItem(f2, base);
-        getChanges(new FileItem(f1), new FileItem(f2));
+        this(f1, f2, base, Configuration.current.useZip());
     }
 
-    private void getChanges(FileItem one, FileItem two) {
+    public ChangeList(String f1, String f2, boolean useZip) {
+        this(f1, f2, null, useZip);
+    }
+
+    private ChangeList(String f1, String f2, String base, boolean useZip) {
+        this.base = new FileItem(f2, base);
+        getChanges(new FileItem(f1), new FileItem(f2), useZip);
+    }
+
+    private void getChanges(FileItem one, FileItem two, boolean useZip) {
         if (one.isDirectory())
             if (two.isDirectory()) {
                 FileItem f1, f2;
@@ -39,7 +48,7 @@ public class ChangeList {
                         removeItem(f1);
                     else {
                         set2.remove(key);
-                        getChanges(f1, f2);
+                        getChanges(f1, f2, useZip);
                     }
                 }
                 for (String key : set2.keySet())
@@ -51,7 +60,7 @@ public class ChangeList {
         else if (two.isDirectory()) {
             removeItem(one);
             addItem(two);
-        } else if (!one.equals(two))
+        } else if (!one.equals(two, useZip))
             addItem(two);
     }
 
@@ -85,5 +94,10 @@ public class ChangeList {
 
     public void setAcceptable(int index, boolean value) {
         list.get(index).setAccepted(value);
+    }
+
+    @Override
+    public String toString() {
+        return "[size=" + list.size() + " " + list.toString() + "]";
     }
 }
