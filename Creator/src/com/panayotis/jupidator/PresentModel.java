@@ -29,12 +29,22 @@ public class PresentModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return list.getChange(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                return list.isAcceptable(rowIndex);
+            default:
+                return list.getChange(rowIndex);
+        }
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return Change.class;
+        switch (columnIndex) {
+            case 0:
+                return Boolean.class;
+            default:
+                return Change.class;
+        }
     }
 
     @Override
@@ -44,7 +54,6 @@ public class PresentModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        System.out.println("hey");
         if (columnIndex == 0)
             list.setAcceptable(rowIndex, ((Boolean) aValue));
     }

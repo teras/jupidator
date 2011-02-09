@@ -35,8 +35,7 @@ public class CreatorFrame extends javax.swing.JFrame {
 
     private void updateTree() {
         ItemsT.setModel(new PresentModel(DataModel.current.getChangeList()));
-        ItemsT.getColumnModel().getColumn(0).setCellRenderer(new TableRenderers.UseRenderer());
-        ItemsT.getColumnModel().getColumn(1).setCellRenderer(new TableRenderers.InfoRenderer());
+        ItemsT.setDefaultRenderer(Change.class, new TableRenderers());
         for (int i = 0; i < 1; i++) {
             ItemsT.getColumnModel().getColumn(i).setPreferredWidth(32);
             ItemsT.getColumnModel().getColumn(i).setMaxWidth(32);
