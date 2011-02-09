@@ -26,7 +26,7 @@ public class TableRenderers extends DefaultTableCellRenderer {
             setBackground(table.getSelectionBackground());
         else
             setBackground(item.willRemove() ? RED : GREEN);
-        setIcon(item.toFileItem().getIcon());
+        setIcon(item.getIcon());
         setText(item.toString());
         return this;
     }

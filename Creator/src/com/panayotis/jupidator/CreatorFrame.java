@@ -25,6 +25,8 @@ public class CreatorFrame extends javax.swing.JFrame {
     public CreatorFrame() {
         initComponents();
         updateConfig();
+        chooser.putClientProperty("JFileChooser.packageIsTraversable", "always");
+        chooser.putClientProperty("JFileChooser.appBundleIsTraversable", "always");
     }
 
     private void updateConfig() {

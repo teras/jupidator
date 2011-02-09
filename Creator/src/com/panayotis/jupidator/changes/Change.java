@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.changes;
 
 import com.panayotis.jupidator.FileItem;
+import javax.swing.Icon;
 
 /**
  *
@@ -36,6 +37,10 @@ public abstract class Change {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public Icon getIcon() {
+        return item.getIcon();
     }
 
     public abstract boolean willRemove();

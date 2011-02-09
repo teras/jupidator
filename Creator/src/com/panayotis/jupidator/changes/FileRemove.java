@@ -5,6 +5,7 @@
 package com.panayotis.jupidator.changes;
 
 import com.panayotis.jupidator.FileItem;
+import javax.swing.Icon;
 
 /**
  *
@@ -12,12 +13,20 @@ import com.panayotis.jupidator.FileItem;
  */
 public class FileRemove extends Change {
 
-    public FileRemove(FileItem item, FileItem base) {
+    private final Icon fileicon;
+
+    public FileRemove(FileItem item, FileItem olditem, FileItem base) {
         super(item, base);
+        fileicon = olditem.getIcon();
     }
 
     @Override
     public boolean willRemove() {
         return true;
+    }
+
+    @Override
+    public Icon getIcon() {
+        return fileicon;
     }
 }

@@ -41,8 +41,6 @@ public class FileItem {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        if (!this.file.canRead())
-            throw new RuntimeException("Unable to read form file " + this.file.getPath());
     }
 
     public Map<String, FileItem> getChildren() {
