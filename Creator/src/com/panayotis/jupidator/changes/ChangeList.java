@@ -4,7 +4,6 @@
  */
 package com.panayotis.jupidator.changes;
 
-import com.panayotis.jupidator.Configuration;
 import com.panayotis.jupidator.FileItem;
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,11 +18,11 @@ public class ChangeList {
     private final FileItem base;
 
     public ChangeList(String f1, String f2) {
-        this(f1, f2, null, Configuration.current.useZip());
+        this(f1, f2, null, DataModel.current.useZip());
     }
 
     public ChangeList(String f1, String f2, String base) {
-        this(f1, f2, base, Configuration.current.useZip());
+        this(f1, f2, base, DataModel.current.useZip());
     }
 
     public ChangeList(String f1, String f2, boolean useZip) {
@@ -84,8 +83,8 @@ public class ChangeList {
         return list.size();
     }
 
-    public String getItem(int index) {
-        return list.get(index).toString();
+    public Change getChange(int index) {
+        return list.get(index);
     }
 
     public boolean isAcceptable(int index) {

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.jupidator;
 
 /**
@@ -18,5 +17,4 @@ public class Creator {
         CreatorFrame frame = new CreatorFrame();
         frame.setVisible(true);
     }
-
 }

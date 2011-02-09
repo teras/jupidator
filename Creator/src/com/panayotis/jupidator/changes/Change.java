@@ -10,18 +10,24 @@ import com.panayotis.jupidator.FileItem;
  *
  * @author teras
  */
-public class Change {
+public abstract class Change {
 
     private final String entry;
+    private final FileItem item;
     private boolean accepted = true;
 
     public Change(FileItem item, FileItem base) {
         entry = item.getRelativePath(base);
+        this.item = item;
     }
 
     @Override
     public String toString() {
         return entry;
+    }
+
+    public FileItem toFileItem() {
+        return item;
     }
 
     public boolean isAccepted() {
@@ -31,4 +37,6 @@ public class Change {
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
     }
+
+    public abstract boolean willRemove();
 }

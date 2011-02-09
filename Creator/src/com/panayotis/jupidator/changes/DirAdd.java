@@ -15,4 +15,9 @@ public class DirAdd extends Change {
     public DirAdd(FileItem item, FileItem base) {
         super(item, base);
     }
+
+    @Override
+    public boolean willRemove() {
+        return false;
+    }
 }

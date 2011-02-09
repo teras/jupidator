@@ -15,4 +15,9 @@ public class FileAdd extends Change {
     public FileAdd(FileItem item, FileItem base) {
         super(item, base);
     }
+
+    @Override
+    public boolean willRemove() {
+        return false;
+    }
 }

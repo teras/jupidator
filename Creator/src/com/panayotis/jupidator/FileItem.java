@@ -4,6 +4,7 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.changes.DataModel;
 import com.panayotis.jupidator.changes.ChangeList;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,10 +17,10 @@ import java.security.MessageDigest;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -27,6 +28,7 @@ import java.util.zip.ZipFile;
  */
 public class FileItem {
 
+    private static final JFileChooser ICONFACTORY = new JFileChooser();
     private final File file;
 
     public FileItem(String file) {
@@ -44,7 +46,7 @@ public class FileItem {
     }
 
     public Map<String, FileItem> getChildren() {
-        if (!file.isDirectory())
+        if (!isDirectory())
             return null;
         HashMap<String, FileItem> children = new HashMap<String, FileItem>();
         for (File f : file.listFiles())
@@ -66,7 +68,7 @@ public class FileItem {
     }
 
     public boolean equals(FileItem other, boolean useZip) {
-        if (file.isDirectory() || other.file.isDirectory())
+        if (isDirectory() || other.isDirectory())
             return false;
         if (!file.getName().equals(other.file.getName()))
             return false;
@@ -75,11 +77,11 @@ public class FileItem {
 
         if (useZip && isZip() && other.isZip())
             return compareZip(other);
-        if (Configuration.current.useMD5() && (!MD5().equals(other.MD5())))
+        if (DataModel.current.useMD5() && (!MD5().equals(other.MD5())))
             return false;
-        if (Configuration.current.useSHA1() && (!SHA1().equals(other.SHA1())))
+        if (DataModel.current.useSHA1() && (!SHA1().equals(other.SHA1())))
             return false;
-        if (Configuration.current.useSHA2() && (!SHA2().equals(other.SHA2())))
+        if (DataModel.current.useSHA2() && (!SHA2().equals(other.SHA2())))
             return false;
         return true;
     }
@@ -88,7 +90,7 @@ public class FileItem {
     public boolean equals(Object o) {
         if (!(o instanceof FileItem))
             return false;
-        return equals((FileItem) o, Configuration.current.useZip());
+        return equals((FileItem) o, DataModel.current.useZip());
     }
 
     @Override
@@ -116,7 +118,7 @@ public class FileItem {
             out2.delete();
             unzip(out1);
             other.unzip(out2);
-            ChangeList list = new ChangeList(out1.getAbsolutePath(), out2.getAbsolutePath(), Configuration.current.useZipRecursively());
+            ChangeList list = new ChangeList(out1.getAbsolutePath(), out2.getAbsolutePath(), DataModel.current.useZipRecursively());
             rmTree(out1);
             rmTree(out2);
             return list.getSize() == 0;
@@ -252,5 +254,9 @@ public class FileItem {
         if (req.delete())
             return null;
         return "Unable to delete file " + req.getPath();
+    }
+
+    public Icon getIcon() {
+        return ICONFACTORY.getIcon(file);
     }
 }

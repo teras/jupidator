@@ -15,4 +15,9 @@ public class FileRemove extends Change {
     public FileRemove(FileItem item, FileItem base) {
         super(item, base);
     }
+
+    @Override
+    public boolean willRemove() {
+        return true;
+    }
 }

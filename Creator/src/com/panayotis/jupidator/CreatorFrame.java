@@ -10,7 +10,10 @@
  */
 package com.panayotis.jupidator;
 
-import com.panayotis.jupidator.changes.ChangeList;
+import com.panayotis.jupidator.changes.Change;
+import com.panayotis.jupidator.changes.DataModel;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -21,8 +24,24 @@ public class CreatorFrame extends javax.swing.JFrame {
     /** Creates new form CreatorFrame */
     public CreatorFrame() {
         initComponents();
-        oldT.setText("/Users/teras/Works/Development/Java/__jubler/Jubler4.6.1.app");
-        nowT.setText("/Users/teras/Works/Development/Java/__jubler/Jubler.app/");
+        updateConfig();
+    }
+
+    private void updateConfig() {
+        originT.setText(DataModel.current.getOrigin());
+        targetT.setText(DataModel.current.getTarget());
+        offsetT.setText(DataModel.current.getOffset());
+    }
+
+    private void updateTree() {
+        ItemsT.setModel(new PresentModel(DataModel.current.getChangeList()));
+        ItemsT.getColumnModel().getColumn(0).setCellRenderer(new TableRenderers.UseRenderer());
+        ItemsT.getColumnModel().getColumn(1).setCellRenderer(new TableRenderers.InfoRenderer());
+        for (int i = 0; i < 1; i++) {
+            ItemsT.getColumnModel().getColumn(i).setPreferredWidth(32);
+            ItemsT.getColumnModel().getColumn(i).setMaxWidth(32);
+            ItemsT.getColumnModel().getColumn(i).setMinWidth(32);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -37,52 +56,73 @@ public class CreatorFrame extends javax.swing.JFrame {
         chooser = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        oldT = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        originT = new javax.swing.JTextField();
+        originB = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        nowT = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        targetT = new javax.swing.JTextField();
+        targetB = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        offsetT = new javax.swing.JTextField();
+        offsetB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         ItemsT = new javax.swing.JTable();
 
         chooser.setDialogTitle("Select directory");
-        chooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+        chooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(3, 0));
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        oldT.setColumns(20);
-        jPanel4.add(oldT, java.awt.BorderLayout.CENTER);
+        originT.setColumns(20);
+        originT.setText(DataModel.current.getOrigin());
+        jPanel4.add(originT, java.awt.BorderLayout.CENTER);
 
-        jButton1.setText("Browse");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        originB.setText("Browse");
+        originB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                originBActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton1, java.awt.BorderLayout.EAST);
+        jPanel4.add(originB, java.awt.BorderLayout.EAST);
 
-        jPanel1.add(jPanel4, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jPanel4);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        nowT.setColumns(20);
-        jPanel5.add(nowT, java.awt.BorderLayout.CENTER);
+        targetT.setColumns(20);
+        targetT.setText(DataModel.current.getTarget());
+        jPanel5.add(targetT, java.awt.BorderLayout.CENTER);
 
-        jButton2.setText("Browse");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        targetB.setText("Browse");
+        targetB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                targetBActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2, java.awt.BorderLayout.EAST);
+        jPanel5.add(targetB, java.awt.BorderLayout.EAST);
 
-        jPanel1.add(jPanel5, java.awt.BorderLayout.SOUTH);
+        jPanel1.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        offsetT.setColumns(20);
+        offsetT.setText(DataModel.current.getOffset());
+        jPanel6.add(offsetT, java.awt.BorderLayout.CENTER);
+
+        offsetB.setText("Browse");
+        offsetB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                offsetBActionPerformed(evt);
+            }
+        });
+        jPanel6.add(offsetB, java.awt.BorderLayout.EAST);
+
+        jPanel1.add(jPanel6);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -98,6 +138,7 @@ public class CreatorFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
+        ItemsT.setRowHeight(20);
         jScrollPane1.setViewportView(ItemsT);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -105,34 +146,48 @@ public class CreatorFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        chooser.showOpenDialog(this);
-        oldT.setText(chooser.getSelectedFile().getPath());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void originBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originBActionPerformed
+        chooser.setCurrentDirectory(new File(DataModel.current.getOrigin()));
+        if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+            return;
+        DataModel.current.setOrigin(chooser.getSelectedFile().getPath());
+        updateConfig();
+    }//GEN-LAST:event_originBActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        chooser.showOpenDialog(this);
-        nowT.setText(chooser.getSelectedFile().getPath());
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void targetBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_targetBActionPerformed
+        chooser.setCurrentDirectory(new File(DataModel.current.getTarget()));
+        if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+            return;
+        DataModel.current.setTarget(chooser.getSelectedFile().getAbsolutePath());
+        updateConfig();
+    }//GEN-LAST:event_targetBActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ItemsT.setModel(new PresentModel(new ChangeList(oldT.getText(), nowT.getText(), "Contents/Resources/Java")));
-        ItemsT.getColumnModel().getColumn(0).setPreferredWidth(50);
-        ItemsT.getColumnModel().getColumn(0).setMaxWidth(32);
-        ItemsT.getColumnModel().getColumn(0).setMinWidth(32);
+        updateTree();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void offsetBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_offsetBActionPerformed
+        chooser.setCurrentDirectory(new File(DataModel.current.getTarget()));
+        if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+            return;
+        DataModel.current.setOffset(chooser.getSelectedFile().getAbsolutePath());
+        updateConfig();
+    }//GEN-LAST:event_offsetBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable ItemsT;
     private javax.swing.JFileChooser chooser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nowT;
-    private javax.swing.JTextField oldT;
+    private javax.swing.JButton offsetB;
+    private javax.swing.JTextField offsetT;
+    private javax.swing.JButton originB;
+    private javax.swing.JTextField originT;
+    private javax.swing.JButton targetB;
+    private javax.swing.JTextField targetT;
     // End of variables declaration//GEN-END:variables
 }
