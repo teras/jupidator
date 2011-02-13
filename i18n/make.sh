@@ -57,7 +57,8 @@ mkdir -p "$SELF/$TARGET/$CLASSDIR"
 for FILE in *.class ; do
 	DEST="$SELF/$TARGET/$CLASSDIR/$FILE"
 	if [ "$DEST" -ot "$FILE" ] ; then
-		cp "$FILE" "$DEST"
-		echo Copying $FILE
+		mv "$FILE" "$DEST"
+		echo Moving $FILE
 	fi
 done
+rm -rf "$BUILD"
