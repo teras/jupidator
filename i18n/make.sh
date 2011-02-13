@@ -32,8 +32,11 @@ if [ ! -d $BUILD ] ; then
 	mkdir $BUILD
 	rm -f $PROJECT.pot
 	cd "$SELF/$SRC" >/dev/null
-	xgettext  --from-code=utf-8 -k_ `find . | grep '.java$'` -d . -o "$SELF/$PROJECT.pot"
+	xgettext --sort-by-file --from-code=utf-8 -k_ `find . | grep '.java$'` -d . -o "$SELF/$PROJECT.pot_u"
+	grep -v <"$SELF/$PROJECT.pot_u" >"$SELF/$PROJECT.pot" "POT-Creation-Date"
+	rm "$SELF/$PROJECT.pot_u"
 fi
+
 
 # Make resource files
 cd "$SELF"
@@ -43,6 +46,8 @@ for FILE in *.po ; do
 		printf "Remaking po file for language \"$LNG\""
 		msgmerge --no-fuzzy-matching --update --indent --sort-by-file --backup=none "$LNG.po" "$PROJECT.pot"
 		if [ $? != 0 ] ; then exit 1; fi
+		grep -v <"$LNG.po" >"$LNG.po_nd" "POT-Creation-Date"
+		mv "$LNG.po_nd" "$LNG.po"
 		
 		JAVAC=javac msgfmt -d . --java2 --resource="$CLASSPATH.${PREFIX}$LNG" "$FILE"
 		if [ $? != 0 ] ; then exit 1; fi
