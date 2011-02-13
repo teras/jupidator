@@ -259,14 +259,6 @@ public class MyAppUpdate implements UpdatedApplication {
 	<listitem><para><varname>LogList</varname>: Display full changelog information.</para></listitem>
 	<listitem><para><varname>SystemLook</varname>: Use system look and feel. Not applicable to console UI.</para></listitem>
 </itemizedlist>
-</sect3>
-
-<sect3>
-<title>ConsoleGUI</title>
-<itemizedlist>
-</itemizedlist>
-</sect3>
-
 </sect2>
 
 <sect2>
