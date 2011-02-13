@@ -6,7 +6,6 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Tomas Bambas <conyx@seznam.cz>\n"
         "Language-Team: cs <LL@li.org>\n"
@@ -15,16 +14,16 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:59
+#: com/panayotis/jupidator/ApplicationInfo.java:57
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:65
+#: com/panayotis/jupidator/Updater.java:64
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:197
+#: com/panayotis/jupidator/Updater.java:196
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -74,33 +73,33 @@ msgstr  "Nemohu odstranit stažený soubor {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Soubor {0} bude odstraněn, pokud existuje."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:90
+#: com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:164
+#: com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Deployer cesta {0} není zapisovatelná."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:171
+#: com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:176
-#: com/panayotis/jupidator/elements/FileUtils.java:187
+#: com/panayotis/jupidator/elements/FileUtils.java:177
+#: com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Deployer uložen v {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:183
+#: com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:193
+#: com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  "Nemohu vytvořit Deployer"
 
@@ -135,63 +134,78 @@ msgstr  ""
 msgid   "Unable to initialize restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:36
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:42
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Nová verze programu {0} je k dispozici!"
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:37
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:43
 #, java-format
-msgid   "{0} version {1} is now available - you have {2}."
-msgstr  "{0} verze programu {1} je k dispozici - máte {2}."
+msgid   "{0} version {1} is now available"
+msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
-msgid   "Do you want to see the detailed changelog? [Y/n] "
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:38
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:44
+#, java-format
+msgid   "you have {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:46
+#, java-format
+msgid   "Welcome to the installation of {0}"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
+msgid   "Installation library"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+msgid   "Do you want to see the detailed changelog? [Y/n] "
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:56
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:59
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
 msgid   "Wrong answer."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:86
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:91
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:95
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:96
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:102
 msgid   "Cancel installation"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:107
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:111
 msgid   "Please wait..."
 msgstr  ""
 
@@ -219,7 +233,40 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:103
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+msgid   "Cancel"
+msgstr  "Storno"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:114
+msgid   "Downloading..."
+msgstr  "Stahuji..."
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:128
+msgid   "Release Notes"
+msgstr  "Poznámky k vydání"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:172
+msgid   "Details"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:185
+msgid   "Remind me later"
+msgstr  "Připomenout později"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:193
+msgid   "Install"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:201
+msgid   "Skip"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:213
+msgid   "WARNING! This update requires elevated privileges!"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:45
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Nová verze programu {0} nalezena!"
@@ -240,38 +287,9 @@ msgstr  "Aktualizace úspěšně staženy"
 msgid   "Restart application"
 msgstr  "Restartovat aplikaci"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
-msgid   "Cancel"
-msgstr  "Storno"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:130
 #, java-format
 msgid   "Download speed: {0}"
-msgstr  ""
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
-msgid   "Downloading..."
-msgstr  "Stahuji..."
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
-msgid   "Release Notes"
-msgstr  "Poznámky k vydání"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
-msgid   "Skip this version"
-msgstr  "Přeskočit tuto verzi"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
-msgid   "Remind me later"
-msgstr  "Připomenout později"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
-msgid   "Install Update"
-msgstr  "Instalovat Aktualizaci"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
-msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
 #: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:38
@@ -281,42 +299,3 @@ msgstr  "Verze"
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:22
 msgid   "List of changes:"
 msgstr  ""
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Soubor {0} nemůže být odstraněn."
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Spouštím {0}"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Nemohu stáhnout soubor {0}"
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"

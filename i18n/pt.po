@@ -7,7 +7,6 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2009-05-04 15:00-0300\n"
         "Last-Translator: doutor.zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@mail.kde.org>\n"
@@ -18,16 +17,16 @@ msgstr  "Project-Id-Version: pt\n"
         "X-Generator: KBabel 1.11.4\n"
         "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:59
+#: com/panayotis/jupidator/ApplicationInfo.java:57
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:65
+#: com/panayotis/jupidator/Updater.java:64
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:197
+#: com/panayotis/jupidator/Updater.java:196
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -77,33 +76,33 @@ msgstr  "Não foi possível apagar o arquivo baixado {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "O arquivo {0} será apagado, se existir."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:90
+#: com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:164
+#: com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "O caminho do Instalador {0} não é gravável."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:171
+#: com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:176
-#: com/panayotis/jupidator/elements/FileUtils.java:187
+#: com/panayotis/jupidator/elements/FileUtils.java:177
+#: com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Instalador armazenado em {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:183
+#: com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:193
+#: com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  "Não foi possível criar o Instalador"
 
@@ -138,63 +137,78 @@ msgstr  ""
 msgid   "Unable to initialize restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:36
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:42
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Uma nova versão do {0} está disponível!"
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:37
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:43
 #, java-format
-msgid   "{0} version {1} is now available - you have {2}."
-msgstr  "A versão do {0} {1} está disponível agora - você possui a {2}."
+msgid   "{0} version {1} is now available"
+msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
-msgid   "Do you want to see the detailed changelog? [Y/n] "
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:38
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:44
+#, java-format
+msgid   "you have {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:46
+#, java-format
+msgid   "Welcome to the installation of {0}"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
+msgid   "Installation library"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+msgid   "Do you want to see the detailed changelog? [Y/n] "
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:56
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:59
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
 msgid   "Wrong answer."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:86
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:91
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:95
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:96
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:102
 msgid   "Cancel installation"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:107
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:111
 msgid   "Please wait..."
 msgstr  ""
 
@@ -222,7 +236,40 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:103
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+msgid   "Cancel"
+msgstr  "Cancelar"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:114
+msgid   "Downloading..."
+msgstr  "Baixando..."
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:128
+msgid   "Release Notes"
+msgstr  "Notas da Versão"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:172
+msgid   "Details"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:185
+msgid   "Remind me later"
+msgstr  "Lembrar-me depois"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:193
+msgid   "Install"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:201
+msgid   "Skip"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:213
+msgid   "WARNING! This update requires elevated privileges!"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:45
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Foi encontrada uma nova versão do {0}!"
@@ -243,38 +290,9 @@ msgstr  "Atualizações baixadas com sucesso"
 msgid   "Restart application"
 msgstr  "Reiniciar aplicativo"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
-msgid   "Cancel"
-msgstr  "Cancelar"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:130
 #, java-format
 msgid   "Download speed: {0}"
-msgstr  ""
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
-msgid   "Downloading..."
-msgstr  "Baixando..."
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
-msgid   "Release Notes"
-msgstr  "Notas da Versão"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
-msgid   "Skip this version"
-msgstr  "Ignorar esta versão"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
-msgid   "Remind me later"
-msgstr  "Lembrar-me depois"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
-msgid   "Install Update"
-msgstr  "Instalar Atualização"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
-msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
 #: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:38
@@ -284,43 +302,3 @@ msgstr  "Versão"
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:22
 msgid   "List of changes:"
 msgstr  ""
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Executando {0}"
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Não foi possível remover o arquivo antigo baixado {0}"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "O arquivo {0} não pôde ser apagado."
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "O arquivo de destino {0} não é gravável."
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
-#~      "exigido {2}"
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Não foi possível baixar o arquivo {0}"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "O arquivo {0} foi apagado com sucesso"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."

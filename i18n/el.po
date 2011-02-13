@@ -6,7 +6,6 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-02-05 02:25+0200\n"
         "PO-Revision-Date: 2008-12-10 12:17+0200\n"
         "Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
         "Language-Team: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
@@ -18,16 +17,16 @@ msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "X-Poedit-Country: GREECE\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:59
+#: com/panayotis/jupidator/ApplicationInfo.java:57
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:65
+#: com/panayotis/jupidator/Updater.java:64
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:197
+#: com/panayotis/jupidator/Updater.java:196
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:121
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -77,33 +76,33 @@ msgstr  "Αδυναμία αφαίρεσης του κατεβασμένου α�
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Το αρχείο {0} θα διαγραφεί, αν υπάρχει."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:90
+#: com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:164
+#: com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:171
+#: com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:176
-#: com/panayotis/jupidator/elements/FileUtils.java:187
+#: com/panayotis/jupidator/elements/FileUtils.java:177
+#: com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Ο εκκινητής αποθηκεύτηκε στο {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:183
+#: com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:193
+#: com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  "Αδυναμία κατασκευής εκκινητή"
 
@@ -138,63 +137,78 @@ msgstr  ""
 msgid   "Unable to initialize restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:63
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:36
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:42
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Μία νέα έκδοση του {0} είναι διαθέσιμη!"
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:64
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:37
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:43
 #, java-format
-msgid   "{0} version {1} is now available - you have {2}."
-msgstr  "Η έκδοση {1} του {0} είναι διαθέσιμη - έχετε την {2}."
+msgid   "{0} version {1} is now available"
+msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
-msgid   "Do you want to see the detailed changelog? [Y/n] "
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:38
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:44
+#, java-format
+msgid   "you have {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:46
+#, java-format
+msgid   "Welcome to the installation of {0}"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
+msgid   "Installation library"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+msgid   "Do you want to see the detailed changelog? [Y/n] "
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:56
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:59
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
 msgid   "Wrong answer."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:86
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:91
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:95
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:96
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:102
 msgid   "Cancel installation"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:107
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:111
 msgid   "Please wait..."
 msgstr  ""
 
@@ -222,7 +236,40 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:65
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:103
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
+msgid   "Cancel"
+msgstr  "Ακύρωση"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:114
+msgid   "Downloading..."
+msgstr  "Λήψη..."
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:128
+msgid   "Release Notes"
+msgstr  "Πληροφορίες εκδόσεων"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:172
+msgid   "Details"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:185
+msgid   "Remind me later"
+msgstr  "Αναβολή"
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:193
+msgid   "Install"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:201
+msgid   "Skip"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingDialog.java:213
+msgid   "WARNING! This update requires elevated privileges!"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:45
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Βρέθηκε νέα έκδοση του {0}!"
@@ -243,38 +290,9 @@ msgstr  "Οι ενημερώσεις κατέβηκαν με επιτυχία"
 msgid   "Restart application"
 msgstr  "Επανεκκίνηση"
 
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:124
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:194
-msgid   "Cancel"
-msgstr  "Ακύρωση"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:138
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:130
 #, java-format
 msgid   "Download speed: {0}"
-msgstr  ""
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:205
-msgid   "Downloading..."
-msgstr  "Λήψη..."
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:227
-msgid   "Release Notes"
-msgstr  "Πληροφορίες εκδόσεων"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:264
-msgid   "Skip this version"
-msgstr  "Προσπέραση"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:277
-msgid   "Remind me later"
-msgstr  "Αναβολή"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:285
-msgid   "Install Update"
-msgstr  "Εγκατάσταση"
-
-#: com/panayotis/jupidator/gui/swing/SwingGUI.java:297
-msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
 #: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:38
@@ -284,52 +302,3 @@ msgstr  "Έκδοση"
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:22
 msgid   "List of changes:"
 msgstr  ""
-
-#~ msgid        "Unable to cleanup downloaded file {0}"
-#~ msgstr       "Αδυναμία αφαίρεσης του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Ακύρωση ενημέρωσης: Δε θα διαγραφεί το αρχείο {0}"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Δε μπορεί να διαγραφεί το αρχείο {0}."
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Το αρχείο ενημέρωσης δε μπορεί να είναι null"
-
-#~ msgid        "Successfully cleanup downloaded file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του αρχείου {0}"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Το  μέγεθος του αρχείου {0} είναι λάθος. Βρέθηκε {1}, "
-#~      "απαιτείται {2}"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Επιτυχής διαγραφή του κατεβασμένου αρχείου {0}"
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Δεν είναι δυνατή η αφαίρεση του παλιού αρχείου {0}"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Εκτέλεση {0}"
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Αδυναμία κατά το κατέβασμα του {0}"
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Το αρχείο προορισμού {0} δεν είναι εγγράψιμο."
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Αδυναμία εύρεσης της διαδρομής της εφαρμογής: {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Δεν μπορεί να είναι null η διαδρομή της εφαρμογής"
-
-#~ msgid        "File {0} sucessfully downloaded."
-#~ msgstr       "Το αρχείο {0} κατέβηκε με επιτυχία"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Έλεγχος της διαδρομής {0} για τον εκκινητή."

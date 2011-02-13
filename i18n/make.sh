@@ -66,4 +66,5 @@ for FILE in *.class ; do
 		echo Moving $FILE
 	fi
 done
-rm -rf "$BUILD"
+cd ..
+rm -rf $BUILD
