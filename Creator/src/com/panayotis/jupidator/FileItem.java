@@ -6,6 +6,8 @@ package com.panayotis.jupidator;
 
 import com.panayotis.jupidator.changes.DataModel;
 import com.panayotis.jupidator.changes.ChangeList;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +19,7 @@ import java.security.MessageDigest;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.swing.Icon;
@@ -252,6 +255,22 @@ public class FileItem {
         if (req.delete())
             return null;
         return "Unable to delete file " + req.getPath();
+    }
+
+    private void compressFile(File source, File dest) throws IOException {
+        if (source.equals(dest))
+            throw new IOException("Source and destination file should not be the same");
+        if (dest.exists())
+            throw new IOException("File " + dest.getName() + " already exists!");
+        BufferedInputStream i = new BufferedInputStream(new FileInputStream(source));
+        BufferedOutputStream o = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(dest)));
+
+        byte[] buffer = new byte[1024];
+        int hm;
+        while ((hm = i.read(buffer)) > 0)
+            o.write(buffer, 0, hm);
+        i.close();
+        o.close();
     }
 
     public Icon getIcon() {
