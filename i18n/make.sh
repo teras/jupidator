@@ -16,6 +16,12 @@ CLASSDIR=`echo $CLASSPATH | sed -e 's/\./\//g'`
 
 export PATH=$PATH:/opt/local/bin/
 
+
+# Ignore if desired
+if [ "$1" == "ignore" ] ; then
+	exit
+fi
+
 # Cleanup if desired
 if [ "$1" == "clean" ] ; then
 	echo I18N Clean up
@@ -62,9 +68,7 @@ mkdir -p "$SELF/$TARGET/$CLASSDIR"
 for FILE in *.class ; do
 	DEST="$SELF/$TARGET/$CLASSDIR/$FILE"
 	if [ "$DEST" -ot "$FILE" ] ; then
-		mv "$FILE" "$DEST"
-		echo Moving $FILE
+		cp "$FILE" "$DEST"
+		echo Copying $FILE
 	fi
 done
-cd ..
-rm -rf $BUILD

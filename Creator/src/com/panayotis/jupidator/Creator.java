@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *
+ * This file is part of Jupidator.
+ *
+ * Jupidator is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ *
+ * Jupidator is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jupidator; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
  */
 package com.panayotis.jupidator;
 
@@ -17,10 +32,10 @@ public class Creator {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        for (File f : FileSystemView.getFileSystemView().getRoots() )
+        for (File f : FileSystemView.getFileSystemView().getRoots())
             System.out.println(f.getAbsolutePath());
-		System.out.println(FileSystemView.getFileSystemView().isFileSystemRoot(new File("/Volumes/FreeSpace")));
-        
+        System.out.println(FileSystemView.getFileSystemView().isFileSystemRoot(new File("/Volumes/FreeSpace")));
+
 
         CreatorFrame frame = new CreatorFrame();
         frame.setVisible(true);
