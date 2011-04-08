@@ -147,17 +147,18 @@ public class FileUtils {
         for (String path : dirs) {
             //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
             File[] entries = new File(path + File.separator + PACKAGEDIR).listFiles();
-            for (int i = 0; i < entries.length; i++) {
-                String status;
-                try {
-                    String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
-                    status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null);
-                    if (status != null)
-                        return status;
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+            if (entries != null)
+                for (int i = 0; i < entries.length; i++) {
+                    String status;
+                    try {
+                        String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
+                        status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null);
+                        if (status != null)
+                            return status;
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
         }
         return null;
     }
@@ -297,12 +298,15 @@ public class FileUtils {
     public static String rmTree(File req) {
         if (!req.exists() || req == null)
             return null;
-        if (req.isDirectory())
-            for (File file : req.listFiles()) {
-                String res = rmTree(file);
-                if (res != null)
-                    return res;
-            }
+        if (req.isDirectory()) {
+            File[] list = req.listFiles();
+            if (list != null)
+                for (File file : list) {
+                    String res = rmTree(file);
+                    if (res != null)
+                        return res;
+                }
+        }
         if (req.delete())
             return null;
         return _("Unable to delete file {0}", req.getPath());
