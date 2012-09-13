@@ -161,8 +161,7 @@ public class Updater {
                     elements.add(vers.get(key).getExecElement());
                 ArrayList<String> relaunch = new ArrayList<String>();
                 /* relaunch should be performed with original arguments, not jupidator update */
-                for (int i = 0; i < orig_vers.getArch().countArguments(); i++)
-                    relaunch.add(orig_vers.getArch().getArgument(i, orig_info));
+                relaunch.addAll(orig_vers.getArch().getCommand(orig_info));
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
                 params.addElement(AppVersion.construct(vers.getAppElements()).getXElement(appinfo.getApplicationHome()));

@@ -50,16 +50,16 @@ public class JupidatorDeployer {
                         for (XElement element : params.getElements())
                             element.perform();
 
-                        /* Relaunch application if applicable */
-                        List<String> command = params.getRelaunchCommand();
-                        if (command.size() < 1)
-                            Visuals.info("Unable to relaunch!");
-
                         /* Check if the installer should finish or not */
                         if (Visuals.finish()) {
-                            /* Exit installer */
+                            /* Relaunch application if applicable */
+                            List<String> command = params.getRelaunchCommand();
                             if (command.size() >= 1)
                                 new ProcessBuilder(command).start();
+                            else
+                                Visuals.info("No vaslid relaunch command found!");
+
+                            /* Exit installer */
                             finishWithStatus(0);
                         }
                     } catch (Exception ex) {

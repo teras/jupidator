@@ -23,6 +23,7 @@ package com.panayotis.jupidator.data;
 import com.panayotis.jupidator.ApplicationInfo;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,7 +35,7 @@ public class Arch implements Serializable {
     private String os;
     private String arch;
     private String exec;
-    private ArrayList<String> arguments;
+    private List<String> arguments;
 
     /* Default arch "any" */
     public Arch() {
@@ -78,7 +79,7 @@ public class Arch implements Serializable {
     }
 
     void setExec(String exec) {
-        this.exec = exec;
+        this.exec = exec != null && exec.isEmpty() ? null : exec;
     }
 
     void addArgument(String argument, ApplicationInfo appinfo) {
@@ -86,15 +87,11 @@ public class Arch implements Serializable {
             arguments.add(appinfo.applyVariables(argument));
     }
 
-    public int countArguments() {
-        return arguments.size() + 1;
-    }
-
-    public String getArgument(int index, ApplicationInfo appinfo) {
-        if (index == 0)
-            return appinfo.applyVariables(exec);
-        if (index > 0 && index <= arguments.size())
-            return arguments.get(index - 1);
-        throw new ArrayIndexOutOfBoundsException("Not valid index for architecture arguments: " + index);
+    public List<String> getCommand(ApplicationInfo appinfo) {
+        List<String> comm = new ArrayList<String>();
+        if (exec != null)
+            comm.add(exec);
+        comm.addAll(arguments);
+        return comm;
     }
 }
