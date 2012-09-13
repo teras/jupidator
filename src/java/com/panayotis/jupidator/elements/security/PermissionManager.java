@@ -111,7 +111,7 @@ public class PermissionManager implements Serializable {
         command.add("-cp");
         command.add(workdir.getAbsolutePath());
         command.add(JupidatorDeployer.class.getName());
-        command.add(paramfile.getAbsolutePath());
+        command.add(workdir.getAbsolutePath());
 
         /* Debug launch command */
         StringBuilder debug = new StringBuilder("Relaunch command: ");

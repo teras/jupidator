@@ -218,7 +218,7 @@ public class Visuals extends javax.swing.JFrame {
     }//GEN-LAST:event_ShowBActionPerformed
 
     private void AckBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AckBActionPerformed
-        System.exit(0);
+        JupidatorDeployer.finishWithStatus(-1);
     }//GEN-LAST:event_AckBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AckB;

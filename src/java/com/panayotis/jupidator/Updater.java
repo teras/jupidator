@@ -29,11 +29,12 @@ import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
-import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import jupidator.launcher.AppVersion;
 import jupidator.launcher.DeployerParameters;
 import jupidator.launcher.XElement;
 
@@ -55,6 +56,14 @@ public class Updater {
     private JupidatorGUI gui;
     private UpdateWatcher watcher;
     private ProcessBuilder procbuilder;
+
+    public Updater(String xmlurl, String appHome, UpdatedApplication application) throws UpdaterException {
+        this(xmlurl, new ApplicationInfo(appHome), application);
+    }
+
+    public Updater(String xmlurl, String appHome, String appSupportDir, UpdatedApplication application) throws UpdaterException {
+        this(xmlurl, new ApplicationInfo(appHome, appSupportDir), application);
+    }
 
     public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
         this(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application);
@@ -156,6 +165,7 @@ public class Updater {
                     relaunch.add(orig_vers.getArch().getArgument(i, orig_info));
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
+                params.addElement(AppVersion.construct(vers.getAppElements()).getXElement(appinfo.getApplicationHome()));
                 params.setHeadless(gui.isHeadless());
                 params.setRelaunchCommand(relaunch);
                 params.setLogLocation(appinfo.getApplicationSupportDir());

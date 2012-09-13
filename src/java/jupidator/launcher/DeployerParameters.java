@@ -46,6 +46,10 @@ public class DeployerParameters implements Serializable {
         this.elements = elements;
     }
 
+    public void addElement(XElement element) {
+        elements.add(element);
+    }
+
     public void setHeadless(boolean headless) {
         this.headless = headless;
     }

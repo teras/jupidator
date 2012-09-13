@@ -18,7 +18,7 @@
  *
  */
 
-package com.panayotis.jupidator.statics;
+package com.panayotis.jupidator.versioning;
 
 /**
  *

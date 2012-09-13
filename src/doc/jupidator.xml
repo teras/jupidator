@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<updatelist application="Jupidator" baseurl="http://www.panayotis.com/versions/jupidator" icon="icons/jubler.png">
+<updatelist application="Jupidator" baseurl="http://www.panayotis.com/versions/jupidator">
 
-    <version release="300" version="0.3.0">
-        <description>Checksumming support of downloaded files. Improved support of "any" tag. Introduced support of "all" tag. Fixed issues when ignoring versions. Self-update of jupidator support.</description>
-    </version>
+	<version release="700" version="0.7">
+		<arch name="all">
+			<file name="jupidator.jar" sourcedir="0.7" destdir="${APPHOME}" size="117538" compress="gz"/>
+		</arch>
+		<description>Versioning is independent of the main application. Default architecture "any" for versions with missing "arch" entry. Updated API.</description>
+	</version>
 
-    <version release="200" version="0.2.0">
-        <description>Support was added for the "exec" element to execute native commands, "wait" to pause the deployer, and 
+	<version release="600" version="0.6">
+		<arch name="all">
+			<file name="jupidator.jar" sourcedir="0.6" destdir="${APPHOME}" size="117538" compress="gz"/>
+		</arch>
+		<description><![CDATA[Mirrors Support. <p><b>WARNING: Application restart might fail to do so, due to updates of the Jupidator library. You can safely ignore this problem.</b></p>]]></description>
+	</version>
+
+	 <version release="500" version="0.5">
+		<description>Administrator rights are supported. Stability improvements were made.</description>
+	</version>
+
+	<version release="300" version="0.3">
+		<description>Checksumming support of downloaded files. Improved support of "any" tag. Introduced support of "all" tag. Fixed issues when ignoring versions. Self-update of jupidator support.</description>
+	</version>
+
+	<version release="200" version="0.2">
+		<description>Support was added for the "exec" element to execute native commands, "wait" to pause the deployer, and 
 "kill" to kill native applications. The updater now could be a stand alone application; it does not longer the updated appli
 cation to be written in Java. The console is supported as a valid UI in headless environments. "About" information was added
  in the Swing GUI. The developer can set properties in UI elements. The documentation was improved. Translations were added 
 in Spanish and Brazilian Portuguese. </description>
-    </version>
+	</version>
 
-    <version release="100" version="0.1.0">
-        <description>Initial Jupidator release</description>
-    </version>
+	<version release="100" version="0.1">
+		<description>Initial Jupidator release</description>
+	</version>
 </updatelist>

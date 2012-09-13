@@ -49,6 +49,8 @@ public class Arch implements Serializable {
     }
 
     Version getVersion(String tag) {
+        if (tag == null)
+            tag = "any";
         tag = tag.toLowerCase();
         if (tag.equals(this.tag) || tag.equals("any") || tag.equals("all")) {
             Version found = new Version();

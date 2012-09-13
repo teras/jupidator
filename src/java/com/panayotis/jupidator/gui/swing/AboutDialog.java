@@ -25,7 +25,7 @@
  */
 package com.panayotis.jupidator.gui.swing;
 
-import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.versioning.SystemVersion;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
@@ -108,7 +108,7 @@ class AboutDialog extends javax.swing.JDialog {
         jLabel4.setText(_("Jupidator is a library for automatic updating of applications."));
         jPanel5.add(jLabel4);
 
-        jLabel5.setText(_("It is open source under the LGPL licence."));
+        jLabel5.setText(_("It is open source under the LGPL license."));
         jPanel5.add(jLabel5);
 
         jLabel6.setText(_("More info can be found in: http://jupidator.sourceforge.net"));

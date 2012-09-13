@@ -1,147 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
 <project name="jupidator" default="default" basedir=".">
-    <description>Builds, tests, and runs the project jupidator.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
+	<description>Builds, tests, and runs the project jupidator.</description>
+	<import file="nbproject/build-impl.xml"/>
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
+	<taskdef name="DTDDoc" onerror="report" classname="DTDDoc.DTDDocTask" classpath="../../Tools/dtddoc/DTDDoc.jar"/>
+	<property name="version" value="0.6.0"/>
 
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
+	<target name="doc" depends="dtddoc">
+		<mkdir dir="dist/doc"/>
+		<exec dir="dist/doc" executable="xmlto" failonerror="false">
+			<arg line="html-nochunks ../../src/doc/Documentation.xml"/>
+		</exec>
+	</target>
 
-    (Targets beginning with '-' are not intended to be called on their own.)
+	<target name="dtddoc">
+		<DTDDoc sourceDir="src/doc" destDir="dist/doc/dtd" docTitle = "Jupidator DTD">
+			<include name="*.dtd"/>
+		</DTDDoc>
+	</target>
 
-    Example of inserting an obfuscator after compilation could look like this:
+	<target name="dist" depends="clean,doc,jar">
+		<delete dir="build"/>
+		<tar compression="bzip2" destfile="../jupidator-${version}.tar.bz2">
+			<tarfileset dir="../jupidator" prefix="jupidator">
+				<exclude name=".hgignore"/>
+				<exclude name="**/nbproject/private/**"/>
+				<exclude name=".hgtags"/>
+				<exclude name="**/.hg/**"/>
+				<exclude name="**/i18n/build/**"/>
+			</tarfileset>
+		</tar>
+		<move file="../jupidator-${version}.tar.bz2" todir="."/>
+	</target>
 
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
+	<target name="-post-clean">
+		<delete>
+		<fileset dir="." includes="*.tar.bz2"/>
+		</delete>
+		<delete dir="dist/doc" />
+		<delete dir="update" />
+		<exec dir="i18n" executable="bash" failonerror="true"> <arg line="make.sh clean"/> </exec>
+		<ant dir="Creator" target="clean" inheritAll="false"/>
+	</target>
 
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
+	<target name="-post-compile">
+		<exec dir="i18n" executable="bash" failonerror="true"> <arg line="make.sh"/> <arg line="${use.i18n}"/> </exec>
+	</target>
 
+	<target name="-post-jar">
+		<delete file="dist/README.txt"/>
+	</target>
 
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
+	<target name="ignore_i18n">
+		<exec executable="hg" failonerror="true"> <arg line="revert i18n --no-backup --all"/> </exec>
+	</target>
 
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar-with-manifest:    JAR building (if you are using a manifest)
-      -do-jar-without-manifest: JAR building (if you are not using a manifest)
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
+	<target name="smalljar" depends="-noi18n,jar"/>
 
-    An example of overriding the target for project execution could look like this:
+	<target name="-noi18n">
+		<property name="use.i18n" value="ignore"/>
+	</target>
 
-        <target name="run" depends="jupidator-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
- 
-
-   -->
-
-<taskdef name="DTDDoc" onerror="report"
-	classname="DTDDoc.DTDDocTask"
-	classpath="../../Tools/dtddoc/DTDDoc.jar"/>
-
-
-<target name="doc" depends="dtddoc">
-	<mkdir dir="dist/doc"/>
-	<exec dir="dist/doc" executable="xmlto" failonerror="false">
-		<arg line="html-nochunks ../../src/doc/Documentation.xml"/>
-	</exec>
-</target>
-
-<target name="dtddoc">
-	<DTDDoc sourceDir="src/doc" destDir="dist/doc/dtd" docTitle = "Jupidator DTD">
-		<include name="*.dtd"/>
-	</DTDDoc>
-</target>
-
-<target name="dist" depends="clean,doc,jar">
-	<delete dir="build"/>
-	<tar compression="bzip2" destfile="../jupidator.0.6.0.tar.bz2">
-		<tarfileset dir="../jupidator" prefix="jupidator">
-			<exclude name=".hgignore"/>
-			<exclude name="**/nbproject/private/**"/>
-			<exclude name=".hgtags"/>
-			<exclude name="**/.hg/**"/>
-			<exclude name="**/i18n/build/**"/>
-		</tarfileset>
-	</tar>
-	<move file="../jupidator.0.6.0.tar.bz2" todir="."/>
-</target>
-
-<target name="-post-clean">
-    <delete>
-	<fileset dir="." includes="*.tar.bz2"/>
-	</delete>
-	<delete dir="dist/doc" />
-	<delete dir="update" />
-	<exec dir="i18n" executable="bash" failonerror="true">
-		<arg line="make.sh clean"/>
-	</exec>
-	<ant dir="Creator" target="clean" inheritAll="false"/>
-</target>
-
-<target name="-post-compile">
-	<exec dir="i18n" executable="bash" failonerror="true">
-		<arg line="make.sh"/>
-		<arg line="${use.i18n}"/>
-	</exec>
-</target>
-
-<target name="-post-jar">
-	<delete file="dist/README.txt"/>
-</target>
-
-<target name="ignore_i18n">
-	<exec executable="hg" failonerror="true">
-		<arg line="revert i18n --no-backup --all"/>
-	</exec>
-</target>
-
-<target name="smalljar" depends="-noi18n,jar"/>
-<target name="-noi18n">
-	<property name="use.i18n" value="ignore"/>
-</target>
-
-<target name="-pre-init">
-	<property name="use.i18n" value="build"/>
-</target>
+	<target name="-pre-init">
+		<property name="use.i18n" value="build"/>
+	</target>
+	
 
 </project>

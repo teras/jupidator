@@ -26,6 +26,7 @@ import com.panayotis.jupidator.elements.security.PermissionManager;
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
+import jupidator.launcher.AppVersion;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
@@ -44,6 +45,14 @@ public class ApplicationInfo implements Serializable {
     private boolean distributionBased = false;
     private boolean selfupdate;
 
+    public ApplicationInfo(String appHome) {
+        this(appHome, null, null, null);
+    }
+
+    public ApplicationInfo(String appHome, String appSupportDir) {
+        this(appHome, appSupportDir, null, null);
+    }
+
     public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
         vars = new HashMap<String, String>();
 
@@ -53,15 +62,21 @@ public class ApplicationInfo implements Serializable {
         vars.put("APPHOME", appHome);
         vars.put("APPSUPPORTDIR", appSupportDir);
 
-        if (version != null && (!version.equals("")))
-            vars.put("VERSION", version);
-
+        // Find versions
         int currelease = 0;
-        try {
-            currelease = Integer.parseInt(release);
-        } catch (NumberFormatException ex) {
+        if (release != null)
+            try {
+                currelease = Integer.parseInt(release);
+            } catch (NumberFormatException ex) {
+            }
+        AppVersion v = AppVersion.construct(appHome);
+        if (v != null && v.getRelease() > currelease) {
+            currelease = v.getRelease();
+            version = v.getVersion();
         }
         vars.put("RELEASE", Integer.toString(currelease));
+        if (version != null && (!version.equals("")))
+            vars.put("VERSION", version);
 
         updateIgnoreRelease("0");
 
@@ -87,6 +102,10 @@ public class ApplicationInfo implements Serializable {
 
     public String getApplicationSupportDir() {
         return vars.get("APPSUPPORTDIR");
+    }
+
+    public String getApplicationHome() {
+        return vars.get("APPHOME");
     }
 
     public String getUpdaterConfigFile() {

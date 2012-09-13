@@ -88,15 +88,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             visible_version = (appinfo == null) ? true : release_last > appinfo.getIgnoreRelease();
         } else if (qName.equals("description"))
             descbuffer = new StringBuilder();
-        else if (qName.equals("arch")) {
-            if (old_version)
-                return;
-            current = arch.getVersion(attr.getValue("name")); // If current architecture was found, return a new Version object
-            if (current != null) { // Check if this version is valid
-                current.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui"))); // check if GUI is required
-                current.setVisible(visible_version);    // Mark if this version should be visible or not
-            }
-        } else if (qName.equals("file")) {
+        else if (qName.equals("arch"))
+            current = getNewVersion(attr.getValue("name"), attr.getValue("gui"));
+        else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             lastFileElement = new ElementFile(attr.getValue("name"), attr.getValue("sourcedir"),
@@ -152,7 +146,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             String type = attr.getValue("type");
             if (type == null)
                 type = "256";
-            Digester d = Digester.getDigester("SHA-" + attr.getValue("type"));
+            Digester d = Digester.getDigester("SHA-" + attr.getValue(type));
             d.setHash(attr.getValue("value"));
             lastFileElement.addDigester(d);
         } else if (qName.equals("mirror"))
@@ -179,6 +173,17 @@ public class UpdaterXMLHandler extends DefaultHandler {
         return !TextUtils.isTrue(force);
     }
 
+    private Version getNewVersion(String name, String gui) {
+        if (old_version)
+            return null;
+        Version vers = arch.getVersion(name); // If current architecture was found, return a new Version object
+        if (vers != null) { // Check if this version is valid
+            vers.setGraphicalDeployer(TextUtils.isTrue(gui)); // check if GUI is required
+            vers.setVisible(visible_version);    // Mark if this version should be visible or not
+        }
+        return vers;
+    }
+
     @Override
     public void endElement(String uri, String localName, String qName) {
         if (qName.equals("arch")) {
@@ -197,7 +202,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
             }
             current = null;
         } else if (qName.equals("version")) {
-            old_version = false;
             Version working = current_any;
             if (current_exact != null)
                 working = current_exact;
@@ -207,12 +211,15 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 working.merge(current_all);
 
             current_any = current_exact = current_all = null;
+            if (working == null) // No arch tag - assuming "any"
+                working = getNewVersion(null, null);
             if (working != null)
                 if (latest == null) {
                     latest = working;
                     latest.tag_type = Version.UNKNOWN;
                 } else
                     latest.merge(working);
+            old_version = false;
         } else if (qName.equals("description")) {
             if (old_version)
                 return;

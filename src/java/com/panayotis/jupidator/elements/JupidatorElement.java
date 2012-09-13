@@ -44,10 +44,6 @@ public abstract class JupidatorElement implements Serializable {
     private final ExecutionTime exectime;
     private final boolean requiresPrivileges;
 
-    public ExecutionTime getExectime() {
-        return exectime;
-    }
-
     public JupidatorElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         this((file == null) ? null : new File(file).getName(), (file == null) ? null : new File(file).getParent(), elements, appinfo, exectime);
     }
@@ -56,6 +52,7 @@ public abstract class JupidatorElement implements Serializable {
         this(name, dest, "0", elements, appinfo, exectime);
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         if (appinfo == null)
             throw new NullPointerException(_("Application info not provided."));
@@ -76,12 +73,15 @@ public abstract class JupidatorElement implements Serializable {
         if (exectime == null)
             exectime = ExecutionTime.MID;
         this.exectime = exectime;
-
         requiresPrivileges = estimatePrivileges(elements);
     }
 
     protected boolean estimatePrivileges(UpdaterAppElements elements) {
         return PermissionManager.manager.estimatePrivileges(new File(getDestinationFile()));
+    }
+
+    public ExecutionTime getExectime() {
+        return exectime;
     }
 
     public String getHash() {

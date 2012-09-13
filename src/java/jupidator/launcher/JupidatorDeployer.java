@@ -6,7 +6,9 @@
 
 package jupidator.launcher;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
 
@@ -17,18 +19,24 @@ import java.util.List;
 public class JupidatorDeployer {
 
     private static DeployerParameters params;
+    private static String workdir;
 
     /**
-     * arg[0] = location of streamed DeployerParameters file
+     * arg[0] = location of working directory, where streamed DeployerParameters
+     * file exists
      *
      * @param args
      */
     public static void main(String[] args) {
-        ObjectInputStream in;
+        workdir = args[0];
+        ObjectInputStream in = null;
         try {
             /* Recreate parameters */
-            in = new ObjectInputStream(new FileInputStream(args[0]));
+            in = new ObjectInputStream(new FileInputStream(new File(workdir, "parameters")));
             params = (DeployerParameters) in.readObject();
+            in.close();
+            in = null;
+
             Visuals.setHeadless(params.isHeadless());
             Visuals.setLogPath(params.getLogLocation());
             Visuals.info("Start of Jupidator Deployer");
@@ -52,25 +60,35 @@ public class JupidatorDeployer {
                             /* Exit installer */
                             if (command.size() >= 1)
                                 new ProcessBuilder(command).start();
-                            System.exit(0);
+                            finishWithStatus(0);
                         }
                     } catch (Exception ex) {
-                        finishWithError(ex);
+                        errorWasFound(ex);
                     }
                 }
             };
             worker.start();
         } catch (Exception ex) {
-            finishWithError(ex);
+            if (in != null)
+                try {
+                    in.close();
+                } catch (IOException ex1) {
+                }
+            errorWasFound(ex);
         }
     }
 
-    private static void finishWithError(Exception ex) {
+    private static void errorWasFound(Exception ex) {
         StringBuilder buf = new StringBuilder("Exception found: ");
         buf.append(ex.toString()).append("\n");
         for (StackTraceElement stack : ex.getStackTrace())
             buf.append("       at ").append(stack.toString()).append("\n");
         Visuals.error(buf.toString());
         Visuals.finish();
+    }
+
+    static void finishWithStatus(int status) {
+        XFileModElement.safeDelete(new File(workdir));
+        System.exit(status);
     }
 }

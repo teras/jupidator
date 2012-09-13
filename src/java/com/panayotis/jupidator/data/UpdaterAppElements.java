@@ -23,7 +23,7 @@ package com.panayotis.jupidator.data;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
-import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.Serializable;
 
 import static com.panayotis.jupidator.i18n.I18N._;
