@@ -49,10 +49,19 @@ public abstract class XFileModElement extends XTargetElement {
         return f.delete();
     }
 
+    private static void shouldMakeHidden(File f) {
+        if (OperatingSystem.isWindows && f.getName().startsWith("."))
+            try {
+                Runtime.getRuntime().exec(new String[]{"attrib", "+H", f.getAbsolutePath()});
+            } catch (IOException ex) {
+            }
+    }
+
     protected static boolean safeMkDir(File dir) {
-        if (dir.exists())
-            return dir.isDirectory();
-        return dir.mkdirs();
+        boolean status = dir.exists() ? dir.isDirectory() : dir.mkdirs();
+        if (status)
+            shouldMakeHidden(dir);
+        return status;
     }
 
     protected static boolean safeMv(File from, File to) {
@@ -87,6 +96,7 @@ public abstract class XFileModElement extends XTargetElement {
                 out = new BufferedOutputStream(new FileOutputStream(to));
                 while ((hm = in.read(buffer)) > 0)
                     out.write(buffer, 0, hm);
+                shouldMakeHidden(to);
             } catch (IOException ex) {
                 status = false;
             } finally {

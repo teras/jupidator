@@ -69,8 +69,10 @@ public class AppVersion {
 
     private boolean store(File out) {
         Properties props = new Properties();
-        props.put("version", version);
-        props.put("release", String.valueOf(release));
+        if (release > 0) {
+            props.put("release", String.valueOf(release));
+            props.put("version", version == null ? "" : version);
+        }
         try {
             props.store(new FileOutputStream(out), null);
             return true;
