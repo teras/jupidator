@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator;
 
 /**
@@ -26,5 +27,6 @@ package com.panayotis.jupidator;
 public interface UpdatedApplication {
 
     public abstract boolean requestRestart();
+
     public abstract void receiveMessage(String message);
 }

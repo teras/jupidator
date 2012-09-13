@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements.security;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator.elements.security;
 
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.elements.FileUtils;
@@ -31,6 +30,8 @@ import jupidator.launcher.DeployerParameters;
 import jupidator.launcher.JSudo;
 import jupidator.launcher.JupidatorDeployer;
 import jupidator.launcher.OperatingSystem;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *

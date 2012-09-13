@@ -17,18 +17,20 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.elements.mirror.MirrorList;
-import static com.panayotis.jupidator.i18n.I18N._;
-
-import com.panayotis.jupidator.statics.SystemVersion;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
+import com.panayotis.jupidator.statics.SystemVersion;
 import java.io.Serializable;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  * This information is gathered for the library from the XML file
+ *
  * @author teras
  */
 public class UpdaterAppElements implements Serializable {

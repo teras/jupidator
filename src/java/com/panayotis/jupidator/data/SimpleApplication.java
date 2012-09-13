@@ -35,5 +35,4 @@ public class SimpleApplication implements UpdatedApplication {
     public void receiveMessage(String message) {
         System.err.println(message);
     }
-
 }

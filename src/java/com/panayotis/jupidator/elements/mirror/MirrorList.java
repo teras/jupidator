@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements.mirror;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.elements.FileUtils;
@@ -30,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *

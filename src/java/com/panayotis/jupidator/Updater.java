@@ -17,26 +17,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator;
 
-import static com.panayotis.jupidator.i18n.I18N._;
-
-import com.panayotis.jupidator.statics.SystemVersion;
+import com.panayotis.jupidator.data.SimpleApplication;
+import com.panayotis.jupidator.data.Version;
 import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
-import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
-import com.panayotis.jupidator.data.Version;
-import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
+import com.panayotis.jupidator.statics.SystemVersion;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import jupidator.launcher.DeployerParameters;
 import jupidator.launcher.XElement;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *
@@ -86,9 +87,10 @@ public class Updater {
         this.application = application;
     }
 
-    /** Return JupidatorGUI, and create it if it does not exist.
-     *  This is the official method to create the default GUI
-     *  GUI is created lazily, when needed
+    /**
+     * Return JupidatorGUI, and create it if it does not exist. This is the
+     * official method to create the default GUI GUI is created lazily, when
+     * needed
      */
     public JupidatorGUI getGUI() {
         if (gui == null)
@@ -120,7 +122,6 @@ public class Updater {
             size += vers.get(key).getSize();
         watcher.setAllBytes(size);
         download = new Thread() {
-
             @Override
             public void run() {
                 /* Fetch */

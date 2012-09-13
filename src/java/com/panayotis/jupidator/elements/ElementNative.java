@@ -17,12 +17,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
-import com.panayotis.jupidator.gui.BufferListener;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import com.panayotis.jupidator.gui.BufferListener;
 
 /**
  *

@@ -17,18 +17,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.elements.ElementFile;
 import com.panayotis.jupidator.elements.ElementChmod;
 import com.panayotis.jupidator.elements.ElementChown;
 import com.panayotis.jupidator.elements.ElementExec;
+import com.panayotis.jupidator.elements.ElementFile;
 import com.panayotis.jupidator.elements.ElementKill;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.ElementWait;
-import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.elements.mirror.Mirror;
+import com.panayotis.jupidator.elements.security.Digester;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 

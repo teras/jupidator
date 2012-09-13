@@ -17,18 +17,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
-import jupidator.launcher.XElement;
 import java.io.File;
 import java.io.Serializable;
+import jupidator.launcher.XElement;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *
@@ -114,25 +115,32 @@ public abstract class JupidatorElement implements Serializable {
 
     /**
      * This method downloads files for this element.
+     *
      * @return Error message, or null if everything is fine
      */
     public abstract String fetch(UpdatedApplication application, BufferListener blisten);
 
     /**
-     * This method performs housekeeping work for this element (i.e. unzip files).
+     * This method performs housekeeping work for this element (i.e. unzip
+     * files).
+     *
      * @return Error message, or null if everything is fine
      */
     public abstract String prepare(UpdatedApplication application);
 
     /**
      * This method cancels action and rolls back everything
+     *
      * @param application
      */
     public abstract void cancel(UpdatedApplication application);
 
     /**
-     * Use this method to provide the actual work to be done, when updating the application
-     * @return the object which will perform this work. It should be under package com.panayotis.jupidator.launcher
+     * Use this method to provide the actual work to be done, when updating the
+     * application
+     *
+     * @return the object which will perform this work. It should be under
+     * package com.panayotis.jupidator.launcher
      */
     public abstract XElement getExecElement();
 }

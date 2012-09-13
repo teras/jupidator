@@ -24,42 +24,40 @@ package com.panayotis.jupidator.i18n;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-
 /**
  *
  * @author teras
  */
 public class I18N {
+
     private static ResourceBundle b;
-    
     private static final String PATH = "com.panayotis.jupidator.i18n.Messages";
-    
+
     static {
         String lang = System.getProperty("user.language");
         String country = System.getProperty("user.country");
-        
-        setLang("_"+lang+"_"+country);
-        if (b==null) {
-            setLang("_"+lang);
-            if (b==null) {
+
+        setLang("_" + lang + "_" + country);
+        if (b == null) {
+            setLang("_" + lang);
+            if (b == null)
                 setLang("");
-            }
         }
     }
-    
-    public static String ngettext(String single, String plural, long n, Object... args ) {
+
+    public static String ngettext(String single, String plural, long n, Object... args) {
         String format = GettextResource.ngettext(b, single, plural, n);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
-    
+
     public static String _(String msg, Object... args) {
         String format = GettextResource.gettext(b, msg);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
-    
+
     private static void setLang(String langcode) {
         try {
-            b = (ResourceBundle)Class.forName(PATH+langcode).newInstance();
+            b = (ResourceBundle) Class.forName(PATH + langcode).newInstance();
         } catch (ClassNotFoundException e) {
         } catch (InstantiationException e) {
         } catch (IllegalAccessException e) {

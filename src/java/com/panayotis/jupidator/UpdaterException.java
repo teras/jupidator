@@ -26,7 +26,7 @@ package com.panayotis.jupidator;
  */
 public class UpdaterException extends Exception {
 
-    public UpdaterException (String message) {
+    public UpdaterException(String message) {
         super(message);
     }
 }

@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator;
 
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
@@ -28,16 +27,19 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import static com.panayotis.jupidator.i18n.I18N._;
+
 /**
  * This information is given to the library from the runtime environment
+ *
  * @author teras
  */
 public class ApplicationInfo implements Serializable {
 
     private HashMap<String, String> vars;
     /**
-    true:  Some files can be ignored, if they are taken care by a distribution
-    false: All files should be  updated
+     * true: Some files can be ignored, if they are taken care by a distribution
+     * false: All files should be updated
      */
     private boolean distributionBased = false;
     private boolean selfupdate;

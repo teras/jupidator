@@ -3,6 +3,7 @@
  *
  * Created on September 29, 2008, 5:10 PM
  */
+
 package jupidator.launcher;
 
 import java.io.FileInputStream;
@@ -19,7 +20,8 @@ public class JupidatorDeployer {
 
     /**
      * arg[0] = location of streamed DeployerParameters file
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         ObjectInputStream in;
@@ -32,8 +34,7 @@ public class JupidatorDeployer {
             Visuals.info("Start of Jupidator Deployer");
 
             /* Run after visuals have been initialized */
-            Thread worker = new Thread()    {
-
+            Thread worker = new Thread() {
                 @Override
                 public void run() {
                     try {

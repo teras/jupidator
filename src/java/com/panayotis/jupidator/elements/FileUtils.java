@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.UpdatedApplication;
@@ -24,8 +25,6 @@ import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.BufferedReader;
-import static com.panayotis.jupidator.i18n.I18N._;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *

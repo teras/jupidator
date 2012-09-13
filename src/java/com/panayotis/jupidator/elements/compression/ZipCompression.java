@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements.compression;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator.elements.compression;
 
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.File;
@@ -29,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *
@@ -62,10 +63,13 @@ public class ZipCompression implements CompressionMethod {
                 }
             } else if (files.size() > 1) {
                 /**
-                 * We have a package.
-                 * Since we are using a lazy installation scheme, unzip all files in a temporary folder one level deep than the actual required folder.
-                 * Thus, if the output file is a regular file, just perform a rename. If it is a directory (thus we have a package), move all files one directory up.
-                 * With this trick, it is possible to refrain the actual file manipulation in a latter time.
+                 * We have a package. Since we are using a lazy installation
+                 * scheme, unzip all files in a temporary folder one level deep
+                 * than the actual required folder. Thus, if the output file is
+                 * a regular file, just perform a rename. If it is a directory
+                 * (thus we have a package), move all files one directory up.
+                 * With this trick, it is possible to refrain the actual file
+                 * manipulation in a latter time.
                  */
                 packageBased = true;
                 for (ZipEntry entry : files) {

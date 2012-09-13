@@ -17,9 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
@@ -30,16 +29,18 @@ import com.panayotis.jupidator.elements.compression.GZipCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
-import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.elements.mirror.MirroredFile;
+import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
+import java.io.File;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
-import java.io.File;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
- * 
+ *
  * @author teras
  */
 public class ElementFile extends JupidatorElement {

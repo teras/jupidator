@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.elements.mirror;
 
+package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.data.TextUtils;
