@@ -15,16 +15,16 @@ msgstr  "Project-Id-Version: jupidator\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Generator: KBabel 1.11.4\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:90
+#: com/panayotis/jupidator/ApplicationInfo.java:99
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:88
+#: com/panayotis/jupidator/Updater.java:95
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:220
+#: com/panayotis/jupidator/Updater.java:228
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -110,11 +110,11 @@ msgstr  "No se ha podido crear el gestor del despliegue"
 msgid   "Unable to delete file {0}"
 msgstr  "No se ha podido eliminar el fichero {0}"
 
-#: com/panayotis/jupidator/elements/JupidatorElement.java:61
+#: com/panayotis/jupidator/elements/JupidatorElement.java:58
 msgid   "Application info not provided."
 msgstr  "No se ha proporcionado información de la aplicación."
 
-#: com/panayotis/jupidator/elements/JupidatorElement.java:63
+#: com/panayotis/jupidator/elements/JupidatorElement.java:60
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 

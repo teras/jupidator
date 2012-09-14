@@ -103,11 +103,7 @@ public class UpdaterAppElements implements Serializable {
     }
 
     void setJupidatorVersion(String jupidator_version) {
-        if (jupidator_version != null)
-            try {
-                needs_update = Integer.parseInt(jupidator_version) > SystemVersion.RELEASE;
-            } catch (NumberFormatException ex) {
-            }
+        needs_update = TextUtils.getInt(jupidator_version, 0) > SystemVersion.RELEASE;
     }
 
     void updateVersion(int lastrelease, String lastversion) {

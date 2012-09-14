@@ -16,8 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package jupidator.launcher;
+package com.panayotis.jupidator.versioning;
 
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import java.io.File;
@@ -25,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import jupidator.launcher.XEFile;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -50,7 +53,7 @@ public class AppVersion {
         } catch (IOException ex) {
             return null;
         }
-        return new AppVersion(props.getProperty("version", null), Integer.parseInt(props.getProperty("release", "0")));
+        return new AppVersion(props.getProperty("version", null), TextUtils.getInt(props.getProperty("release"), 0));
     }
 
     public static AppVersion construct(UpdaterAppElements elements) {

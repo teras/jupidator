@@ -77,11 +77,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             } else
                 lastSeenExecElement.addArgument(attr.getValue("value"), appinfo);
         else if (qName.equals("version")) {
-            int release_last = 0;
-            try {
-                release_last = Integer.parseInt(attr.getValue("release"));
-            } catch (NumberFormatException ex) {
-            }
+            int release_last = TextUtils.getInt(attr.getValue("release"), 0);
             String version_last = attr.getValue("version");
             elements.updateVersion(release_last, version_last);
             old_version = (appinfo == null) ? false : release_last <= appinfo.getRelease();

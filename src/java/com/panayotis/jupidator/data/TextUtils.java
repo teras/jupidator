@@ -76,4 +76,13 @@ public class TextUtils {
         m.appendTail(sb);
         return sb.toString().replace("/./", "/");
     }
+
+    public static int getInt(String value, int deflt) {
+        if (value != null)
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException ex) {
+            }
+        return deflt;
+    }
 }

@@ -23,10 +23,11 @@ package com.panayotis.jupidator;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
+import com.panayotis.jupidator.versioning.AppVersion;
+import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
-import jupidator.launcher.AppVersion;
 
 import static com.panayotis.jupidator.i18n.I18N._;
 
@@ -46,14 +47,27 @@ public class ApplicationInfo implements Serializable {
     private boolean selfupdate;
 
     public ApplicationInfo(String appHome) {
-        this(appHome, null, null, null);
+        this(appHome, null, 0, null, true);
     }
 
     public ApplicationInfo(String appHome, String appSupportDir) {
-        this(appHome, appSupportDir, null, null);
+        this(appHome, appSupportDir, 0, null, true);
     }
 
+    @Deprecated
     public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
+        this(appHome, appSupportDir, TextUtils.getInt(release, 0), version, true);
+    }
+
+    public ApplicationInfo(String appHome, String appSupportDir, int release, String version) {
+        this(appHome, appSupportDir, release, version, true);
+    }
+
+    static ApplicationInfo getSelfInfo(String appHome, String appSupportDir) {
+        return new ApplicationInfo(appHome, appSupportDir, SystemVersion.RELEASE, SystemVersion.VERSION, false);
+    }
+
+    private ApplicationInfo(String appHome, String appSupportDir, int release, String version, boolean useLocalStamp) {
         vars = new HashMap<String, String>();
 
         appHome = fixDir(appHome, "Application");
@@ -63,18 +77,14 @@ public class ApplicationInfo implements Serializable {
         vars.put("APPSUPPORTDIR", appSupportDir);
 
         // Find versions
-        int currelease = 0;
-        if (release != null)
-            try {
-                currelease = Integer.parseInt(release);
-            } catch (NumberFormatException ex) {
+        if (useLocalStamp) {    // Skip this part if self-updating
+            AppVersion v = AppVersion.construct(appHome);
+            if (v != null && v.getRelease() > release) {
+                release = v.getRelease();
+                version = v.getVersion();
             }
-        AppVersion v = AppVersion.construct(appHome);
-        if (v != null && v.getRelease() > currelease) {
-            currelease = v.getRelease();
-            version = v.getVersion();
         }
-        vars.put("RELEASE", Integer.toString(currelease));
+        vars.put("RELEASE", Integer.toString(release));
         if (version != null && (!version.equals("")))
             vars.put("VERSION", version);
 
@@ -114,12 +124,7 @@ public class ApplicationInfo implements Serializable {
 
     /* This new release has to do with ignoring a specific version */
     public final void updateIgnoreRelease(String release) {
-        int ignorerelease = 0;
-        try {
-            ignorerelease = Integer.parseInt(release);
-        } catch (NumberFormatException ex) {
-        }
-        vars.put("IGNORERELEASE", Integer.toString(ignorerelease));
+        vars.put("IGNORERELEASE", Integer.toString(TextUtils.getInt(release, 0)));
     }
 
     public int getRelease() {

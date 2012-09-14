@@ -22,6 +22,7 @@ package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XEWait;
@@ -33,14 +34,11 @@ import jupidator.launcher.XElement;
  */
 public class ElementWait extends JupidatorElement {
 
-    private int msecs = 1000;
+    private final int msecs;
 
     public ElementWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(String.valueOf(Math.random()), elements, appinfo, ExecutionTime.parse(exectime, ExecutionTime.BEFORE));
-        try {
-            this.msecs = Integer.parseInt(msecs);
-        } catch (NumberFormatException n) {
-        }
+        this.msecs = TextUtils.getInt(msecs, 1000);
     }
 
     @Override

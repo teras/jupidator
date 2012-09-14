@@ -17,16 +17,16 @@ msgstr  "Project-Id-Version: pt\n"
         "X-Generator: KBabel 1.11.4\n"
         "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:90
+#: com/panayotis/jupidator/ApplicationInfo.java:99
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:88
+#: com/panayotis/jupidator/Updater.java:95
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:220
+#: com/panayotis/jupidator/Updater.java:228
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -111,11 +111,11 @@ msgstr  "Não foi possível criar o Instalador"
 msgid   "Unable to delete file {0}"
 msgstr  "Não foi possível apagar o arquivo {0}"
 
-#: com/panayotis/jupidator/elements/JupidatorElement.java:61
+#: com/panayotis/jupidator/elements/JupidatorElement.java:58
 msgid   "Application info not provided."
 msgstr  "Não foram fornecidas informações sobre o aplicativo."
 
-#: com/panayotis/jupidator/elements/JupidatorElement.java:63
+#: com/panayotis/jupidator/elements/JupidatorElement.java:60
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 

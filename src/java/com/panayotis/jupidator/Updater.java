@@ -21,6 +21,7 @@
 package com.panayotis.jupidator;
 
 import com.panayotis.jupidator.data.SimpleApplication;
+import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.Version;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
@@ -29,12 +30,12 @@ import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
+import com.panayotis.jupidator.versioning.AppVersion;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import jupidator.launcher.AppVersion;
 import jupidator.launcher.DeployerParameters;
 import jupidator.launcher.XElement;
 
@@ -65,8 +66,13 @@ public class Updater {
         this(xmlurl, new ApplicationInfo(appHome, appSupportDir), application);
     }
 
-    public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
+    public Updater(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) throws UpdaterException {
         this(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application);
+    }
+
+    @Deprecated
+    public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
+        this(xmlurl, new ApplicationInfo(appHome, appSupportDir, TextUtils.getInt(release, 0), version), application);
     }
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
@@ -77,7 +83,7 @@ public class Updater {
             String oldname = vers.getAppElements().getAppName();
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
 
-            ApplicationInfo selfappinfo = new ApplicationInfo(FileUtils.getJupidatorHome(), CFGDIR, String.valueOf(SystemVersion.RELEASE), SystemVersion.VERSION);
+            ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getJupidatorHome(), CFGDIR);
             selfappinfo.setSelfUpdate();
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
@@ -164,7 +170,8 @@ public class Updater {
                 relaunch.addAll(orig_vers.getArch().getCommand(orig_info));
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
-                params.addElement(AppVersion.construct(vers.getAppElements()).getXElement(appinfo.getApplicationHome()));
+                if (!appinfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
+                    params.addElement(AppVersion.construct(vers.getAppElements()).getXElement(appinfo.getApplicationHome()));
                 params.setHeadless(gui.isHeadless());
                 params.setRelaunchCommand(relaunch);
                 params.setLogLocation(appinfo.getApplicationSupportDir());
