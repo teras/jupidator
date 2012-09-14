@@ -28,7 +28,9 @@ import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;
 import com.panayotis.jupidator.elements.compression.InvalidCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
+import com.panayotis.jupidator.elements.compression.TarBZCompression;
 import com.panayotis.jupidator.elements.compression.TarCompression;
+import com.panayotis.jupidator.elements.compression.TarGZCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.elements.mirror.MirroredFile;
@@ -60,16 +62,20 @@ public class ElementFile extends JupidatorElement {
         if (compress == null || compress.equals(""))
             compress = "none";
         String lcompress = compress.toLowerCase();
-        if (lcompress.equals("zip"))
+        if (lcompress.equals("none"))
+            compression = new NullCompression();
+        else if (lcompress.equals("zip"))
             compression = new ZipCompression();
-        else if (lcompress.equals("bzip2") || lcompress.equals("bz2"))
+        else if (lcompress.equals("bzip2") || lcompress.equals("bz2") || lcompress.equals("bz"))
             compression = new BZip2Compression(compress);
         else if (lcompress.equals("gz") || lcompress.equals("gzip"))
             compression = new GZipCompression(compress);
-        else if (lcompress.equals("none"))
-            compression = new NullCompression();
         else if (lcompress.equals("tar"))
-            compression = new TarCompression();
+            compression = new TarCompression(compress);
+        else if (lcompress.equals("tar.gz") || lcompress.equals("tar.gzip") || lcompress.equals("tgz"))
+            compression = new TarGZCompression(compress);
+        else if (lcompress.equals("tar.bz2") || lcompress.equals("tar.bz") || lcompress.equals("tar.bzip2") || lcompress.equals("tbz2") || lcompress.equals("tbz"))
+            compression = new TarBZCompression(compress);
         else
             compression = new InvalidCompression(compress);
 

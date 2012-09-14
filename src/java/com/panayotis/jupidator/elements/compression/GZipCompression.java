@@ -33,7 +33,7 @@ public class GZipCompression extends SingleFileCompression {
     private final String extension;
 
     public GZipCompression(String extension) {
-        this.extension = extension;
+        this.extension = "." + extension;
     }
 
     public String getFilenameExtension() {

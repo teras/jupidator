@@ -5,7 +5,10 @@
 		<arch name="all">
 			<file name="jupidator.jar" sourcedir="0.7" destdir="${APPHOME}" size="117538" compress="gz"/>
 		</arch>
-		<description>Versioning is independent of the main application. Default architecture "any" for versions with missing "arch" entry. Automatic hide dot files under Windows.</description>
+		<description>Support of tar, tar.gz, tar.bz2 files and packages.
+			Versioning is independent of the main application.
+			Default architecture "any" for versions with missing "arch" entry.
+			Automatic hide dot files under Windows.</description>
 	</version>
 
 	<version release="600" version="0.6">

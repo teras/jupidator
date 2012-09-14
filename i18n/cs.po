@@ -38,32 +38,37 @@ msgstr  ""
 msgid   "Unable to provide empty attribute for file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:99
+#: com/panayotis/jupidator/elements/ElementFile.java:111
+#, java-format
+msgid   "Invalid compression type: {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/elements/ElementFile.java:114
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:103
+#: com/panayotis/jupidator/elements/ElementFile.java:118
 #, java-format
 msgid   "Unable to create directory structure under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:107
+#: com/panayotis/jupidator/elements/ElementFile.java:122
 #, java-format
 msgid   "Could not remove old download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:109
+#: com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Could not remove old temporary file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:116
+#: com/panayotis/jupidator/elements/ElementFile.java:131
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "Soubor {0} úspěšně stažen."
 
-#: com/panayotis/jupidator/elements/ElementFile.java:125
+#: com/panayotis/jupidator/elements/ElementFile.java:140
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "Nemohu odstranit stažený soubor {0}"
@@ -73,37 +78,37 @@ msgstr  "Nemohu odstranit stažený soubor {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Soubor {0} bude odstraněn, pokud existuje."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:107
+#: com/panayotis/jupidator/elements/FileUtils.java:109
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:182
+#: com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Deployer cesta {0} není zapisovatelná."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:189
+#: com/panayotis/jupidator/elements/FileUtils.java:191
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
-#: com/panayotis/jupidator/elements/FileUtils.java:205
+#: com/panayotis/jupidator/elements/FileUtils.java:196
+#: com/panayotis/jupidator/elements/FileUtils.java:207
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Deployer uložen v {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:201
+#: com/panayotis/jupidator/elements/FileUtils.java:203
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:211
+#: com/panayotis/jupidator/elements/FileUtils.java:213
 msgid   "Unable to create Deployer"
 msgstr  "Nemohu vytvořit Deployer"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:313
+#: com/panayotis/jupidator/elements/FileUtils.java:315
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "Nemohu odstranit soubor {0}"

@@ -163,7 +163,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <itemizedlist>
 	<listitem><para><ulink url="dtd/jupidator.dtd.html#arch_name">name</ulink><function></function> : The name of this architecture, as defines with the architect element.</para></listitem>
 </itemizedlist>
-<para>Please have a look at <ulink url="dtd/jupidator.dtd.html#arch">the list of supported nested elements</ulink>. The most common element is <function><ulink url="dtd/jupidator.dtd.html#file">file</ulink></function>. This element is responsible to download files, or even packages if the <function><ulink url="dtd/jupidator.dtd.html#file_compress">compress</ulink>=["zip"|"tar"]</function> attribute is used.</para>
+<para>Please have a look at <ulink url="dtd/jupidator.dtd.html#arch">the list of supported nested elements</ulink>. The most common element is <function><ulink url="dtd/jupidator.dtd.html#file">file</ulink></function>. This element is responsible to download files, or even packages if the <function><ulink url="dtd/jupidator.dtd.html#file_compress">compress</ulink>=["zip"|"tar"|"tar.gz"|"tar.bz2"]</function> attribute is used.</para>
 </sect2>
 
 <sect2><title>XML example</title>

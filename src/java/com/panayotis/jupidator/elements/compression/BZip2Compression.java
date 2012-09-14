@@ -33,7 +33,7 @@ public class BZip2Compression extends SingleFileCompression {
     private final String extension;
 
     public BZip2Compression(String extension) {
-        this.extension = extension;
+        this.extension = "." + extension;
     }
 
     public String getFilenameExtension() {
@@ -42,6 +42,10 @@ public class BZip2Compression extends SingleFileCompression {
 
     @Override
     protected InputStream getCompressedStream(InputStream in) throws IOException {
+        return getStream(in);
+    }
+
+    public static InputStream getStream(InputStream in) throws IOException {
         char b = (char) in.read();
         char z = (char) in.read();
         if (b != 'B' && z != 'Z')

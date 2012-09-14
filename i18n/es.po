@@ -39,32 +39,37 @@ msgstr  ""
 msgid   "Unable to provide empty attribute for file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:99
+#: com/panayotis/jupidator/elements/ElementFile.java:111
+#, java-format
+msgid   "Invalid compression type: {0}"
+msgstr  ""
+
+#: com/panayotis/jupidator/elements/ElementFile.java:114
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:103
+#: com/panayotis/jupidator/elements/ElementFile.java:118
 #, java-format
 msgid   "Unable to create directory structure under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:107
+#: com/panayotis/jupidator/elements/ElementFile.java:122
 #, java-format
 msgid   "Could not remove old download file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:109
+#: com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Could not remove old temporary file {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/ElementFile.java:116
+#: com/panayotis/jupidator/elements/ElementFile.java:131
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "El fichero {0} ha sido descargado con éxito"
 
-#: com/panayotis/jupidator/elements/ElementFile.java:125
+#: com/panayotis/jupidator/elements/ElementFile.java:140
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "No se ha podido eliminar el fichero descargado {0}"
@@ -74,38 +79,38 @@ msgstr  "No se ha podido eliminar el fichero descargado {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "El fichero {0} será borrado, si existe."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:107
+#: com/panayotis/jupidator/elements/FileUtils.java:109
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:182
+#: com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "No se puede escribir en la ruta del gestor del gestor del despliegue "
         "{0}."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:189
+#: com/panayotis/jupidator/elements/FileUtils.java:191
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:194
-#: com/panayotis/jupidator/elements/FileUtils.java:205
+#: com/panayotis/jupidator/elements/FileUtils.java:196
+#: com/panayotis/jupidator/elements/FileUtils.java:207
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "El gestor del despliegue ha sido guardado en {0}"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:201
+#: com/panayotis/jupidator/elements/FileUtils.java:203
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:211
+#: com/panayotis/jupidator/elements/FileUtils.java:213
 msgid   "Unable to create Deployer"
 msgstr  "No se ha podido crear el gestor del despliegue"
 
-#: com/panayotis/jupidator/elements/FileUtils.java:313
+#: com/panayotis/jupidator/elements/FileUtils.java:315
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "No se ha podido eliminar el fichero {0}"
