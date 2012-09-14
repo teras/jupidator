@@ -20,11 +20,8 @@
 
 package com.panayotis.jupidator.elements.compression;
 
-import com.panayotis.jupidator.elements.FileUtils;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -33,30 +30,18 @@ import java.util.zip.GZIPInputStream;
  */
 public class GZipCompression extends SingleFileCompression {
 
-    public String decompress(File compressedfile, File outfile) {
-        FileInputStream fin = null;
-        FileOutputStream fout = null;
-        try {
-            fin = new FileInputStream(compressedfile);
-            fout = new FileOutputStream(outfile);
-            return FileUtils.copyFile(new GZIPInputStream(fin), fout, null);
-        } catch (IOException ex) {
-            return ex.getMessage();
-        } finally {
-            if (fin != null)
-                try {
-                    fin.close();
-                } catch (IOException ex) {
-                }
-            if (fout != null)
-                try {
-                    fout.close();
-                } catch (IOException ex) {
-                }
-        }
+    private final String extension;
+
+    public GZipCompression(String extension) {
+        this.extension = extension;
     }
 
     public String getFilenameExtension() {
-        return ".gz";
+        return extension;
+    }
+
+    @Override
+    protected InputStream getCompressedStream(InputStream in) throws IOException {
+        return new GZIPInputStream(in);
     }
 }

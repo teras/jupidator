@@ -26,7 +26,7 @@ import java.io.File;
  *
  * @author teras
  */
-public class NullCompression extends SingleFileCompression {
+public class NullCompression implements CompressionMethod {
 
     public String getFilenameExtension() {
         return "";
@@ -34,5 +34,9 @@ public class NullCompression extends SingleFileCompression {
 
     public String decompress(File compressedfile, File outfile) {
         return null;
+    }
+
+    public boolean isPackageBased() {
+        return false;
     }
 }

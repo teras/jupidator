@@ -119,7 +119,7 @@ msgstr  "Não foram fornecidas informações sobre o aplicativo."
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/compression/ZipCompression.java:78
+#: com/panayotis/jupidator/elements/compression/MultiFileCompression.java:66
 #, java-format
 msgid   "Unable to unpack under {0}"
 msgstr  ""

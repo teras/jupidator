@@ -83,7 +83,7 @@ public class PermissionManager implements Serializable {
 
     public ProcessBuilder getLaunchCommand(UpdatedApplication application, DeployerParameters params) throws IOException {
         /* Copy Jupidator classes */
-        String message = FileUtils.copyPackage(JupidatorDeployer.class.getPackage().getName(), workdir.getPath());
+        String message = FileUtils.copyJavaPackage(JupidatorDeployer.class.getPackage().getName(), workdir.getPath());
         if (message != null)
             throw new IOException(message);
         /* Store requested working elements */

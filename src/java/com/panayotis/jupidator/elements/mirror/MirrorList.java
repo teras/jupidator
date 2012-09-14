@@ -49,7 +49,7 @@ public class MirrorList {
                 URL url = mirror.getURL(file.getElements());
                 app.receiveMessage(_("Request URL {0}", url.toString()));
                 /* Download file */
-                String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher);
+                String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher, true);
                 /* Check download status */
                 if (status != null)
                     reason = status;

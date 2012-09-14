@@ -20,13 +20,47 @@
 
 package com.panayotis.jupidator.elements.compression;
 
+import com.panayotis.jupidator.elements.FileUtils;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  *
  * @author teras
  */
 public abstract class SingleFileCompression implements CompressionMethod {
 
+    public String decompress(File compressedfile, File outfile) {
+        BufferedInputStream fin = null;
+        BufferedOutputStream fout = null;
+        try {
+            fin = new BufferedInputStream(new FileInputStream(compressedfile));
+            fout = new BufferedOutputStream(new FileOutputStream(outfile));
+            return FileUtils.copyFile(getCompressedStream(fin), fout, null, false);
+        } catch (IOException ex) {
+            return ex.getMessage();
+        } finally {
+            if (fin != null)
+                try {
+                    fin.close();
+                } catch (IOException ex) {
+                }
+            if (fout != null)
+                try {
+                    fout.close();
+                } catch (IOException ex) {
+                }
+        }
+    }
+
     public boolean isPackageBased() {
         return false;
     }
+
+    protected abstract InputStream getCompressedStream(InputStream in) throws IOException;
 }

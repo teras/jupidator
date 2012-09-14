@@ -64,7 +64,7 @@ public class FileUtils {
         return null;
     }
 
-    public static String copyFile(InputStream in, OutputStream out, BufferListener blisten) {
+    public static String copyFile(InputStream in, OutputStream out, BufferListener blisten, boolean closeStreams) {
         String message = null;
         byte[] buffer = new byte[1024];
         int count;
@@ -80,25 +80,27 @@ public class FileUtils {
         } catch (IOException ex) {
             message = ex.getMessage();
         } finally {
-            try {
-                if (in != null)
-                    in.close();
-            } catch (IOException ex) {
-                if (message != null)
-                    message = ex.getMessage();
-            }
-            try {
-                if (out != null)
-                    out.close();
-            } catch (IOException ex) {
-                if (message != null)
-                    message = ex.getMessage();
+            if (closeStreams) {
+                try {
+                    if (in != null)
+                        in.close();
+                } catch (IOException ex) {
+                    if (message != null)
+                        message = ex.getMessage();
+                }
+                try {
+                    if (out != null)
+                        out.close();
+                } catch (IOException ex) {
+                    if (message != null)
+                        message = ex.getMessage();
+                }
             }
         }
         return message;
     }
 
-    public static String copyPackage(String PACKAGENAME, String FILEHOME) {
+    public static String copyJavaPackage(String PACKAGENAME, String FILEHOME) {
         String PACKAGEZIP = PACKAGENAME.replace('.', '/') + '/';
         String PACKAGEDIR = PACKAGEZIP.replace('/', File.separatorChar);
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
@@ -124,7 +126,7 @@ public class FileUtils {
                             FileOutputStream fout = null;
                             try {
                                 fout = new FileOutputStream(FILEOUT);
-                                String status = copyFile(zip.getInputStream(entry), fout, null);
+                                String status = copyFile(zip.getInputStream(entry), fout, null, true);
                                 if (status != null)
                                     return status;
                             } catch (IOException ex) {
@@ -153,7 +155,7 @@ public class FileUtils {
                     String status;
                     try {
                         String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
-                        status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null);
+                        status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null, true);
                         if (status != null)
                             return status;
                     } catch (FileNotFoundException ex) {
@@ -190,7 +192,7 @@ public class FileUtils {
             try {
                 ZipFile zip = new ZipFile(jar);
                 ZipEntry entry = zip.getEntry(CLASSPATH);
-                if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null) == null) {
+                if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null, true) == null) {
                     listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
                     return null;
                 }
@@ -201,7 +203,7 @@ public class FileUtils {
             listener.receiveMessage(_("Checking Directory {0} for Deployer class.", path));
             path = path + CLASSPATHSYSTEM;
             try {
-                if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null) == null) {
+                if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null, true) == null) {
                     listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
                     return null;
                 }

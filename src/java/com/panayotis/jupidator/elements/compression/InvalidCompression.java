@@ -20,19 +20,17 @@
 
 package com.panayotis.jupidator.elements.compression;
 
-import java.io.IOException;
-import java.io.InputStream;
-import org.apache.tools.bzip2.CBZip2InputStream;
+import java.io.File;
 
 /**
  *
  * @author teras
  */
-public class BZip2Compression extends SingleFileCompression {
+public class InvalidCompression implements CompressionMethod {
 
     private final String extension;
 
-    public BZip2Compression(String extension) {
+    public InvalidCompression(String extension) {
         this.extension = extension;
     }
 
@@ -40,12 +38,11 @@ public class BZip2Compression extends SingleFileCompression {
         return extension;
     }
 
-    @Override
-    protected InputStream getCompressedStream(InputStream in) throws IOException {
-        char b = (char) in.read();
-        char z = (char) in.read();
-        if (b != 'B' && z != 'Z')
-            in.reset();
-        return new CBZip2InputStream(in);
+    public String decompress(File compressedfile, File outfile) {
+        return null;
+    }
+
+    public boolean isPackageBased() {
+        return false;
     }
 }

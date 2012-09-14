@@ -26,7 +26,9 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.compression.BZip2Compression;
 import com.panayotis.jupidator.elements.compression.CompressionMethod;
 import com.panayotis.jupidator.elements.compression.GZipCompression;
+import com.panayotis.jupidator.elements.compression.InvalidCompression;
 import com.panayotis.jupidator.elements.compression.NullCompression;
+import com.panayotis.jupidator.elements.compression.TarCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.elements.mirror.MirroredFile;
@@ -55,17 +57,21 @@ public class ElementFile extends JupidatorElement {
     public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
 
-        if (compress == null)
+        if (compress == null || compress.equals(""))
             compress = "none";
-        compress = compress.toLowerCase();
-        if (compress.equals("zip"))
+        String lcompress = compress.toLowerCase();
+        if (lcompress.equals("zip"))
             compression = new ZipCompression();
-        else if (compress.equals("bzip2") || compress.equals("bz2"))
-            compression = new BZip2Compression();
-        else if (compress.equals("gz") || compress.equals("gzip"))
-            compression = new GZipCompression();
-        else
+        else if (lcompress.equals("bzip2") || lcompress.equals("bz2"))
+            compression = new BZip2Compression(compress);
+        else if (lcompress.equals("gz") || lcompress.equals("gzip"))
+            compression = new GZipCompression(compress);
+        else if (lcompress.equals("none"))
             compression = new NullCompression();
+        else if (lcompress.equals("tar"))
+            compression = new TarCompression();
+        else
+            compression = new InvalidCompression(compress);
 
         // Calculate source location
         source_location = new MirroredFile(source, getFileName(), info);
@@ -95,6 +101,9 @@ public class ElementFile extends JupidatorElement {
     }
 
     public String fetch(UpdatedApplication application, BufferListener watcher) {
+        if (compression instanceof InvalidCompression)
+            return _("Invalid compression type: {0}", compression.getFilenameExtension());
+
         if (download_location == null)
             return _("Can not initialize download file {0}", getFileName());
 
