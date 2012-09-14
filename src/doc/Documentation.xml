@@ -128,7 +128,7 @@ public class MyAppUpdate implements UpdatedApplication {
 <sect1 id="xmlscheme">
 <title>XML updater description</title>
 
-<para>Jupidator needs a <ulink url="dtd/index.html">XML</ulink> file to store the various updated files. In this section a brief introduction to core elements will be presented. For more information amd detailed documentation please refer to the <ulink url="dtd/index.html">DTD documentation</ulink> of this XML file.</para>
+<para>Jupidator needs a <ulink url="dtd/index.html">XML file</ulink> to store the various updated files. In this section a brief introduction to core elements will be presented. For more information amd detailed documentation please refer to the <ulink url="dtd/index.html">DTD documentation</ulink> of this XML file.</para>
 
 <sect2><title>Element updatelist</title>
 <para>The root element of this XML should be <function><ulink url="dtd/jupidator.dtd.html#updatelist">updatelist</ulink></function>. Required arguments are:</para>
