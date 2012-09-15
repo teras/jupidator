@@ -47,10 +47,12 @@ import static com.panayotis.jupidator.i18n.I18N._;
  */
 public class Updater {
 
-    private Version vers;
-    private Version orig_vers;
-    private ApplicationInfo appinfo;
-    private ApplicationInfo orig_info;
+    // The host information - the application that started the update
+    private Version hostVersion;
+    private ApplicationInfo hostInfo;
+    // The current version - could be either the application that started the update or Jupidator itself
+    private Version curVersion;
+    private ApplicationInfo curInfo;
     private UpdatedApplication application;
     private Thread download;
     /* Lazy components */
@@ -76,11 +78,12 @@ public class Updater {
     }
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
-        vers = Version.loadVersion(xmlurl, appinfo);
-        orig_vers = vers;
-        orig_info = appinfo;
-        if (vers.getAppElements().shouldUpdateLibrary()) {
-            String oldname = vers.getAppElements().getAppName();
+        curInfo = hostInfo = appinfo;
+        hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo);
+        this.application = application == null ? new SimpleApplication() : application;
+
+        if (curVersion.getAppElements().shouldUpdateLibrary()) {
+            String oldname = curVersion.getAppElements().getAppName();
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
 
             ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getJupidatorHome(), CFGDIR);
@@ -88,18 +91,13 @@ public class Updater {
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
             if (selfvers.isVisible()) {
-                selfvers.replaceArch(vers.getArch());
-                vers = selfvers;
-                appinfo = selfappinfo;
-                vers.getAppElements().setSelfUpdate(oldname);
-                vers.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
+                selfvers.replaceArch(curVersion.getArch());
+                curInfo = selfappinfo;
+                curVersion = selfvers;
+                curVersion.getAppElements().setSelfUpdate(oldname);
+                curVersion.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
             }
         }
-
-        this.appinfo = appinfo;
-        if (application == null)
-            application = new SimpleApplication();
-        this.application = application;
     }
 
     /**
@@ -122,26 +120,26 @@ public class Updater {
     }
 
     public void actionDisplay() throws UpdaterException {
-        if (vers.isVisible()) {
+        if (curVersion.isVisible()) {
             getGUI();  /* GUI is created lazily, when needed (very important) */
             watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
             watcher.setCallBack(gui);
-            gui.setInformation(this, vers.getAppElements(), appinfo);
+            gui.setInformation(this, curVersion.getAppElements(), curInfo);
             gui.startDialog();
         }
     }
 
     public void actionCommit() {
         long size = 0;
-        for (String key : vers.keySet())
-            size += vers.get(key).getSize();
+        for (String key : curVersion.keySet())
+            size += curVersion.get(key).getSize();
         watcher.setAllBytes(size);
         download = new Thread() {
             @Override
             public void run() {
                 /* Fetch */
-                for (String key : vers.keySet()) {
-                    String result = vers.get(key).fetch(application, watcher);
+                for (String key : curVersion.keySet()) {
+                    String result = curVersion.get(key).fetch(application, watcher);
                     if (result != null) {
                         watcher.stopWatcher();
                         application.receiveMessage(result);
@@ -152,8 +150,8 @@ public class Updater {
                 /* Prepare */
                 watcher.stopWatcher();
                 gui.setIndetermined();
-                for (String key : vers.keySet()) {
-                    String result = vers.get(key).prepare(application);
+                for (String key : curVersion.keySet()) {
+                    String result = curVersion.get(key).prepare(application);
                     if (result != null) {
                         application.receiveMessage(result);
                         gui.errorOnCommit(result);
@@ -163,18 +161,19 @@ public class Updater {
 
                 /* Construct launcher parameters */
                 ArrayList<XElement> elements = new ArrayList<XElement>();
-                for (String key : vers.keySet())
-                    elements.add(vers.get(key).getExecElement());
+                for (String key : curVersion.keySet())
+                    elements.add(curVersion.get(key).getExecElement());
                 ArrayList<String> relaunch = new ArrayList<String>();
+                
                 /* relaunch should be performed with original arguments, not jupidator update */
-                relaunch.addAll(orig_vers.getArch().getCommand(orig_info));
+                relaunch.addAll(hostVersion.getArch().getCommand(hostInfo));
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
-                if (!appinfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
-                    params.addElement(AppVersion.construct(vers.getAppElements()).getXElement(appinfo.getApplicationHome()));
+                if (!curInfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
+                    params.addElement(AppVersion.construct(curVersion.getAppElements()).getXElement(curInfo.getApplicationHome()));
                 params.setHeadless(gui.isHeadless());
                 params.setRelaunchCommand(relaunch);
-                params.setLogLocation(appinfo.getApplicationSupportDir());
+                params.setLogLocation(curInfo.getApplicationSupportDir());
 
                 /* Construct launcher command */
                 try {
@@ -203,8 +202,8 @@ public class Updater {
             download.join();
         } catch (InterruptedException ex) {
         }
-        for (String key : vers.keySet())
-            vers.get(key).cancel(application);
+        for (String key : curVersion.keySet())
+            curVersion.get(key).cancel(application);
         PermissionManager.manager.cleanUp();
     }
 
@@ -212,13 +211,13 @@ public class Updater {
     public void actionDefer() {
         watcher.stopWatcher();
         gui.endDialog();
-        vers.getUpdaterProperties().defer();
+        curVersion.getUpdaterProperties().defer();
     }
 
     public void actionIgnore() {
         watcher.stopWatcher();
         gui.endDialog();
-        vers.getUpdaterProperties().ignore(vers.getAppElements().getNewRelease());
+        curVersion.getUpdaterProperties().ignore(curVersion.getAppElements().getNewRelease());
     }
 
     public void actionRestart() {
@@ -237,6 +236,6 @@ public class Updater {
     }
 
     public String getChangeLog() {
-        return HTMLCreator.getList(vers.getAppElements().getLogList());
+        return HTMLCreator.getList(curVersion.getAppElements().getLogList());
     }
 }

@@ -54,7 +54,7 @@ class SwingDialog extends JDialog {
     static {
         BufferedImage img = null;
         try {
-            img = ImageIO.read(SwingDialog.class.getResource("/icons/package.png"));
+            img = ImageIO.read(SwingDialog.class.getResource("/com/panayotis/jupidator/icons/package.png"));
         } catch (IOException ex) {
         }
         sysicon = img;
@@ -160,11 +160,11 @@ class SwingDialog extends JDialog {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
+        InfoB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/icons/info.png"))); // NOI18N
         InfoB.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 4, 0));
         InfoB.setBorderPainted(false);
         InfoB.setContentAreaFilled(false);
-        InfoB.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info_sel.png"))); // NOI18N
+        InfoB.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/icons/info_sel.png"))); // NOI18N
         InfoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InfoBActionPerformed(evt);

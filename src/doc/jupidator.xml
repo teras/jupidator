@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updatelist application="Jupidator" baseurl="http://www.panayotis.com/versions/jupidator">
 
-	<version release="700" version="0.7">
+	<version release="710" version="0.7.1">
 		<arch name="all">
-			<file name="jupidator.jar" sourcedir="0.7" destdir="${APPHOME}" size="186713" compress="gz"/>
+			<file name="jupidator.jar" sourcedir="0.7.1" destdir="${APPHOME}" size="186805" compress="gz"/>
 		</arch>
+		<description>Fix relaunch command error. Fix namespace image collision.</description>
+	</version>
+
+	<version release="700" version="0.7">
 		<description>Support of tar, tar.gz, tar.bz2 files and packages.
 			Versioning is independent of the main application.
 			Default architecture "any" for versions with missing "arch" entry.
@@ -12,9 +16,6 @@
 	</version>
 
 	<version release="600" version="0.6">
-		<arch name="all">
-			<file name="jupidator.jar" sourcedir="0.6" destdir="${APPHOME}" size="117538" compress="gz"/>
-		</arch>
 		<description><![CDATA[Mirrors Support. <p><b>WARNING: Application restart might fail to do so, due to updates of the Jupidator library. You can safely ignore this problem.</b></p>]]></description>
 	</version>
 

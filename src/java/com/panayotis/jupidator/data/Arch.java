@@ -78,8 +78,8 @@ public class Arch implements Serializable {
             return null;
     }
 
-    void setExec(String exec) {
-        this.exec = exec != null && exec.isEmpty() ? null : exec;
+    void setExec(String exec, ApplicationInfo appinfo) {
+        this.exec = exec != null && exec.isEmpty() ? null : appinfo.applyVariables(exec);
     }
 
     void addArgument(String argument, ApplicationInfo appinfo) {

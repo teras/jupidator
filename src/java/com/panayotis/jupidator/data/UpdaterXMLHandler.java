@@ -69,7 +69,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 arch = lastarch;
         } else if (qName.equals("launcher")) {
             if (lastarch != null)
-                lastarch.setExec(attr.getValue("exec"));
+                lastarch.setExec(attr.getValue("exec"), appinfo);
         } else if (qName.equals("argument"))
             if (lastSeenExecElement == null) {
                 if (lastarch != null)

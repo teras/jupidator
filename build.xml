@@ -4,7 +4,7 @@
 	<import file="nbproject/build-impl.xml"/>
 
 	<taskdef name="DTDDoc" onerror="report" classname="DTDDoc.DTDDocTask" classpath="../../Tools/dtddoc/DTDDoc.jar"/>
-	<property name="version" value="0.7"/>
+	<property name="version" value="0.7.1"/>
 
 	<target name="doc" depends="dtddoc">
 		<mkdir dir="dist/doc"/>
