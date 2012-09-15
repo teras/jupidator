@@ -19,7 +19,10 @@
 		</DTDDoc>
 	</target>
 
-	<target name="dist" depends="clean,doc,jar">
+	<target name="-no-debug">
+		<property name="javac.debug" value="false"/>
+	</target>
+	<target name="dist" depends="-no-debug,clean,doc,jar">
 		<delete dir="build"/>
 		<tar compression="bzip2" destfile="../jupidator-${version}.tar.bz2">
 			<tarfileset dir="../jupidator" prefix="jupidator">
