@@ -17,16 +17,16 @@ msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "X-Poedit-Country: GREECE\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:99
+#: com/panayotis/jupidator/ApplicationInfo.java:102
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:98
+#: com/panayotis/jupidator/Updater.java:97
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:227
+#: com/panayotis/jupidator/Updater.java:226
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="jupidator" default="default" basedir=".">
+<project name="jupidator" default="jar" basedir=".">
 	<description>Builds, tests, and runs the project jupidator.</description>
 	<import file="nbproject/build-impl.xml"/>
 
@@ -44,6 +44,8 @@
 	</target>
 
 	<target name="-post-compile">
+		<!-- Recompile the "public" objects com.panayotis.jupidator.* in order to display variable information in the produced JAR file -->
+		<javac srcdir="${src.java.dir}/com/panayotis/jupidator" includes="*.java" destdir="${build.classes.dir}" classpath="${build.classes.dir}" encoding="UTF-8" debug="true" debuglevel="vars" source="1.5"/>
 		<exec dir="i18n" executable="bash" failonerror="true"> <arg line="make.sh"/> <arg line="${use.i18n}"/> </exec>
 	</target>
 

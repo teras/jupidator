@@ -23,7 +23,6 @@ package com.panayotis.jupidator;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
-import com.panayotis.jupidator.versioning.AppVersion;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
 import java.io.Serializable;
@@ -52,6 +51,10 @@ public class ApplicationInfo implements Serializable {
 
     public ApplicationInfo(String appHome, String appSupportDir) {
         this(appHome, appSupportDir, 0, null, true);
+    }
+
+    public ApplicationInfo(String appHome, int release, String version) {
+        this(appHome, null, release, version, true);
     }
 
     @Deprecated

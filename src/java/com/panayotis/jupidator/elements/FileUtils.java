@@ -117,7 +117,7 @@ public class FileUtils {
             ZipFile zip = null;
             try {
                 zip = new ZipFile(jar);
-                for (Enumeration<ZipEntry> e = (Enumeration<ZipEntry>) zip.entries(); e.hasMoreElements();) {
+                for (Enumeration<? extends ZipEntry> e = (Enumeration<? extends ZipEntry>) zip.entries(); e.hasMoreElements();) {
                     ZipEntry entry = e.nextElement();
                     String name = entry.getName();
                     if (name.startsWith(PACKAGEZIP) && (!name.endsWith("/"))) {

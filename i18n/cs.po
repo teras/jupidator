@@ -14,16 +14,16 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:99
+#: com/panayotis/jupidator/ApplicationInfo.java:102
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:98
+#: com/panayotis/jupidator/Updater.java:97
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:227
+#: com/panayotis/jupidator/Updater.java:226
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""

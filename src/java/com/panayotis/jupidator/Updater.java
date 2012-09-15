@@ -30,7 +30,6 @@ import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
-import com.panayotis.jupidator.versioning.AppVersion;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
