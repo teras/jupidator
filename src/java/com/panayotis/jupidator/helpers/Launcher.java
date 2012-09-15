@@ -40,7 +40,7 @@ public class Launcher {
 
     @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
-        String URL = args[0];
+        String URL;
         String APPHOME = ".";
         int RELEASE = 0;
         String VERSION = null;
@@ -51,6 +51,7 @@ public class Launcher {
             System.exit(1);
         }
 
+        URL = args[0];
         if (args.length > 1)
             APPHOME = args[1];
         if (args.length > 2)

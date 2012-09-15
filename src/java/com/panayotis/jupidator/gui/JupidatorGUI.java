@@ -43,7 +43,7 @@ public interface JupidatorGUI {
 
     public void errorOnCommit(String message);
 
-    public void successOnCommit();
+    public void successOnCommit(boolean restartableApp);
 
     public void errorOnRestart(String message);
 

@@ -125,9 +125,9 @@ public class SwingGUI implements JupidatorGUI {
         gui.ProgressP.revalidate();
     }
 
-    public void successOnCommit() {
+    public void successOnCommit(boolean restartableApp) {
         setInfoArea(_("Successfully downloaded updates"));
-        gui.ActionB.setText(_("Restart application"));
+        gui.ActionB.setText(restartableApp ? _("Restart application") : _("Finalize update"));
         gui.ActionB.setActionCommand("restart");
         gui.ProgressP.revalidate();
     }

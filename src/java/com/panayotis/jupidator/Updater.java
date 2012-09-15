@@ -194,10 +194,11 @@ public class Updater {
                 ArrayList<XElement> elements = new ArrayList<XElement>();
                 for (String key : curVersion.keySet())
                     elements.add(curVersion.get(key).getExecElement());
-                ArrayList<String> relaunch = new ArrayList<String>();
 
                 /* relaunch should be performed with original arguments, not jupidator update */
-                relaunch.addAll(hostVersion.getArch().getCommand(hostInfo));
+                ArrayList<String> relaunch = new ArrayList<String>();
+                relaunch.addAll(hostVersion.getArch().getRelaunchCommand(hostInfo));
+
                 DeployerParameters params = new DeployerParameters();
                 params.setElements(elements);
                 if (!curInfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
@@ -218,7 +219,7 @@ public class Updater {
                     return;
                 }
 
-                gui.successOnCommit();
+                gui.successOnCommit(!relaunch.isEmpty());
             }
         };
         watcher.startWatcher();

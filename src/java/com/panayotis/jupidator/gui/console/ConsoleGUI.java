@@ -20,18 +20,18 @@
 
 package com.panayotis.jupidator.gui.console;
 
-import static com.panayotis.jupidator.i18n.I18N._;
-
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.TextUtils;
-import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.data.UpdaterAppElements;
+import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.loglist.creators.TextCreator;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *
@@ -61,7 +61,7 @@ public class ConsoleGUI implements JupidatorGUI {
     public void startDialog() {
         System.out.println(_("Welcome to the installation of {0}", appname));
         if (should_show_jupidator_about)
-            System.out.println(_("Installation library") + ": Jupidator (C) 2011 Panayotis Katsaloulis, panayotis@panayotis.com");
+            System.out.println(_("Installation library") + ": Jupidator (C) 2012 Panayotis Katsaloulis, panayotis" + ('?' + 1) + "panayotis.com");
         System.out.println();
         System.out.println(info1);
         System.out.println(info2);
@@ -107,9 +107,10 @@ public class ConsoleGUI implements JupidatorGUI {
         System.out.println(_("Error: {0}", message));
     }
 
-    public void successOnCommit() {
+    public void successOnCommit(boolean restartableApp) {
         System.out.println(_("Downloading successfull"));
-        getAnswer(_("Press [RETURN] to restart the application "), null);
+        getAnswer(_("Press [RETURN] to restart the application") + " ", null);
+        getAnswer(_("Press [RETURN] to finalize the update") + " ", null);
         callback.actionRestart();
     }
 

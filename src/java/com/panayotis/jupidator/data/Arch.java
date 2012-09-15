@@ -87,7 +87,7 @@ public class Arch implements Serializable {
             arguments.add(appinfo.applyVariables(argument));
     }
 
-    public List<String> getCommand(ApplicationInfo appinfo) {
+    public List<String> getRelaunchCommand(ApplicationInfo appinfo) {
         List<String> comm = new ArrayList<String>();
         if (exec != null)
             comm.add(exec);
