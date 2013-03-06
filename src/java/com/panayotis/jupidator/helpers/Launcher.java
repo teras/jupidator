@@ -23,12 +23,14 @@ package com.panayotis.jupidator.helpers;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.constructor.PathDumper;
+import com.panayotis.jupidator.constructor.CElement;
+import com.panayotis.jupidator.constructor.Comparator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 /**
  *
@@ -51,7 +53,7 @@ public class Launcher {
     private static void usage() {
         System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
         System.err.println("Usage:");
-        System.err.println("java -jar jupidator.jar URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
+        System.err.println("java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
         System.err.println("java -jar jupidator.jar -l|--list [PATH]");
         System.err.println("java -jar jupidator.jar -c|--compare OLDLIST NEWLIST");
         System.err.println();
@@ -59,14 +61,21 @@ public class Launcher {
     }
 
     private static void compare(String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (args.length < 3)
+            usage();
+        Comparator c = new Comparator(new File(args[1]), new File(args[2]), null);
+        c.compare();
     }
 
     private static void list(String[] args) {
         String pathname = args.length < 2 ? "." : args[1];
-        PathDumper dumper = new PathDumper(new File(pathname));
-        if (!dumper.dump())
-            usage();
+        try {
+            Writer out = new OutputStreamWriter(System.out, "UTF-8");
+            CElement path = CElement.construct(new File(pathname));
+            path.dump(out);
+        } catch (Exception ex) {
+            displayError(ex);
+        }
     }
 
     private static void update(String[] args) {
@@ -75,6 +84,16 @@ public class Launcher {
         int RELEASE = 0;
         String VERSION = null;
         String APPSUPPORTDIR = null;
+
+        /* 
+         * Ignore -u/--update parameter. 
+         * This is useful when the pathname is indeed one of the option shortcuts, like "-c" or "--update"
+         */
+        if (args[0].equals("-u") || args[0].equals("--update")) {
+            String[] nargs = new String[args.length - 1];
+            System.arraycopy(args, 1, nargs, 0, nargs.length);
+            args = nargs;
+        }
 
         URL = args[0];
         if (args.length > 1)
@@ -95,13 +114,16 @@ public class Launcher {
             Updater upd = new Updater(URL, ap, null);
             upd.actionDisplay();
         } catch (UpdaterException ex) {
-            try {
-                ex.printStackTrace(new PrintWriter(new OutputStreamWriter(System.err, "UTF-8"), true));
-            } catch (UnsupportedEncodingException ex1) {
-                System.out.println("jeje");
-            }
-            System.err.println();
-            usage();
+            displayError(ex);
         }
+    }
+
+    private static void displayError(Exception ex) {
+        try {
+            ex.printStackTrace(new PrintWriter(new OutputStreamWriter(System.err, "UTF-8"), true));
+        } catch (UnsupportedEncodingException ex1) {
+        }
+        System.err.println();
+        usage();
     }
 }
