@@ -23,7 +23,12 @@ package com.panayotis.jupidator.helpers;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
+import com.panayotis.jupidator.constructor.PathDumper;
 import com.panayotis.jupidator.versioning.SystemVersion;
+import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  *
@@ -31,25 +36,45 @@ import com.panayotis.jupidator.versioning.SystemVersion;
  */
 public class Launcher {
 
-    public static void usage() {
+    @SuppressWarnings("CallToThreadDumpStack")
+    public static void main(String[] args) {
+        if (args.length < 1)
+            usage();
+        if (args[0].equals("-l") || args[0].equals("--list"))
+            list(args);
+        else if (args[0].equals("-c") || args[0].equals("--compare"))
+            compare(args);
+        else
+            update(args);
+    }
+
+    private static void usage() {
         System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
         System.err.println("Usage:");
         System.err.println("java -jar jupidator.jar URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
+        System.err.println("java -jar jupidator.jar -l|--list [PATH]");
+        System.err.println("java -jar jupidator.jar -c|--compare OLDLIST NEWLIST");
         System.err.println();
+        System.exit(-1);
     }
 
-    @SuppressWarnings("CallToThreadDumpStack")
-    public static void main(String[] args) {
+    private static void compare(String[] args) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static void list(String[] args) {
+        String pathname = args.length < 2 ? "." : args[1];
+        PathDumper dumper = new PathDumper(new File(pathname));
+        if (!dumper.dump())
+            usage();
+    }
+
+    private static void update(String[] args) {
         String URL;
         String APPHOME = ".";
         int RELEASE = 0;
         String VERSION = null;
         String APPSUPPORTDIR = null;
-
-        if (args.length < 1) {
-            usage();
-            System.exit(1);
-        }
 
         URL = args[0];
         if (args.length > 1)
@@ -70,7 +95,13 @@ public class Launcher {
             Updater upd = new Updater(URL, ap, null);
             upd.actionDisplay();
         } catch (UpdaterException ex) {
-            ex.printStackTrace();
+            try {
+                ex.printStackTrace(new PrintWriter(new OutputStreamWriter(System.err, "UTF-8"), true));
+            } catch (UnsupportedEncodingException ex1) {
+                System.out.println("jeje");
+            }
+            System.err.println();
+            usage();
         }
     }
 }

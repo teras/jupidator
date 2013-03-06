@@ -26,7 +26,7 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:258
+#: com/panayotis/jupidator/Updater.java:259
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -201,19 +201,23 @@ msgid   "Downloading successfull"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:112
-msgid   "Press [RETURN] to restart the application "
+msgid   "Press [RETURN] to restart the application"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:118
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:113
+msgid   "Press [RETURN] to finalize the update"
+msgstr  ""
+
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:119
 msgid   "Cancel installation"
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:123
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:124
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:127
+#: com/panayotis/jupidator/gui/console/ConsoleGUI.java:128
 msgid   "Please wait..."
 msgstr  ""
 
@@ -290,6 +294,10 @@ msgstr  "Instalando arquivos..."
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:129
 msgid   "Successfully downloaded updates"
 msgstr  "Atualizações baixadas com sucesso"
+
+#: com/panayotis/jupidator/gui/swing/SwingGUI.java:130
+msgid   "Finalize update"
+msgstr  ""
 
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:130
 msgid   "Restart application"

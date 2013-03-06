@@ -22,6 +22,7 @@ package com.panayotis.jupidator.elements.security;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -64,15 +65,23 @@ public class Digester {
     public boolean checkFile(File file) {
         if (hash == null || file == null)
             return false;
+
+        FileInputStream fis = null;
         try {
             byte[] buffer = new byte[1024];
             digest.reset();
             int read;
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             while ((read = fis.read(buffer)) >= 0)
                 digest.update(buffer, 0, read);
             return Arrays.equals(digest.digest(), hash);
         } catch (Exception ex) {
+        } finally {
+            if (fis != null)
+                try {
+                    fis.close();
+                } catch (IOException ex) {
+                }
         }
         return false;
     }
