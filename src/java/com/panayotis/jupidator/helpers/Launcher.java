@@ -23,7 +23,7 @@ package com.panayotis.jupidator.helpers;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.constructor.CElement;
+import com.panayotis.jupidator.constructor.CPath;
 import com.panayotis.jupidator.constructor.Comparator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
@@ -71,7 +71,7 @@ public class Launcher {
         String pathname = args.length < 2 ? "." : args[1];
         try {
             Writer out = new OutputStreamWriter(System.out, "UTF-8");
-            CElement path = CElement.construct(new File(pathname));
+            CPath path = CPath.construct(new File(pathname));
             path.dump(out);
         } catch (Exception ex) {
             displayError(ex);

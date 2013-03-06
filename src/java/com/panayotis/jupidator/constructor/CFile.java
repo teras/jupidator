@@ -27,7 +27,7 @@ import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class CFile extends CElement {
+public class CFile extends CPath {
 
     private final long size;
     private final String md5;

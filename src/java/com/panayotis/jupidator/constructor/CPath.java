@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 
-public abstract class CElement {
+public abstract class CPath {
 
-    public static CElement construct(File file) throws IOException {
+    public static CPath construct(File file) throws IOException {
         if (file.isDirectory())
             return new CDir(file);
         else if (file.isFile())
@@ -36,7 +36,7 @@ public abstract class CElement {
     }
     private final File file;
 
-    public CElement(File file) throws IOException {
+    public CPath(File file) throws IOException {
         this.file = file;
         if (!file.exists())
             throw new IOException("File " + file + " does not exist");

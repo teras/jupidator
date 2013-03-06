@@ -26,32 +26,39 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CDir extends CElement {
+public class CDir extends CPath {
 
-    private final List<CElement> subs;
+    private final List<CPath> paths;
 
     public CDir(File file) throws IOException {
         super(file);
 
-        subs = new ArrayList<CElement>();
+        paths = new ArrayList<CPath>();
         File[] children = file.listFiles();
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isDirectory())
-                    subs.add(new CDir(child));
+                    paths.add(new CDir(child));
                 else if (child.isFile())
-                    subs.add(new CFile(child));
+                    paths.add(new CFile(child));
+    }
+
+    public CPath find(String name) {
+        for (CPath path : paths)
+            if (path.getName().equals(name))
+                return path;
+        return null;
     }
 
     @Override
     protected void dump(Writer out, int depth) throws IOException {
         dumpTabs(out, depth);
         out.append("<dir name=\"").append(getName()).append("\"");
-        if (subs.isEmpty())
+        if (paths.isEmpty())
             out.append("/>\n");
         else {
             out.append(">\n");
-            for (CElement el : subs)
+            for (CPath el : paths)
                 el.dump(out, depth + 1);
             dumpTabs(out, depth);
             out.append("</dir>\n");
