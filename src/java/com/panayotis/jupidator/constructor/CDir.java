@@ -26,21 +26,24 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CDir extends CPath {
+public final class CDir extends CPath {
 
-    private final List<CPath> paths;
+    private final List<CPath> paths = new ArrayList<CPath>();
 
     public CDir(File file) throws IOException {
-        super(file);
+        this(file.getName());
 
-        paths = new ArrayList<CPath>();
         File[] children = file.listFiles();
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isDirectory())
-                    paths.add(new CDir(child));
+                    add(new CDir(child));
                 else if (child.isFile())
-                    paths.add(new CFile(child));
+                    add(new CFile(child));
+    }
+
+    public CDir(String dirname) {
+        super(dirname);
     }
 
     public CPath find(String name) {
@@ -63,5 +66,9 @@ public class CDir extends CPath {
             dumpTabs(out, depth);
             out.append("</dir>\n");
         }
+    }
+
+    public void add(CPath cpath) {
+        paths.add(cpath);
     }
 }

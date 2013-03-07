@@ -27,8 +27,11 @@ import com.panayotis.jupidator.constructor.CPath;
 import com.panayotis.jupidator.constructor.Comparator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
@@ -61,6 +64,22 @@ public class Launcher {
     }
 
     private static void compare(String[] args) {
+        try {
+            CPath path = CPath.construct(new File("nbproject"));
+            StringWriter out = new StringWriter();
+            path.dump(out);
+            System.out.println(out.toString());
+
+            CPath path2 = CPath.construct(new StringReader(out.toString()));
+            if (path2 != null)
+                path2.dump(new OutputStreamWriter(System.out, "UTF-8"));
+            else
+                System.out.println("None found");
+            System.exit(0);
+        } catch (IOException ex) {
+            displayError(ex);
+        }
+
         if (args.length < 3)
             usage();
         Comparator c = new Comparator(new File(args[1]), new File(args[2]), null);

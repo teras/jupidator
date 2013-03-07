@@ -27,17 +27,25 @@ import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class CFile extends CPath {
+public final class CFile extends CPath {
 
     private final long size;
     private final String md5;
     private final String sha256;
+    //
+    private File original;
 
     public CFile(File file) throws IOException {
-        super(file);
-        size = file.length();
-        md5 = getDigest(file, "MD5");
-        sha256 = getDigest(file, "SHA-256");
+        this(file.getName(), file.length(), getDigest(file, "MD5"), getDigest(file, "SHA-256"));
+        original = file;
+    }
+
+    public CFile(String pathname, long size, String md5, String sha256) {
+        super(pathname);
+        this.size = size;
+        this.md5 = md5;
+        this.sha256 = sha256;
+        this.original = null;
     }
 
     @Override

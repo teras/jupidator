@@ -22,9 +22,19 @@ package com.panayotis.jupidator.constructor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
+import java.util.Stack;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 public abstract class CPath {
+
+    private final String pathname;
 
     public static CPath construct(File file) throws IOException {
         if (file.isDirectory())
@@ -34,23 +44,61 @@ public abstract class CPath {
         else
             throw new IOException("Unknwon file type for file " + file.getPath());
     }
-    private final File file;
 
-    public CPath(File file) throws IOException {
-        this.file = file;
-        if (!file.exists())
-            throw new IOException("File " + file + " does not exist");
-        if (!file.canRead())
-            throw new IOException("File " + file + " can not be read");
+    private final static class Handler extends DefaultHandler {
+
+        CPath result;
+        Stack<CDir> dirs = new Stack<CDir>();
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+            if (qName.equals("dir")) {
+                CDir cdir = new CDir(attributes.getValue("name"));
+                attachPath(cdir);
+                dirs.push(cdir);
+            } else if (qName.equals("file")) {
+                CFile cfile = new CFile(attributes.getValue("name"), Long.parseLong(attributes.getValue("size")), attributes.getValue("md5"), attributes.getValue("sha256"));
+                attachPath(cfile);
+            }
+        }
+
+        private void attachPath(CPath path) {
+            if (result == null)
+                result = path;
+            CDir parent = dirs.isEmpty() ? null : dirs.peek();
+            if (parent != null)
+                parent.add(path);
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName) throws SAXException {
+            if (qName.equals("dir"))
+                dirs.pop();
+        }
+    }
+
+    public static CPath construct(Reader in) throws IOException {
+        Handler handler = new Handler();
+        try {
+            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+            parser.parse(new InputSource(in), handler);
+        } catch (Exception ex) {
+            throw new IOException(ex);
+        }
+        return handler.result;
+    }
+
+    public CPath(String pathname) {
+        this.pathname = pathname;
     }
 
     public String getName() {
-        return file.getName();
+        return pathname;
     }
 
     @Override
     public String toString() {
-        return file.toString();
+        return pathname;
     }
 
     public void dump(Writer out) throws IOException {
