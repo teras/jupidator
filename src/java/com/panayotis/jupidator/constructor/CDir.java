@@ -24,7 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public final class CDir extends CPath {
 
@@ -40,13 +43,53 @@ public final class CDir extends CPath {
                     add(new CDir(child));
                 else if (child.isFile())
                     add(new CFile(child));
+        Collections.sort(paths);
     }
 
     public CDir(String dirname) {
         super(dirname);
     }
 
-    public CPath find(String name) {
+    @Override
+    protected void dump(Writer out, int depth) throws IOException {
+        tabs(out, depth).append("<dir name=\"").append(getName()).append("\"");
+        if (paths.isEmpty())
+            out.append("/>\n");
+        else {
+            out.append(">\n");
+            for (CPath el : paths)
+                el.dump(out, depth + 1);
+            tabs(out, depth).append("</dir>\n");
+        }
+    }
+
+    public void add(CPath cpath) {
+        paths.add(cpath);
+    }
+
+    @Override
+    protected void compare(CPath original, File filestore, Writer xml) throws IOException {
+        if (original instanceof CDir) {
+            CDir ordir = (CDir) original;
+            Set<CPath> orpaths = new TreeSet<CPath>(ordir.paths);
+            for (CPath mysub : paths) {
+                CPath orsub = ordir.find(mysub.getName());
+                if (orsub == null)
+                    mysub.store(xml);
+                else {
+                    mysub.compare(orsub, filestore, xml);
+                    orpaths.remove(orsub);
+                }
+            }
+            for (CPath othersubpath : orpaths)
+                othersubpath.delete(xml);
+        } else {
+            original.delete(xml);
+            store(xml);
+        }
+    }
+
+    private CPath find(String name) {
         for (CPath path : paths)
             if (path.getName().equals(name))
                 return path;
@@ -54,21 +97,15 @@ public final class CDir extends CPath {
     }
 
     @Override
-    protected void dump(Writer out, int depth) throws IOException {
-        dumpTabs(out, depth);
-        out.append("<dir name=\"").append(getName()).append("\"");
-        if (paths.isEmpty())
-            out.append("/>\n");
-        else {
-            out.append(">\n");
-            for (CPath el : paths)
-                el.dump(out, depth + 1);
-            dumpTabs(out, depth);
-            out.append("</dir>\n");
+    protected void store(Writer xml) throws IOException {
+        for (CPath path : paths)
+            path.store(xml);
+        if (paths.isEmpty()) {
         }
     }
 
-    public void add(CPath cpath) {
-        paths.add(cpath);
+    @Override
+    protected void delete(Writer xml) throws IOException {
+        tabs(xml, 3).append("<rm file=\"").append(getName()).append("\"/>\n");
     }
 }

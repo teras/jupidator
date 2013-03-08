@@ -24,16 +24,17 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.constructor.CPath;
-import com.panayotis.jupidator.constructor.Comparator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -57,41 +58,39 @@ public class Launcher {
         System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
         System.err.println("Usage:");
         System.err.println("java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
+        System.err.println("     APPHOME defaults to .");
+        System.err.println("     RELEASE defaults to 1");
+        System.err.println("     VERSION defaults to null");
+        System.err.println("     APPSUPPORTDIR defaults to APPHOME");
         System.err.println("java -jar jupidator.jar -l|--list [PATH]");
-        System.err.println("java -jar jupidator.jar -c|--compare OLDLIST NEWLIST");
+        System.err.println("     PATH defaults to .");
+        System.err.println("java -jar jupidator.jar -c|--compare [PATH [INFILE [OUTDIR]]]");
+        System.err.println("     PATH defaults to .");
+        System.err.println("     INFILE defaults to stdin");
+        System.err.println("     OUTDIR defaults to output_DATE");
         System.err.println();
         System.exit(-1);
     }
 
     private static void compare(String[] args) {
         try {
-            CPath path = CPath.construct(new File("nbproject"));
-            StringWriter out = new StringWriter();
-            path.dump(out);
-            System.out.println(out.toString());
+            CPath current = CPath.construct(new File(args.length < 2 ? "." : args[1]));
+            CPath old = CPath.construct(new InputStreamReader(args.length < 3 ? System.in : new FileInputStream(args[2]), "UTF-8"));
+            Writer out = new OutputStreamWriter(System.out, "UTF-8");
+            old.dump(out);
+            current.dump(out);
 
-            CPath path2 = CPath.construct(new StringReader(out.toString()));
-            if (path2 != null)
-                path2.dump(new OutputStreamWriter(System.out, "UTF-8"));
-            else
-                System.out.println("None found");
-            System.exit(0);
+            String filename = args.length < 4 ? "output_" + new SimpleDateFormat("yMMdd_HHmmss").format(new Date()) : args[3];
+            current.findDiff(old, new File(filename));
         } catch (IOException ex) {
             displayError(ex);
         }
-
-        if (args.length < 3)
-            usage();
-        Comparator c = new Comparator(new File(args[1]), new File(args[2]), null);
-        c.compare();
     }
 
     private static void list(String[] args) {
-        String pathname = args.length < 2 ? "." : args[1];
         try {
-            Writer out = new OutputStreamWriter(System.out, "UTF-8");
-            CPath path = CPath.construct(new File(pathname));
-            path.dump(out);
+            CPath path = CPath.construct(new File(args.length < 2 ? "." : args[1]));
+            path.dump(new OutputStreamWriter(System.out, "UTF-8"));
         } catch (Exception ex) {
             displayError(ex);
         }
@@ -100,7 +99,7 @@ public class Launcher {
     private static void update(String[] args) {
         String URL;
         String APPHOME = ".";
-        int RELEASE = 0;
+        int RELEASE = 1;
         String VERSION = null;
         String APPSUPPORTDIR = null;
 

@@ -20,7 +20,11 @@
 
 package com.panayotis.jupidator.constructor;
 
+import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.elements.security.PermissionManager;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -32,11 +36,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public abstract class CPath {
+public abstract class CPath implements Comparable<CPath> {
 
     private final String pathname;
 
     public static CPath construct(File file) throws IOException {
+        if (!file.exists())
+            throw new IOException("File " + file.getPath() + " does not exist");
+        else if (!file.canRead())
+            throw new IOException("Unable to read from file " + file.getPath());
         if (file.isDirectory())
             return new CDir(file);
         else if (file.isFile())
@@ -92,12 +100,34 @@ public abstract class CPath {
         this.pathname = pathname;
     }
 
-    public String getName() {
+    @Override
+    public String toString() {
         return pathname;
     }
 
     @Override
-    public String toString() {
+    public int compareTo(CPath t) {
+        if (pathname == null)
+            return -1;
+        return pathname.compareTo(t.pathname);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        final CPath other = (CPath) obj;
+        if ((this.pathname == null) ? (other.pathname != null) : !this.pathname.equals(other.pathname))
+            return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 314 + (this.pathname != null ? this.pathname.hashCode() : 0);
+    }
+
+    public String getName() {
         return pathname;
     }
 
@@ -108,10 +138,36 @@ public abstract class CPath {
         out.flush();
     }
 
-    protected abstract void dump(Writer out, int depth) throws IOException;
-
-    protected void dumpTabs(Writer out, int depth) throws IOException {
+    protected Writer tabs(Writer out, int depth) throws IOException {
         for (int i = 0; i < depth; i++)
             out.write("  ");
+        return out;
     }
+
+    public void findDiff(CPath original, File out) throws IOException {
+        File filestore = new File(out, "files");
+        if (!FileUtils.makeDirectory(filestore))
+            throw new IOException("Unable to create folder " + out.getPath());
+        if (!PermissionManager.manager.canWrite(out))
+            throw new IOException("Unable to write in " + out.getPath());
+
+        Writer xml = new BufferedWriter(new FileWriter(new File(out, "jupidator.xml")));
+        xml.append("<updatelist application=\"\" baseurl=\"\" jupidator=\"600\">\n");
+        tabs(xml, 1).append("<version release=\"\" version=\"\">\n");
+        tabs(xml, 2).append("<arch name=\"all\">\n");
+        tabs(xml, 3).append("<description></description>\n");
+        compare(original, filestore, xml);
+        tabs(xml, 2).append("</arch>\n");
+        tabs(xml, 2).append("</version>\n");
+        tabs(xml, 1).append("</updatelist>\n");
+        xml.close();
+    }
+
+    protected abstract void dump(Writer out, int depth) throws IOException;
+
+    protected abstract void compare(CPath original, File filestore, Writer xml) throws IOException;
+
+    protected abstract void store(Writer xml) throws IOException;
+
+    protected abstract void delete(Writer xml) throws IOException;
 }

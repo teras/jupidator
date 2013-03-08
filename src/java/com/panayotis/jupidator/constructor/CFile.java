@@ -50,8 +50,8 @@ public final class CFile extends CPath {
 
     @Override
     protected void dump(Writer out, int depth) throws IOException {
-        dumpTabs(out, depth);
-        out.append("<file name=\"").append(getName())
+        tabs(out, depth)
+                .append("<file name=\"").append(getName())
                 .append("\" size=\"").append(Long.toString(size))
                 .append("\" md5=\"").append(md5)
                 .append("\" sha256=\"").append(sha256)
@@ -86,5 +86,30 @@ public final class CFile extends CPath {
                 } catch (IOException ex) {
                 }
         }
+    }
+
+    @Override
+    protected void compare(CPath original, File filestore, Writer xml) throws IOException {
+        if (original instanceof CFile) {
+            if (!matchFile((CFile) original))
+                store(xml);
+        } else {
+            original.delete(xml);
+            store(xml);
+        }
+    }
+
+    @Override
+    protected void store(Writer xml) throws IOException {
+        tabs(xml, 3).append("<file name=\"").append(getName()).append("\" />\n");
+    }
+
+    @Override
+    protected void delete(Writer xml) throws IOException {
+        tabs(xml, 3).append("<rm name=\"").append(getName()).append("\" />\n");
+    }
+
+    private boolean matchFile(CFile other) {
+        return size == other.size && md5.equals(other.md5) && sha256.equals(other.sha256);
     }
 }
