@@ -23,7 +23,7 @@ package com.panayotis.jupidator.helpers;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.constructor.CPath;
+import com.panayotis.jupidator.producer.CPath;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,7 +47,7 @@ public class Launcher {
             usage();
         if (args[0].equals("-l") || args[0].equals("--list"))
             list(args);
-        else if (args[0].equals("-c") || args[0].equals("--compare"))
+        else if (args[0].equals("-p") || args[0].equals("--produce"))
             compare(args);
         else
             update(args);
@@ -63,7 +63,7 @@ public class Launcher {
         System.err.println("     APPSUPPORTDIR defaults to APPHOME");
         System.err.println("java -jar jupidator.jar -l|--list [OLDDIR]");
         System.err.println("     OLDDIR defaults to .");
-        System.err.println("java -jar jupidator.jar -c|--compare [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]");
+        System.err.println("java -jar jupidator.jar -p|--produce [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]");
         System.err.println("     NEWDIR defaults to .");
         System.err.println("     VERSION defaults to 0.1");
         System.err.println("     OUTDIR defaults to output_DATE");

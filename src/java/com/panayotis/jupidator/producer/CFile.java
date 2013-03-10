@@ -18,7 +18,7 @@
  *
  */
 
-package com.panayotis.jupidator.constructor;
+package com.panayotis.jupidator.producer;
 
 import com.panayotis.jupidator.elements.FileUtils;
 import java.io.BufferedInputStream;

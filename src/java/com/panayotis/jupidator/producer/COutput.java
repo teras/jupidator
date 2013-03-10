@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-package com.panayotis.jupidator.constructor;
+package com.panayotis.jupidator.producer;
 
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;

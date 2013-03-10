@@ -18,7 +18,7 @@
  *
  */
 
-package com.panayotis.jupidator.constructor;
+package com.panayotis.jupidator.producer;
 
 import java.io.File;
 import java.io.IOException;
