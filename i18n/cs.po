@@ -14,10 +14,6 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:103
-msgid   "Property name could not be null"
-msgstr  ""
-
 #: com/panayotis/jupidator/Updater.java:100
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
@@ -88,14 +84,6 @@ msgstr  ""
 msgid   "Unable to delete file {0}"
 msgstr  "Nemohu odstranit soubor {0}"
 
-#: com/panayotis/jupidator/elements/JupidatorElement.java:58
-msgid   "Application info not provided."
-msgstr  "Informace o aplikaci není poskytnuta."
-
-#: com/panayotis/jupidator/elements/JupidatorElement.java:60
-msgid   "UpdaterAppElements not provided."
-msgstr  ""
-
 #: com/panayotis/jupidator/elements/compression/MultiFileCompression.java:66
 #, java-format
 msgid   "Unable to unpack under {0}"
@@ -159,8 +147,7 @@ msgid   "Wrong answer."
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:102
-msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
-        "jupidator/)"
+msgid   "Thank you for using Jupidator"
 msgstr  ""
 
 #: com/panayotis/jupidator/gui/console/ConsoleGUI.java:107
@@ -288,11 +275,14 @@ msgstr  "Verze"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "Deployer cesta {0} není zapisovatelná."
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Nemohu vytvořit Deployer"
 
 #~ msgid        "Deployer stored in {0}"
 #~ msgstr       "Deployer uložen v {0}"
 
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Nemohu vytvořit Deployer"
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "Deployer cesta {0} není zapisovatelná."
+
+#~ msgid        "Application info not provided."
+#~ msgstr       "Informace o aplikaci není poskytnuta."

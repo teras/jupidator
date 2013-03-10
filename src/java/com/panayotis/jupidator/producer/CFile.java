@@ -118,7 +118,7 @@ public final class CFile extends CPath {
                 .append("<file name=\"").append(getName())
                 .append("\" compress=\"gz\" sourcedir=\"").append(srcdir)
                 .append("\" destdir=\"").append(destdir)
-                .append("\" size=\"").append(Long.toString(new File(compress.getPath()).length())).append("\">")    // we need this trick since file size might not be calculated correctly 
+                .append("\" size=\"").append(Long.toString(new File(compress.getPath()).length())).append("\">") // we need this trick since file size might not be calculated correctly 
                 .append(" <sha value=\"").append(getDigest(compress, "SHA-256")).append("\"/> ")
                 .append("</file>\n");
     }

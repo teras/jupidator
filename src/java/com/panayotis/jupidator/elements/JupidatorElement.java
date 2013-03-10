@@ -55,9 +55,9 @@ public abstract class JupidatorElement implements Serializable {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         if (appinfo == null)
-            throw new NullPointerException(_("Application info not provided."));
+            throw new NullPointerException("Application info not provided.");
         if (elements == null)
-            throw new NullPointerException(_("UpdaterAppElements not provided."));
+            throw new NullPointerException("UpdaterAppElements not provided.");
 
         this.filename = appinfo.applyVariables(name);
         this.destdir = appinfo.applyVariables(dest);

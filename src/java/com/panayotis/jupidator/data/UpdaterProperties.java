@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -32,7 +33,7 @@ import java.util.Properties;
  *
  * @author teras
  */
-public class UpdaterProperties implements Serializable  {
+public class UpdaterProperties implements Serializable {
 
     private final static String TIMEIGNORE = "Updater.Version.NextCheck";
     private final static String VERSIONIGNORE = "Updater.Version.Ignore";
@@ -61,7 +62,7 @@ public class UpdaterProperties implements Serializable  {
             long next = last + 1000 * 60 * 60 * 24;
             if (now < next)
                 return true;
-        // It's too soon - We don't need to check it, yet
+            // It's too soon - We don't need to check it, yet
         } catch (NumberFormatException e) { // if something went wrong, just check web version  
         }
         return false;

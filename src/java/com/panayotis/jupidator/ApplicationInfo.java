@@ -104,7 +104,7 @@ public class ApplicationInfo implements Serializable {
 
     public void setProperty(String name, String value) {
         if (name == null || name.equals(""))
-            throw new NullPointerException(_("Property name could not be null"));
+            throw new NullPointerException("Property name could not be null");
         if (value == null)
             value = "";
         vars.put(name, value);
