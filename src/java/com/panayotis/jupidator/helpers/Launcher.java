@@ -61,10 +61,11 @@ public class Launcher {
         System.err.println("     RELEASE defaults to 1");
         System.err.println("     VERSION defaults to null");
         System.err.println("     APPSUPPORTDIR defaults to APPHOME");
-        System.err.println("java -jar jupidator.jar -l|--list [PATH]");
-        System.err.println("     PATH defaults to .");
-        System.err.println("java -jar jupidator.jar -c|--compare [PATH [OUTDIR [OLDSTRUCT]]]");
-        System.err.println("     PATH defaults to .");
+        System.err.println("java -jar jupidator.jar -l|--list [OLDDIR]");
+        System.err.println("     OLDDIR defaults to .");
+        System.err.println("java -jar jupidator.jar -c|--compare [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]");
+        System.err.println("     NEWDIR defaults to .");
+        System.err.println("     VERSION defaults to 0.1");
         System.err.println("     OUTDIR defaults to output_DATE");
         System.err.println("     OLDSTRUCT defaults to stdin");
         System.err.println();
@@ -73,10 +74,16 @@ public class Launcher {
 
     private static void compare(String[] args) {
         try {
+            String version = args.length < 3 ? "0.1" : args[2];
+            if (version.isEmpty())
+                throw new IOException("VERSION should not be empty");
+            if (version.contains("/") || version.contains("\\"))
+                throw new IOException("VERSION should not contain the '/' or '\\' caracter");
+
             CPath current = CPath.construct(new File(args.length < 2 ? "." : args[1]));
-            CPath old = CPath.construct(new InputStreamReader(args.length < 4 ? System.in : new FileInputStream(args[3]), "UTF-8"));
-            String filename = args.length < 3 ? "output_" + new SimpleDateFormat("yMMdd_HHmmss").format(new Date()) : args[2];
-            current.findDiff(old, new File(filename));
+            CPath old = CPath.construct(new InputStreamReader(args.length < 5 ? System.in : new FileInputStream(args[4]), "UTF-8"));
+            String filename = args.length < 4 ? "output_" + new SimpleDateFormat("yMMdd_HHmmss").format(new Date()) : args[3];
+            current.findDiff(old, new File(filename), version);
         } catch (IOException ex) {
             displayError(ex);
         }

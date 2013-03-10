@@ -69,24 +69,24 @@ public final class CDir extends CPath {
     }
 
     @Override
-    protected void compare(CPath original, File filestore, Writer xml) throws IOException {
+    protected void compare(CPath original, COutput out) throws IOException {
         if (original instanceof CDir) {
             CDir ordir = (CDir) original;
             Set<CPath> orpaths = new TreeSet<CPath>(ordir.paths);
             for (CPath mysub : paths) {
                 CPath orsub = ordir.find(mysub.getName());
                 if (orsub == null)
-                    mysub.store(xml);
+                    mysub.store(out);
                 else {
-                    mysub.compare(orsub, filestore, xml);
+                    mysub.compare(orsub, out);
                     orpaths.remove(orsub);
                 }
             }
             for (CPath othersubpath : orpaths)
-                othersubpath.delete(xml);
+                othersubpath.delete(out);
         } else {
-            original.delete(xml);
-            store(xml);
+            original.delete(out);
+            store(out);
         }
     }
 
@@ -98,9 +98,9 @@ public final class CDir extends CPath {
     }
 
     @Override
-    protected void store(Writer xml) throws IOException {
+    protected void store(COutput out) throws IOException {
         for (CPath path : paths)
-            path.store(xml);
+            path.store(out);
         if (paths.isEmpty()) {
             // mkdir does not exist in jupidator yet
         }

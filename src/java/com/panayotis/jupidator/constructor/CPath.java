@@ -20,11 +20,7 @@
 
 package com.panayotis.jupidator.constructor;
 
-import com.panayotis.jupidator.elements.FileUtils;
-import com.panayotis.jupidator.elements.security.PermissionManager;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -41,7 +37,7 @@ public abstract class CPath implements Comparable<CPath> {
     private final String pathname;
     private final CDir parent;
     protected final String PS = "/";
-    protected final String DEFAULTPATH = "${APPHOME}";
+    protected final String DEFAULTROOT = "${APPHOME}";
 
     public static CPath construct(File file) throws IOException {
         if (!file.exists())
@@ -135,11 +131,11 @@ public abstract class CPath implements Comparable<CPath> {
         return parent;
     }
 
-    protected String getPath() {
+    protected String getPath(String root) {
         if (parent == null)
-            return DEFAULTPATH;
+            return root;
         else
-            return parent.getPath() + PS + pathname;
+            return parent.getPath(root) + PS + pathname;
     }
 
     public void dump(Writer out) throws IOException {
@@ -155,32 +151,26 @@ public abstract class CPath implements Comparable<CPath> {
         return out;
     }
 
-    public void findDiff(CPath original, File out) throws IOException {
-        File filestore = new File(out, "files");
-        if (!FileUtils.makeDirectory(filestore))
-            throw new IOException("Unable to create folder " + out.getPath());
-        if (!PermissionManager.manager.canWrite(out))
-            throw new IOException("Unable to write in " + out.getPath());
-
-        Writer xml = new BufferedWriter(new FileWriter(new File(out, "jupidator.xml")));
-        xml.append("<updatelist application=\"\" baseurl=\"\" jupidator=\"600\">\n");
-        tabs(xml, 1).append("<version release=\"\" version=\"\">\n");
-        tabs(xml, 2).append("<arch name=\"all\">\n");
-        tabs(xml, 3).append("<description></description>\n");
-        compare(original, filestore, xml);
-        tabs(xml, 2).append("</arch>\n");
-        tabs(xml, 1).append("</version>\n");
-        xml.append("</updatelist>\n");
-        xml.close();
+    public void findDiff(CPath original, File out, String version) throws IOException {
+        COutput output = new COutput(out, version, true);
+        output.getWriter().append("<updatelist application=\"\" baseurl=\"\" jupidator=\"600\">\n");
+        tabs(output.getWriter(), 1).append("<version release=\"\" version=\"" + version + "\">\n");
+        tabs(output.getWriter(), 2).append("<arch name=\"all\">\n");
+        tabs(output.getWriter(), 3).append("<description></description>\n");
+        compare(original, output);
+        tabs(output.getWriter(), 2).append("</arch>\n");
+        tabs(output.getWriter(), 1).append("</version>\n");
+        output.getWriter().append("</updatelist>\n");
+        output.close();
     }
 
     protected abstract void dump(Writer out, int depth) throws IOException;
 
-    protected abstract void compare(CPath original, File filestore, Writer xml) throws IOException;
+    protected abstract void compare(CPath original, COutput out) throws IOException;
 
-    protected abstract void store(Writer xml) throws IOException;
+    protected abstract void store(COutput out) throws IOException;
 
-    protected void delete(Writer xml) throws IOException {
-        tabs(xml, 3).append("<rm file=\"").append(getPath()).append("\"/>\n");
+    protected void delete(COutput out) throws IOException {
+        tabs(out.getWriter(), 3).append("<rm file=\"").append(getPath(DEFAULTROOT)).append("\"/>\n");
     }
 }

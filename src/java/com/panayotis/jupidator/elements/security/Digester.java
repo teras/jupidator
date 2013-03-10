@@ -57,9 +57,9 @@ public class Digester {
             this.hash = null;
             return;
         }
-        this.hash = new byte[digest.getDigestLength()];
-        for (int i = 0; i < digest.getDigestLength(); i += 2)
-            this.hash[i] = Byte.decode("0x" + hash.substring(i * 2, i * 2 + 2));
+        this.hash = new byte[digest.getDigestLength() < (hash.length() / 2) ? digest.getDigestLength() : (hash.length() / 2)];
+        for (int i = 0; i < this.hash.length; i += 2)
+            this.hash[i] = Byte.parseByte(hash.substring(i * 2, i * 2 + 2), 16);
     }
 
     public boolean checkFile(File file) {
