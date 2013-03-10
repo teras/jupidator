@@ -45,6 +45,10 @@ public class ApplicationInfo implements Serializable {
     private boolean distributionBased = false;
     private boolean selfupdate;
 
+    public ApplicationInfo() {
+        this(null, null, 0, null, true);
+    }
+
     public ApplicationInfo(String appHome) {
         this(appHome, null, 0, null, true);
     }
@@ -72,7 +76,8 @@ public class ApplicationInfo implements Serializable {
 
     private ApplicationInfo(String appHome, String appSupportDir, int release, String version, boolean useLocalStamp) {
         vars = new HashMap<String, String>();
-
+        if (appHome == null)
+            appHome = FileUtils.getClassHome(null);
         appHome = fixDir(appHome, "Application");
         if (appSupportDir == null || (!new File(appSupportDir).isDirectory()))
             appSupportDir = appHome;

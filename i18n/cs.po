@@ -14,16 +14,16 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: com/panayotis/jupidator/ApplicationInfo.java:102
+#: com/panayotis/jupidator/ApplicationInfo.java:103
 msgid   "Property name could not be null"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:101
+#: com/panayotis/jupidator/Updater.java:100
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:259
+#: com/panayotis/jupidator/Updater.java:258
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -78,37 +78,12 @@ msgstr  "Nemohu odstranit stažený soubor {0}"
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Soubor {0} bude odstraněn, pokud existuje."
 
-#: com/panayotis/jupidator/elements/FileUtils.java:109
+#: com/panayotis/jupidator/elements/FileUtils.java:110
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/FileUtils.java:184
-#, java-format
-msgid   "Deployer path {0} is not writable."
-msgstr  "Deployer cesta {0} není zapisovatelná."
-
-#: com/panayotis/jupidator/elements/FileUtils.java:191
-#, java-format
-msgid   "Checking JAR {0} for Deployer class."
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/FileUtils.java:196
-#: com/panayotis/jupidator/elements/FileUtils.java:207
-#, java-format
-msgid   "Deployer stored in {0}"
-msgstr  "Deployer uložen v {0}"
-
-#: com/panayotis/jupidator/elements/FileUtils.java:203
-#, java-format
-msgid   "Checking Directory {0} for Deployer class."
-msgstr  ""
-
-#: com/panayotis/jupidator/elements/FileUtils.java:213
-msgid   "Unable to create Deployer"
-msgstr  "Nemohu vytvořit Deployer"
-
-#: com/panayotis/jupidator/elements/FileUtils.java:315
+#: com/panayotis/jupidator/elements/FileUtils.java:307
 #, java-format
 msgid   "Unable to delete file {0}"
 msgstr  "Nemohu odstranit soubor {0}"
@@ -312,3 +287,12 @@ msgstr  "Verze"
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:38
 msgid   "List of changes:"
 msgstr  ""
+
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "Deployer cesta {0} není zapisovatelná."
+
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Deployer uložen v {0}"
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Nemohu vytvořit Deployer"

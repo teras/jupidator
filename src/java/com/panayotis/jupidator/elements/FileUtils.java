@@ -20,7 +20,7 @@
 
 package com.panayotis.jupidator.elements;
 
-import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
@@ -35,6 +35,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,159 +109,149 @@ public class FileUtils {
         if ((!depdir.isDirectory()) || (!PermissionManager.manager.canWrite(depdir)))
             return _("Path {0} is not writable.", depdir.getPath());
 
-        /* Get class paths */
-        ArrayList<String> jars = new ArrayList<String>();
-        ArrayList<String> dirs = new ArrayList<String>();
-        getClassPaths(jars, dirs);
-
-        for (String jar : jars) {
-            ZipFile zip = null;
-            try {
-                zip = new ZipFile(jar);
-                for (Enumeration<? extends ZipEntry> e = (Enumeration<? extends ZipEntry>) zip.entries(); e.hasMoreElements();) {
-                    ZipEntry entry = e.nextElement();
-                    String name = entry.getName();
-                    if (name.startsWith(PACKAGEZIP) && (!name.endsWith("/"))) {
-                        String FILEOUT = FILEHOME + File.separator + entry.getName().replace("/", File.separator);
-                        if (!FILEOUT.endsWith(File.separator)) {
-                            FileOutputStream fout = null;
-                            try {
-                                fout = new FileOutputStream(FILEOUT);
-                                String status = copyFile(zip.getInputStream(entry), fout, null, true);
-                                if (status != null)
-                                    return status;
-                            } catch (IOException ex) {
-                                return ex.getMessage();
-                            } finally {
-                                if (fout != null)
-                                    fout.close();
+        for (File cp : getClassPaths())
+            if (cp.isFile()) {
+                ZipFile zip = null;
+                try {
+                    zip = new ZipFile(cp);
+                    for (Enumeration<? extends ZipEntry> e = (Enumeration<? extends ZipEntry>) zip.entries(); e.hasMoreElements();) {
+                        ZipEntry entry = e.nextElement();
+                        String name = entry.getName();
+                        if (name.startsWith(PACKAGEZIP) && (!name.endsWith("/"))) {
+                            String FILEOUT = FILEHOME + File.separator + entry.getName().replace("/", File.separator);
+                            if (!FILEOUT.endsWith(File.separator)) {
+                                FileOutputStream fout = null;
+                                try {
+                                    fout = new FileOutputStream(FILEOUT);
+                                    String status = copyFile(zip.getInputStream(entry), fout, null, true);
+                                    if (status != null)
+                                        return status;
+                                } catch (IOException ex) {
+                                    return ex.getMessage();
+                                } finally {
+                                    if (fout != null)
+                                        fout.close();
+                                }
                             }
                         }
                     }
+                } catch (IOException ex) {
+                } finally {
+                    if (zip != null)
+                        try {
+                            zip.close();
+                        } catch (IOException ex) {
+                        }
                 }
-            } catch (IOException ex) {
-            } finally {
-                if (zip != null)
+            } else {
+                //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
+                File[] entries = new File(cp, PACKAGEDIR).listFiles();
+                if (entries != null)
+                    for (int i = 0; i < entries.length; i++) {
+                        String status;
+                        try {
+                            String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
+                            status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null, true);
+                            if (status != null)
+                                return status;
+                        } catch (FileNotFoundException ex) {
+                            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+            }
+        return null;
+    }
+
+    public static String getClassHome(Class clazz) {
+        File path = getClassPath(clazz);
+        if (path != null) {
+            if (path.isFile())
+                path = path.getParentFile();
+            return path.getAbsolutePath();
+        }
+        return ".";
+    }
+
+    private static File getClassPath(Class clazz) {
+        List<File> paths = getClassPaths();
+        if (clazz == null) {
+            String blacklist = Updater.class.getPackage().getName();
+            StackTraceElement[] el = Thread.currentThread().getStackTrace();
+            for (int i = 1; i < el.length; i++)
+                if (!el[i].getClassName().startsWith(blacklist))
                     try {
-                        zip.close();
+                        clazz = Class.forName(el[i].getClassName());
+                    } catch (ClassNotFoundException ex) {
+                    }
+        }
+        String classfile = clazz.getName().replace(".", "/") + ".class";
+        for (File cp : paths)
+            if (classFileExists(cp, classfile))
+                return cp;
+        return null;
+    }
+
+    private static boolean classFileExists(File cp, String classfile) {
+        if (cp.isDirectory())
+            return new File(cp, classfile).isFile();
+        else if (cp.isFile()) {
+            ZipFile file = null;
+            try {
+                file = new ZipFile(cp);
+                return file.getEntry(classfile) != null;
+            } catch (IOException ex) {
+                return false;
+            } finally {
+                if (file != null)
+                    try {
+                        file.close();
                     } catch (IOException ex) {
                     }
             }
-        }
-        for (String path : dirs) {
-            //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
-            File[] entries = new File(path + File.separator + PACKAGEDIR).listFiles();
-            if (entries != null)
-                for (int i = 0; i < entries.length; i++) {
-                    String status;
-                    try {
-                        String FILEOUTS = depdir.getPath() + File.separator + entries[i].getName();
-                        status = copyFile(new FileInputStream(entries[i]), new FileOutputStream(FILEOUTS), null, true);
-                        if (status != null)
-                            return status;
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-        }
-        return null;
+        } else
+            return false;
     }
 
-    public static String copyClass(String CLASSNAME, String FILEHOME, UpdatedApplication listener) {
-        String CLASS = CLASSNAME.substring(CLASSNAME.lastIndexOf('.') + 1);
-        String CLASSDIR = CLASSNAME.substring(0, CLASSNAME.length() - CLASS.length() - 1).replace('.', '/');
-
-        String CLASSFILE = CLASS + ".class";
-        String CLASSPATH = CLASSDIR + "/" + CLASSFILE;
-        String CLASSPATHSYSTEM = CLASSPATH.replace("/", File.separator);
-
-        String FILEDIR = FILEHOME + File.separator + CLASSDIR.replace("/", File.separator);
-        String FILEOUT = FILEDIR + File.separator + CLASSFILE;
-
-        /* Create Java path */
-        File depdir = new File(FILEDIR);
-        makeDirectory(depdir);
-        if ((!depdir.isDirectory()) || (!PermissionManager.manager.canWrite(depdir)))
-            return _("Deployer path {0} is not writable.", depdir.getPath());
-
-        ArrayList<String> jars = new ArrayList<String>();
-        ArrayList<String> dirs = new ArrayList<String>();
-        getClassPaths(jars, dirs);
-
-        for (String jar : jars) {
-            listener.receiveMessage(_("Checking JAR {0} for Deployer class.", jar));
-            try {
-                ZipFile zip = new ZipFile(jar);
-                ZipEntry entry = zip.getEntry(CLASSPATH);
-                if (entry != null && copyFile(zip.getInputStream(entry), new FileOutputStream(FILEOUT), null, true) == null) {
-                    listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
-                    return null;
-                }
-            } catch (IOException ex) {
-            }
-        }
-        for (String path : dirs) {
-            listener.receiveMessage(_("Checking Directory {0} for Deployer class.", path));
-            path = path + CLASSPATHSYSTEM;
-            try {
-                if (copyFile(new FileInputStream(path), new FileOutputStream(FILEOUT), null, true) == null) {
-                    listener.receiveMessage(_("Deployer stored in {0}", FILEOUT));
-                    return null;
-                }
-            } catch (FileNotFoundException ex) {
-            }
-        }
-        return _("Unable to create Deployer");
-    }
-
-    public static String getJupidatorHome() {
-        String JUPIDATORHOME = ".";
-        String jupidatorpath = getJarPath("jupidator");
-        if (jupidatorpath != null)
-            JUPIDATORHOME = new File(jupidatorpath).getAbsoluteFile().getParent();
-        return JUPIDATORHOME;
-    }
-
-    private static String getJarPath(String JarName) {
-        ArrayList<String> jars = new ArrayList<String>();
-        getClassPaths(jars, null);
-        String jarjar = JarName + ".jar";
-        String jarexe = JarName + ".exe";
-        for (String jar : jars)
-            if (jar.endsWith(jarjar) || jar.endsWith(jarexe))
-                return jar;
-        return null;
-    }
-
-    private static void getClassPaths(ArrayList<String> jarpaths, ArrayList<String> dirpaths) {
+    private static List<File> getClassPaths() {
         /* Create initial classpath list - will be expanded in classpath inside manifest of JAR files */
-        ArrayList<String> classpaths = new ArrayList<String>();
+        List<String> classpaths = new ArrayList<String>();
+        List<File> paths = new ArrayList<File>();
         StringTokenizer tok = new StringTokenizer(TextUtils.getProperty("java.class.path"), File.pathSeparator);
         while (tok.hasMoreElements())
             classpaths.add(tok.nextToken());
 
         String path;
-        while (classpaths.size() > 0) {
+        while (classpaths.size() > 0) {     // List is being manipulated inside this loop in getClassPathFromManifest
             path = classpaths.get(0);
             classpaths.remove(0);
-            if (path.length() > 4 && (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe"))) {
-                if (jarpaths != null)
-                    jarpaths.add(path);
+            File cp = new File(path);
+            if (cp.isDirectory())
+                paths.add(cp);
+            else if (cp.isFile()) {
+                ZipFile zip = null;
                 try {
-                    /* make sure that in this zip entry there is no classpath definition */
-                    getClassPathFromManifest(new ZipFile(path), classpaths, new File(path).getParent());
+                    zip = new ZipFile(cp);
+                    if (zip.size() > 0) {       /* Make sure it is a zip file */
+                        paths.add(cp);
+                        getClassPathFromManifest(zip, classpaths, new File(path).getParent());
+                    }
                 } catch (IOException ex) {
+                } finally {
+                    if (zip != null)
+                        try {
+                            zip.close();
+                        } catch (IOException ex) {
+                        }
                 }
-            } else {
-                if (path.length() > 0 && path.endsWith(File.separator))
-                    path = path + File.separator;
-                if (dirpaths != null)
-                    dirpaths.add(path);
             }
         }
+        return paths;
     }
 
-    private static void getClassPathFromManifest(ZipFile zip, ArrayList<String> classpaths, String parent) {
+    /**
+     * Make sure that in this zip entry there is no classpath definition
+     */
+    private static void getClassPathFromManifest(ZipFile zip, List<String> classpaths, String parent) {
         if (parent == null)
             parent = "";
         else
@@ -285,7 +276,8 @@ public class FileUtils {
             } catch (IOException ex) {
             } finally {
                 try {
-                    cpin.close();
+                    if (cpin != null)
+                        cpin.close();
                 } catch (IOException ex) {
                 }
             }
@@ -299,7 +291,7 @@ public class FileUtils {
     }
 
     public static String rmTree(File req) {
-        if (!req.exists() || req == null)
+        if (req == null || !req.exists())
             return null;
         if (req.isDirectory()) {
             File[] list = req.listFiles();

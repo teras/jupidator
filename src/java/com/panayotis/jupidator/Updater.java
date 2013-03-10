@@ -84,12 +84,11 @@ public class Updater {
         curInfo = hostInfo = appinfo;
         hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo);
         this.application = application == null ? new SimpleApplication() : application;
-
         if (curVersion.getAppElements().shouldUpdateLibrary()) {
             String oldname = curVersion.getAppElements().getAppName();
             String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
 
-            ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getJupidatorHome(), CFGDIR);
+            ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getClassHome(Updater.class), CFGDIR);
             selfappinfo.setSelfUpdate();
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
