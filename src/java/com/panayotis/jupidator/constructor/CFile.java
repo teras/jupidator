@@ -35,13 +35,13 @@ public final class CFile extends CPath {
     //
     private File original;
 
-    public CFile(File file) throws IOException {
-        this(file.getName(), file.length(), getDigest(file, "MD5"), getDigest(file, "SHA-256"));
+    public CFile(File file, CDir parent) throws IOException {
+        this(file.getName(), file.length(), getDigest(file, "MD5"), getDigest(file, "SHA-256"), parent);
         original = file;
     }
 
-    public CFile(String pathname, long size, String md5, String sha256) {
-        super(pathname);
+    public CFile(String pathname, long size, String md5, String sha256, CDir parent) {
+        super(pathname, parent);
         this.size = size;
         this.md5 = md5;
         this.sha256 = sha256;
@@ -100,13 +100,18 @@ public final class CFile extends CPath {
     }
 
     @Override
+    public String getFullName() {
+        return super.getFullName() + (getParent() == null ? "/" + getName() : "");
+    }
+
+    @Override
     protected void store(Writer xml) throws IOException {
-        tabs(xml, 3).append("<file name=\"").append(getName()).append("\" />\n");
+        tabs(xml, 3).append("<file name=\"").append(getFullName()).append("\" />\n");
     }
 
     @Override
     protected void delete(Writer xml) throws IOException {
-        tabs(xml, 3).append("<rm name=\"").append(getName()).append("\" />\n");
+        tabs(xml, 3).append("<rm name=\"").append(getFullName()).append("\" />\n");
     }
 
     private boolean matchFile(CFile other) {

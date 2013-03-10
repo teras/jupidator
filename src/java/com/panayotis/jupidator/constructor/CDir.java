@@ -33,21 +33,22 @@ public final class CDir extends CPath {
 
     private final List<CPath> paths = new ArrayList<CPath>();
 
-    public CDir(File file) throws IOException {
-        this(file.getName());
+    @SuppressWarnings("ResultOfObjectAllocationIgnored")
+    public CDir(File file, CDir parent) throws IOException {
+        this(file.getName(), parent);
 
         File[] children = file.listFiles();
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isDirectory())
-                    add(new CDir(child));
+                    new CDir(child, this);
                 else if (child.isFile())
-                    add(new CFile(child));
+                    new CFile(child, this);
         Collections.sort(paths);
     }
 
-    public CDir(String dirname) {
-        super(dirname);
+    public CDir(String dirname, CDir parent) {
+        super(dirname, parent);
     }
 
     @Override
@@ -101,11 +102,12 @@ public final class CDir extends CPath {
         for (CPath path : paths)
             path.store(xml);
         if (paths.isEmpty()) {
+            // mkdir does not exist in jupidator yet
         }
     }
 
     @Override
     protected void delete(Writer xml) throws IOException {
-        tabs(xml, 3).append("<rm file=\"").append(getName()).append("\"/>\n");
+        tabs(xml, 3).append("<rm file=\"").append(getFullName()).append("\"/>\n");
     }
 }

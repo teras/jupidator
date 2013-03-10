@@ -39,6 +39,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public abstract class CPath implements Comparable<CPath> {
 
     private final String pathname;
+    private final CDir parent;
 
     public static CPath construct(File file) throws IOException {
         if (!file.exists())
@@ -46,9 +47,9 @@ public abstract class CPath implements Comparable<CPath> {
         else if (!file.canRead())
             throw new IOException("Unable to read from file " + file.getPath());
         if (file.isDirectory())
-            return new CDir(file);
+            return new CDir(file, null);
         else if (file.isFile())
-            return new CFile(file);
+            return new CFile(file, null);
         else
             throw new IOException("Unknwon file type for file " + file.getPath());
     }
@@ -61,21 +62,15 @@ public abstract class CPath implements Comparable<CPath> {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (qName.equals("dir")) {
-                CDir cdir = new CDir(attributes.getValue("name"));
-                attachPath(cdir);
+                CDir cdir = new CDir(attributes.getValue("name"), dirs.isEmpty() ? null : dirs.peek());
+                if (result == null)
+                    result = cdir;
                 dirs.push(cdir);
             } else if (qName.equals("file")) {
-                CFile cfile = new CFile(attributes.getValue("name"), Long.parseLong(attributes.getValue("size")), attributes.getValue("md5"), attributes.getValue("sha256"));
-                attachPath(cfile);
+                CFile cfile = new CFile(attributes.getValue("name"), Long.parseLong(attributes.getValue("size")), attributes.getValue("md5"), attributes.getValue("sha256"), dirs.isEmpty() ? null : dirs.peek());
+                if (result == null)
+                    result = cfile;
             }
-        }
-
-        private void attachPath(CPath path) {
-            if (result == null)
-                result = path;
-            CDir parent = dirs.isEmpty() ? null : dirs.peek();
-            if (parent != null)
-                parent.add(path);
         }
 
         @Override
@@ -96,8 +91,11 @@ public abstract class CPath implements Comparable<CPath> {
         return handler.result;
     }
 
-    public CPath(String pathname) {
+    public CPath(String pathname, CDir parent) {
         this.pathname = pathname;
+        this.parent = parent;
+        if (parent != null)
+            parent.add(this);
     }
 
     @Override
@@ -129,6 +127,17 @@ public abstract class CPath implements Comparable<CPath> {
 
     public String getName() {
         return pathname;
+    }
+
+    public String getFullName() {
+        if (parent == null)
+            return "${APPHOME}";
+        else
+            return parent.getFullName() + "/" + pathname;
+    }
+
+    protected CDir getParent() {
+        return parent;
     }
 
     public void dump(Writer out) throws IOException {

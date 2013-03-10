@@ -54,6 +54,7 @@
 
 	<target name="-post-jar">
 		<delete file="dist/README.txt"/>
+		<chmod file="${dist.jar}" perm="a+x"/>
 	</target>
 
 	<target name="ignore_i18n">
