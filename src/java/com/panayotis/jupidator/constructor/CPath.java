@@ -40,6 +40,8 @@ public abstract class CPath implements Comparable<CPath> {
 
     private final String pathname;
     private final CDir parent;
+    protected final String PS = "/";
+    protected final String DEFAULTPATH = "${APPHOME}";
 
     public static CPath construct(File file) throws IOException {
         if (!file.exists())
@@ -129,15 +131,15 @@ public abstract class CPath implements Comparable<CPath> {
         return pathname;
     }
 
-    public String getFullName() {
-        if (parent == null)
-            return "${APPHOME}";
-        else
-            return parent.getFullName() + "/" + pathname;
-    }
-
     protected CDir getParent() {
         return parent;
+    }
+
+    protected String getPath() {
+        if (parent == null)
+            return DEFAULTPATH;
+        else
+            return parent.getPath() + PS + pathname;
     }
 
     public void dump(Writer out) throws IOException {
@@ -167,8 +169,8 @@ public abstract class CPath implements Comparable<CPath> {
         tabs(xml, 3).append("<description></description>\n");
         compare(original, filestore, xml);
         tabs(xml, 2).append("</arch>\n");
-        tabs(xml, 2).append("</version>\n");
-        tabs(xml, 1).append("</updatelist>\n");
+        tabs(xml, 1).append("</version>\n");
+        xml.append("</updatelist>\n");
         xml.close();
     }
 
@@ -178,5 +180,7 @@ public abstract class CPath implements Comparable<CPath> {
 
     protected abstract void store(Writer xml) throws IOException;
 
-    protected abstract void delete(Writer xml) throws IOException;
+    protected void delete(Writer xml) throws IOException {
+        tabs(xml, 3).append("<rm file=\"").append(getPath()).append("\"/>\n");
+    }
 }

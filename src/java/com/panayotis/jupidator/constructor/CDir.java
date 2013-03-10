@@ -105,9 +105,4 @@ public final class CDir extends CPath {
             // mkdir does not exist in jupidator yet
         }
     }
-
-    @Override
-    protected void delete(Writer xml) throws IOException {
-        tabs(xml, 3).append("<rm file=\"").append(getFullName()).append("\"/>\n");
-    }
 }

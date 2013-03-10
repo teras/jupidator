@@ -100,18 +100,12 @@ public final class CFile extends CPath {
     }
 
     @Override
-    public String getFullName() {
-        return super.getFullName() + (getParent() == null ? "/" + getName() : "");
-    }
-
-    @Override
     protected void store(Writer xml) throws IOException {
-        tabs(xml, 3).append("<file name=\"").append(getFullName()).append("\" />\n");
-    }
-
-    @Override
-    protected void delete(Writer xml) throws IOException {
-        tabs(xml, 3).append("<rm name=\"").append(getFullName()).append("\" />\n");
+        tabs(xml, 3)
+                .append("<file name=\"").append(getName())
+                .append("\" compress=\"gz\" sourcedir=\"").append("")
+                .append("\" destdir=\"").append(getParent() == null ? DEFAULTPATH : getParent().getPath())
+                .append("\" size=\"").append("").append("\" />\n");
     }
 
     private boolean matchFile(CFile other) {
