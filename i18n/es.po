@@ -279,12 +279,12 @@ msgstr  ""
 #~ msgid        "Unable to create Deployer"
 #~ msgstr       "No se ha podido crear el gestor del despliegue"
 
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "El gestor del despliegue ha sido guardado en {0}"
+#~ msgid        "Application info not provided."
+#~ msgstr       "No se ha proporcionado información de la aplicación."
 
 #~ msgid        "Deployer path {0} is not writable."
 #~ msgstr       "No se puede escribir en la ruta del gestor del gestor del "
 #~      "despliegue {0}."
 
-#~ msgid        "Application info not provided."
-#~ msgstr       "No se ha proporcionado información de la aplicación."
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "El gestor del despliegue ha sido guardado en {0}"

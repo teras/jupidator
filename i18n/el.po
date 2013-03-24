@@ -285,11 +285,11 @@ msgstr  "Κατάλογος αλλαγών:"
 #~ msgid        "Unable to create Deployer"
 #~ msgstr       "Αδυναμία κατασκευής εκκινητή"
 
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Ο εκκινητής αποθηκεύτηκε στο {0}"
+#~ msgid        "Application info not provided."
+#~ msgstr       "Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
 
 #~ msgid        "Deployer path {0} is not writable."
 #~ msgstr       "Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
 
-#~ msgid        "Application info not provided."
-#~ msgstr       "Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Ο εκκινητής αποθηκεύτηκε στο {0}"

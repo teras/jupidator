@@ -34,13 +34,13 @@ public class XEKill extends XNativeElement {
 
     static {
         if (OperatingSystem.isWindows) {
-            ArrayList args = new ArrayList();
+            ArrayList<String> args = new ArrayList<String>();
             args.add("/FO");
             args.add("CSV");
             PS_CMD = new XNativeCommand("tasklist.exe", args, null);
             PS_COLUMN = 3;
         } else {
-            ArrayList args = new ArrayList();
+            ArrayList<String> args = new ArrayList<String>();
             args.add("aux");
             PS_CMD = new XNativeCommand("ps", args, null);
             PS_COLUMN = 2;
@@ -79,7 +79,7 @@ public class XEKill extends XNativeElement {
     private XNativeCommand getKillCmd(String proc) {
         XNativeCommand kill;
         if (OperatingSystem.isWindows) {
-            ArrayList args = new ArrayList();
+            ArrayList<String> args = new ArrayList<String>();
             args.add("/PID");
             args.add(proc);
             args.add(target);
@@ -87,7 +87,7 @@ public class XEKill extends XNativeElement {
                 args.add(signal);
             kill = new XNativeCommand("taskkill.exe", args, null);
         } else {
-            ArrayList args = new ArrayList();
+            ArrayList<String> args = new ArrayList<String>();
             if (!signal.equals(""))
                 args.add("-" + signal);
             args.add(proc);

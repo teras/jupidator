@@ -278,11 +278,11 @@ msgstr  ""
 #~ msgid        "Unable to create Deployer"
 #~ msgstr       "Nemohu vytvořit Deployer"
 
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Deployer uložen v {0}"
+#~ msgid        "Application info not provided."
+#~ msgstr       "Informace o aplikaci není poskytnuta."
 
 #~ msgid        "Deployer path {0} is not writable."
 #~ msgstr       "Deployer cesta {0} není zapisovatelná."
 
-#~ msgid        "Application info not provided."
-#~ msgstr       "Informace o aplikaci není poskytnuta."
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Deployer uložen v {0}"
