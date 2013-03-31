@@ -38,7 +38,11 @@ public class DeployerParameters implements Serializable {
     private List<XElement> elements = new ArrayList<XElement>();
     private List<String> relaunch = new ArrayList<String>();
     private boolean headless = true;
-    private String logLocation = null;
+    public final String applocation;
+
+    public DeployerParameters(String applocation) {
+        this.applocation = applocation;
+    }
 
     public void setElements(List<XElement> elements) {
         if (elements == null)
@@ -97,13 +101,5 @@ public class DeployerParameters implements Serializable {
                 }
         }
         return status;
-    }
-
-    public String getLogLocation() {
-        return logLocation;
-    }
-
-    public void setLogLocation(String logLocation) {
-        this.logLocation = logLocation;
     }
 }

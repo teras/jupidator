@@ -15,7 +15,7 @@ msgstr  "Project-Id-Version: jupidator\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Generator: KBabel 1.11.4\n"
 
-#: com/panayotis/jupidator/Updater.java:100
+#: com/panayotis/jupidator/Updater.java:99
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
@@ -276,15 +276,15 @@ msgstr  "Versión"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "No se ha podido crear el gestor del despliegue"
-
-#~ msgid        "Application info not provided."
-#~ msgstr       "No se ha proporcionado información de la aplicación."
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "El gestor del despliegue ha sido guardado en {0}"
 
 #~ msgid        "Deployer path {0} is not writable."
 #~ msgstr       "No se puede escribir en la ruta del gestor del gestor del "
 #~      "despliegue {0}."
 
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "El gestor del despliegue ha sido guardado en {0}"
+#~ msgid        "Application info not provided."
+#~ msgstr       "No se ha proporcionado información de la aplicación."
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "No se ha podido crear el gestor del despliegue"

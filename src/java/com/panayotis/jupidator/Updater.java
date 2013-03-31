@@ -32,7 +32,6 @@ import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import jupidator.launcher.DeployerParameters;
@@ -63,21 +62,23 @@ public class Updater {
         this(xmlurl, new ApplicationInfo(appHome), application);
     }
 
+    @Deprecated
     public Updater(String xmlurl, String appHome, String appSupportDir, UpdatedApplication application) throws UpdaterException {
-        this(xmlurl, new ApplicationInfo(appHome, appSupportDir), application);
+        this(xmlurl, new ApplicationInfo(appHome), application);
     }
 
+    @Deprecated
     public Updater(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) throws UpdaterException {
-        this(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application);
+        this(xmlurl, new ApplicationInfo(appHome, release, version), application);
     }
 
     public Updater(String xmlurl, String appHome, int release, String version, UpdatedApplication application) throws UpdaterException {
-        this(xmlurl, new ApplicationInfo(appHome, null, release, version), application);
+        this(xmlurl, new ApplicationInfo(appHome, release, version), application);
     }
 
     @Deprecated
     public Updater(String xmlurl, String appHome, String appSupportDir, String release, String version, UpdatedApplication application) throws UpdaterException {
-        this(xmlurl, new ApplicationInfo(appHome, appSupportDir, TextUtils.getInt(release, 0), version), application);
+        this(xmlurl, new ApplicationInfo(appHome, TextUtils.getInt(release, 0), version), application);
     }
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
@@ -86,9 +87,7 @@ public class Updater {
         this.application = application == null ? new SimpleApplication() : application;
         if (curVersion.getAppElements().shouldUpdateLibrary()) {
             String oldname = curVersion.getAppElements().getAppName();
-            String CFGDIR = new File(appinfo.getUpdaterConfigFile()).getAbsoluteFile().getParent();
-
-            ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getClassHome(Updater.class), CFGDIR);
+            ApplicationInfo selfappinfo = ApplicationInfo.getSelfInfo(FileUtils.getClassHome(Updater.class));
             selfappinfo.setSelfUpdate();
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
@@ -106,16 +105,18 @@ public class Updater {
         return start(xmlurl, new ApplicationInfo(appHome), application, null);
     }
 
+    @Deprecated
     public static Updater start(String xmlurl, String appHome, String appSupportDir, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome, appSupportDir), application, null);
-    }
-
-    public static Updater start(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome, appSupportDir, release, version), application, null);
+        return start(xmlurl, new ApplicationInfo(appHome), application, null);
     }
 
     public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome, null, release, version), application, null);
+        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null);
+    }
+
+    @Deprecated
+    public static Updater start(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) {
+        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null);
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui) {
@@ -198,13 +199,12 @@ public class Updater {
                 ArrayList<String> relaunch = new ArrayList<String>();
                 relaunch.addAll(hostVersion.getArch().getRelaunchCommand(hostInfo));
 
-                DeployerParameters params = new DeployerParameters();
+                DeployerParameters params = new DeployerParameters(curInfo.getApplicationHome());
                 params.setElements(elements);
                 if (!curInfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
                     params.addElement(AppVersion.construct(curVersion.getAppElements()).getXElement(curInfo.getApplicationHome()));
                 params.setHeadless(gui.isHeadless());
                 params.setRelaunchCommand(relaunch);
-                params.setLogLocation(curInfo.getApplicationSupportDir());
 
                 /* Construct launcher command */
                 try {

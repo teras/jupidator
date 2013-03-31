@@ -56,11 +56,10 @@ public class Launcher {
     private static void usage() {
         System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
         System.err.println("Usage:");
-        System.err.println("java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION [APPSUPPORTDIR]]]]");
+        System.err.println("java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION]]]");
         System.err.println("     APPHOME defaults to .");
         System.err.println("     RELEASE defaults to 1");
         System.err.println("     VERSION defaults to null");
-        System.err.println("     APPSUPPORTDIR defaults to APPHOME");
         System.err.println("java -jar jupidator.jar -l|--list [OLDDIR]");
         System.err.println("     OLDDIR defaults to .");
         System.err.println("java -jar jupidator.jar -p|--produce [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]");
@@ -103,7 +102,6 @@ public class Launcher {
         String APPHOME = ".";
         int RELEASE = 1;
         String VERSION = null;
-        String APPSUPPORTDIR = null;
 
         /* 
          * Ignore -u/--update parameter. 
@@ -125,10 +123,8 @@ public class Launcher {
             }
         if (args.length > 3)
             VERSION = args[3];
-        if (args.length > 4)
-            APPSUPPORTDIR = args[4];
 
-        ApplicationInfo ap = new ApplicationInfo(APPHOME, APPSUPPORTDIR, RELEASE, VERSION);
+        ApplicationInfo ap = new ApplicationInfo(APPHOME, RELEASE, VERSION);
 
         try {
             Updater upd = new Updater(URL, ap, null);

@@ -22,12 +22,10 @@ package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Properties;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 /**
  *
@@ -35,30 +33,21 @@ import java.util.Properties;
  */
 public class UpdaterProperties implements Serializable {
 
-    private final static String TIMEIGNORE = "Updater.Version.NextCheck";
-    private final static String VERSIONIGNORE = "Updater.Version.Ignore";
-    private final Properties opts;
-    private ApplicationInfo appinfo;
+    private final static String TIMEIGNORE = "NextCheck";
+    private final static String VERSIONIGNORE = "Ignore";
+    private final Preferences prefs;
 
     public UpdaterProperties(ApplicationInfo appinfo) throws UpdaterException {
-        opts = new Properties();
         if (appinfo == null)
-            return;
-        this.appinfo = appinfo;
-        try {
-            opts.loadFromXML(new FileInputStream(appinfo.getUpdaterConfigFile()));
-            opts.remove("Updater.Version.Release");
-            opts.remove("Updater.Version.LastCheck");
-            storeOptions();
-        } catch (IOException ex) {
-        }
-        appinfo.updateIgnoreRelease(opts.getProperty(VERSIONIGNORE, "0"));
+            throw new UpdaterException("Application info could not be null");
+        prefs = Preferences.userNodeForPackage(getClass()).node((appinfo.isSelfUpdate() ? "lib:" : "app:") + appinfo.getApplicationHome());
+        appinfo.updateIgnoreRelease(prefs.getInt(VERSIONIGNORE, 0));
     }
 
     public boolean isTooSoon() {
         long now = Calendar.getInstance().getTimeInMillis();
         try {
-            long last = Long.parseLong(opts.getProperty(TIMEIGNORE, "-1"));
+            long last = prefs.getLong(TIMEIGNORE, -1);
             long next = last + 1000 * 60 * 60 * 24;
             if (now < next)
                 return true;
@@ -69,20 +58,18 @@ public class UpdaterProperties implements Serializable {
     }
 
     public void defer() {
-        opts.put(TIMEIGNORE, Long.toString(Calendar.getInstance().getTimeInMillis()));
-        storeOptions();
+        prefs.putLong(TIMEIGNORE, Calendar.getInstance().getTimeInMillis());
+        try {
+            prefs.flush();
+        } catch (BackingStoreException ex) {
+        }
     }
 
     public void ignore(int newrelease) {
-        opts.put(VERSIONIGNORE, Integer.toString(newrelease));
-        storeOptions();
-    }
-
-    private void storeOptions() {
+        prefs.putInt(VERSIONIGNORE, newrelease);
         try {
-            opts.storeToXML(new FileOutputStream(appinfo.getUpdaterConfigFile()), "Jupidator Java Updater http://sourceforge.net/projects/jupidator/");
-        } catch (IOException ex) {
-            throw new IllegalArgumentException("Unable to store config file : " + ex.getMessage());
+            prefs.flush();
+        } catch (BackingStoreException ex) {
         }
     }
 }

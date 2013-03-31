@@ -28,8 +28,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import static com.panayotis.jupidator.i18n.I18N._;
-
 /**
  * This information is given to the library from the runtime environment
  *
@@ -46,43 +44,46 @@ public class ApplicationInfo implements Serializable {
     private boolean selfupdate;
 
     public ApplicationInfo() {
-        this(null, null, 0, null, true);
+        this(null, 0, null, true);
     }
 
     public ApplicationInfo(String appHome) {
-        this(appHome, null, 0, null, true);
+        this(appHome, 0, null, true);
     }
 
-    public ApplicationInfo(String appHome, String appSupportDir) {
-        this(appHome, appSupportDir, 0, null, true);
+    public ApplicationInfo(int release, String version) {
+        this(null, release, version, true);
     }
 
     public ApplicationInfo(String appHome, int release, String version) {
-        this(appHome, null, release, version, true);
+        this(appHome, release, version, true);
+    }
+
+    @Deprecated
+    public ApplicationInfo(String appHome, String appSupportDir) {
+        this(appHome, 0, null, true);
     }
 
     @Deprecated
     public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
-        this(appHome, appSupportDir, TextUtils.getInt(release, 0), version, true);
+        this(appHome, TextUtils.getInt(release, 0), version, true);
     }
 
+    @Deprecated
     public ApplicationInfo(String appHome, String appSupportDir, int release, String version) {
-        this(appHome, appSupportDir, release, version, true);
+        this(appHome, release, version, true);
     }
 
-    static ApplicationInfo getSelfInfo(String appHome, String appSupportDir) {
-        return new ApplicationInfo(appHome, appSupportDir, SystemVersion.RELEASE, SystemVersion.VERSION, false);
+    static ApplicationInfo getSelfInfo(String appHome) {
+        return new ApplicationInfo(appHome, SystemVersion.RELEASE, SystemVersion.VERSION, false);
     }
 
-    private ApplicationInfo(String appHome, String appSupportDir, int release, String version, boolean useLocalStamp) {
+    private ApplicationInfo(String appHome, int release, String version, boolean useLocalStamp) {
         vars = new HashMap<String, String>();
         if (appHome == null)
             appHome = FileUtils.getClassHome(null);
         appHome = fixDir(appHome, "Application");
-        if (appSupportDir == null || (!new File(appSupportDir).isDirectory()))
-            appSupportDir = appHome;
         vars.put("APPHOME", appHome);
-        vars.put("APPSUPPORTDIR", appSupportDir);
 
         // Find versions
         if (useLocalStamp) {    // Skip this part if self-updating
@@ -96,7 +97,7 @@ public class ApplicationInfo implements Serializable {
         if (version != null && (!version.equals("")))
             vars.put("VERSION", version);
 
-        updateIgnoreRelease("0");
+        updateIgnoreRelease(0);
 
         vars.put("JAVABIN", FileUtils.JAVABIN);
         vars.put("WORKDIR", PermissionManager.manager.getWorkDir());
@@ -118,21 +119,13 @@ public class ApplicationInfo implements Serializable {
         return distributionBased;
     }
 
-    public String getApplicationSupportDir() {
-        return vars.get("APPSUPPORTDIR");
-    }
-
     public String getApplicationHome() {
         return vars.get("APPHOME");
     }
 
-    public String getUpdaterConfigFile() {
-        return getApplicationSupportDir() + File.separator + "updater.xml";
-    }
-
     /* This new release has to do with ignoring a specific version */
-    public final void updateIgnoreRelease(String release) {
-        vars.put("IGNORERELEASE", Integer.toString(TextUtils.getInt(release, 0)));
+    public final void updateIgnoreRelease(int release) {
+        vars.put("IGNORERELEASE", Integer.toString(release));
     }
 
     public int getRelease() {

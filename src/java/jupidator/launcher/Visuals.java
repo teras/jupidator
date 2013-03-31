@@ -49,20 +49,7 @@ public class Visuals extends javax.swing.JFrame {
     private static boolean headless = false;
     private static boolean foundErrors = false;
     private static JFrame frame;
-    private static String logpath;
-    private static final String logfile;
-
-    static {
-        /* Find log filename */
-        logfile = new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date());
-        setLogPath(null);
-    }
-
-    public static void setLogPath(String path) {
-        if (path == null)
-            path = System.getProperty("java.io.tmpdir");
-        logpath = path;
-    }
+    static File logfile;
 
     public static void info(String message) {
         if (frame == null)
@@ -127,12 +114,22 @@ public class Visuals extends javax.swing.JFrame {
      *  private code to store output to a file
      */
     private static void storeLog() {
-        File out = new File(logpath, logfile);
-        if (!out.getParentFile().isDirectory())
+        String home = System.getProperty("user.home") + File.separator;
+        File logdir;
+        if (OperatingSystem.isWindows)
+            logdir = new File(System.getenv("APPDATA") + "\\jupidator");
+        else if (OperatingSystem.isMac)
+            logdir = new File(home + "Library/Logs/jupidator");
+        else
+            logdir = new File(home + ".local/share/config/jupidator");
+        logdir.mkdirs();
+
+        logfile = new File(logdir, new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date()));
+        if (!logfile.getParentFile().isDirectory())
             return;
         FileWriter fout = null;
         try {
-            fout = new FileWriter(out);
+            fout = new FileWriter(logfile);
             fout.write(info.toString());
         } catch (IOException ex) {
         } finally {

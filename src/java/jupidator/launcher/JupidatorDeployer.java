@@ -38,8 +38,7 @@ public class JupidatorDeployer {
             in = null;
 
             Visuals.setHeadless(params.isHeadless());
-            Visuals.setLogPath(params.getLogLocation());
-            Visuals.info("Start of Jupidator Deployer");
+            Visuals.info("Start of Jupidator Deployer for location " + params.applocation);
 
             /* Run after visuals have been initialized */
             Thread worker = new Thread() {
@@ -54,10 +53,12 @@ public class JupidatorDeployer {
                         if (Visuals.finish()) {
                             /* Relaunch application if applicable */
                             List<String> command = params.getRelaunchCommand();
-                            if (command.size() >= 1)
-                                new ProcessBuilder(command).start();
-                            else
-                                Visuals.info("No vaslid relaunch command found!");
+                            if (command.size() >= 1) {
+                                ProcessBuilder procb = new ProcessBuilder(command);
+                                procb.environment().put("JUPIDATOR_ERROR_FILE", Visuals.logfile == null ? "" : Visuals.logfile.getAbsolutePath());
+                                procb.start();
+                            } else
+                                Visuals.info("No valid relaunch command found!");
 
                             /* Exit installer */
                             finishWithStatus(0);

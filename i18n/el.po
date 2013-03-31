@@ -17,7 +17,7 @@ msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "X-Poedit-Country: GREECE\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: com/panayotis/jupidator/Updater.java:100
+#: com/panayotis/jupidator/Updater.java:99
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  "Αυτή η ενημέρωση είναι απαραίτητη για την ομαλή εκτέλεση του {0}"
@@ -282,14 +282,14 @@ msgstr  "Έκδοση"
 msgid   "List of changes:"
 msgstr  "Κατάλογος αλλαγών:"
 
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Αδυναμία κατασκευής εκκινητή"
-
-#~ msgid        "Application info not provided."
-#~ msgstr       "Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Ο εκκινητής αποθηκεύτηκε στο {0}"
 
 #~ msgid        "Deployer path {0} is not writable."
 #~ msgstr       "Η διεύθυνση του εκκινητή {0} δεν είναι εγγράψιμη."
 
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Ο εκκινητής αποθηκεύτηκε στο {0}"
+#~ msgid        "Application info not provided."
+#~ msgstr       "Δεν έχουν δωθεί πληροφορίες για την Εφαρμογή"
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Αδυναμία κατασκευής εκκινητή"

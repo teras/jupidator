@@ -34,7 +34,7 @@
 
 <para>Jupidator can be used to update any application, not only Java applications. Although it is basically a library, it is also a stand alone application. The distributed JAR can be run as: <varname>java -jar jupidator.jar</varname>. The required parameters will be displayed on screen. Reference to the text below for more detailed explanation of these parameters.</para>
 
-<para>Jupidator shows its strength when it's integrated into a Java project. The only requirement is to be defined in the classpath of the application. The most easy way is to use the JAR provided (<varname>dist/jupidator.jar</varname>) as an external library. Jupidator's license is LGPL, thus it is allowed for you to bundle this JAR file with your application.</para>
+<para>Jupidator shows its strength when it's integrated into a Java project. The only requirement is to be defined in the classpath of the application. The most easy way is to use the JAR provided (<varname>dist/jupidator.jar</varname>) as an external library. Jupidator's license is LGPL, thus it is allowed for you to bundle this JAR file with your application, commercial or not.</para>
 
 <para>If you prefer to change some parts of Jupidator itself, or if you don't want to distribute a separated JAR file, you can add Jupidator source code to your project. Just copy the source tree of Jupidator and you are ready! In any case, just make sure that you are in accordance with the Licenses which come together with Jupidator.</para>
 
@@ -44,7 +44,7 @@
     <listitem><para>An XML file which describes the updated parts of the application</para></listitem>
 </itemizedlist>
 
-<para>Jupidator is using a incremental updating mechanism. In any new version the developer needs to provide <emphasis>only</emphasis> the changed files, and <emphasis>not</emphasis> the whole distribution. The updating mechanism parses all versions newer than the currently running and cleverly downloads the latest version of every part, even if parts are brought in <emphasis>various</emphasis> versions. Even if a file exists in one version, then gets deleted in a future distribution and then appears again, the file will be downloaded if nessesary.</para>
+<para>Jupidator is using a incremental updating mechanism. In any new version the developer needs to provide <emphasis>only</emphasis> the changed files, and <emphasis>not</emphasis> the whole distribution. The updating mechanism parses all versions newer than the currently running and cleverly downloads the latest version of every part, even if these parts are retrieved from <emphasis>various</emphasis> versions. Even if a file exists in one version, then gets deleted in a future distribution and then appears again, the file will be downloaded if nessesary.</para>
 
 <para id="distributionbased">The updating scheme can be used in two contexts: with operating systems that support updating of the main application and with operating systems that the applications should be take care of themselves for updating. The first system is for example Debian, while the second is Windows. The first type of operating systems needs only to update parts like plugins of the application, and not the application core itself, while the other type requires all files to be updated. This difference is taken into account when using Jupidator updater.</para>
 
@@ -66,17 +66,16 @@
 
 <sect3>
 <title>Definition of Updater class</title>
-<para>The Updater class can be constructed as follows:</para>
-<para><function>public Updater(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) throws UpdaterException</function></para>
+<para>The most common Updater class constructor is as follows:</para>
+<para><function>public Updater(String xmlurl, String appHome, int release, String version, UpdatedApplication application) throws UpdaterException</function></para>
 <itemizedlist>
 	<listitem><para><varname>xmlurl</varname> the URL of the XML file which describes the updated parts. See <link linkend="xmlscheme">next section.</link> (required argument)</para></listitem>
-	<listitem><para id="apphome"><varname>appHome</varname> the directory path of the application. Typically is where the JAR file is found. Usually it is writable by a user with elevated privileges. This is not a required argument any more, since it can be guessed by the location of the calling class outdise the Jupidator package name-space. It is strongly recommended though, since quite often the location of the JAR files is not the "location" of the application itself.</para></listitem>
-	<listitem><para id="appsupportdir"><varname>appSupportDir</varname> is the directory path where application locally stores files. Typically resides in the $HOME directory of the user, and thus the user has write permissions in it (optional argument).</para></listitem>
+	<listitem><para id="apphome"><varname>appHome</varname> the directory path of the application. Typically is where the JAR file is found. Usually it is writable by a user with elevated privileges. This is not a required argument, since it can be guessed by the location of the calling class outdise the Jupidator package name-space. It is strongly recommended though, since quite often the location of the JAR files is not the "location" of the application itself.</para></listitem>
 	<listitem><para id="release"><varname>release</varname> the numerical version of the application. This should be an increasing integer number which marks every release (optional argument).</para></listitem>
 	<listitem><para id="version"><varname>version</varname> the human readable version of the application. This is a free text versioning scheme, for displaying reasons (optional argument).</para></listitem>
 	<listitem><para><varname>updatedApplication</varname> the object implementing the <classname>com.panayotis.jupidator.UpdatedApplication</classname> interface, as <link linkend="feedback">described below</link>  (optional argument).</para></listitem>
 </itemizedlist>
-<para>Apart from this contructor, other helper contructor exist, which fill the missing values with reasonable defaults. Please refer to JavaDoc for more information.</para>
+<para>Apart from this constructor, other helper contructor exist, which fill the missing values with reasonable defaults. Please refer to JavaDoc for more information.</para>
 <para>To start the actual updating procedure, the <function>actionDisplay()</function> should be called. All further actions are handled by Jupidator, in a separated thread if needed.</para>
 </sect3>
 
@@ -87,7 +86,7 @@
 	<listitem><para><function>public static Updater start(String xmlurl, String appHome, UpdatedApplication application)</function></para></listitem>
 	<listitem><para><function>public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application)</function></para></listitem>
 </itemizedlist>
-<para>These methods start the updater if required, and silently ignore possible initialization errors. A reference of the produced Updater is returned, or null if an error occured. If no special requirements are desired for the update, then it is recommended to use this family of functions instead.</para>
+<para>These methods start the updater if required, and silently ignore possible initialization errors. A reference of the produced Updater is returned, or null if an error occured. If no special requirements are desired for the update, then it is recommended to use this family of methods instead.</para>
 </sect3>
 
 
@@ -101,7 +100,7 @@
 	<listitem><para><function>public void receiveMessage(String message)</function></para>
 	<para>Mechanism for the main application to receive debugging messages. These messages can be ignored of course, or stored wherever the application think is appropriate (i.e. in a log file). These messages are possibly localized.</para></listitem>
 	<listitem><para><function>public boolean requestRestart()</function> </para>
-	<para>The updater requests to restart the application. No actual restart is performed yet. This method is used to do the necessary housekeeping, like for example to save open files. If the application returns "true" then housekeeping is successful and the updater is allowed to restart the application. Or else the updating procedure is stopped.</para></listitem>
+	<para>The updater requests to restart the application. No actual restart is performed yet. This method is used to inform the main application to do the necessary housekeeping, like for example to save open files. If the application returns "true" then housekeeping is successful and the updater is allowed to restart the application. Or else the updating procedure is stopped.</para></listitem>
 </itemizedlist>
 </sect2>
 
@@ -120,7 +119,6 @@ public class MyAppUpdate implements UpdatedApplication {
             new Updater(
                     "http://www.myapp.com/update/update.xml",
                     "/usr/lib/myapp",
-                    System.getProperty("user.home") + File.separator + ".myapp",
                     413,
                     "4.1.3",
                     this).actionDisplay();
@@ -238,6 +236,20 @@ public class MyAppUpdate implements UpdatedApplication {
 
 </sect1>
 
+
+<sect1>
+<title>Logging under deployment</title>
+<para>During deployment, logging to the main application is not possible, since it needs to be closed. For this reason a default location for updates is used. This location is operating system dependent:</para>
+<itemizedlist>
+	<listitem><para><varname>Windows</varname></para><para>under %APPDATA%\\jupidator</para></listitem>
+	<listitem><para><varname>OS X</varname></para><para>under ~/Library/Logs/jupidator</para></listitem>
+	<listitem><para><varname>Linux and other systems</varname></para><para>under ~/.local/share/config/jupidator</para></listitem>
+</itemizedlist>
+<para>A file named <varname>jupidator-{YEAR}{MONTH}{DAY}.{HOUR}{MINUTE}{SECONDS}.{MILLISECONDS}.log</varname> is created and all log is directed there. If an error appears while deplying, this is also presented on screen.</para>
+<para>If the application is set to automatically relauch after deployment, then the system environmental ariable JUPIDATOR_ERROR_FILE is set to the location of the log file. You can use this variable to access log file if desired.</para>
+</sect1>
+
+
 <sect1>
 <title>Customization and properties</title>
 
@@ -248,7 +260,6 @@ public class MyAppUpdate implements UpdatedApplication {
 <para>Jupidator supports variables inside the various URLs and filenames. This is a list of predefined variables:</para>
 <itemizedlist>
 	<listitem><para><varname>APPHOME</varname></para><para>Home directory of the application, as given to the <link linkend="apphome">runtime environment</link></para></listitem>
-	<listitem><para><varname>APPSUPPORTDIR</varname></para><para>Support directory of the application, as given to the <link linkend="appsupportdir">runtime environment</link></para></listitem>
 	<listitem><para><varname>VERSION</varname></para><para>Human readable version, as given to the <link linkend="version">runtime environment</link></para></listitem>
 	<listitem><para><varname>RELEASE</varname></para><para>Numeric release, as given to the <link linkend="release">runtime environment</link></para></listitem>
 	<listitem><para><varname>IGNORERELEASE</varname></para><para>Last release, which the user requested not to upgrade.</para></listitem>
@@ -260,8 +271,8 @@ public class MyAppUpdate implements UpdatedApplication {
 
 <para>The developer can define it's own variables and use them inside the XML file. New variables are stored inside the <varname>com.panayotis.jupidator.ApplicationInfo</varname> object, by calling the method <varname>setProperty(String name, String value)</varname></para>
 
-<para>In order to use these variables, should be enclosed in curly brackets and prepended with a dollar sign. For example, to define a directory inside application support directory, with the username in the path, the following expression should be written:</para>
-<para><varname>${APPSUPPORTDIR}${file.separator}${user.name}${file.separator}myfile.txt</varname></para>
+<para>In order to use these variables, they should be enclosed in curly brackets and prepended with a dollar sign. For example, to define file "myfile.txt", under the application's home directory, followed by directory equal to the username, the following expression should be written:</para>
+<para><varname>${APPHOME}${file.separator}${user.name}${file.separator}myfile.txt</varname></para>
 </sect2>
 
 <sect2>
