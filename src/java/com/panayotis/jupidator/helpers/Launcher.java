@@ -34,12 +34,24 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import jupidator.launcher.OperatingSystem;
 
 /**
  *
  * @author teras
  */
 public class Launcher {
+
+    private final static String emphOn, emphOff;
+
+    static {
+        if (OperatingSystem.isWindows)
+            emphOn = emphOff = "";
+        else {
+            emphOn = "\033[0m\033[1m";
+            emphOff = "\033[0m";
+        }
+    }
 
     @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
@@ -54,15 +66,21 @@ public class Launcher {
     }
 
     private static void usage() {
-        System.err.println("Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE);
+        System.err.println(emphOn + "Jupidator version " + SystemVersion.VERSION + " release " + SystemVersion.RELEASE + emphOff);
         System.err.println("Usage:");
-        System.err.println("java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION]]]");
+        System.err.println();
+        System.err.println(emphOn + "java -jar jupidator.jar [-u|--update] URL [APPHOME [RELEASE [VERSION]]]" + emphOff);
+        System.err.println("Start the update mechanism from the command line for a specific application. Valid options are:");
         System.err.println("     APPHOME defaults to .");
         System.err.println("     RELEASE defaults to 1");
         System.err.println("     VERSION defaults to null");
-        System.err.println("java -jar jupidator.jar -l|--list [OLDDIR]");
-        System.err.println("     OLDDIR defaults to .");
-        System.err.println("java -jar jupidator.jar -p|--produce [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]");
+        System.err.println();
+        System.err.println(emphOn + "java -jar jupidator.jar -l|--list [DIR]" + emphOff);
+        System.err.println("Create a signature XML file to store current status of a specific directory, to be used later on with the --produce command. Valid options are:");
+        System.err.println("     DIR defaults to .");
+        System.err.println();
+        System.err.println(emphOn + "java -jar jupidator.jar -p|--produce [NEWDIR [VERSION [OUTDIR [OLDSTRUCT]]]]" + emphOff);
+        System.err.println("Find differences between a given directory and XML status information as produced by --list command, and output this information to disk. Valid options are:");
         System.err.println("     NEWDIR defaults to .");
         System.err.println("     VERSION defaults to 0.1");
         System.err.println("     OUTDIR defaults to output_DATE");
