@@ -278,14 +278,3 @@ msgstr  "Versão"
 msgid   "List of changes:"
 msgstr  ""
 
-#~ msgid        "Application info not provided."
-#~ msgstr       "Não foram fornecidas informações sobre o aplicativo."
-
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "O caminho do Instalador {0} não é gravável."
-
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Instalador armazenado em {0}"
-
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Não foi possível criar o Instalador"
