@@ -158,7 +158,7 @@ public class ApplicationInfo implements Serializable {
         if (dir.equals("") || dir.equals("."))
             dir = TextUtils.getProperty("user.dir");
         dir = dir.replace("/./", "/");
-        if (dir.endsWith(File.separator))
+        if (dir.length() > 1 && dir.endsWith(File.separator))
             dir = dir.substring(0, dir.length() - 1);
         if (!new File(dir).isDirectory())
             throw new IllegalArgumentException("Unable to find " + title + " directory " + dir);

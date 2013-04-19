@@ -32,6 +32,7 @@ import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import jupidator.launcher.DeployerParameters;
@@ -152,6 +153,7 @@ public class Updater {
 
     public void actionDisplay() throws UpdaterException {
         if (!curVersion.isEmpty()) {
+            PermissionManager.manager.estimatePrivileges(new File(curInfo.getApplicationHome() + File.separator + AppVersion.FILETAG));
             getGUI();  /* GUI is created lazily, when needed (very important) */
             watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
             watcher.setCallBack(gui);

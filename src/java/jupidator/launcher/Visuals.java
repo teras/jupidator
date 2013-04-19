@@ -121,7 +121,7 @@ public class Visuals extends javax.swing.JFrame {
         else if (OperatingSystem.isMac)
             logdir = new File(home + "Library/Logs/jupidator");
         else
-            logdir = new File(home + ".local/share/config/jupidator");
+            logdir = new File(home + ".local/share/jupidator");
         logdir.mkdirs();
 
         logfile = new File(logdir, new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date()));

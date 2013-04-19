@@ -53,6 +53,7 @@ public class JSudo extends JDialog {
     public JSudo(String[] command) {
         initComponents();
         this.command = command;
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -79,7 +80,7 @@ public class JSudo extends JDialog {
         Password = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("CaféPorts authorization");
+        setTitle("Jupidator authorization");
         setLocationByPlatform(true);
         setModal(true);
         setResizable(false);
@@ -244,15 +245,12 @@ public class JSudo extends JDialog {
             public void exec(String line) {
                 if (messageSent)
                     return;
-                if (line == null) {
-                    messageSent = true;
-                    waiting.exec("Password is not correct");
-                    return;
-                }
-                if (line.equals(SIGNATURE)) {
-                    messageSent = true;
+                messageSent = true;
+                System.out.println(line);
+                if (line.contains(SIGNATURE))
                     waiting.exec(null);
-                }
+                else
+                    waiting.exec("Password is not correct");
             }
         });
     }
@@ -263,6 +261,7 @@ public class JSudo extends JDialog {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));   // We need to do it anyways to consume it
             if (input != null) {
                 out.write(input);
+                out.write('\n');
                 out.flush();
             }
             new Thread() {
@@ -270,13 +269,10 @@ public class JSudo extends JDialog {
                 public void run() {
                     try {
                         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(), "UTF-8"));      // We need to do it anyways to consume it
-                        String line;
-                        while ((line = in.readLine()) != null)
-                            if (output != null)
-                                output.exec(line);
-                        // Finalize output
+                        String line = in.readLine();
                         if (output != null)
-                            output.exec(null);
+                            output.exec(line);
+                        proc.destroy();
                     } catch (IOException ex) {
                     }
                 }

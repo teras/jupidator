@@ -40,7 +40,10 @@ public class UpdaterProperties implements Serializable {
     public UpdaterProperties(ApplicationInfo appinfo) throws UpdaterException {
         if (appinfo == null)
             throw new UpdaterException("Application info could not be null");
-        prefs = Preferences.userNodeForPackage(getClass()).node((appinfo.isSelfUpdate() ? "lib:" : "app:") + appinfo.getApplicationHome());
+        String path = appinfo.getApplicationHome();
+        if (path.equals("/"))
+            path = "ROOT";
+        prefs = Preferences.userNodeForPackage(getClass()).node((appinfo.isSelfUpdate() ? "lib:" : "app:") + path);
         appinfo.updateIgnoreRelease(prefs.getInt(VERSIONIGNORE, 0));
     }
 

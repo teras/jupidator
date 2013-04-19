@@ -40,7 +40,6 @@ import org.xml.sax.helpers.DefaultHandler;
 public class UpdaterXMLHandler extends DefaultHandler {
 
     private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
-    private Arch arch;  // The stored architecture of the running system - null if unknown
     private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
     private Version full; // The full aggregated list of the latest files, in order to upgrade
     private Version current_version;    // The list of files for the current reading "version" object
@@ -55,7 +54,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
         this.appinfo = appinfo;
-        arch = Arch.defaultArch(); // "Any" arch is selected by default
         full = new Version();
     }
 
@@ -64,7 +62,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         if (qName.equals("architect")) {
             lastarch = Arch.getArch(attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch"));
             if (lastarch != null)
-                arch = lastarch;
+                full.setArch(lastarch);
         } else if (qName.equals("launcher")) {
             if (lastarch != null)
                 lastarch.setExec(attr.getValue("exec"), appinfo);
@@ -89,7 +87,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("arch")) {
             if (current_version == null)
                 return;
-            invalid_arch = !arch.isCompatibleWith(attr.getValue("name"));
+            invalid_arch = !full.getArch().isCompatibleWith(attr.getValue("name"));
             if (!invalid_arch)
                 current_version.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui")));
         } else if (qName.equals("file")) {
@@ -208,12 +206,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
     }
 
     Version getVersion() {
-        // Make sure that we never return null.
-        // note: latest is null if no updates were found at all
-        Version v = full;
-        if (v == null)
-            v = new Version();
-        v.setArch(arch);
-        return v;
+        return full;
     }
 }

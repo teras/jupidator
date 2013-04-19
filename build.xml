@@ -20,10 +20,7 @@
 		</DTDDoc>
 	</target>
 
-	<target name="-no-debug">
-		<property name="javac.debug" value="false"/>
-	</target>
-	<target name="dist" depends="-no-debug,clean,doc,jar">
+	<target name="dist" depends="clean,doc,jar">
 		<delete dir="build"/>
 		<tar compression="bzip2" destfile="../jupidator-${version}.tar.bz2">
 			<tarfileset dir="../jupidator" prefix="jupidator">
@@ -49,7 +46,6 @@
 
 	<target name="-post-compile">
 		<!-- Recompile the "public" objects com.panayotis.jupidator.* in order to display variable information in the produced JAR file -->
-		<javac srcdir="${src.java.dir}/com/panayotis/jupidator" includes="*.java" destdir="${build.classes.dir}" classpath="${build.classes.dir}" encoding="UTF-8" debug="true" debuglevel="vars" source="1.5" target="1.5"/>
 		<exec dir="i18n" executable="bash" failonerror="true"> <arg line="make.sh"/> <arg line="${use.i18n}"/> </exec>
 	</target>
 

@@ -42,7 +42,7 @@ public class Version implements Serializable {
     private LinkedHashMap<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
-    private Arch arch;
+    private Arch arch = Arch.defaultArch();
     private boolean graphical_gui;
 
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {

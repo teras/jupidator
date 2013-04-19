@@ -35,7 +35,7 @@ import jupidator.launcher.XElement;
  */
 public class AppVersion {
 
-    private static final String FILETAG = ".last_successful_update";
+    public static final String FILETAG = ".last_successful_update";
     private final String version;
     private final int release;
 
@@ -91,6 +91,7 @@ public class AppVersion {
             fromfile = PermissionManager.manager.requestSlot();
         else
             fromfile = new File(outname + ".jupidator");
+        fromfile.getParentFile().mkdirs();
         store(fromfile);
         return new XEFile(fromfile.getAbsolutePath(), outname);
     }
