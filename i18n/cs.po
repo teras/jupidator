@@ -24,7 +24,7 @@ msgstr  ""
 msgid   "Application cancelled restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/data/UpdaterAppElements.java:62
+#: com/panayotis/jupidator/data/UpdaterAppElements.java:52
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
@@ -267,7 +267,7 @@ msgstr  "Restartovat aplikaci"
 msgid   "Download speed: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:56
+#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:57
 msgid   "Version"
 msgstr  "Verze"
 
