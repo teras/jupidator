@@ -9,12 +9,13 @@
 	<target name="doc" depends="dtddoc">
 		<mkdir dir="dist/doc"/>
 		<exec dir="dist/doc" executable="xmlto" failonerror="false">
-			<arg line="html-nochunks ../../src/doc/Documentation.xml"/>
+			<arg line="xhtml-nochunks ../../src/doc/documentation.xml -m ../../src/doc/styleinject.xsl"/>
 		</exec>
+		<copy file="src/doc/style.css" todir="dist/doc"/>
 	</target>
 
 	<target name="dtddoc">
-		<DTDDoc sourceDir="src/doc" destDir="dist/doc/dtd" docTitle = "Jupidator DTD">
+		<DTDDoc sourceDir="src/doc" destDir="dist/doc/dtd" docTitle = "Jupidator DTD" showHiddenTags="false" showFixmeTags="false" styleSheet="src/doc/style.css">
 			<include name="*.dtd"/>
 		</DTDDoc>
 	</target>
