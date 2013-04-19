@@ -39,23 +39,13 @@ public class UpdaterAppElements implements Serializable {
     private String baseURL = "";
     private MirrorList mirrors = new MirrorList();
     private String iconpath = "";
-    private int newrelease = -1;    // Latest release overall, read form XML
-    private int lastrelease = -1;   // Last value we read from XML
-    private String newversion = "0.0.0";    // Latest version overall, read form XML
-    private String lastversion = "0.0.0.0"; // Last value we read from XML
+    private int lastrelease = -1;    // Latest release overall, read form XML
+    private String lastversion = "0.0.0";    // Latest version overall, read form XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
 
     public String getAppName() {
         return AppName;
-    }
-
-    public int getLastRelease() {
-        return lastrelease;
-    }
-
-    public String getLastVersion() {
-        return lastversion;
     }
 
     public void setSelfUpdate(String appname) {
@@ -85,8 +75,8 @@ public class UpdaterAppElements implements Serializable {
         return mirrors;
     }
 
-    void addLogItem(String version, String information) {
-        loglist.add(new LogItem(version, information));
+    void addLogItem(String version, String information, boolean isActive) {
+        loglist.add(new LogItem(version, information, isActive));
     }
 
     public void setApplicationInfo(String release_info) {
@@ -106,23 +96,21 @@ public class UpdaterAppElements implements Serializable {
         needs_update = TextUtils.getInt(jupidator_version, 0) > SystemVersion.RELEASE;
     }
 
-    void updateVersion(int lastrelease, String lastversion) {
-        this.lastrelease = lastrelease;
-        this.lastversion = lastversion;
-        if (lastrelease > newrelease) {
-            newrelease = lastrelease;
-            newversion = lastversion;
+    void updateVersion(int release, String version) {
+        if (release > lastrelease) {
+            lastrelease = release;
+            lastversion = version;
         }
-        if (newversion == null)
-            newversion = "0.0.0";
+        if (lastversion == null)
+            lastversion = "0.0.0";
     }
 
-    public String getNewVersion() {
-        return newversion;
+    public String getLastVersion() {
+        return lastversion;
     }
 
-    public int getNewRelease() {
-        return newrelease;
+    public int getLastRelease() {
+        return lastrelease;
     }
 
     public boolean shouldUpdateLibrary() {

@@ -31,7 +31,7 @@ import static com.panayotis.jupidator.i18n.I18N._;
  */
 public class HTMLCreator {
 
-    public static String getList(LogList list) {
+    public static String getList(LogList list, boolean onlyActive) {
         StringBuilder data = new StringBuilder();
         data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
         data.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n");
@@ -51,12 +51,13 @@ public class HTMLCreator {
             data.append("</p>\n");
         }
 
-        for (LogItem item : list) {
-            data.append("    <div class=\"jupentry\">\n");
-            data.append("      <p class=\"jupversion\">").append(_("Version")).append(": ").append(item.getVersion()).append("</p>\n");
-            data.append("      <p class=\"jupinfo\">").append(item.getInfo()).append("</p>\n");
-            data.append("    </div>\n");
-        }
+        for (LogItem item : list)
+            if (!onlyActive || item.isActive) {
+                data.append("    <div class=\"jupentry\">\n");
+                data.append("      <p class=\"jupversion\">").append(_("Version")).append(": ").append(item.version).append("</p>\n");
+                data.append("      <p class=\"jupinfo\">").append(item.info).append("</p>\n");
+                data.append("    </div>\n");
+            }
 
         data.append("  </body>\n</html>\n");
         return data.toString();

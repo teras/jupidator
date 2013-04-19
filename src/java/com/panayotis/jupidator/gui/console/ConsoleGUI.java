@@ -50,10 +50,10 @@ public class ConsoleGUI implements JupidatorGUI {
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         appname = el.getAppName();
         info1 = _("A new version of {0} is available!", appname);
-        info2 = _("{0} version {1} is now available", el.getAppName(), el.getNewVersion())
+        info2 = _("{0} version {1} is now available", el.getAppName(), el.getLastVersion())
                 + (info.getVersion() == null ? "" : " - " + _("you have {0}", info.getVersion())) + ".";
         if (is_loglist_enabled)
-            loglist = TextCreator.getList(el.getLogList());
+            loglist = TextCreator.getList(el.getLogList(), true);
         this.callback = callback;
         can_not_ignore = info.isSelfUpdate();
     }

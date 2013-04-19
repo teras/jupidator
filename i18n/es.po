@@ -268,11 +268,10 @@ msgstr  "Reiniciar aplicación"
 msgid   "Download speed: {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:55
+#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:56
 msgid   "Version"
 msgstr  "Versión"
 
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:38
 msgid   "List of changes:"
 msgstr  ""
-

@@ -32,17 +32,18 @@ import static com.panayotis.jupidator.i18n.I18N._;
  */
 public class TextCreator {
 
-    public static String getList(LogList list) {
+    public static String getList(LogList list, boolean onlyActive) {
         StringBuilder data = new StringBuilder();
         data.append(list.getApplicationInfo()).append(NL);
         data.append(_("List of changes:")).append(NL);
-        for (LogItem item : list) {
-            data.append(" * ");
-            data.append(item.getVersion());
-            data.append(" * ").append(NL);
-            data.append(item.getInfo());
-            data.append(NL);
-        }
+        for (LogItem item : list)
+            if (!onlyActive || item.isActive) {
+                data.append(" * ");
+                data.append(item.version);
+                data.append(" * ").append(NL);
+                data.append(item.info);
+                data.append(NL);
+            }
         return data.toString();
     }
 }

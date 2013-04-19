@@ -274,11 +274,10 @@ msgstr  "Επανεκκίνηση"
 msgid   "Download speed: {0}"
 msgstr  "Ταχύτητα μεταφόρτωσης: {0}"
 
-#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:55
+#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:56
 msgid   "Version"
 msgstr  "Έκδοση"
 
 #: com/panayotis/jupidator/loglist/creators/TextCreator.java:38
 msgid   "List of changes:"
 msgstr  "Κατάλογος αλλαγών:"
-

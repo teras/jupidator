@@ -269,7 +269,7 @@ msgstr ""
 msgid "Download speed: {0}"
 msgstr ""
 
-#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:55
+#: com/panayotis/jupidator/loglist/creators/HTMLCreator.java:56
 msgid "Version"
 msgstr ""
 

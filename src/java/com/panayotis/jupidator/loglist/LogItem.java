@@ -28,19 +28,13 @@ import java.io.Serializable;
  */
 public class LogItem implements Serializable {
 
-    private String version;
-    private String info;
+    public final String version;
+    public final String info;
+    public final boolean isActive;
 
-    public LogItem(String version, String info) {
+    public LogItem(String version, String info, boolean active) {
         this.version = version;
         this.info = info;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public String getVersion() {
-        return version;
+        this.isActive = active;
     }
 }

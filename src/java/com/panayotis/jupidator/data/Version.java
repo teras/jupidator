@@ -44,13 +44,6 @@ public class Version implements Serializable {
     private UpdaterProperties appprop;
     private Arch arch;
     private boolean graphical_gui;
-    private boolean is_visible = false;
-    /* This is used by arch to distinguish versions which were produced with special tags */
-    public final static int UNKNOWN = 0;
-    public final static int MATCH = 1;
-    public final static int ANYTAG = 2;
-    public final static int ALLTAGS = 3;
-    int tag_type = UNKNOWN; // 
 
     public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
@@ -119,7 +112,6 @@ public class Version implements Serializable {
             }
         }
         graphical_gui |= other.graphical_gui;
-        is_visible |= other.is_visible;
     }
 
     public Arch getArch() {
@@ -136,15 +128,6 @@ public class Version implements Serializable {
 
     public boolean isGraphicalDeployer() {
         return graphical_gui;
-    }
-
-    void updateTagStatus(String tag) {
-        if (tag.equals("any"))
-            tag_type = ANYTAG;
-        else if (tag.equals("all"))
-            tag_type = ALLTAGS;
-        else
-            tag_type = MATCH;
     }
 
     private void sort() {
@@ -185,11 +168,7 @@ public class Version implements Serializable {
         elements.put(element.getHash(), element);
     }
 
-    public boolean isVisible() {
-        return is_visible;
-    }
-
-    public void setVisible(boolean visible) {
-        is_visible = visible;
+    public boolean isEmpty() {
+        return elements.isEmpty();
     }
 }

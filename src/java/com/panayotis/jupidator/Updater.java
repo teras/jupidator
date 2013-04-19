@@ -91,7 +91,7 @@ public class Updater {
             selfappinfo.setSelfUpdate();
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
-            if (selfvers.isVisible()) {
+            if (!selfvers.isEmpty()) {
                 selfvers.replaceArch(curVersion.getArch());
                 curInfo = selfappinfo;
                 curVersion = selfvers;
@@ -151,7 +151,7 @@ public class Updater {
     }
 
     public void actionDisplay() throws UpdaterException {
-        if (curVersion.isVisible()) {
+        if (!curVersion.isEmpty()) {
             getGUI();  /* GUI is created lazily, when needed (very important) */
             watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
             watcher.setCallBack(gui);
@@ -248,7 +248,7 @@ public class Updater {
     public void actionIgnore() {
         watcher.stopWatcher();
         gui.endDialog();
-        curVersion.getUpdaterProperties().ignore(curVersion.getAppElements().getNewRelease());
+        curVersion.getUpdaterProperties().ignore(curVersion.getAppElements().getLastRelease());
     }
 
     public void actionRestart() {
@@ -267,6 +267,10 @@ public class Updater {
     }
 
     public String getChangeLog() {
-        return HTMLCreator.getList(curVersion.getAppElements().getLogList());
+        return getChangeLog(false);
+    }
+
+    public String getChangeLog(boolean onlyActive) {
+        return HTMLCreator.getList(curVersion.getAppElements().getLogList(), onlyActive);
     }
 }

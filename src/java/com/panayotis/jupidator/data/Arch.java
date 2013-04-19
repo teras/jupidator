@@ -31,51 +31,35 @@ import java.util.List;
  */
 public class Arch implements Serializable {
 
-    private String tag;
-    private String os;
-    private String arch;
+    private final String tag;
     private String exec;
     private List<String> arguments;
 
     /* Default arch "any" */
-    public Arch() {
-        this("any", "", "");
+    public static Arch defaultArch() {
+        return new Arch("any");
     }
 
-    private Arch(String tag, String os, String arch) {
-        this.tag = tag;
-        this.os = os;
-        this.arch = arch;
-        arguments = new ArrayList<String>();
-    }
-
-    Version getVersion(String tag) {
-        if (tag == null)
-            tag = "any";
-        tag = tag.toLowerCase();
-        if (tag.equals(this.tag) || tag.equals("any") || tag.equals("all")) {
-            Version found = new Version();
-            found.updateTagStatus(tag);
-            return found;
-        }
-        return null;
-    }
-
-    Arch getArchitect(String tag, String os, String arch) {
+    public static Arch getArch(String tag, String os, String arch) {
         tag = tag.toLowerCase();
         os = os.toLowerCase();
         arch = arch.toLowerCase();
-
-        if (tag.equals("any"))
-            if (this.tag.equals("any"))
-                return this;
-            else
-                return null;
-
         if (TextUtils.getSystemName().startsWith(os) && TextUtils.getSystemArch().startsWith(arch))
-            return new Arch(tag, os, arch);
+            return new Arch(tag);
         else
             return null;
+    }
+
+    private Arch(String tag) {
+        this.tag = tag;
+        arguments = new ArrayList<String>();
+    }
+
+    boolean isCompatibleWith(String tag) {
+        if (tag == null)
+            tag = "any";
+        tag = tag.toLowerCase().trim();
+        return tag.equals(this.tag) || tag.equals("any") || tag.equals("all");
     }
 
     void setExec(String exec, ApplicationInfo appinfo) {
