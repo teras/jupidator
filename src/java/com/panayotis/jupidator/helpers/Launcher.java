@@ -25,8 +25,10 @@ import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.producer.CPath;
 import com.panayotis.jupidator.versioning.SystemVersion;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -61,6 +63,8 @@ public class Launcher {
             list(args);
         else if (args[0].equals("-p") || args[0].equals("--produce"))
             compare(args);
+        else if (args[0].equals("-c") || args[0].equals("--create"))
+            create(args);
         else
             update(args);
     }
@@ -85,6 +89,11 @@ public class Launcher {
         System.err.println("     VERSION defaults to 0.1");
         System.err.println("     OUTDIR defaults to output_DATE");
         System.err.println("     OLDSTRUCT defaults to stdin");
+        System.err.println();
+        System.err.println(emphOn + "java -jar jupidator.jar -c|--create URL [OUTPUT]" + emphOff);
+        System.err.println("Create a styled changelog file. Valid options are:");
+        System.err.println("     URL the location of the changelog");
+        System.err.println("     OUTPUT the output file");
         System.err.println();
         System.exit(-1);
     }
@@ -112,6 +121,26 @@ public class Launcher {
             path.dump(new OutputStreamWriter(System.out, "UTF-8"));
         } catch (Exception ex) {
             displayError(ex);
+        }
+    }
+
+    private static void create(String[] args) {
+        if (args.length < 2)
+            throw new NullPointerException("The changelog input URL is required.");
+        BufferedWriter out = null;
+        try {
+            String cl = new Updater(args[1], ".", null).getChangeLog();
+            out = new BufferedWriter(new OutputStreamWriter(args.length > 2 ? new FileOutputStream(args[2]) : System.out, "UTF-8"));
+            out.write(cl);
+            out.close();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException ex) {
+            }
         }
     }
 

@@ -35,31 +35,31 @@ public class HTMLCreator {
         StringBuilder data = new StringBuilder();
         data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
         data.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n");
-        data.append("<head>\n");
-        data.append("<title></title>\n");
-        data.append("<style type=\"text/css\">\n");
-        data.append(".version { padding:4px 4px 4px 4px; margin: 5px 10px 5px 10px; background: #d2e6d2; font-weight: bold; }\n");
-        data.append(".info { margin: 0px 10px 16px 12px; }\n");
-        data.append("</style>\n");
-        data.append("</head>\n");
-        data.append("<body>\n");
+        data.append("  <head>\n");
+        data.append("    <title></title>\n");
+        data.append("    <style type=\"text/css\">\n");
+        data.append("      .jupreleaseinfo { margin: 0px 10px 16px 12px; }\n");
+        data.append("      .jupversion { padding:4px 4px 4px 4px; margin: 5px 10px 5px 10px; background: #d2e6d2; font-weight: bold; }\n");
+        data.append("      .jupinfo { margin: 0px 10px 16px 12px; }\n");
+        data.append("    </style>\n");
+        data.append("  </head>\n");
+        data.append("  <body>\n");
 
+        System.out.println("**" + list.getApplicationInfo());
         if (!list.getApplicationInfo().equals("")) {
-            data.append("<div class=\"releaseinfo\">");
+            data.append("    <p class=\"jupreleaseinfo\">");
             data.append(list.getApplicationInfo());
-            data.append("</div>\n");
+            data.append("</p>\n");
         }
 
         for (LogItem item : list) {
-            data.append("<div class=\"version\">");
-            data.append(_("Version"));
-            data.append(": ").append(item.getVersion());
-            data.append("</div>\n<div class=\"info\">");
-            data.append(item.getInfo());
-            data.append("</div>\n");
+            data.append("    <div class=\"jupentry\">\n");
+            data.append("      <p class=\"jupversion\">").append(_("Version")).append(": ").append(item.getVersion()).append("</p>\n");
+            data.append("      <p class=\"jupinfo\">").append(item.getInfo()).append("</p>\n");
+            data.append("    </div>\n");
         }
 
-        data.append("</body>\n</html>\n");
+        data.append("  </body>\n</html>\n");
         return data.toString();
     }
 }
