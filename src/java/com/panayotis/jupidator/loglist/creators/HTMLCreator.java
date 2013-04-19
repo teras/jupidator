@@ -45,7 +45,6 @@ public class HTMLCreator {
         data.append("  </head>\n");
         data.append("  <body>\n");
 
-        System.out.println("**" + list.getApplicationInfo());
         if (!list.getApplicationInfo().equals("")) {
             data.append("    <p class=\"jupreleaseinfo\">");
             data.append(list.getApplicationInfo());
