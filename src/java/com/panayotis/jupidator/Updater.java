@@ -250,7 +250,7 @@ public class Updater {
     public void actionIgnore() {
         watcher.stopWatcher();
         gui.endDialog();
-        curVersion.getUpdaterProperties().ignore(curVersion.getAppElements().getLastRelease());
+        curVersion.getUpdaterProperties().ignore(curVersion.getAppElements().getNewestRelease());
     }
 
     public void actionRestart() {

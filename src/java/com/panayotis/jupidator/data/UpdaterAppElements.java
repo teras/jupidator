@@ -39,8 +39,9 @@ public class UpdaterAppElements implements Serializable {
     private String baseURL = "";
     private MirrorList mirrors = new MirrorList();
     private String iconpath = "";
-    private int lastrelease = -1;    // Latest release overall, read form XML
-    private String lastversion = "0.0.0";    // Latest version overall, read form XML
+    private int newestrelease = -1;    // Newest release overall, read from XML
+    private int lastrelease = -1;    // Last release, as currently read from XML
+    private String newestversion = "0.0.0";    // Newest version overall, read from XML
     private LogList loglist = new LogList();
     private boolean needs_update = false;
 
@@ -97,23 +98,28 @@ public class UpdaterAppElements implements Serializable {
     }
 
     void updateVersion(int release, String version) {
-        if (release > lastrelease) {
-            lastrelease = release;
-            lastversion = version;
+        if (release > newestrelease) {
+            newestrelease = release;
+            newestversion = version;
         }
-        if (lastversion == null)
-            lastversion = "0.0.0";
+        if (newestversion == null)
+            newestversion = "0.0.0";
+        lastrelease = release;
     }
 
-    public String getLastVersion() {
-        return lastversion;
+    public String getNewestVersion() {
+        return newestversion;
     }
 
-    public int getLastRelease() {
-        return lastrelease;
+    public int getNewestRelease() {
+        return newestrelease;
     }
 
     public boolean shouldUpdateLibrary() {
         return needs_update;
+    }
+
+    public long getLastRelease() {
+        return lastrelease;
     }
 }

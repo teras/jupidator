@@ -59,7 +59,7 @@ public class AppVersion {
     public static AppVersion construct(UpdaterAppElements elements) {
         if (elements == null)
             return null;
-        return new AppVersion(elements.getLastVersion(), elements.getLastRelease());
+        return new AppVersion(elements.getNewestVersion(), elements.getNewestRelease());
     }
 
     public String getVersion() {

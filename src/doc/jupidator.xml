@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updatelist application="Jupidator" baseurl="http://www.panayotis.com/versions/jupidator">
 
+	<version release="800" version="0.8.0">
+		<description>
+			Show only updates regarding the current architecture, while keeping the ability to display full logs. Application support directory is no longer required and made obsolete. Fix some classes not default to Java 1.5. Fix JSudo bug. Improved command line interface. Other fixes and updates.
+		</description>
+		<arch name="all">
+			<file name="jupidator.jar" sourcedir="0.8" destdir="${APPHOME}" size="200823" compress="gz"/>
+		</arch>
+	</version>
+
 	<version release="710" version="0.7.1">
 		<arch name="all">
 			<file name="jupidator.jar" sourcedir="0.7.1" destdir="${APPHOME}" size="186805" compress="gz"/>

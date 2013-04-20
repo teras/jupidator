@@ -29,7 +29,6 @@ import java.io.File;
 import java.io.Serializable;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._;
 
 /**
  *

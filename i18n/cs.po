@@ -24,7 +24,7 @@ msgstr  ""
 msgid   "Application cancelled restart"
 msgstr  ""
 
-#: com/panayotis/jupidator/data/UpdaterAppElements.java:52
+#: com/panayotis/jupidator/data/UpdaterAppElements.java:53
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
