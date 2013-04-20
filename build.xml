@@ -4,7 +4,7 @@
 	<import file="nbproject/build-impl.xml"/>
 
 	<taskdef name="DTDDoc" onerror="report" classname="DTDDoc.DTDDocTask" classpath="../../Tools/dtddoc/DTDDoc.jar"/>
-	<property name="version" value="0.7.1"/>
+	<property name="version" value="0.8.0"/>
 
 	<target name="doc" depends="dtddoc">
 		<mkdir dir="dist/doc"/>
@@ -67,6 +67,13 @@
 	<target name="-pre-init">
 		<property name="use.i18n" value="build"/>
 	</target>
-	
+
+	<!-- Send update file to server -->
+	<target name="update-sent">
+		<exec executable="scp">
+			<arg line="src/doc/jupidator.xml www.panayotis.com:~/www/panayotis.com/versions/jupidator/"/>
+		</exec>
+	</target>
+
 
 </project>

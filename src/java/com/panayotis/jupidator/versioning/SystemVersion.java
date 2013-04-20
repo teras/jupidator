@@ -27,6 +27,6 @@ package com.panayotis.jupidator.versioning;
 public class SystemVersion {
 
     public static final String URL = "http://www.panayotis.com/versions/jupidator/jupidator.xml";
-    public static final int RELEASE = 720;
-    public static final String VERSION = "0.7.2";
+    public static final int RELEASE = 800;
+    public static final String VERSION = "0.8.0";
 }

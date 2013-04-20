@@ -17,12 +17,12 @@ msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "X-Poedit-Country: GREECE\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: com/panayotis/jupidator/Updater.java:99
+#: com/panayotis/jupidator/Updater.java:100
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  "Αυτή η ενημέρωση είναι απαραίτητη για την ομαλή εκτέλεση του {0}"
 
-#: com/panayotis/jupidator/Updater.java:258
+#: com/panayotis/jupidator/Updater.java:260
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  "Η εφαρμογή ακύρωσε την επανεκκίνηση"
