@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.producer;
 
 import java.io.File;
@@ -34,21 +33,30 @@ public final class CDir extends CPath {
     private final List<CPath> paths = new ArrayList<CPath>();
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")
-    public CDir(File file, CDir parent) throws IOException {
-        this(file.getName(), parent);
+    protected CDir(File file, String arch) throws IOException {
+        this(file, null, arch);
+    }
+
+    protected CDir(File file, CDir parent) throws IOException {
+        this(file, parent, parent == null ? null : parent.arch);
+    }
+
+    // From XML
+    protected CDir(String dirname, CDir parent, String arch) {
+        super(dirname, parent, arch);
+    }
+
+    private CDir(File file, CDir parent, String arch) throws IOException {
+        super(file.getName(), parent, arch);
 
         File[] children = file.listFiles();
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isDirectory())
-                    new CDir(child, this);
+                    paths.add(new CDir(child, this));
                 else if (child.isFile())
-                    new CFile(child, this);
+                    paths.add(new CFile(child, this));
         Collections.sort(paths);
-    }
-
-    public CDir(String dirname, CDir parent) {
-        super(dirname, parent);
     }
 
     @Override

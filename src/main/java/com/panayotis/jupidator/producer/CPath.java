@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.producer;
 
 import java.io.File;
@@ -38,16 +37,17 @@ public abstract class CPath implements Comparable<CPath> {
     private final CDir parent;
     protected final String PS = "/";
     protected final String DEFAULTROOT = "${APPHOME}";
+    protected final String arch;
 
-    public static CPath construct(File file) throws IOException {
+    public static CPath construct(File file, String arch) throws IOException {
         if (!file.exists())
             throw new IOException("File " + file.getPath() + " does not exist");
         else if (!file.canRead())
             throw new IOException("Unable to read from file " + file.getPath());
         if (file.isDirectory())
-            return new CDir(file, null);
+            return new CDir(file, arch);
         else if (file.isFile())
-            return new CFile(file, null);
+            return new CFile(file, arch);
         else
             throw new IOException("Unknwon file type for file " + file.getPath());
     }
@@ -56,19 +56,21 @@ public abstract class CPath implements Comparable<CPath> {
 
         CPath result;
         Stack<CDir> dirs = new Stack<CDir>();
+        String arch;
 
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (qName.equals("dir")) {
-                CDir cdir = new CDir(attributes.getValue("name"), dirs.isEmpty() ? null : dirs.peek());
+                CDir cdir = new CDir(attributes.getValue("name"), dirs.isEmpty() ? null : dirs.peek(), arch);
                 if (result == null)
                     result = cdir;
                 dirs.push(cdir);
             } else if (qName.equals("file")) {
-                CFile cfile = new CFile(attributes.getValue("name"), Long.parseLong(attributes.getValue("size")), attributes.getValue("md5"), attributes.getValue("sha256"), dirs.isEmpty() ? null : dirs.peek());
+                CFile cfile = new CFile(attributes.getValue("name"), Long.parseLong(attributes.getValue("size")), attributes.getValue("md5"), attributes.getValue("sha256"), dirs.isEmpty() ? null : dirs.peek(), arch);
                 if (result == null)
                     result = cfile;
-            }
+            } else if (qName.equals("arch"))
+                arch = attributes.getValue("name");
         }
 
         @Override
@@ -89,11 +91,12 @@ public abstract class CPath implements Comparable<CPath> {
         return handler.result;
     }
 
-    public CPath(String pathname, CDir parent) {
+    public CPath(String pathname, CDir parent, String arch) {
         this.pathname = pathname;
         this.parent = parent;
         if (parent != null)
             parent.add(this);
+        this.arch = arch;
     }
 
     @Override
@@ -127,6 +130,10 @@ public abstract class CPath implements Comparable<CPath> {
         return pathname;
     }
 
+    public String getArch() {
+        return arch;
+    }
+
     protected CDir getParent() {
         return parent;
     }
@@ -139,8 +146,13 @@ public abstract class CPath implements Comparable<CPath> {
     }
 
     public void dump(Writer out) throws IOException {
+        out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         out.append("<jupidatordump>\n");
-        dump(out, 1);
+        tabs(out, 1);
+        out.append("<arch name=\"").append(arch).append("\">\n");
+        dump(out, 2);
+        tabs(out, 1);
+        out.append("</arch>\n");
         out.append("</jupidatordump>\n");
         out.flush();
     }
@@ -151,17 +163,16 @@ public abstract class CPath implements Comparable<CPath> {
         return out;
     }
 
-    public void findDiff(CPath original, File out, String version) throws IOException {
-        COutput output = new COutput(out, version, true);
-        output.getWriter().append("<updatelist application=\"\" baseurl=\"\" jupidator=\"600\">\n");
-        tabs(output.getWriter(), 1).append("<version release=\"\" version=\"" + version + "\">\n");
-        tabs(output.getWriter(), 2).append("<arch name=\"all\">\n");
-        tabs(output.getWriter(), 3).append("<description></description>\n");
+    public void findDiff(CPath original, COutput output, String version) throws IOException {
+        output.writer.append("<updatelist application=\"\" baseurl=\"\" jupidator=\"600\">\n");
+        tabs(output.writer, 1).append("<version release=\"\" version=\"" + version + "\">\n");
+        tabs(output.writer, 2).append("<arch name=\"all\">\n");
+        tabs(output.writer, 3).append("<description></description>\n");
         compare(original, output);
-        tabs(output.getWriter(), 2).append("</arch>\n");
-        tabs(output.getWriter(), 1).append("</version>\n");
-        output.getWriter().append("</updatelist>\n");
-        output.close();
+        tabs(output.writer, 2).append("</arch>\n");
+        tabs(output.writer, 1).append("</version>\n");
+        output.writer.append("</updatelist>\n");
+        output.writer.close();
     }
 
     protected abstract void dump(Writer out, int depth) throws IOException;
@@ -171,6 +182,6 @@ public abstract class CPath implements Comparable<CPath> {
     protected abstract void store(COutput out) throws IOException;
 
     protected void delete(COutput out) throws IOException {
-        tabs(out.getWriter(), 3).append("<rm file=\"").append(getPath(DEFAULTROOT)).append("\"/>\n");
+        tabs(out.writer, 3).append("<rm file=\"").append(getPath(DEFAULTROOT)).append("\"/>\n");
     }
 }

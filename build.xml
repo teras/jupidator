@@ -75,5 +75,10 @@
 		</exec>
 	</target>
 
+    <target name="install" depends="jar">
+        <exec executable="mvn">
+            <arg line="install:install-file -Dfile=${dist.jar} -DgroupId=com.panayotis -DartifactId=jupidator -Dversion=${version} -Dpackaging=jar -DlocalRepositoryPath=${user.home}/Works/Development/WebApps/Sites/panayotis.com/public_html/maven"/>
+        </exec>
+    </target>
 
 </project>

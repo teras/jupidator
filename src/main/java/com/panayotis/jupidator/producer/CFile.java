@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.producer;
 
 import com.panayotis.jupidator.elements.FileUtils;
@@ -41,13 +40,22 @@ public final class CFile extends CPath {
     //
     private File original;
 
-    public CFile(File file, CDir parent) throws IOException {
-        this(file.getName(), file.length(), getDigest(file, "MD5"), getDigest(file, "SHA-256"), parent);
+    protected CFile(File file, String arch) throws IOException {
+        this(file, null, arch);
+    }
+
+    protected CFile(File file, CDir parent) throws IOException {
+        this(file, parent, parent == null ? null : parent.arch);
+    }
+
+    private CFile(File file, CDir parent, String arch) throws IOException {
+        this(file.getName(), file.length(), getDigest(file, "MD5"), getDigest(file, "SHA-256"), parent, arch);
         original = file;
     }
 
-    public CFile(String pathname, long size, String md5, String sha256, CDir parent) {
-        super(pathname, parent);
+    // From XML
+    protected CFile(String pathname, long size, String md5, String sha256, CDir parent, String arch) {
+        super(pathname, parent, arch);
         this.size = size;
         this.md5 = md5;
         this.sha256 = sha256;
@@ -108,13 +116,13 @@ public final class CFile extends CPath {
     @Override
     protected void store(COutput out) throws IOException {
         CDir parent = getParent();
-        String srcdir = parent == null ? out.getVersion() : parent.getPath(out.getVersion());
+        String srcdir = parent == null ? out.version : parent.getPath(out.version);
         String destdir = parent == null ? DEFAULTROOT : parent.getPath(DEFAULTROOT);
-        File compress = new File(out.getDir(), srcdir + PS + getName() + ".gz");
+        File compress = new File(out.outdir, srcdir + PS + getName() + ".gz");
 
         compressFile(original, compress);
 
-        tabs(out.getWriter(), 3)
+        tabs(out.writer, 3)
                 .append("<file name=\"").append(getName())
                 .append("\" compress=\"gz\" sourcedir=\"").append(srcdir)
                 .append("\" destdir=\"").append(destdir)

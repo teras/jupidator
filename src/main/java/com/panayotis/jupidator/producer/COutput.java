@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 package com.panayotis.jupidator.producer;
 
 import com.panayotis.jupidator.elements.FileUtils;
@@ -32,37 +31,20 @@ import java.io.Writer;
  */
 public class COutput {
 
-    private final File dir;
-    private final String version;
-    private final Writer writer;
+    final String version;
+    final String outdir;
+    final Writer writer;
 
-    public COutput(File dir, String version, boolean shouldCleanUp) throws IOException {
+    public COutput(String outdir, String version) throws IOException {
+        this.version = version;
+        this.outdir = outdir;
+
+        File dir = new File(outdir);
         if (!FileUtils.makeDirectory(dir))
             throw new IOException("Unable to create folder " + dir.getPath());
         if (!PermissionManager.manager.canWrite(dir))
             throw new IOException("Unable to write in " + dir.getPath());
-        this.dir = dir;
-        this.version = version;
-        if (shouldCleanUp) {
-            FileUtils.rmTree(new File(dir, version));
-            FileUtils.rmTree(new File(dir, "jupidator.xml"));
-        }
         writer = new BufferedWriter(new FileWriter(new File(dir, "jupidator.xml")));
     }
 
-    public Writer getWriter() {
-        return writer;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public File getDir() {
-        return dir;
-    }
-
-    public void close() throws IOException {
-        writer.close();
-    }
 }

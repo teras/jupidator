@@ -5,8 +5,8 @@
 
 
 PROJECT=jupidator
-TARGET=../build/classes
-SRC=../src/java
+TARGET=../target/classes
+SRC=../src/main/java
 CLASSPATH=com.panayotis.jupidator.i18n
 BUILD=build
 PREFIX=Messages_
