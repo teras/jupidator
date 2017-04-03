@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator;
 
 import com.panayotis.jupidator.data.SimpleApplication;
@@ -128,6 +127,8 @@ public class Updater {
             up.actionDisplay();
             return up;
         } catch (UpdaterException ex) {
+            if (application != null)
+                application.receiveMessage(ex.toString());
             return null;
         }
     }
@@ -154,8 +155,8 @@ public class Updater {
     public void actionDisplay() throws UpdaterException {
         if (!curVersion.isEmpty()) {
             PermissionManager.manager.estimatePrivileges(new File(curInfo.getApplicationHome() + File.separator + AppVersion.FILETAG));
-            getGUI();  /* GUI is created lazily, when needed (very important) */
-            watcher = new UpdateWatcher(); /* Watcher is also created lazily, when needed */
+            getGUI(); // GUI is created lazily, when needed (very important)
+            watcher = new UpdateWatcher(); // Watcher is also created lazily, when needed
             watcher.setCallBack(gui);
             gui.setInformation(this, curVersion.getAppElements(), curInfo);
             gui.startDialog();
