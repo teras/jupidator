@@ -17,8 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
-package com.panayotis.jupidator.elements.security;
+package com.panayotis.jupidator.digester;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,10 +61,22 @@ public class Digester {
             this.hash[i] = Byte.parseByte(hash.substring(i * 2, i * 2 + 2), 16);
     }
 
+    public void setHash(File file) {
+        this.hash = getHash(file);
+    }
+
     public boolean checkFile(File file) {
         if (hash == null || file == null)
             return false;
+        return Arrays.equals(getHash(file), hash);
+    }
 
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    @SuppressWarnings("UseSpecificCatch")
+    private byte[] getHash(File file) {
         FileInputStream fis = null;
         try {
             byte[] buffer = new byte[1024];
@@ -74,8 +85,9 @@ public class Digester {
             fis = new FileInputStream(file);
             while ((read = fis.read(buffer)) >= 0)
                 digest.update(buffer, 0, read);
-            return Arrays.equals(digest.digest(), hash);
+            return digest.digest();
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             if (fis != null)
                 try {
@@ -83,10 +95,17 @@ public class Digester {
                 } catch (IOException ex) {
                 }
         }
-        return false;
+        return null;
     }
 
-    public String getAlgorithm() {
-        return algorithm;
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < hash.length; i++) {
+            String part = Integer.toHexString(Byte.toUnsignedInt(hash[i]));
+            out.append(part.length() < 2 ? "0" : "").append(part);
+        }
+        return out.toString();
     }
+
 }

@@ -19,8 +19,8 @@
  */
 package com.panayotis.jupidator;
 
+import com.panayotis.jupidator.parsables.ParseFolder;
 import java.io.File;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -31,13 +31,9 @@ public class Creator {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        for (File f : FileSystemView.getFileSystemView().getRoots())
-            System.out.println(f.getAbsolutePath());
-        System.out.println(FileSystemView.getFileSystemView().isFileSystemRoot(new File("/Volumes/FreeSpace")));
-
-
-        CreatorFrame frame = new CreatorFrame();
-        frame.setVisible(true);
+    public static void main(String... args) {
+        ParseFolder result = new ParseFolder(new File("/Applications/CrossMobile.app"));
+        ParseFolder prod = new ParseFolder(result.toJSON());
+        System.out.println(result.equals(prod));
     }
 }

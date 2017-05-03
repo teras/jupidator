@@ -21,8 +21,8 @@
 package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.UpdatedApplication;
+import com.panayotis.jupidator.digester.Digester;
 import com.panayotis.jupidator.elements.FileUtils;
-import com.panayotis.jupidator.elements.security.Digester;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
 import java.io.FileOutputStream;

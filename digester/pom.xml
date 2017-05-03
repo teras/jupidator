@@ -6,15 +6,6 @@
         <artifactId>project</artifactId>
         <version>0.8.0</version>
         <relativePath>../pom.xml</relativePath>
-    </parent>
-    <artifactId>jupidator</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.panayotis.jupidator</groupId>
-            <artifactId>digester</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
+    </parent>    
+    <artifactId>digester</artifactId>
 </project>

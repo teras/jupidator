@@ -21,7 +21,7 @@
 package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.elements.security.Digester;
+import com.panayotis.jupidator.digester.Digester;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
