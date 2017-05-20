@@ -4,7 +4,7 @@
     <groupId>com.panayotis.jupidator</groupId>
     <artifactId>project</artifactId>
     <version>0.8.0</version>
-    <name>Jupidator Projects</name>
+    <name>Jupidator Project</name>
     <packaging>pom</packaging>
     
     <modules>

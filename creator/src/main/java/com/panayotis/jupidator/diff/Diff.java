@@ -5,6 +5,7 @@
  */
 package com.panayotis.jupidator.diff;
 
+import com.panayotis.jupidator.digester.Digester;
 import com.panayotis.jupidator.parsables.ParseFile;
 import com.panayotis.jupidator.parsables.ParseFolder;
 import com.panayotis.jupidator.parsables.ParseItem;
@@ -19,11 +20,20 @@ import java.util.Collection;
 public class Diff {
 
     private final Collection<String> commands = new ArrayList<>();
+    private final String version;
+    private final File inputRoot;
+    private final File output;
 
-    public static Diff diff(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output) {
-        Diff diff = new Diff();
+    public static Diff diff(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version) {
+        Diff diff = new Diff(inputRoot, output, version);
         diff.diff(oldInstallation, newInstallation, "");
         return diff;
+    }
+
+    private Diff(File inputRoot, File output, String version) {
+        this.version = version;
+        this.inputRoot = inputRoot;
+        this.output = output;
     }
 
     private void diff(ParseItem oldItem, ParseItem newItem, String path) {
@@ -53,11 +63,26 @@ public class Diff {
     }
 
     private void rm(ParseItem item, String path) {
-        commands.add("<rm file=\"" + path + item.name + "\"/>");
+        commands.add("        <rm file=\"" + path + item.name + "\"/>");
     }
 
     private void file(ParseItem item, String path) {
-        commands.add("<file file=\"" + path + item.name + "\"/>");
+        if (path.endsWith("/"))
+            path = path.substring(0, path.length() - 1);
+        path = path.isEmpty() ? "" : "/" + path;
+
+        File infile = new File(inputRoot, path + File.separator + item.name);
+        File outfile;
+
+        commands.add("        <file name=\"" + item.name + "\""
+                + " compress=\"" + (infile.isDirectory() ? "tar.bz2" : "bzip2") + "\""
+                + " destdir=\"${APPHOME}" + path + "\""
+                + " sourcedir=\"" + version + path + "\""
+                + ">");
+//        commands.add("            <md5 value=\"" + Digester.getDigester("MD5").setHash(f).toString() + "\"/>");
+//        commands.add("            <sha1 value=\"" + Digester.getDigester("SHA1").setHash(f).toString() + "\"/>");
+//        commands.add("            <sha2 type=\"256\" value=\"" + Digester.getDigester("SHA-256").setHash(f).toString() + "\"/>");
+        commands.add("        <file/>");
     }
 
     @Override

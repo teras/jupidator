@@ -61,8 +61,9 @@ public class Digester {
             this.hash[i] = Byte.parseByte(hash.substring(i * 2, i * 2 + 2), 16);
     }
 
-    public void setHash(File file) {
+    public Digester setHash(File file) {
         this.hash = getHash(file);
+        return this;
     }
 
     public boolean checkFile(File file) {

@@ -53,6 +53,7 @@ public class Creator {
         StringArg arch = new StringArg(System.getProperty("os.arch"));
         StringArg prev = new StringArg("");
         StringArg packfile = new StringArg("files");
+        StringArg version = new StringArg("1.0-SNAPSHOT");
         Args args = new Args();
         args
                 .def("parse", parse)
@@ -61,26 +62,30 @@ public class Creator {
                 .def("-a", arch)
                 .def("-p", prev)
                 .def("-f", packfile)
+                .def("-v", version)
                 .defhelp("-h", "--help")
                 .alias("-o", "--output")
                 .alias("-a", "--arch")
                 .alias("-p", "--prev")
                 .alias("-f", "--files")
+                .alias("-v", "--version")
                 .dep("-p", "create")
                 .dep("-f", "create")
+                .dep("-v", "create")
                 .req("parse", "create")
                 .req("-p")
                 .uniq("parse", "create")
                 .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "create", "-p", "-f", "-o", "-a", "INSTALL_DIR")
                 .group("Parse existing installation", "parse")
-                .group("Create jupidator files", "create", "-p", "-f")
-                .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files")
-                .info("-o", "output result to a file, instead of standard output", "FILE")
-                .info("-a", "the name of the architecture. If missing the default architecture is used")
-                .info("create", "create an installation bundle, based on a previous installation (given by --prev) and the current installation (given by INSTALL_DIR)")
-                .info("-p", "the data of the previous installation")
-                .info("-f", "where the compressed package files will be stored; defaults to \"files\"")
+                .group("Create jupidator files", "create", "-p", "-f", "-v")
+                .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
+                .info("-o", "output result to a file, instead of standard output.", "FILE")
+                .info("-a", "the name of the architecture. If missing the default architecture is used.")
+                .info("create", "create an installation bundle, based on a previous installation (given by --prev) and the current installation (given by INSTALL_DIR).")
+                .info("-p", "the data of the previous installation.")
+                .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
+                .info("-v", "the version of the produced application. Will be used to locate fiels on server.")
                 .error(err -> {
                     System.err.println("Error while executing Jupidator Creator: " + err);
                     System.err.println();
@@ -96,7 +101,7 @@ public class Creator {
         if (parse.get())
             parse(in, out, arch.get());
         else if (create.get())
-            create(new File(prev.get()), in, out, new File(packfile.get()), arch.get());
+            create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get());
     }
 
     private static ParseFolder parse(File input, File output, String arch) {
@@ -124,7 +129,7 @@ public class Creator {
         return result;
     }
 
-    private static void create(File previous, File input, File output, File packages, String arch) {
+    private static void create(File previous, File input, File output, File packages, String arch, String version) {
         ParseFolder older;
         try {
             JSONObject obj = new JSONObject(new String(Files.readAllBytes(previous.toPath()), "UTF-8"));
@@ -136,6 +141,6 @@ public class Creator {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
         ParseFolder current = parse(input, output == null ? NULL : output, arch);
-        System.out.println(Diff.diff(older, current, input, packages).toString());
+        System.out.println(Diff.diff(older, current, input, packages, version).toString());
     }
 }
