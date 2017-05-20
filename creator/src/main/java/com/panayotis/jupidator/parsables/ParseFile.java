@@ -15,26 +15,30 @@ import org.json.JSONObject;
  */
 public class ParseFile extends ParseItem {
 
+    public final long size;
     public final String md5;
     public final String sha1;
     public final String sha256;
 
     public ParseFile(File input) {
-        this(input.getName(),
+        this(input.length(),
+                input.getName(),
                 getDigest("MD5", input).toString(),
                 getDigest("SHA1", input).toString(),
                 getDigest("SHA-256", input).toString());
     }
 
     ParseFile(JSONObject input) {
-        this(input.getString("name"),
+        this(input.getLong("size"),
+                input.getString("name"),
                 input.getString("md5"),
                 input.getString("sha1"),
                 input.getString("sha256"));
     }
 
-    public ParseFile(String name, String md5, String sha1, String sha256) {
+    public ParseFile(long size, String name, String md5, String sha1, String sha256) {
         super(name);
+        this.size = size;
         this.md5 = md5;
         this.sha1 = sha1;
         this.sha256 = sha256;
@@ -49,6 +53,7 @@ public class ParseFile extends ParseItem {
     @Override
     public JSONObject toJSON() {
         JSONObject j = super.toJSON();
+        j.put("size", size);
         j.put("md5", md5);
         j.put("sha1", sha1);
         j.put("sha256", sha256);
@@ -60,6 +65,8 @@ public class ParseFile extends ParseItem {
         if (!super.equals(obj))
             return false;
         final ParseFile other = (ParseFile) obj;
+        if (this.size != other.size)
+            return false;
         if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name))
             return false;
         if ((this.md5 == null) ? (other.md5 != null) : !this.md5.equals(other.md5))
