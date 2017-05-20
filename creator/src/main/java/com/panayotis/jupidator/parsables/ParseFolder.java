@@ -7,8 +7,8 @@ package com.panayotis.jupidator.parsables;
 
 import com.panayotis.jupidator.JupidatorCreatorException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,11 +19,7 @@ import org.json.JSONObject;
  */
 public class ParseFolder extends ParseItem {
 
-    private final TreeSet<ParseItem> items = new TreeSet<ParseItem>(new Comparator<ParseItem>() {
-        public int compare(ParseItem o1, ParseItem o2) {
-            return o1.name.compareTo(o2.name);
-        }
-    }) {
+    private final Collection<ParseItem> items = new TreeSet<ParseItem>((o1, o2) -> o1.name.compareTo(o2.name)) {
         @Override
         public boolean containsAll(Collection<?> col) {
             Collection<ParseItem> c = (Collection<ParseItem>) col;
@@ -91,6 +87,20 @@ public class ParseFolder extends ParseItem {
         if (this.items != other.items && (this.items == null || !this.items.equals(other.items)))
             return false;
         return true;
+    }
+
+    public Collection<String> names() {
+        Collection<String> names = new ArrayList<>(items.size());
+        for (ParseItem item : items)
+            names.add(item.name);
+        return names;
+    }
+
+    public ParseItem searchFor(String name) {
+        for (ParseItem item : items)
+            if (item.name.equals(name))
+                return item;
+        return null;
     }
 
     @Override
