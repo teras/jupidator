@@ -5,6 +5,7 @@
  */
 package com.panayotis.jupidator.parsables;
 
+import com.panayotis.jupidator.JupidatorCreatorException;
 import java.io.File;
 import java.util.Collection;
 import java.util.Comparator;
@@ -46,6 +47,8 @@ public class ParseFolder extends ParseItem {
 
     private ParseFolder(String name, File in) {
         super(name);
+        if (!in.exists())
+            throw new JupidatorCreatorException("Input file '" + in.getPath() + "' should exist");
         File[] children = in.listFiles();
         if (children != null && children.length > 0)
             for (File child : children)

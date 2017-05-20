@@ -9,7 +9,7 @@ package com.panayotis.jupidator;
  *
  * @author teras
  */
-public class JupidatorCreatorException extends Exception{
+public class JupidatorCreatorException extends RuntimeException {
 
     public JupidatorCreatorException(String message) {
         super(message);
@@ -18,5 +18,5 @@ public class JupidatorCreatorException extends Exception{
     public JupidatorCreatorException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
 }
