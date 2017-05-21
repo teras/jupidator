@@ -19,9 +19,9 @@
  */
 package com.panayotis.jupidator;
 
-import com.panayotis.argparse.StringArg;
-import com.panayotis.argparse.Args;
-import com.panayotis.argparse.BoolArg;
+import com.panayotis.arjs.StringArg;
+import com.panayotis.arjs.Args;
+import com.panayotis.arjs.BoolArg;
 import com.panayotis.jupidator.diff.DiffCommand;
 import com.panayotis.jupidator.diff.DiffCreator;
 import com.panayotis.jupidator.diff.XMLProducer;
@@ -47,7 +47,7 @@ public class Creator {
      */
     public static void main(String... arguments) {
 //        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
-        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "--skip-files", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
+//        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "--skip-files", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
 //        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
 
         BoolArg parse = new BoolArg();
@@ -94,7 +94,7 @@ public class Creator {
                 .dep("--no-sha1", "create")
                 .dep("--no-sha256", "create")
                 .dep("-o", "parse", "create")
-                .dep("-a", "parse", "create")
+                .dep("-a", "create", "parse")
                 .req("parse", "create", "squeeze")
                 .req("-p")
                 .uniq("parse", "create", "squeeze")
@@ -110,13 +110,15 @@ public class Creator {
                 .info("create", "create an installation bundle, based on a previous installation (given by --prev) and the current installation (given by INSTALL_DIR).")
                 .info("-p", "the file with the hashing information of the previous installation.")
                 .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
-                .info("--skip-files", "skip creation of files, if specific files already exist")
+                .info("--skip-files", "skip creation of files, if specific files already exist.")
                 .info("-v", "the version of the produced application. Will be used to locate fiels on server.")
                 .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml.")
                 .info("--no-md5", "disable the usade of md5 hashing algorithm.")
                 .info("--no-sha1", "disable the usade of sha1 hashing algorithm.")
                 .info("--no-sha256", "disable the usade of sha256 hashing algorithm.")
                 .info("squeeze", "squeeze architects of jupidator update file and support the 'all' argument. Note that this is an irreversible procedure.")
+                .setCondensed('-')
+                .setJoined('=')
                 .error(err -> {
                     System.err.println("Error while executing Jupidator Creator: " + err);
                     System.err.println();
