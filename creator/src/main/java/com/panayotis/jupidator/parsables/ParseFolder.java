@@ -90,7 +90,7 @@ public class ParseFolder extends ParseItem {
     }
 
     public Collection<String> names() {
-        Collection<String> names = new ArrayList<>(items.size());
+        Collection<String> names = new TreeSet<>();
         for (ParseItem item : items)
             names.add(item.name);
         return names;

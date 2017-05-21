@@ -14,6 +14,7 @@ import com.panayotis.jupidator.parsables.ParseItem;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 /**
  *
@@ -21,7 +22,8 @@ import java.util.Collection;
  */
 public class DiffCreator {
 
-    private final Collection<DiffCommand> commands = new ArrayList<>();
+    private final Collection<DiffCommand> rmCommands = new ArrayList<>();
+    private final Collection<DiffCommand> fileCommands = new ArrayList<>();
     private final String version;
     private final File inputRoot;
     private final File output;
@@ -32,7 +34,9 @@ public class DiffCreator {
     public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
         DiffCreator diff = new DiffCreator(inputRoot, output, version, nomd5, nosha1, nosha256);
         diff.diff(oldInstallation, newInstallation, "");
-        return diff.commands;
+        Collection<DiffCommand> commands = new ArrayList<>(diff.rmCommands);
+        commands.addAll(diff.fileCommands);
+        return commands;
     }
 
     private DiffCreator(File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
@@ -56,22 +60,29 @@ public class DiffCreator {
             if (!oldItem.equals(newItem))
                 file(newItem, path);
         } else if (oldItem instanceof ParseFolder) {
+            path = oldItem.name.equals(".") ? path : path + oldItem.name + "/";
+
             Collection<String> oldNames = ((ParseFolder) oldItem).names();
             Collection<String> newNames = ((ParseFolder) newItem).names();
-            path = oldItem.name.equals(".") ? path : path + oldItem.name + "/";
-            for (String name : oldNames)
-                if (newNames.contains(name)) {
-                    diff(((ParseFolder) oldItem).searchFor(name), ((ParseFolder) newItem).searchFor(name), path);
-                    newNames.remove(name);
-                } else
-                    diff(((ParseFolder) oldItem).searchFor(name), null, path);
+
+            Collection<String> onlyInOld = new TreeSet<>(oldNames);
+            onlyInOld.removeAll(newNames);
+
+            Collection<String> onlyInNew = new TreeSet<>(newNames);
+            onlyInNew.removeAll(oldNames);
+
+            for (String name : onlyInOld)
+                diff(((ParseFolder) oldItem).searchFor(name), null, path);
             for (String name : newNames)
-                diff(null, ((ParseFolder) newItem).searchFor(name), path);
+                if (onlyInNew.contains(name))
+                    diff(null, ((ParseFolder) newItem).searchFor(name), path);
+                else
+                    diff(((ParseFolder) oldItem).searchFor(name), ((ParseFolder) newItem).searchFor(name), path);
         }
     }
 
     private void rm(ParseItem item, String path) {
-        commands.add(new DiffRm(path + item.name));
+        rmCommands.add(new DiffRm(path + item.name));
     }
 
     private void file(ParseItem item, String path) {
@@ -96,6 +107,6 @@ public class DiffCreator {
             file.setSHA1(Digester.getDigester("SHA1").setHash(outfile).toString());
         if (!nosha256)
             file.setSHA256(Digester.getDigester("SHA-256").setHash(outfile).toString());
-        commands.add(file);
+        fileCommands.add(file);
     }
 }
