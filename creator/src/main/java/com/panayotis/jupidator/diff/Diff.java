@@ -5,6 +5,8 @@
  */
 package com.panayotis.jupidator.diff;
 
+import com.panayotis.jupidator.compress.BZip2FileCompression;
+import com.panayotis.jupidator.compress.TarBz2FolderCompression;
 import com.panayotis.jupidator.digester.Digester;
 import com.panayotis.jupidator.parsables.ParseFile;
 import com.panayotis.jupidator.parsables.ParseFolder;
@@ -23,17 +25,25 @@ public class Diff {
     private final String version;
     private final File inputRoot;
     private final File output;
+    private final boolean nomd5;
+    private final boolean nosha1;
+    private final boolean nosha256;
+    private final boolean nohash;
 
-    public static Diff diff(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version) {
-        Diff diff = new Diff(inputRoot, output, version);
+    public static Diff diff(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
+        Diff diff = new Diff(inputRoot, output, version, nomd5, nosha1, nosha256);
         diff.diff(oldInstallation, newInstallation, "");
         return diff;
     }
 
-    private Diff(File inputRoot, File output, String version) {
+    private Diff(File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
         this.version = version;
         this.inputRoot = inputRoot;
         this.output = output;
+        this.nomd5 = nomd5;
+        this.nosha1 = nosha1;
+        this.nosha256 = nosha256;
+        this.nohash = nomd5 && nosha1 && nosha256;
     }
 
     private void diff(ParseItem oldItem, ParseItem newItem, String path) {
@@ -71,18 +81,32 @@ public class Diff {
             path = path.substring(0, path.length() - 1);
         path = path.isEmpty() ? "" : "/" + path;
 
-        File infile = new File(inputRoot, path + File.separator + item.name);
-        File outfile;
+        System.out.println("Parsing file " + (path + File.separator + item.name).substring(1));
+        File infile = new File(inputRoot, path + File.separator + item.name).getAbsoluteFile();
+        String ext = infile.isDirectory() ? "tar.bz2" : "bz2";
+        File outfile = new File(output, version + path + "/" + item.name + "." + ext).getAbsoluteFile();
+        outfile.getParentFile().mkdirs();
+        if (infile.isDirectory())
+            TarBz2FolderCompression.compress(infile, outfile);
+        else
+            BZip2FileCompression.compress(infile, outfile);
 
-        commands.add("        <file name=\"" + item.name + "\""
-                + " compress=\"" + (infile.isDirectory() ? "tar.bz2" : "bzip2") + "\""
+        commands.add("        <file"
+                + " compress=\"" + ext + "\""
                 + " destdir=\"${APPHOME}" + path + "\""
+                + " name=\"" + item.name + "\""
+                + " size=\"" + outfile.length() + "\""
                 + " sourcedir=\"" + version + path + "\""
-                + ">");
-//        commands.add("            <md5 value=\"" + Digester.getDigester("MD5").setHash(f).toString() + "\"/>");
-//        commands.add("            <sha1 value=\"" + Digester.getDigester("SHA1").setHash(f).toString() + "\"/>");
-//        commands.add("            <sha2 type=\"256\" value=\"" + Digester.getDigester("SHA-256").setHash(f).toString() + "\"/>");
-        commands.add("        <file/>");
+                + (nohash ? "/" : "") + ">");
+        if (!nohash) {
+            if (!nomd5)
+                commands.add("            <md5 value=\"" + Digester.getDigester("MD5").setHash(outfile).toString() + "\"/>");
+            if (!nosha1)
+                commands.add("            <sha1 value=\"" + Digester.getDigester("SHA1").setHash(outfile).toString() + "\"/>");
+            if (!nosha256)
+                commands.add("            <sha2 type=\"256\" value=\"" + Digester.getDigester("SHA-256").setHash(outfile).toString() + "\"/>");
+            commands.add("        <file/>");
+        }
     }
 
     @Override
