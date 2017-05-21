@@ -47,8 +47,8 @@ public class Creator {
      */
     public static void main(String... arguments) {
 //        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
-        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
-//        arguments = new String[]{"squeeze", "-j", "jupidator.xml"};
+        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "--skip-files", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
+//        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
 
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();
@@ -62,6 +62,7 @@ public class Creator {
         BoolArg nomd5 = new BoolArg();
         BoolArg nosha1 = new BoolArg();
         BoolArg nosha256 = new BoolArg();
+        BoolArg skipfiles = new BoolArg();
         Args args = new Args();
         args
                 .def("parse", parse)
@@ -76,6 +77,7 @@ public class Creator {
                 .def("--no-md5", nomd5)
                 .def("--no-sha1", nosha1)
                 .def("--no-sha256", nosha256)
+                .def("--skip-files", skipfiles)
                 .defhelp("-h", "--help")
                 .alias("-o", "--output")
                 .alias("-a", "--arch")
@@ -85,6 +87,7 @@ public class Creator {
                 .alias("-j", "--jupfile")
                 .dep("-p", "create")
                 .dep("-f", "create")
+                .dep("--skip-files", "create")
                 .dep("-v", "create", "squeeze")
                 .dep("-j", "create", "squeeze")
                 .dep("--no-md5", "create")
@@ -99,7 +102,7 @@ public class Creator {
                 .usage("jupidator_creator", "create", "-p", "-j", "-f", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "squeeze", "-j", "-v")
                 .group("Parse existing installation", "parse")
-                .group("Create jupidator files", "create", "-p", "-f", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
+                .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
                 .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
                 .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
                 .info("-o", "output resulting hashing information to a file for future use or comparison, instead of standard output.", "FILE")
@@ -107,6 +110,7 @@ public class Creator {
                 .info("create", "create an installation bundle, based on a previous installation (given by --prev) and the current installation (given by INSTALL_DIR).")
                 .info("-p", "the file with the hashing information of the previous installation.")
                 .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
+                .info("--skip-files", "skip creation of files, if specific files already exist")
                 .info("-v", "the version of the produced application. Will be used to locate fiels on server.")
                 .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml.")
                 .info("--no-md5", "disable the usade of md5 hashing algorithm.")
@@ -133,7 +137,7 @@ public class Creator {
             if (parse.get())
                 parse(in, out, arch.get());
             else if (create.get())
-                create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get());
+                create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
         }
     }
 
@@ -162,7 +166,7 @@ public class Creator {
         return result;
     }
 
-    private static void create(File previous, File input, File output, File packages, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256) {
+    private static void create(File previous, File input, File output, File packages, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         ParseFolder older;
         try {
             JSONObject obj = new JSONObject(new String(Files.readAllBytes(previous.toPath()), "UTF-8"));
@@ -174,7 +178,7 @@ public class Creator {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
         ParseFolder current = parse(input, output == null ? NULL : output, arch);
-        Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, nomd5, nosha1, nosha256);
+        Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, nomd5, nosha1, nosha256, skipfiles);
         XMLProducer.produce(jupfile, arch, version, diffs);
     }
 

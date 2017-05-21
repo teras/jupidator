@@ -30,22 +30,24 @@ public class DiffCreator {
     private final boolean nomd5;
     private final boolean nosha1;
     private final boolean nosha256;
+    private final boolean skipfiles;
 
-    public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
-        DiffCreator diff = new DiffCreator(inputRoot, output, version, nomd5, nosha1, nosha256);
+    public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+        DiffCreator diff = new DiffCreator(inputRoot, output, version, nomd5, nosha1, nosha256, skipfiles);
         diff.diff(oldInstallation, newInstallation, "");
         Collection<DiffCommand> commands = new ArrayList<>(diff.rmCommands);
         commands.addAll(diff.fileCommands);
         return commands;
     }
 
-    private DiffCreator(File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256) {
+    private DiffCreator(File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         this.version = version;
         this.inputRoot = inputRoot;
         this.output = output;
         this.nomd5 = nomd5;
         this.nosha1 = nosha1;
         this.nosha256 = nosha256;
+        this.skipfiles = skipfiles;
     }
 
     private void diff(ParseItem oldItem, ParseItem newItem, String path) {
@@ -95,10 +97,11 @@ public class DiffCreator {
         String ext = infile.isDirectory() ? "tar.bz2" : "bz2";
         File outfile = new File(output, version + path + "/" + item.name + "." + ext).getAbsoluteFile();
         outfile.getParentFile().mkdirs();
-        if (infile.isDirectory())
-            TarBz2FolderCompression.compress(infile, outfile);
-        else
-            BZip2FileCompression.compress(infile, outfile);
+        if (!(skipfiles && outfile.exists()))
+            if (infile.isDirectory())
+                TarBz2FolderCompression.compress(infile, outfile);
+            else
+                BZip2FileCompression.compress(infile, outfile);
 
         DiffFile file = new DiffFile(ext, "${APPHOME}" + path, item.name, outfile.length(), version + path);
         if (!nomd5)
