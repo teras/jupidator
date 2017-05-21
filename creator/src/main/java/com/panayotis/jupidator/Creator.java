@@ -21,11 +21,11 @@ package com.panayotis.jupidator;
 
 import com.panayotis.argparse.StringArg;
 import com.panayotis.argparse.Args;
-import com.panayotis.argparse.ArgumentException;
 import com.panayotis.argparse.BoolArg;
 import com.panayotis.jupidator.diff.DiffCommand;
 import com.panayotis.jupidator.diff.DiffCreator;
 import com.panayotis.jupidator.diff.XMLProducer;
+import com.panayotis.jupidator.diff.XMLSqueezer;
 import com.panayotis.jupidator.parsables.ParseFolder;
 import java.io.File;
 import java.io.IOException;
@@ -46,13 +46,13 @@ public class Creator {
      * @param arguments the command line arguments
      */
     public static void main(String... arguments) {
-//        arguments = new String[]{"-h"};
 //        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
-        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx",
-            "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
+        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
+//        arguments = new String[]{"squeeze", "-j", "jupidator.xml"};
 
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();
+        BoolArg squeeze = new BoolArg();
         StringArg output = new StringArg("");
         StringArg arch = new StringArg(System.getProperty("os.arch"));
         StringArg prev = new StringArg("");
@@ -66,6 +66,7 @@ public class Creator {
         args
                 .def("parse", parse)
                 .def("create", create)
+                .def("squeeze", squeeze)
                 .def("-o", output)
                 .def("-a", arch)
                 .def("-p", prev)
@@ -84,18 +85,22 @@ public class Creator {
                 .alias("-j", "--jupfile")
                 .dep("-p", "create")
                 .dep("-f", "create")
-                .dep("-v", "create")
-                .dep("-j", "create")
+                .dep("-v", "create", "squeeze")
+                .dep("-j", "create", "squeeze")
                 .dep("--no-md5", "create")
                 .dep("--no-sha1", "create")
                 .dep("--no-sha256", "create")
-                .req("parse", "create")
+                .dep("-o", "parse", "create")
+                .dep("-a", "parse", "create")
+                .req("parse", "create", "squeeze")
                 .req("-p")
-                .uniq("parse", "create")
+                .uniq("parse", "create", "squeeze")
                 .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "create", "-p", "-j", "-f", "-o", "-a", "INSTALL_DIR")
+                .usage("jupidator_creator", "squeeze", "-j", "-v")
                 .group("Parse existing installation", "parse")
-                .group("Create jupidator files", "create", "-p", "-f", "-v", "-j", "--no-md5", "--no-sha1", "--no-sha256")
+                .group("Create jupidator files", "create", "-p", "-f", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
+                .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
                 .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
                 .info("-o", "output resulting hashing information to a file for future use or comparison, instead of standard output.", "FILE")
                 .info("-a", "the name of the architecture. If missing the default architecture is used.")
@@ -103,10 +108,11 @@ public class Creator {
                 .info("-p", "the file with the hashing information of the previous installation.")
                 .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
                 .info("-v", "the version of the produced application. Will be used to locate fiels on server.")
-                .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml .")
+                .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml.")
                 .info("--no-md5", "disable the usade of md5 hashing algorithm.")
                 .info("--no-sha1", "disable the usade of sha1 hashing algorithm.")
                 .info("--no-sha256", "disable the usade of sha256 hashing algorithm.")
+                .info("squeeze", "squeeze architects of jupidator update file and support the 'all' argument. Note that this is an irreversible procedure.")
                 .error(err -> {
                     System.err.println("Error while executing Jupidator Creator: " + err);
                     System.err.println();
@@ -114,15 +120,21 @@ public class Creator {
                     System.exit(-1);
                 });
         List<String> freeArgs = args.parse(arguments);
-        if (freeArgs.size() != 1)
-            throw new ArgumentException("Exactly one free parameter is required, " + freeArgs.size() + " found");
-        File in = new File(freeArgs.get(0));
-        File out = output.get().isEmpty() ? null : new File(output.get());
+        if (squeeze.get()) {
+            if (!freeArgs.isEmpty())
+                throw new JupidatorCreatorException("No free parameters are expected, " + freeArgs.size() + " found");
+            squeeze(new File(jupfile.get()), version.get());
+        } else {
+            if (freeArgs.size() != 1)
+                throw new JupidatorCreatorException("Exactly one free parameter is required, " + freeArgs.size() + " found");
+            File in = new File(freeArgs.get(0));
+            File out = output.get().isEmpty() ? null : new File(output.get());
 
-        if (parse.get())
-            parse(in, out, arch.get());
-        else if (create.get())
-            create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get());
+            if (parse.get())
+                parse(in, out, arch.get());
+            else if (create.get())
+                create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get());
+        }
     }
 
     private static ParseFolder parse(File input, File output, String arch) {
@@ -164,5 +176,9 @@ public class Creator {
         ParseFolder current = parse(input, output == null ? NULL : output, arch);
         Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, nomd5, nosha1, nosha256);
         XMLProducer.produce(jupfile, arch, version, diffs);
+    }
+
+    private static void squeeze(File jupidator, String version) {
+        XMLSqueezer.squeeze(jupidator, version);
     }
 }

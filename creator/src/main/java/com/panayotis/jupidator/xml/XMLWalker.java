@@ -107,7 +107,7 @@ public class XMLWalker {
      * @return
      */
     public XMLWalker nodeWithText(String name, String text) {
-        locateNode(name, text, true);
+        locateNode(name, text, true, false);
         return this;
     }
 
@@ -139,9 +139,7 @@ public class XMLWalker {
      * @return
      */
     public boolean nodeWithTextExists(String name, String text) {
-        Node now = current;
-        locateNode(name, text, false);
-        current = now;
+        locateNode(name, text, false, true);
         return nodeLast != null;
     }
 
@@ -208,7 +206,7 @@ public class XMLWalker {
      * @return
      */
     public XMLWalker nodesWithText(String name, String text, Consumer<XMLWalker> nodes) {
-        locateNodes(name, text, nodes, false);
+        locateNodes(name, text, nodes, false, true);
         return this;
     }
 
@@ -219,7 +217,7 @@ public class XMLWalker {
      * @return
      */
     public XMLWalker path(String path) {
-        locatePath(path, true);
+        locatePath(path, true, false);
         current = nodeLast;
         return this;
     }
@@ -231,18 +229,16 @@ public class XMLWalker {
      * @return
      */
     public boolean pathExists(String path) {
-        Node now = current;
-        locatePath(path, false);
-        current = now;
+        locatePath(path, false, true);
         return nodeLast != null;
     }
 
-    private void locateNode(String name, String text, boolean strict) {
-        locateNodes(name, text, null, true);
+    private void locateNode(String name, String text, boolean strict, boolean immutableNode) {
+        locateNodes(name, text, null, true, immutableNode);
         error(strict && nodeLast == null ? "Unable to locate node" + (name == null ? "" : " name='" + name + "'") + (text == null ? "" : " text='" + text + "'") : null);
     }
 
-    private void locatePath(String path, boolean strict) {
+    private void locatePath(String path, boolean strict, boolean immutable) {
         if (path.startsWith("/"))
             current = document;
         for (String part : path.split("/"))
@@ -250,15 +246,15 @@ public class XMLWalker {
                 String[] val = part.split(":");
                 String name = val[0].length() == 0 ? null : val[0];
                 String text = val.length > 1 ? val[1] : null;
-                locateNode(name, text, false);
+                locateNode(name, text, false, immutable);
                 if (nodeLast == null)
                     break;
             }
         error(strict && nodeLast == null ? "Unable to follow path " + path : null);
     }
 
-    private void locateNodes(String name, String text, Consumer<XMLWalker> nodes, boolean onlyOnce) {
-        filterNodes(name, text, nodes, null, onlyOnce);
+    private void locateNodes(String name, String text, Consumer<XMLWalker> nodes, boolean onlyOnce, boolean immutableNode) {
+        filterNodes(name, text, nodes, null, onlyOnce, immutableNode);
     }
 
     /**
@@ -321,11 +317,12 @@ public class XMLWalker {
      * @return
      */
     public XMLWalker filterNodesWithText(String name, String text, Consumer<XMLWalker> nodes, Predicate<XMLWalker> predicate) {
-        filterNodes(name, text, nodes, predicate, false);
+        filterNodes(name, text, nodes, predicate, false, true);
         return this;
     }
 
-    private void filterNodes(String name, String text, Consumer<XMLWalker> nodes, Predicate<XMLWalker> pred, boolean onlyOnce) {
+    private void filterNodes(String name, String text, Consumer<XMLWalker> nodes, Predicate<XMLWalker> pred, boolean onlyOnce, boolean immutableNode) {
+        Node now = current;
         nodeLast = null;
         for (Node child : XMLUtils.getNodesWithName(current, name, true))
             if (text == null || text.equals(XMLUtils.getNodeText(child))) {
@@ -335,6 +332,8 @@ public class XMLWalker {
                 if (onlyOnce)
                     break;
             }
+        if (immutableNode)
+            current = now;
     }
 
     /**
@@ -489,13 +488,18 @@ public class XMLWalker {
         return this;
     }
 
+    /**
+     * Check if a specific tag exists
+     *
+     * @param tagger the tag to search for
+     * @return true if exists
+     */
     public boolean hasTag(Object tagger) {
         return tags != null && tags.get(tagger) != null;
     }
 
     public XMLWalker untag() {
-        tags.remove(defaultTag);
-        return this;
+        return untag(defaultTag);
     }
 
     public XMLWalker untag(Object tagger) {

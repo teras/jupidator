@@ -15,6 +15,10 @@ public class DiffRm implements DiffCommand {
 
     private final String file;
 
+    public DiffRm(XMLWalker node) {
+        this(node.attribute("file"));
+    }
+
     public DiffRm(String file) {
         this.file = file;
     }
@@ -22,6 +26,22 @@ public class DiffRm implements DiffCommand {
     @Override
     public void add(XMLWalker parentNode) {
         parentNode.add("rm").setAttribute("file", file).parent();
+    }
+
+    @Override
+    public int hashCode() {
+        return file.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        return this.file.equals(((DiffRm) obj).file);
     }
 
 }

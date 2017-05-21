@@ -13,6 +13,6 @@ import com.panayotis.jupidator.xml.XMLWalker;
  */
 public interface DiffCommand {
 
-    public abstract void add(XMLWalker parentNode);
+    public void add(XMLWalker parentNode);
 
 }
