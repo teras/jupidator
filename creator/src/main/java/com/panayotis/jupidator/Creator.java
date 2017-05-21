@@ -23,11 +23,14 @@ import com.panayotis.argparse.StringArg;
 import com.panayotis.argparse.Args;
 import com.panayotis.argparse.ArgumentException;
 import com.panayotis.argparse.BoolArg;
-import com.panayotis.jupidator.diff.Diff;
+import com.panayotis.jupidator.diff.DiffCommand;
+import com.panayotis.jupidator.diff.DiffCreator;
+import com.panayotis.jupidator.diff.XMLProducer;
 import com.panayotis.jupidator.parsables.ParseFolder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.List;
 import org.json.JSONObject;
 
@@ -45,7 +48,7 @@ public class Creator {
     public static void main(String... arguments) {
 //        arguments = new String[]{"-h"};
 //        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
-        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", 
+        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx",
             "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
 
         BoolArg parse = new BoolArg();
@@ -159,7 +162,7 @@ public class Creator {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
         ParseFolder current = parse(input, output == null ? NULL : output, arch);
-        Diff diff = Diff.diff(older, current, input, packages, version, nomd5, nosha1, nosha256);
-        System.out.println(diff);
+        Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, nomd5, nosha1, nosha256);
+        XMLProducer.produce(jupfile, arch, version, diffs);
     }
 }
