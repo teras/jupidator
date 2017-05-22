@@ -46,9 +46,9 @@ public class Creator {
      * @param arguments the command line arguments
      */
     public static void main(String... arguments) {
-//        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
-//        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "--skip-files", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
-        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
+//        arguments = new String[]{"parse", "-o", "apps/crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
+        arguments = new String[]{"create", "-p", "apps/crossmobile_prev.json", "-o", "apps/crossmobile_now.json", "-a", "osx", "--skip-files", "--no-md5", "--no-sha1", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
+//        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
 
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();

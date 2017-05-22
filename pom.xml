@@ -3,6 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.panayotis.jupidator</groupId>
     <artifactId>project</artifactId>
+    <!-- mvn versions:set -DnewVersion=0.9.0 -DgenerateBackupPoms=false -->
     <!--  Also change properties below -->
     <version>0.8.9</version>
     <name>Jupidator Project</name>
