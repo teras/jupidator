@@ -6,6 +6,9 @@
 package com.panayotis.jupidator.diff;
 
 import com.panayotis.jupidator.xml.XMLWalker;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 
 /**
@@ -18,7 +21,7 @@ public class DiffFile implements DiffCommand {
     private final String destdir;
     private final String name;
     private final long size;
-    private final String sourcedir;
+    private String sourcedir;
     private String md5;
     private String sha1;
     private String sha256;
@@ -104,6 +107,24 @@ public class DiffFile implements DiffCommand {
 //        sourcedir might be based on arch        
 //        if (!Objects.equals(this.sourcedir, other.sourcedir))
 //            return false;
+    }
+
+    void moveToAll(File files) {
+        String[] split = sourcedir.split("/");
+        File old = new File(files, sourcedir + "/" + name + "." + compress);
+        if (split.length >= 2) {
+            String nsourcedir = split[0] + "/all" + sourcedir.substring(split[0].length() + split[1].length() + 1);
+            if (old.exists()) {
+                File newf = new File(files, nsourcedir + "/" + name + "." + compress);
+                newf.getParentFile().mkdirs();
+                try {
+                    Files.move(old.toPath(), newf.toPath());
+                } catch (IOException ex) {
+                    System.err.println(ex);
+                }
+            }
+            sourcedir = nsourcedir;
+        }
     }
 
 }

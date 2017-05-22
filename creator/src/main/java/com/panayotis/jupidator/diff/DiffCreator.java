@@ -25,6 +25,7 @@ public class DiffCreator {
     private final Collection<DiffCommand> rmCommands = new ArrayList<>();
     private final Collection<DiffCommand> fileCommands = new ArrayList<>();
     private final String version;
+    private final String arch;
     private final File inputRoot;
     private final File output;
     private final boolean nomd5;
@@ -32,15 +33,15 @@ public class DiffCreator {
     private final boolean nosha256;
     private final boolean skipfiles;
 
-    public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
-        DiffCreator diff = new DiffCreator(inputRoot, output, version, nomd5, nosha1, nosha256, skipfiles);
+    public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+        DiffCreator diff = new DiffCreator(inputRoot, output, version, arch, nomd5, nosha1, nosha256, skipfiles);
         diff.diff(oldInstallation, newInstallation, "");
         Collection<DiffCommand> commands = new ArrayList<>(diff.rmCommands);
         commands.addAll(diff.fileCommands);
         return commands;
     }
 
-    private DiffCreator(File inputRoot, File output, String version, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+    private DiffCreator(File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         this.version = version;
         this.inputRoot = inputRoot;
         this.output = output;
@@ -48,6 +49,7 @@ public class DiffCreator {
         this.nosha1 = nosha1;
         this.nosha256 = nosha256;
         this.skipfiles = skipfiles;
+        this.arch = arch;
     }
 
     private void diff(ParseItem oldItem, ParseItem newItem, String path) {
@@ -91,11 +93,13 @@ public class DiffCreator {
         if (path.endsWith("/"))
             path = path.substring(0, path.length() - 1);
         path = path.isEmpty() ? "" : "/" + path;
+        String srcprefix = version + "/" + arch;
+        String destprefix = "${APPHOME}";
 
         System.out.println("Parsing file " + (path + File.separator + item.name).substring(1));
         File infile = new File(inputRoot, path + File.separator + item.name).getAbsoluteFile();
         String ext = infile.isDirectory() ? "tar.bz2" : "bz2";
-        File outfile = new File(output, version + path + "/" + item.name + "." + ext).getAbsoluteFile();
+        File outfile = new File(output, srcprefix + path + "/" + item.name + "." + ext).getAbsoluteFile();
         outfile.getParentFile().mkdirs();
         if (!(skipfiles && outfile.exists()))
             if (infile.isDirectory())
@@ -103,7 +107,7 @@ public class DiffCreator {
             else
                 BZip2FileCompression.compress(infile, outfile);
 
-        DiffFile file = new DiffFile(ext, "${APPHOME}" + path, item.name, outfile.length(), version + path);
+        DiffFile file = new DiffFile(ext, destprefix + path, item.name, outfile.length(), srcprefix + path);
         if (!nomd5)
             file.setMD5(Digester.getDigester("MD5").setHash(outfile).toString());
         if (!nosha1)

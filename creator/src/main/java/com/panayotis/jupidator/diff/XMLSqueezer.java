@@ -21,7 +21,7 @@ import java.util.function.Function;
  */
 public class XMLSqueezer {
 
-    public static void squeeze(File jupidator, String version) {
+    public static void squeeze(File jupidator, File files, String version) {
         XMLWalker w = XMLWalker.load(jupidator);
         if (w == null)
             throw new JupidatorCreatorException("Unable to locate file " + jupidator.getPath());
@@ -32,18 +32,21 @@ public class XMLSqueezer {
             throw new JupidatorCreatorException("Unable to find version " + version);
 
         Map<String, Collection<DiffCommand>> rm = new HashMap<>();
-        Collection<DiffCommand> allRm = new LinkedHashSet<>();
+        Collection<DiffCommand> totalRm = new LinkedHashSet<>();
         Map<String, Collection<DiffCommand>> file = new HashMap<>();
-        Collection<DiffCommand> allFile = new LinkedHashSet<>();
+        Collection<DiffCommand> totalFile = new LinkedHashSet<>();
 
-        gatherAll(w, rm, allRm, "rm", q -> new DiffRm(q));
-        gatherAll(w, file, allFile, "file", q -> new DiffFile(q));
+        gatherAll(w, rm, totalRm, "rm", q -> new DiffRm(q));
+        gatherAll(w, file, totalFile, "file", q -> new DiffFile(q));
 
         if (rm.size() != file.size())
             throw new RuntimeException("Implementation error: both tm and file commands should have the same size");
 
         // Important!!! The findCommon methods are destructive and will change the values of allRm, rm
-        reconstructArch(w, "all", findCommon(allRm, rm), findCommon(allFile, file));
+        Collection<DiffCommand> filesInAll;
+        reconstructArch(w, "all", findCommon(totalRm, rm), filesInAll = findCommon(totalFile, file));
+        for (DiffCommand c : filesInAll)
+            ((DiffFile) c).moveToAll(files);
         for (String arch : rm.keySet())
             reconstructArch(w, arch, rm.get(arch), file.get(arch));
 

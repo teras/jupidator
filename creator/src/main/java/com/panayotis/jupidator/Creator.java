@@ -48,7 +48,7 @@ public class Creator {
     public static void main(String... arguments) {
 //        arguments = new String[]{"parse", "-o", "crossmobile_prev.json", "-a", "osx", "/Users/teras/Desktop/CrossMobile_prev.app/Contents/Java"};
 //        arguments = new String[]{"create", "-p", "crossmobile_prev.json", "-o", "crossmobile_now.json", "-a", "osx", "--skip-files", "/Users/teras/Desktop/CrossMobile.app/Contents/Java"};
-//        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
+        arguments = new String[]{"squeeze", "-j", "jupidator-c.xml"};
 
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();
@@ -86,7 +86,7 @@ public class Creator {
                 .alias("-v", "--version")
                 .alias("-j", "--jupfile")
                 .dep("-p", "create")
-                .dep("-f", "create")
+                .dep("-f", "create", "squeeze")
                 .dep("--skip-files", "create")
                 .dep("-v", "create", "squeeze")
                 .dep("-j", "create", "squeeze")
@@ -100,7 +100,7 @@ public class Creator {
                 .uniq("parse", "create", "squeeze")
                 .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "create", "-p", "-j", "-f", "-o", "-a", "INSTALL_DIR")
-                .usage("jupidator_creator", "squeeze", "-j", "-v")
+                .usage("jupidator_creator", "squeeze", "-j", "-v", "-f")
                 .group("Parse existing installation", "parse")
                 .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
                 .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
@@ -129,7 +129,7 @@ public class Creator {
         if (squeeze.get()) {
             if (!freeArgs.isEmpty())
                 throw new JupidatorCreatorException("No free parameters are expected, " + freeArgs.size() + " found");
-            squeeze(new File(jupfile.get()), version.get());
+            squeeze(new File(jupfile.get()), new File(packfile.get()), version.get());
         } else {
             if (freeArgs.size() != 1)
                 throw new JupidatorCreatorException("Exactly one free parameter is required, " + freeArgs.size() + " found");
@@ -180,11 +180,11 @@ public class Creator {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
         ParseFolder current = parse(input, output == null ? NULL : output, arch);
-        Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, nomd5, nosha1, nosha256, skipfiles);
+        Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, arch, nomd5, nosha1, nosha256, skipfiles);
         XMLProducer.produce(jupfile, arch, version, diffs);
     }
 
-    private static void squeeze(File jupidator, String version) {
-        XMLSqueezer.squeeze(jupidator, version);
+    private static void squeeze(File jupidator, File files, String version) {
+        XMLSqueezer.squeeze(jupidator, files, version);
     }
 }
