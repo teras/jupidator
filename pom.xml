@@ -3,6 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.panayotis.jupidator</groupId>
     <artifactId>project</artifactId>
+    <!--  Also change properties below -->
     <version>0.8.9</version>
     <name>Jupidator Project</name>
     <packaging>pom</packaging>
@@ -13,6 +14,8 @@
         <module>creator</module>
     </modules>
     <properties>
+        <jupidator.url>http://www.panayotis.com/versions/jupidator/jupidator.xml</jupidator.url>
+        <jupidator.release>899</jupidator.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>

@@ -19,13 +19,27 @@
  */
 package com.panayotis.jupidator.versioning;
 
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  *
  * @author teras
  */
 public class SystemVersion {
 
-    public static final String URL = "http://www.panayotis.com/versions/jupidator/jupidator.xml";
-    public static final int RELEASE = 899;
-    public static final String VERSION = "0.8.9";
+    public static final String URL;
+    public static final int RELEASE;
+    public static final String VERSION;
+
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(SystemVersion.class.getResourceAsStream("/com/panayotis/jupidator/versioning/current.properties"));
+        } catch (IOException ex) {
+        }
+        VERSION = props.getProperty("version");
+        RELEASE = Integer.parseInt(props.getProperty("release"));
+        URL = props.getProperty("url");
+    }
 }
