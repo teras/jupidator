@@ -145,7 +145,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             String type = attr.getValue("type");
             if (type == null)
                 type = "256";
-            Digester d = Digester.getDigester("SHA-" + attr.getValue(type));
+            Digester d = Digester.getDigester("SHA-" + type);
             d.setHash(attr.getValue("value"));
             lastFileElement.addDigester(d);
         } else if (qName.equals("mirror"))

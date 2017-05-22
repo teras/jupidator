@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.versioning;
 
 /**
@@ -27,6 +26,6 @@ package com.panayotis.jupidator.versioning;
 public class SystemVersion {
 
     public static final String URL = "http://www.panayotis.com/versions/jupidator/jupidator.xml";
-    public static final int RELEASE = 800;
-    public static final String VERSION = "0.8.0";
+    public static final int RELEASE = 899;
+    public static final String VERSION = "0.8.9";
 }

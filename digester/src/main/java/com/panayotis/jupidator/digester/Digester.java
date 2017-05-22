@@ -57,8 +57,8 @@ public class Digester {
             return;
         }
         this.hash = new byte[digest.getDigestLength() < (hash.length() / 2) ? digest.getDigestLength() : (hash.length() / 2)];
-        for (int i = 0; i < this.hash.length; i += 2)
-            this.hash[i] = Byte.parseByte(hash.substring(i * 2, i * 2 + 2), 16);
+        for (int i = 0; i < this.hash.length; i++)
+            this.hash[i] = (byte) Integer.parseInt(hash.substring(i * 2, i * 2 + 2), 16);
     }
 
     public Digester setHash(File file) {

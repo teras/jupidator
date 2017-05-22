@@ -4,11 +4,35 @@
     <parent>
         <groupId>com.panayotis.jupidator</groupId>
         <artifactId>project</artifactId>
-        <version>0.8.0</version>
+        <version>0.8.9</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <groupId>com.panayotis</groupId>
     <artifactId>jupidator</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>full</shadedClassifierName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
         <dependency>
             <groupId>com.panayotis.jupidator</groupId>

@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.UpdatedApplication;
@@ -56,7 +55,7 @@ public class MirrorList {
                 else if (download_location.length() != file.getSize())
                     reason = "Wrong size, required " + file.getSize() + ", found " + download_location.length();
                 else if (!isProperlyDigested(file, download_location))
-                    reason = "Not properly digested";
+                    reason = "Security match failed";
                 else
                     return null;
             } catch (IOException ex) {
