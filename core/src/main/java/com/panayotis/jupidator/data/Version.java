@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -25,12 +24,15 @@ import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.elements.ExecutionTime;
 import com.panayotis.jupidator.elements.JupidatorElement;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.apache.tools.bzip2.CBZip2InputStream;
 import org.xml.sax.SAXException;
 
 /**
@@ -45,7 +47,8 @@ public class Version implements Serializable {
     private Arch arch = Arch.defaultArch();
     private boolean graphical_gui;
 
-    public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
+    public static Version loadVersion(String xmlurl, ApplicationInfo appinfo) throws UpdaterException {
+        InputStream is = null;
         try {
             UpdaterProperties prop = new UpdaterProperties(appinfo);
             if (prop.isTooSoon()) {
@@ -53,9 +56,17 @@ public class Version implements Serializable {
                 v.appel = new UpdaterAppElements();
                 return v;
             }
+            String safeURL = xmlurl.toLowerCase();
+            if (safeURL.endsWith(".bz2") || safeURL.endsWith(".bzip2") || safeURL.endsWith(".bz")) {
+                is = new URL(xmlurl).openStream();
+                is.read(); //B
+                is.read(); //Z
+                is = new CBZip2InputStream(is);
+            } else
+                is = new URL(xmlurl).openStream();
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);
-            parser.parse(xml, handler);
+            parser.parse(is, handler);
             Version v = handler.getVersion();
             v.appel = handler.getAppElements();
             v.appprop = prop;
@@ -67,6 +78,12 @@ public class Version implements Serializable {
             throw new UpdaterException(ex.getClass().getName() + ": " + ex.getMessage());
         } catch (ParserConfigurationException ex) {
             throw new UpdaterException(ex.getMessage());
+        } finally {
+            if (is != null)
+                try {
+                    is.close();
+                } catch (IOException ex) {
+                }
         }
     }
 
