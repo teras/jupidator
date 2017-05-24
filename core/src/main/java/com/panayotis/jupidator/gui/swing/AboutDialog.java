@@ -27,7 +27,7 @@ package com.panayotis.jupidator.gui.swing;
 
 import com.panayotis.jupidator.versioning.SystemVersion;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -74,12 +74,12 @@ class AboutDialog extends javax.swing.JDialog {
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD, jLabel1.getFont().getSize()+2));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(_("About Jupidator"));
+        jLabel1.setText(_t("About Jupidator"));
         jPanel2.add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        CloseB.setText(_("Thank you"));
+        CloseB.setText(_t("Thank you"));
         CloseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CloseBActionPerformed(evt);
@@ -94,7 +94,7 @@ class AboutDialog extends javax.swing.JDialog {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(_("Version:"));
+        jLabel2.setText(_t("Version:"));
         jPanel4.add(jLabel2, java.awt.BorderLayout.WEST);
 
         VersionL.setText(SystemVersion.VERSION);
@@ -105,13 +105,13 @@ class AboutDialog extends javax.swing.JDialog {
 
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
 
-        jLabel4.setText(_("Jupidator is a library for automatic updating of applications."));
+        jLabel4.setText(_t("Jupidator is a library for automatic updating of applications."));
         jPanel5.add(jLabel4);
 
-        jLabel5.setText(_("It is open source under the LGPL license."));
+        jLabel5.setText(_t("It is open source under the LGPL license."));
         jPanel5.add(jLabel5);
 
-        jLabel6.setText(_("More info can be found in: http://jupidator.sourceforge.net"));
+        jLabel6.setText(_t("More info can be found in: http://jupidator.sourceforge.net"));
         jPanel5.add(jLabel6);
 
         jPanel3.add(jPanel5, java.awt.BorderLayout.NORTH);

@@ -26,7 +26,7 @@ import com.panayotis.jupidator.loglist.LogList;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.io.Serializable;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  * This information is gathered for the library from the XML file
@@ -50,7 +50,7 @@ public class UpdaterAppElements implements Serializable {
     }
 
     public void setSelfUpdate(String appname) {
-        setAppName(_("Jupidator for {0}", appname));
+        setAppName(_t("Jupidator for {0}", appname));
     }
 
     void setAppName(String AppName) {

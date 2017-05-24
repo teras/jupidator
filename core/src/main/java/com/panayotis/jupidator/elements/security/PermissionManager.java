@@ -31,7 +31,7 @@ import jupidator.launcher.JSudo;
 import jupidator.launcher.JupidatorDeployer;
 import jupidator.launcher.OperatingSystem;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -89,7 +89,7 @@ public class PermissionManager implements Serializable {
         /* Store requested working elements */
         File paramfile = new File(workdir, "parameters");
         if (!params.storeParameters(paramfile))
-            throw new IOException(_("Unable to initialize restart"));
+            throw new IOException(_t("Unable to initialize restart"));
 
         /* Construct command */
         ArrayList<String> command = new ArrayList<String>();

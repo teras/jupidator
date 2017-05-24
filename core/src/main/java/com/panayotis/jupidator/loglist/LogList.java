@@ -38,7 +38,7 @@ public class LogList extends ArrayList<LogItem> {
     }
 
     /**
-     * @param release_info the release_info to set
+     * @param application_info the release_info to set
      */
     public void setApplicationInfo(String application_info) {
         if (application_info == null)

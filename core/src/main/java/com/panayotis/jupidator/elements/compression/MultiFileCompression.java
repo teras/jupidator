@@ -25,7 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -63,7 +63,7 @@ public abstract class MultiFileCompression implements CompressionMethod {
                     if (packageBased) {
                         coutfile = new File(outfile, entry.name.replace("/", File.separator));
                         if (!FileUtils.makeDirectory(coutfile.getParentFile()))
-                            return _("Unable to unpack under {0}", coutfile.getParentFile().getPath());
+                            return _t("Unable to unpack under {0}", coutfile.getParentFile().getPath());
                     } else
                         coutfile = outfile;
                     out = new BufferedOutputStream(new FileOutputStream(coutfile));

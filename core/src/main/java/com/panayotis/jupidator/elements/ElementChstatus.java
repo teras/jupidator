@@ -27,7 +27,7 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
 import jupidator.launcher.XEChstatus;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -46,7 +46,7 @@ public abstract class ElementChstatus extends ElementNative {
 
     @Override
     public String prepare(UpdatedApplication application) {
-        return attr.equals("") ? _("Unable to provide empty attribute for file {0}", getFileName()) : null;
+        return attr.equals("") ? _t("Unable to provide empty attribute for file {0}", getFileName()) : null;
     }
 
     @Override

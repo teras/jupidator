@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -107,7 +107,7 @@ public class FileUtils {
         File depdir = new File(FILEHOME + File.separator + PACKAGEDIR.replace("/", File.separator));
         makeDirectory(depdir);
         if ((!depdir.isDirectory()) || (!PermissionManager.manager.canWrite(depdir)))
-            return _("Path {0} is not writable.", depdir.getPath());
+            return _t("Path {0} is not writable.", depdir.getPath());
 
         for (File cp : getClassPaths())
             if (cp.isFile()) {
@@ -144,7 +144,7 @@ public class FileUtils {
                         }
                 }
             } else {
-                //    listener.receiveMessage(_("Checking directory {0} for classes.", path));
+                //    listener.receiveMessage(_t("Checking directory {0} for classes.", path));
                 File[] entries = new File(cp, PACKAGEDIR).listFiles();
                 if (entries != null)
                     for (int i = 0; i < entries.length; i++) {
@@ -304,7 +304,7 @@ public class FileUtils {
         }
         if (req.delete())
             return null;
-        return _("Unable to delete file {0}", req.getPath());
+        return _t("Unable to delete file {0}", req.getPath());
     }
 
     public static boolean setExecute(String path) {

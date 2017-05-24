@@ -50,7 +50,7 @@ public class I18N {
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
 
-    public static String _(String msg, Object... args) {
+    public static String _t(String msg, Object... args) {
         String format = GettextResource.gettext(b, msg);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }

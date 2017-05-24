@@ -27,7 +27,7 @@ import com.panayotis.jupidator.gui.BufferListener;
 import jupidator.launcher.XERm;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -51,7 +51,7 @@ public class ElementRm extends JupidatorElement {
 
     /* Nothing to deploy */
     public String prepare(UpdatedApplication application) {
-        application.receiveMessage(_("File {0} will be deleted, if exists.", getDestinationFile()));
+        application.receiveMessage(_t("File {0} will be deleted, if exists.", getDestinationFile()));
         return null;
     }
 

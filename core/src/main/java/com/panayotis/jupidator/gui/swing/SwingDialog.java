@@ -36,7 +36,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -122,7 +122,7 @@ class SwingDialog extends JDialog {
         ButtonPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
         ButtonPanel.setLayout(new java.awt.BorderLayout());
 
-        ActionB.setText(_("Cancel"));
+        ActionB.setText(_t("Cancel"));
         ActionB.setActionCommand("cancel");
         ActionB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,7 +133,7 @@ class SwingDialog extends JDialog {
 
         ProgressP.add(ButtonPanel, java.awt.BorderLayout.EAST);
 
-        InfoL.setText(_("Downloading..."));
+        InfoL.setText(_t("Downloading..."));
         ProgressP.add(InfoL, java.awt.BorderLayout.LINE_START);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -147,7 +147,7 @@ class SwingDialog extends JDialog {
         DetailedP.setLayout(new java.awt.BorderLayout());
 
         RelNotesL.setFont(RelNotesL.getFont().deriveFont(RelNotesL.getFont().getStyle() | java.awt.Font.BOLD));
-        RelNotesL.setText(_("Release Notes"));
+        RelNotesL.setText(_t("Release Notes"));
         RelNotesL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 4, 0));
         DetailedP.add(RelNotesL, java.awt.BorderLayout.NORTH);
 
@@ -191,7 +191,7 @@ class SwingDialog extends JDialog {
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        DetailsB.setText(_("Details"));
+        DetailsB.setText(_t("Details"));
         DetailsB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DetailsBActionPerformed(evt);
@@ -204,7 +204,7 @@ class SwingDialog extends JDialog {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 12));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        LaterB.setText(_("Remind me later"));
+        LaterB.setText(_t("Remind me later"));
         LaterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LaterBActionPerformed(evt);
@@ -212,7 +212,7 @@ class SwingDialog extends JDialog {
         });
         jPanel4.add(LaterB, java.awt.BorderLayout.CENTER);
 
-        UpdateB.setText(_("Install"));
+        UpdateB.setText(_t("Install"));
         UpdateB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 UpdateBActionPerformed(evt);
@@ -220,7 +220,7 @@ class SwingDialog extends JDialog {
         });
         jPanel4.add(UpdateB, java.awt.BorderLayout.EAST);
 
-        SkipB.setText(_("Skip"));
+        SkipB.setText(_t("Skip"));
         SkipB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SkipBActionPerformed(evt);
@@ -232,7 +232,7 @@ class SwingDialog extends JDialog {
 
         PrevL.setForeground(java.awt.Color.red);
         PrevL.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        PrevL.setText(_("WARNING! This update requires elevated privileges!"));
+        PrevL.setText(_t("WARNING! This update requires elevated privileges!"));
         PrevL.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 12, 4, 12));
         CommandP.add(PrevL, java.awt.BorderLayout.NORTH);
 

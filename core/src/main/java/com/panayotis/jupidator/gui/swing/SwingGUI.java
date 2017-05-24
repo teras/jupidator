@@ -35,7 +35,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -55,10 +55,10 @@ public class SwingGUI implements JupidatorGUI {
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         this.callback = callback;
-        newver = _("A new version of {0} is available!", el.getAppName());
-        versinfo = _("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
-                + (info.getVersion() == null ? "" : " - " + _("you have {0}", info.getVersion())) + ".";
-        title = _("New version of {0} found!", el.getAppName());
+        newver = _t("A new version of {0} is available!", el.getAppName());
+        versinfo = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
+                + (info.getVersion() == null ? "" : " - " + _t("you have {0}", info.getVersion())) + ".";
+        title = _t("New version of {0} found!", el.getAppName());
         infopane = HTMLCreator.getList(el.getLogList(), true);
         try {
             String iconpath = el.getIconpath();
@@ -114,9 +114,9 @@ public class SwingGUI implements JupidatorGUI {
     public void setIndetermined() {
         gui.ActionB.setEnabled(false);
         gui.PBar.setIndeterminate(true);
-        gui.PBar.setToolTipText(_("Processing update"));
+        gui.PBar.setToolTipText(_t("Processing update"));
         gui.PBar.setString("");
-        gui.InfoL.setText(_("Deploying files..."));
+        gui.InfoL.setText(_t("Deploying files..."));
     }
 
     public void errorOnCommit(String message) {
@@ -126,24 +126,24 @@ public class SwingGUI implements JupidatorGUI {
     }
 
     public void successOnCommit(boolean restartableApp) {
-        setInfoArea(_("Successfully downloaded updates"));
-        gui.ActionB.setText(restartableApp ? _("Restart application") : _("Finalize update"));
+        setInfoArea(_t("Successfully downloaded updates"));
+        gui.ActionB.setText(restartableApp ? _t("Restart application") : _t("Finalize update"));
         gui.ActionB.setActionCommand("restart");
         gui.ProgressP.revalidate();
     }
 
     public void errorOnRestart(String message) {
         if (message == null)
-            setInfoArea(_("Application cancelled restart"));
+            setInfoArea(_t("Application cancelled restart"));
         else
             setInfoArea(message);
-        gui.ActionB.setText(_("Cancel"));
+        gui.ActionB.setText(_t("Cancel"));
         gui.ActionB.setActionCommand("cancel");
     }
 
     public void setDownloadRatio(String ratio, float percent) {
         gui.PBar.setValue(Math.round(percent * 100));
-        gui.PBar.setToolTipText(_("Download speed: {0}", ratio));
+        gui.PBar.setToolTipText(_t("Download speed: {0}", ratio));
         gui.PBar.setString(ratio);
     }
 

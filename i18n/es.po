@@ -15,12 +15,12 @@ msgstr  "Project-Id-Version: jupidator\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Generator: KBabel 1.11.4\n"
 
-#: com/panayotis/jupidator/Updater.java:100
+#: com/panayotis/jupidator/Updater.java:99
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/Updater.java:260
+#: com/panayotis/jupidator/Updater.java:261
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  ""
@@ -90,12 +90,12 @@ msgstr  "No se ha podido eliminar el fichero {0}"
 msgid   "Unable to unpack under {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:50
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:49
 #, java-format
 msgid   "Request URL {0}"
 msgstr  ""
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:67
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:66
 msgid   "Unable to download file "
 msgstr  ""
 

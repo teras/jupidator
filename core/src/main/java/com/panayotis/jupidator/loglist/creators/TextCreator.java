@@ -24,7 +24,7 @@ import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
 import static com.panayotis.jupidator.data.TextUtils.NL;
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -35,7 +35,7 @@ public class TextCreator {
     public static String getList(LogList list, boolean onlyActive) {
         StringBuilder data = new StringBuilder();
         data.append(list.getApplicationInfo()).append(NL);
-        data.append(_("List of changes:")).append(NL);
+        data.append(_t("List of changes:")).append(NL);
         for (LogItem item : list)
             if (!onlyActive || item.isActive) {
                 data.append(" * ");

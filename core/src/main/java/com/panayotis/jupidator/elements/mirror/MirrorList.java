@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -46,7 +46,7 @@ public class MirrorList {
             try {
                 /* Create URL */
                 URL url = mirror.getURL(file.getElements());
-                app.receiveMessage(_("Request URL {0}", url.toString()));
+                app.receiveMessage(_t("Request URL {0}", url.toString()));
                 /* Download file */
                 String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher, true);
                 /* Check download status */
@@ -63,7 +63,7 @@ public class MirrorList {
             }
             watcher.rollbackSize();
         }
-        return _("Unable to download file " + file.getFile() + " : " + reason);
+        return _t("Unable to download file " + file.getFile() + " : " + reason);
     }
 
     private boolean isProperlyDigested(MirroredFile file, File download_location) {

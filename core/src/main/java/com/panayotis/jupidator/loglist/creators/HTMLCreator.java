@@ -23,7 +23,7 @@ package com.panayotis.jupidator.loglist.creators;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -54,7 +54,7 @@ public class HTMLCreator {
         for (LogItem item : list)
             if (!onlyActive || item.isActive) {
                 data.append("    <div class=\"jupentry\">\n");
-                data.append("      <p class=\"jupversion\">").append(_("Version")).append(": ").append(item.version).append("</p>\n");
+                data.append("      <p class=\"jupversion\">").append(_t("Version")).append(": ").append(item.version).append("</p>\n");
                 data.append("      <p class=\"jupinfo\">").append(item.info).append("</p>\n");
                 data.append("    </div>\n");
             }

@@ -17,12 +17,12 @@ msgstr  "Project-Id-Version: Jupidator 0.1\n"
         "X-Poedit-Country: GREECE\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: com/panayotis/jupidator/Updater.java:100
+#: com/panayotis/jupidator/Updater.java:99
 #, java-format
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  "Αυτή η ενημέρωση είναι απαραίτητη για την ομαλή εκτέλεση του {0}"
 
-#: com/panayotis/jupidator/Updater.java:260
+#: com/panayotis/jupidator/Updater.java:261
 #: com/panayotis/jupidator/gui/swing/SwingGUI.java:137
 msgid   "Application cancelled restart"
 msgstr  "Η εφαρμογή ακύρωσε την επανεκκίνηση"
@@ -92,12 +92,12 @@ msgstr  "Αδυναμία αφαίρεσης του αρχείου {0}"
 msgid   "Unable to unpack under {0}"
 msgstr  "Αδυναμία αποσυμπίεσης στο {0}"
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:50
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:49
 #, java-format
 msgid   "Request URL {0}"
 msgstr  "Απαίτηση URL {0}"
 
-#: com/panayotis/jupidator/elements/mirror/MirrorList.java:67
+#: com/panayotis/jupidator/elements/mirror/MirrorList.java:66
 msgid   "Unable to download file "
 msgstr  "Αδυναμία μεταφόρτωσης αρχείου"
 

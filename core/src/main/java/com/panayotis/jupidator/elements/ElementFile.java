@@ -41,7 +41,7 @@ import java.io.File;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -108,27 +108,27 @@ public class ElementFile extends JupidatorElement {
 
     public String fetch(UpdatedApplication application, BufferListener watcher) {
         if (compression instanceof InvalidCompression)
-            return _("Invalid compression type: {0}", compression.getFilenameExtension());
+            return _t("Invalid compression type: {0}", compression.getFilenameExtension());
 
         if (download_location == null)
-            return _("Can not initialize download file {0}", getFileName());
+            return _t("Can not initialize download file {0}", getFileName());
 
         /* Create destination directory, if it does not exist */
         if (!FileUtils.makeDirectory(download_location.getParentFile()))
-            return _("Unable to create directory structure under {0}", download_location.getParentFile().getPath());
+            return _t("Unable to create directory structure under {0}", download_location.getParentFile().getPath());
 
         /* Remove old download/uncompressed file, in case it exists */
         if (FileUtils.rmTree(download_location) != null)
-            return _("Could not remove old download file {0}", download_location.getPath());
+            return _t("Could not remove old download file {0}", download_location.getPath());
         if (FileUtils.rmTree(uncompress_location) != null)
-            return _("Could not remove old temporary file {0}", uncompress_location.getPath());
+            return _t("Could not remove old temporary file {0}", uncompress_location.getPath());
 
         /* Download file */
         String error = mirrors.downloadFile(source_location, download_location, watcher, application);
         if (error != null)
             return error;
         /* Successfully downloaded file */
-        application.receiveMessage(_("File {0} sucessfully downloaded", getFileName()));
+        application.receiveMessage(_t("File {0} sucessfully downloaded", getFileName()));
         return null;
     }
 
@@ -137,7 +137,7 @@ public class ElementFile extends JupidatorElement {
         if (status == null) {
             if (!compression.getFilenameExtension().equals(""))
                 if (FileUtils.rmTree(download_location) != null)
-                    application.receiveMessage(_("Unable to delete downloaded file {0}", download_location.getPath()));
+                    application.receiveMessage(_t("Unable to delete downloaded file {0}", download_location.getPath()));
             return null;
         }
         application.receiveMessage(status);

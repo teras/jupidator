@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import jupidator.launcher.DeployerParameters;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -96,7 +96,7 @@ public class Updater {
                 curInfo = selfappinfo;
                 curVersion = selfvers;
                 curVersion.getAppElements().setSelfUpdate(oldname);
-                curVersion.getAppElements().setApplicationInfo(_("This update is required for the smooth updating of {0}", oldname));
+                curVersion.getAppElements().setApplicationInfo(_t("This update is required for the smooth updating of {0}", oldname));
             }
         }
     }
@@ -258,7 +258,7 @@ public class Updater {
         /* Ask application if restart could be performed */
         watcher.stopWatcher();
         if (!application.requestRestart()) {
-            gui.errorOnRestart(_("Application cancelled restart"));
+            gui.errorOnRestart(_t("Application cancelled restart"));
             return;
         }
         try {

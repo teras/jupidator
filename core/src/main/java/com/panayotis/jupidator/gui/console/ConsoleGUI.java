@@ -31,7 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static com.panayotis.jupidator.i18n.I18N._;
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -49,9 +49,9 @@ public class ConsoleGUI implements JupidatorGUI {
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         appname = el.getAppName();
-        info1 = _("A new version of {0} is available!", appname);
-        info2 = _("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
-                + (info.getVersion() == null ? "" : " - " + _("you have {0}", info.getVersion())) + ".";
+        info1 = _t("A new version of {0} is available!", appname);
+        info2 = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
+                + (info.getVersion() == null ? "" : " - " + _t("you have {0}", info.getVersion())) + ".";
         if (is_loglist_enabled)
             loglist = TextCreator.getList(el.getLogList(), true);
         this.callback = callback;
@@ -59,20 +59,20 @@ public class ConsoleGUI implements JupidatorGUI {
     }
 
     public void startDialog() {
-        System.out.println(_("Welcome to the installation of {0}", appname));
+        System.out.println(_t("Welcome to the installation of {0}", appname));
         if (should_show_jupidator_about)
-            System.out.println(_("Installation library") + ": Jupidator (C) 2012 Panayotis Katsaloulis, panayotis" + ('?' + 1) + "panayotis.com");
+            System.out.println(_t("Installation library") + ": Jupidator (C) 2012 Panayotis Katsaloulis, panayotis" + ('?' + 1) + "panayotis.com");
         System.out.println();
         System.out.println(info1);
         System.out.println(info2);
-        if (is_loglist_enabled && getAnswer(_("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
+        if (is_loglist_enabled && getAnswer(_t("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
             System.out.println();
             System.out.println(loglist);
         }
-        String question = _("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] ");
+        String question = _t("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] ");
         String valid_ans = "sri";
         if (can_not_ignore) {
-            question = _("Do you want to (R)emind later or (I)nstall? [r/i] ");
+            question = _t("Do you want to (R)emind later or (I)nstall? [r/i] ");
             valid_ans = "ri";
         }
 
@@ -92,40 +92,40 @@ public class ConsoleGUI implements JupidatorGUI {
                         break;
                     }
                 default:
-                    System.out.println(_("Wrong answer."));
+                    System.out.println(_t("Wrong answer."));
                     valid = false;
             }
         }
     }
 
     public void endDialog() {
-        System.out.println(_("Thank you for using Jupidator") + "  (http://sourceforge.net/projects/jupidator/)");
+        System.out.println(_t("Thank you for using Jupidator") + "  (http://sourceforge.net/projects/jupidator/)");
         System.out.println();
     }
 
     public void errorOnCommit(String message) {
-        System.out.println(_("Error: {0}", message));
+        System.out.println(_t("Error: {0}", message));
     }
 
     public void successOnCommit(boolean restartableApp) {
-        System.out.println(_("Downloading successfull"));
-        getAnswer(_("Press [RETURN] to restart the application") + " ", null);
-        getAnswer(_("Press [RETURN] to finalize the update") + " ", null);
+        System.out.println(_t("Downloading successfull"));
+        getAnswer(_t("Press [RETURN] to restart the application") + " ", null);
+        getAnswer(_t("Press [RETURN] to finalize the update") + " ", null);
         callback.actionRestart();
     }
 
     public void errorOnRestart(String message) {
-        System.out.println(_(message));
-        System.out.println(_("Cancel installation"));
+        System.out.println(_t(message));
+        System.out.println(_t("Cancel installation"));
         callback.actionCancel();
     }
 
     public void setDownloadRatio(String ratio, float percent) {
-        System.out.println(_("Downloading {0}, {1} percent completed.", ratio, percent * 100));
+        System.out.println(_t("Downloading {0}, {1} percent completed.", ratio, percent * 100));
     }
 
     public void setIndetermined() {
-        System.out.println(_("Please wait..."));
+        System.out.println(_t("Please wait..."));
     }
 
     public void setProperty(String key, String value) {
