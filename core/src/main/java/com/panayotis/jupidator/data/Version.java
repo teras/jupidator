@@ -48,6 +48,10 @@ public class Version implements Serializable {
     private boolean graphical_gui;
 
     public static Version loadVersion(String xmlurl, ApplicationInfo appinfo) throws UpdaterException {
+        return loadVersion(xmlurl, appinfo, true);
+    }
+
+    public static Version loadVersion(String xmlurl, ApplicationInfo appinfo, boolean tryBzFirst) throws UpdaterException {
         InputStream is = null;
         try {
             UpdaterProperties prop = new UpdaterProperties(appinfo);
@@ -56,14 +60,7 @@ public class Version implements Serializable {
                 v.appel = new UpdaterAppElements();
                 return v;
             }
-            String safeURL = xmlurl.toLowerCase();
-            if (safeURL.endsWith(".bz2") || safeURL.endsWith(".bzip2") || safeURL.endsWith(".bz")) {
-                is = new URL(xmlurl).openStream();
-                is.read(); //B
-                is.read(); //Z
-                is = new CBZip2InputStream(is);
-            } else
-                is = new URL(xmlurl).openStream();
+            is = initInputStream(xmlurl);
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);
             parser.parse(is, handler);
@@ -187,5 +184,41 @@ public class Version implements Serializable {
 
     public boolean isEmpty() {
         return elements.isEmpty();
+    }
+
+    private static InputStream initInputStream(String xmlurl) throws UpdaterException {
+        String safeURL = xmlurl.toLowerCase();
+        boolean isBz = false;
+        if (safeURL.endsWith(".bz2") || safeURL.endsWith(".bzip2") || safeURL.endsWith(".bz"))
+            isBz = true;
+        else {
+            InputStream is = null;
+            try {
+                is = new URL(xmlurl + ".bz2").openStream();
+                if (is.read() == 'B' && is.read() == 'Z') {
+                    xmlurl += ".bz2";
+                    isBz = true;
+                }
+            } catch (IOException ex) {
+            } finally {
+                if (is != null)
+                    try {
+                        is.close();
+                    } catch (IOException ex) {
+                    }
+            }
+        }
+
+        try {
+            if (isBz) {
+                InputStream is = new URL(xmlurl).openStream();
+                is.read(); //B
+                is.read(); //Z
+                return new CBZip2InputStream(is);
+            } else
+                return new URL(xmlurl).openStream();
+        } catch (IOException ex) {
+            throw new UpdaterException("Unable to load jupidator data from URL " + xmlurl);
+        }
     }
 }

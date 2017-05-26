@@ -82,8 +82,12 @@ public class Updater {
     }
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
+        this(xmlurl, appinfo, application, true);
+    }
+
+    public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, boolean tryBzFirst) throws UpdaterException {
         curInfo = hostInfo = appinfo;
-        hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo);
+        hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo, tryBzFirst);
         this.application = application == null ? new SimpleApplication() : application;
         if (curVersion.getAppElements().shouldUpdateLibrary()) {
             String oldname = curVersion.getAppElements().getAppName();
@@ -120,8 +124,12 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui) {
+        return start(xmlurl, appinfo, application, gui, true);
+    }
+
+    public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst) {
         try {
-            Updater up = new Updater(xmlurl, appinfo, application);
+            Updater up = new Updater(xmlurl, appinfo, application, tryBzFirst);
             if (gui != null)
                 up.setGUI(gui);
             up.actionDisplay();
@@ -137,6 +145,7 @@ public class Updater {
      * Return JupidatorGUI, and create it if it does not exist. This is the
      * official method to create the default GUI GUI is created lazily, when
      * needed
+     *
      * @return The requested GUI
      */
     public JupidatorGUI getGUI() {
