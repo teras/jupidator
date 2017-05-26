@@ -18,7 +18,7 @@
  *
  */
 
-/*
+ /*
  * SwingDialog.java
  *
  * Created on September 25, 2008, 3:54 AM
@@ -50,6 +50,7 @@ class SwingDialog extends JDialog {
     JEditorPane InfoPane;
     Details ChangeLogP;
     BufferedImage icon;
+    private boolean infoVisible = true;
 
     static {
         BufferedImage img = null;
@@ -73,6 +74,10 @@ class SwingDialog extends JDialog {
         DetailedP.add(ChangeLogP, BorderLayout.CENTER);
 
         LaterB.requestFocus();
+    }
+
+    public void setInfoVisible(boolean infoVisible) {
+        this.infoVisible = infoVisible;
     }
 
     /**
@@ -165,6 +170,7 @@ class SwingDialog extends JDialog {
         InfoB.setBorderPainted(false);
         InfoB.setContentAreaFilled(false);
         InfoB.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/icons/info_sel.png"))); // NOI18N
+        InfoB.setVisible(false);
         InfoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InfoBActionPerformed(evt);
@@ -272,6 +278,7 @@ private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetailsBActionPerformed
     DetailedP.setVisible(!DetailedP.isVisible());
+    InfoB.setVisible(infoVisible && DetailedP.isVisible());
     pack();
 }//GEN-LAST:event_DetailsBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -282,7 +289,7 @@ private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     javax.swing.JPanel DetailedP;
     javax.swing.JButton DetailsB;
     javax.swing.JLabel IconL;
-    javax.swing.JButton InfoB;
+    private javax.swing.JButton InfoB;
     javax.swing.JPanel InfoHolderP;
     javax.swing.JLabel InfoL;
     javax.swing.JButton LaterB;

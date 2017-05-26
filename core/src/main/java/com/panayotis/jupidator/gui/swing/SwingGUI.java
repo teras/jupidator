@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.gui.swing;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -99,7 +98,7 @@ public class SwingGUI implements JupidatorGUI {
         gui.icon = icon;
         gui.SkipB.setVisible(skipvisible);
         gui.PrevL.setVisible(prevvisible);
-        gui.InfoB.setVisible(infovisible);
+        gui.setInfoVisible(infovisible);
         gui.DetailedP.setVisible(detailedvisible);
         gui.pack();
         gui.setLocationRelativeTo(null);
