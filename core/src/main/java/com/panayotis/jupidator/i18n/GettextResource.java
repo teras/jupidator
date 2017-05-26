@@ -68,7 +68,7 @@ import java.util.ResourceBundle;
  * @author Bruno Haible
  */
 public abstract class GettextResource extends ResourceBundle {
-    
+
     /**
      * Returns the translation of <VAR>msgid</VAR>.
      * @param catalog a ResourceBundle
@@ -86,13 +86,14 @@ public abstract class GettextResource extends ResourceBundle {
         }
         return msgid;
     }
-    
+
     /**
      * Returns the plural form for <VAR>n</VAR> of the translation of
      * <VAR>msgid</VAR>.
      * @param catalog a ResourceBundle
      * @param msgid the key string to be translated, an ASCII string
      * @param msgid_plural its English plural form
+     * @param n the number of plurals
      * @return the translation of <VAR>msgid</VAR> depending on <VAR>n</VAR>,
      *         or <VAR>msgid</VAR> or <VAR>msgid_plural</VAR> if none is found
      */
@@ -102,12 +103,12 @@ public abstract class GettextResource extends ResourceBundle {
         // is that we want the generated ResourceBundles to be completely
         // standalone, so that migration from the Sun approach to the GNU gettext
         // approach (without use of plurals) is as straightforward as possible.
-        
+
         if (catalog == null) {
             if (n==1) return msgid;
             return msgid_plural;
         }
-        
+
         ResourceBundle origCatalog = catalog;
         do {
             // Try catalog itself.

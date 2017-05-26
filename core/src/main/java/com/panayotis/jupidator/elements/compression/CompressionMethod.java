@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.elements.compression;
 
 import java.io.File;
@@ -30,9 +29,11 @@ import java.io.Serializable;
 public interface CompressionMethod extends Serializable {
 
     /**
+     * Decompress a file
      *
-     * @param f
-     * @return error message
+     * @param compressedfile the input file
+     * @param outfile the output files
+     * @return The resulting error, null if everything went as expected
      */
     public String decompress(File compressedfile, File outfile);
 
@@ -47,7 +48,7 @@ public interface CompressionMethod extends Serializable {
      * (currently only with Zip). <b>WARNING</b>: This method is practically
      * useful ONLY after decompress has been performed and evaluated.
      *
-     * @return
+     * @return whether this is package based
      */
     public boolean isPackageBased();
 }

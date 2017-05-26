@@ -25,7 +25,7 @@ public class JupidatorDeployer {
      * arg[0] = location of working directory, where streamed DeployerParameters
      * file exists
      *
-     * @param args
+     * @param args Deployer arguments
      */
     public static void main(String[] args) {
         workdir = args[0];

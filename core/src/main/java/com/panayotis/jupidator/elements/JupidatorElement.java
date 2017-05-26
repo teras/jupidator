@@ -115,6 +115,8 @@ public abstract class JupidatorElement implements Serializable {
     /**
      * This method downloads files for this element.
      *
+     * @param application The requested application
+     * @param blisten Where data are stored
      * @return Error message, or null if everything is fine
      */
     public abstract String fetch(UpdatedApplication application, BufferListener blisten);
@@ -123,6 +125,7 @@ public abstract class JupidatorElement implements Serializable {
      * This method performs housekeeping work for this element (i.e. unzip
      * files).
      *
+     * @param application The application to update
      * @return Error message, or null if everything is fine
      */
     public abstract String prepare(UpdatedApplication application);
@@ -130,7 +133,7 @@ public abstract class JupidatorElement implements Serializable {
     /**
      * This method cancels action and rolls back everything
      *
-     * @param application
+     * @param application The application to update
      */
     public abstract void cancel(UpdatedApplication application);
 

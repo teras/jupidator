@@ -5,20 +5,49 @@
     <artifactId>project</artifactId>
     <!-- mvn versions:set -DnewVersion=0.9.0 -DgenerateBackupPoms=false -->
     <!--  Also change properties below -->
-    <version>0.9.0</version>
+    <version>0.8.9.8</version>
     <name>Jupidator Project</name>
     <packaging>pom</packaging>
-    
+
     <modules>
         <module>digester</module>
         <module>core</module>
         <module>creator</module>
     </modules>
+
     <properties>
         <jupidator.url>http://www.panayotis.com/versions/jupidator/jupidator.xml</jupidator.url>
-        <jupidator.release>899</jupidator.release>
+        <jupidator.release>898</jupidator.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
     </properties>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License, Version 2</name>
+            <url>https://www.gnu.org/licenses/lgpl-2.0.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Panayotis Katsaloulis</name>
+            <email>panayotis@panayotis.com</email>
+            <organizationUrl>http://www.panayotis.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/teras/jupidator.git</connection>
+        <developerConnection>scm:git:ssh://github.com/teras/jupidator.git</developerConnection>
+        <url>http://github.com/teras/jupidator/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

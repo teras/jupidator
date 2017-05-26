@@ -137,6 +137,7 @@ public class Updater {
      * Return JupidatorGUI, and create it if it does not exist. This is the
      * official method to create the default GUI GUI is created lazily, when
      * needed
+     * @return The requested GUI
      */
     public JupidatorGUI getGUI() {
         if (gui == null)

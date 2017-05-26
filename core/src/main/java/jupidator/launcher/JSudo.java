@@ -49,6 +49,8 @@ public class JSudo extends JDialog {
 
     /**
      * Creates new form JSudo
+     *
+     * @param command The command to execute
      */
     public JSudo(String[] command) {
         initComponents();
