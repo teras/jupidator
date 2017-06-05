@@ -37,12 +37,12 @@ public class UpdaterAppElements implements Serializable {
 
     private String AppName = "Unknown";
     private String baseURL = "";
-    private MirrorList mirrors = new MirrorList();
+    private final MirrorList mirrors = new MirrorList();
     private String iconpath = "";
     private int newestrelease = -1;    // Newest release overall, read from XML
     private int lastrelease = -1;    // Last release, as currently read from XML
     private String newestversion = "0.0.0";    // Newest version overall, read from XML
-    private LogList loglist = new LogList();
+    private final LogList loglist = new LogList();
     private boolean needs_update = false;
 
     public String getAppName() {

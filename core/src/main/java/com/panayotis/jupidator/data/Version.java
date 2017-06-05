@@ -52,10 +52,14 @@ public class Version implements Serializable {
     }
 
     public static Version loadVersion(String xmlurl, ApplicationInfo appinfo, boolean tryBzFirst) throws UpdaterException {
+        return loadVersion(xmlurl, appinfo, tryBzFirst, false);
+    }
+
+    public static Version loadVersion(String xmlurl, ApplicationInfo appinfo, boolean tryBzFirst, boolean ignorePostpone) throws UpdaterException {
         InputStream is = null;
         try {
-            UpdaterProperties prop = new UpdaterProperties(appinfo);
-            if (prop.isTooSoon()) {
+            UpdaterProperties prop = new UpdaterProperties(appinfo, ignorePostpone);
+            if (!ignorePostpone && prop.isTooSoon()) {
                 Version v = new Version();
                 v.appel = new UpdaterAppElements();
                 return v;

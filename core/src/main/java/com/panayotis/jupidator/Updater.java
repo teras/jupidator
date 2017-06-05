@@ -82,12 +82,12 @@ public class Updater {
     }
 
     public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application) throws UpdaterException {
-        this(xmlurl, appinfo, application, true);
+        this(xmlurl, appinfo, application, true, false);
     }
 
-    public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, boolean tryBzFirst) throws UpdaterException {
+    public Updater(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, boolean tryBzFirst, boolean ignorePostpone) throws UpdaterException {
         curInfo = hostInfo = appinfo;
-        hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo, tryBzFirst);
+        hostVersion = curVersion = Version.loadVersion(xmlurl, appinfo, tryBzFirst, ignorePostpone);
         this.application = application == null ? new SimpleApplication() : application;
         if (curVersion.getAppElements().shouldUpdateLibrary()) {
             String oldname = curVersion.getAppElements().getAppName();
@@ -115,7 +115,11 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null);
+        return start(xmlurl, appHome, release, version, application, false);
+    }
+
+    public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application, boolean ignorePostpone) {
+        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null, true, ignorePostpone);
     }
 
     @Deprecated
@@ -124,12 +128,12 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui) {
-        return start(xmlurl, appinfo, application, gui, true);
+        return start(xmlurl, appinfo, application, gui, true, false);
     }
 
-    public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst) {
+    public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst, boolean ignorePostpone) {
         try {
-            Updater up = new Updater(xmlurl, appinfo, application, tryBzFirst);
+            Updater up = new Updater(xmlurl, appinfo, application, tryBzFirst, ignorePostpone);
             if (gui != null)
                 up.setGUI(gui);
             up.actionDisplay();

@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -37,14 +36,15 @@ public class UpdaterProperties implements Serializable {
     private final static String VERSIONIGNORE = "Ignore";
     private final Preferences prefs;
 
-    public UpdaterProperties(ApplicationInfo appinfo) throws UpdaterException {
+    public UpdaterProperties(ApplicationInfo appinfo, boolean ignorePostpone) throws UpdaterException {
         if (appinfo == null)
             throw new UpdaterException("Application info could not be null");
         String path = appinfo.getApplicationHome();
         if (path.equals("/"))
             path = "ROOT";
         prefs = Preferences.userNodeForPackage(getClass()).node((appinfo.isSelfUpdate() ? "lib:" : "app:") + path);
-        appinfo.updateIgnoreRelease(prefs.getInt(VERSIONIGNORE, 0));
+        if (!ignorePostpone)
+            appinfo.updateIgnoreRelease(prefs.getInt(VERSIONIGNORE, 0));
     }
 
     public boolean isTooSoon() {
@@ -55,7 +55,7 @@ public class UpdaterProperties implements Serializable {
             if (now < next)
                 return true;
             // It's too soon - We don't need to check it, yet
-        } catch (NumberFormatException e) { // if something went wrong, just check web version  
+        } catch (NumberFormatException e) { // if something went wrong, just check web version
         }
         return false;
     }
