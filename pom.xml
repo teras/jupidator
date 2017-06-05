@@ -5,7 +5,7 @@
     <artifactId>project</artifactId>
     <!-- mvn versions:set -DnewVersion=0.9.0 -DgenerateBackupPoms=false -->
     <!--  Also change properties below -->
-    <version>0.8.9.8</version>
+    <version>0.8.9.9</version>
     <packaging>pom</packaging>
     <name>Jupidator Project</name>
     <description>A library/tool in Java for automatic updating of applications with minimum user interaction and small developer effort. This is the parent project of the library.</description>
@@ -19,7 +19,7 @@
 
     <properties>
         <jupidator.url>http://www.panayotis.com/versions/jupidator/jupidator.xml</jupidator.url>
-        <jupidator.release>898</jupidator.release>
+        <jupidator.release>899</jupidator.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
