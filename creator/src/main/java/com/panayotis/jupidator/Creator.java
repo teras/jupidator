@@ -107,7 +107,7 @@ public class Creator {
                 .info("-p", "the file with the hashing information of the previous installation.")
                 .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
                 .info("--skip-files", "skip creation of files, if specific files already exist.")
-                .info("-v", "the version of the produced application. Will be used to locate fiels on server.")
+                .info("-v", "the version of the produced application. Will be used to organize downloaded files.")
                 .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml.")
                 .info("--no-md5", "disable the usade of md5 hashing algorithm.")
                 .info("--no-sha1", "disable the usade of sha1 hashing algorithm.")
@@ -118,7 +118,7 @@ public class Creator {
                 .error(err -> {
                     System.err.println("Error while executing Jupidator Creator: " + err);
                     System.err.println();
-                    System.err.print(args.toString());
+                    System.err.print(args.getUsage());
                     System.exit(-1);
                 });
         List<String> freeArgs = args.parse(arguments);

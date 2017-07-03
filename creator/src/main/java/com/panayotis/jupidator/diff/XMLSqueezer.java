@@ -31,24 +31,24 @@ public class XMLSqueezer {
         if (!w.hasTag("version"))
             throw new JupidatorCreatorException("Unable to find version " + version);
 
-        Map<String, Collection<DiffCommand>> rm = new HashMap<>();
-        Collection<DiffCommand> totalRm = new LinkedHashSet<>();
-        Map<String, Collection<DiffCommand>> file = new HashMap<>();
-        Collection<DiffCommand> totalFile = new LinkedHashSet<>();
+        Map<String, Collection<DiffCommand>> arch_rm = new HashMap<>();
+        Collection<DiffCommand> allrm = new LinkedHashSet<>();
+        Map<String, Collection<DiffCommand>> arch_file = new HashMap<>();
+        Collection<DiffCommand> allfile = new LinkedHashSet<>();
 
-        gatherAll(w, rm, totalRm, "rm", q -> new DiffRm(q));
-        gatherAll(w, file, totalFile, "file", q -> new DiffFile(q));
+        gatherAll(w, arch_rm, allrm, "rm", q -> new DiffRm(q));
+        gatherAll(w, arch_file, allfile, "file", q -> new DiffFile(q));
 
-        if (rm.size() != file.size())
-            throw new RuntimeException("Implementation error: both tm and file commands should have the same size");
+        if (arch_rm.size() != arch_file.size())
+            throw new RuntimeException("Implementation error: both rm and file commands should have the same size");
 
         // Important!!! The findCommon methods are destructive and will change the values of allRm, rm
         Collection<DiffCommand> filesInAll;
-        reconstructArch(w, "all", findCommon(totalRm, rm), filesInAll = findCommon(totalFile, file));
+        reconstructArch(w, "all", findCommon(allrm, arch_rm), filesInAll = findCommon(allfile, arch_file));
         for (DiffCommand c : filesInAll)
             ((DiffFile) c).moveToAll(files);
-        for (String arch : rm.keySet())
-            reconstructArch(w, arch, rm.get(arch), file.get(arch));
+        for (String arch : arch_rm.keySet())
+            reconstructArch(w, arch, arch_rm.get(arch), arch_file.get(arch));
 
         w.store(new File(jupidator.getParentFile(), "new_" + jupidator.getName()), true);
 
@@ -64,12 +64,12 @@ public class XMLSqueezer {
             c.add(w);
     }
 
-    private static void gatherAll(XMLWalker w, Map<String, Collection<DiffCommand>> archColl, Collection<DiffCommand> allColl, String nodeName, Function<XMLWalker, DiffCommand> constr) {
+    private static void gatherAll(XMLWalker w, Map<String, Collection<DiffCommand>> arch, Collection<DiffCommand> all, String nodeName, Function<XMLWalker, DiffCommand> constr) {
         w.toTag("version").nodes("arch", a -> {
             Collection<DiffCommand> current = new ArrayList<>();
-            archColl.put(a.attribute("name"), current);
+            arch.put(a.attribute("name"), current);
             a.nodes(nodeName, q -> current.add(constr.apply(q)));
-            allColl.addAll(current);
+            all.addAll(current);
         });
     }
 
