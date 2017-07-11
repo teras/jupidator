@@ -32,19 +32,21 @@ public class XMLSqueezer {
             throw new JupidatorCreatorException("Unable to find version " + version);
 
         Map<String, Collection<DiffCommand>> arch_rm = new HashMap<>();
-        Collection<DiffCommand> allrm = new LinkedHashSet<>();
+        Collection<DiffCommand> all_rm = new LinkedHashSet<>();
         Map<String, Collection<DiffCommand>> arch_file = new HashMap<>();
-        Collection<DiffCommand> allfile = new LinkedHashSet<>();
+        Collection<DiffCommand> all_file = new LinkedHashSet<>();
 
-        gatherAll(w, arch_rm, allrm, "rm", q -> new DiffRm(q));
-        gatherAll(w, arch_file, allfile, "file", q -> new DiffFile(q));
+        // Gather all rm commands from the packed files
+        gatherAll(w, arch_rm, all_rm, "rm", q -> new DiffRm(q));
+        gatherAll(w, arch_file, all_file, "file", q -> new DiffFile(q));
 
         if (arch_rm.size() != arch_file.size())
             throw new RuntimeException("Implementation error: both rm and file commands should have the same size");
 
-        // Important!!! The findCommon methods are destructive and will change the values of allRm, rm
+        // Important!!! The findCommon methods are destructive and will change the values of the parameters
         Collection<DiffCommand> filesInAll;
-        reconstructArch(w, "all", findCommon(allrm, arch_rm), filesInAll = findCommon(allfile, arch_file));
+        //Create all arch, based on common files
+        reconstructArch(w, "all", findCommon(all_rm, arch_rm), filesInAll = findCommon(all_file, arch_file));
         for (DiffCommand c : filesInAll)
             ((DiffFile) c).moveToAll(files);
         for (String arch : arch_rm.keySet())
@@ -64,11 +66,11 @@ public class XMLSqueezer {
             c.add(w);
     }
 
-    private static void gatherAll(XMLWalker w, Map<String, Collection<DiffCommand>> arch, Collection<DiffCommand> all, String nodeName, Function<XMLWalker, DiffCommand> constr) {
+    private static void gatherAll(XMLWalker w, Map<String, Collection<DiffCommand>> arch, Collection<DiffCommand> all, String nodeName, Function<XMLWalker, DiffCommand> constructor) {
         w.toTag("version").nodes("arch", a -> {
             Collection<DiffCommand> current = new ArrayList<>();
             arch.put(a.attribute("name"), current);
-            a.nodes(nodeName, q -> current.add(constr.apply(q)));
+            a.nodes(nodeName, q -> current.add(constructor.apply(q)));
             all.addAll(current);
         });
     }
