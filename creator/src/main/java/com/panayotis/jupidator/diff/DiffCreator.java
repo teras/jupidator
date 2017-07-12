@@ -96,7 +96,6 @@ public class DiffCreator {
         String srcprefix = version + "/" + arch;
         String destprefix = "${APPHOME}";
 
-        System.out.println("Parsing file " + (path + File.separator + item.name).substring(1));
         File infile = new File(inputRoot, path + File.separator + item.name).getAbsoluteFile();
         String ext = infile.isDirectory() ? "tar.bz2" : "bz2";
         File outfile = new File(output, srcprefix + path + "/" + item.name + "." + ext).getAbsoluteFile();

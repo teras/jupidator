@@ -54,6 +54,7 @@ public class XMLSqueezer {
 
         w.store(new File(jupidator.getParentFile(), "new_" + jupidator.getName()), true);
 
+        removeEmptyDirs(new File(files, version));
     }
 
     private static void reconstructArch(XMLWalker w, String arch, Collection<DiffCommand> rmc, Collection<DiffCommand> filec) {
@@ -93,4 +94,17 @@ public class XMLSqueezer {
         return true;
     }
 
+    private static void removeEmptyDirs(File root) {
+        if (root.isDirectory()) {
+            File[] children = root.listFiles();
+            if (children != null)
+                for (File child : children)
+                    removeEmptyDirs(child);
+            children = root.listFiles();
+            if (children == null || children.length == 0) {
+                System.out.println("will delete " + root);
+                root.delete();
+            }
+        }
+    }
 }
