@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -29,7 +28,6 @@ import java.io.File;
 import java.io.Serializable;
 import jupidator.launcher.XElement;
 
-
 /**
  *
  * @author teras
@@ -37,7 +35,7 @@ import jupidator.launcher.XElement;
 public abstract class JupidatorElement implements Serializable {
 
     private final String filename;
-    private final String destdir;
+    private String destdir;
     private final long size;
     private final long release;
     private final ExecutionTime exectime;
@@ -59,8 +57,8 @@ public abstract class JupidatorElement implements Serializable {
             throw new NullPointerException("UpdaterAppElements not provided.");
 
         this.filename = appinfo.applyVariables(name);
-        this.destdir = appinfo.applyVariables(dest);
         this.release = elements.getLastRelease();
+        setDestDir(appinfo, dest);
 
         long nsize = 0;
         try {
@@ -73,6 +71,10 @@ public abstract class JupidatorElement implements Serializable {
             exectime = ExecutionTime.MID;
         this.exectime = exectime;
         requiresPrivileges = estimatePrivileges(elements);
+    }
+
+    public void setDestDir(ApplicationInfo appinfo, String destination) {
+        this.destdir = appinfo.applyVariables(destination);
     }
 
     protected boolean estimatePrivileges(UpdaterAppElements elements) {

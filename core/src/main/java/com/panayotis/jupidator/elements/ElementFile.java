@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -56,6 +55,7 @@ public class ElementFile extends JupidatorElement {
     private final File uncompress_location;
     private final MirrorList mirrors;
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, size, elements, info, ExecutionTime.MID);
 

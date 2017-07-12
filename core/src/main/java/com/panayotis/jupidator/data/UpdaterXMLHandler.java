@@ -148,6 +148,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             Digester d = Digester.getDigester("SHA-" + type);
             d.setHash(attr.getValue("value"));
             lastFileElement.addDigester(d);
+        } else if (qName.equals("destination")) {
+            if (lastFileElement != null && full.getArch().isCompatibleWith(attr.getValue("arch")))
+                lastFileElement.setDestDir(appinfo, attr.getValue("dir"));
         } else if (qName.equals("mirror"))
             elements.getMirrors().addMirror(new Mirror(attr.getValue("constructor"), appinfo, attr.getValue("url")));
         else if (qName.equals("updatelist")) {

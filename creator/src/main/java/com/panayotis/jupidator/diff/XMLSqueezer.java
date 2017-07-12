@@ -37,8 +37,8 @@ public class XMLSqueezer {
         Collection<DiffCommand> all_file = new LinkedHashSet<>();
 
         // Gather all rm commands from the packed files
-        gatherAll(w, arch_rm, all_rm, "rm", q -> new DiffRm(q));
-        gatherAll(w, arch_file, all_file, "file", q -> new DiffFile(q));
+        getCommands(w, arch_rm, all_rm, "rm", q -> new DiffRm(q));
+        getCommands(w, arch_file, all_file, "file", q -> new DiffFile(q));
 
         if (arch_rm.size() != arch_file.size())
             throw new RuntimeException("Implementation error: both rm and file commands should have the same size");
@@ -66,7 +66,7 @@ public class XMLSqueezer {
             c.add(w);
     }
 
-    private static void gatherAll(XMLWalker w, Map<String, Collection<DiffCommand>> arch, Collection<DiffCommand> all, String nodeName, Function<XMLWalker, DiffCommand> constructor) {
+    private static void getCommands(XMLWalker w, Map<String, Collection<DiffCommand>> arch, Collection<DiffCommand> all, String nodeName, Function<XMLWalker, DiffCommand> constructor) {
         w.toTag("version").nodes("arch", a -> {
             Collection<DiffCommand> current = new ArrayList<>();
             arch.put(a.attribute("name"), current);

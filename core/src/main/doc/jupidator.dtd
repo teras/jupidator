@@ -92,7 +92,7 @@ Jupidator can be used in various architectures. With this element we define whic
 <!--
     Download a file from the remote location, relative to base URL. The latest file from every version will be taken into account.
 -->
-<!ELEMENT file (sha1|sha2|md5)*>
+<!ELEMENT file (sha1|sha2|md5|destination)*>
 <!--
     @attr sourcedir The directory in the source location where this file exists. This is appended to the base URL.
     @attr destdir The destination directory of the file. This directory is <i>not</i> relative to anything. If you want to refer to other locations, like for example the application home, you <i>need</i> to specifically define this location with variables, such as ${APPHOME}.
@@ -145,6 +145,19 @@ Jupidator can be used in various architectures. With this element we define whic
 -->
 <!ATTLIST md5
     value CDATA #REQUIRED
+  >
+
+<!--
+    Destination path of an element (e.g. file), if differs from main file location
+-->
+<!ELEMENT destination EMPTY>
+<!--
+    @attr arch The architecture which the file will have different destination
+    @attr dir The actual destination directory of the file. Please see the comments of the <a href="#file_destdir">destdir</a> attribute.
+-->
+<!ATTLIST destination
+    arch CDATA #REQUIRED
+    dir CDATA #REQUIRED
   >
 
 
