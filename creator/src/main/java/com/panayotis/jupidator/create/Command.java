@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.diff;
+package com.panayotis.jupidator.create;
 
 import com.panayotis.jupidator.xml.XMLWalker;
 
@@ -11,7 +11,7 @@ import com.panayotis.jupidator.xml.XMLWalker;
  *
  * @author teras
  */
-public interface DiffCommand {
+public interface Command {
 
     public void add(XMLWalker parentNode);
 

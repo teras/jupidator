@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.diff;
+package com.panayotis.jupidator.create;
 
 import com.panayotis.jupidator.compress.BZip2FileCompression;
 import com.panayotis.jupidator.compress.TarBz2FolderCompression;
@@ -22,8 +22,8 @@ import java.util.TreeSet;
  */
 public class DiffCreator {
 
-    private final Collection<DiffCommand> rmCommands = new ArrayList<>();
-    private final Collection<DiffCommand> fileCommands = new ArrayList<>();
+    private final Collection<Command> rmCommands = new ArrayList<>();
+    private final Collection<Command> fileCommands = new ArrayList<>();
     private final String version;
     private final String arch;
     private final File inputRoot;
@@ -33,10 +33,10 @@ public class DiffCreator {
     private final boolean nosha256;
     private final boolean skipfiles;
 
-    public static Collection<DiffCommand> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+    public static Collection<Command> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         DiffCreator diff = new DiffCreator(inputRoot, output, version, arch, nomd5, nosha1, nosha256, skipfiles);
         diff.diff(oldInstallation, newInstallation, "");
-        Collection<DiffCommand> commands = new ArrayList<>(diff.rmCommands);
+        Collection<Command> commands = new ArrayList<>(diff.rmCommands);
         commands.addAll(diff.fileCommands);
         return commands;
     }
@@ -86,7 +86,7 @@ public class DiffCreator {
     }
 
     private void rm(ParseItem item, String path) {
-        rmCommands.add(new DiffRm(path + item.name));
+        rmCommands.add(new RmCommand(path + item.name));
     }
 
     private void file(ParseItem item, String path) {
@@ -106,7 +106,7 @@ public class DiffCreator {
             else
                 BZip2FileCompression.compress(infile, outfile);
 
-        DiffFile file = new DiffFile(ext, destprefix + path, item.name, outfile.length(), srcprefix + path);
+        FileCommand file = new FileCommand(ext, destprefix + path, item.name, outfile.length(), srcprefix + path);
         if (!nomd5)
             file.setMD5(Digester.getDigester("MD5").setHash(outfile).toString());
         if (!nosha1)

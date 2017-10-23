@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.diff;
+package com.panayotis.jupidator.create;
 
 import com.panayotis.jupidator.xml.XMLWalker;
 
@@ -11,15 +11,15 @@ import com.panayotis.jupidator.xml.XMLWalker;
  *
  * @author teras
  */
-public class DiffRm implements DiffCommand {
+public class RmCommand implements Command {
 
     private final String file;
 
-    public DiffRm(XMLWalker node) {
+    public RmCommand(XMLWalker node) {
         this(node.attribute("file"));
     }
 
-    public DiffRm(String file) {
+    public RmCommand(String file) {
         this.file = file;
     }
 
@@ -41,7 +41,7 @@ public class DiffRm implements DiffCommand {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        return this.file.equals(((DiffRm) obj).file);
+        return this.file.equals(((RmCommand) obj).file);
     }
 
 }

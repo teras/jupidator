@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.diff;
+package com.panayotis.jupidator.create;
 
 import com.panayotis.jupidator.xml.XMLWalker;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.Objects;
  *
  * @author teras
  */
-public class DiffFile implements DiffCommand {
+public class FileCommand implements Command {
 
     private final String compress;
     private final String destdir;
@@ -26,14 +26,14 @@ public class DiffFile implements DiffCommand {
     private String sha1;
     private String sha256;
 
-    public DiffFile(XMLWalker w) {
+    public FileCommand(XMLWalker w) {
         this(w.attribute("compress"), w.attribute("destdir"), w.attribute("name"), Long.parseLong(w.attribute("size")), w.attribute("sourcedir"));
         w.execIf(q -> q.nodeExists("md5"), q -> this.md5 = q.node("md5").attribute("value"));
         w.execIf(q -> q.nodeExists("sha1"), q -> this.sha1 = q.node("sha1").attribute("value"));
         w.execIf(q -> q.nodeExists("sha2"), q -> this.sha256 = q.node("sha2").attribute("value"));
     }
 
-    public DiffFile(String compress, String destdir, String name, long size, String sourcedir) {
+    public FileCommand(String compress, String destdir, String name, long size, String sourcedir) {
         this.compress = compress;
         this.destdir = destdir;
         this.name = name;
@@ -86,7 +86,7 @@ public class DiffFile implements DiffCommand {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DiffFile other = (DiffFile) obj;
+        final FileCommand other = (FileCommand) obj;
         if (!Objects.equals(this.name, other.name))
             return false;
         if (!Objects.equals(this.destdir, other.destdir))

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jupidator.diff;
+package com.panayotis.jupidator.create;
 
 import com.panayotis.jupidator.xml.XMLWalker;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public class XMLProducer {
 
-    public static void produce(File xmlfile, String arch, String version, Collection<DiffCommand> commands) {
+    public static void produce(File xmlfile, String arch, String version, Collection<Command> commands) {
         XMLWalker w = XMLWalker.load(xmlfile);
         if (w == null)
             w = new XMLWalker();
@@ -28,7 +28,7 @@ public class XMLProducer {
         w.execIf(q -> !q.nodeExists("description"), q -> q.add("description").setText("Description of version " + version));
         w.filterNodes("arch", q -> q.remove(), q -> arch.equals(q.attribute("name")));
         w.add("arch").setAttribute("name", arch);
-        for (DiffCommand cmd : commands)
+        for (Command cmd : commands)
             cmd.add(w);
         w.store(xmlfile, true);
     }
