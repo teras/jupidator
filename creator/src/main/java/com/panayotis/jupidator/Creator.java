@@ -19,6 +19,9 @@
  */
 package com.panayotis.jupidator;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.WriterConfig;
 import com.panayotis.arjs.StringArg;
 import com.panayotis.arjs.Args;
 import com.panayotis.arjs.BoolArg;
@@ -32,7 +35,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
-import org.json.JSONObject;
 
 /**
  *
@@ -40,12 +42,13 @@ import org.json.JSONObject;
  */
 public class Creator {
 
-    private static final File NULL = new File("");
+    private static final File NOFILE = new File("");
 
     /**
      * @param arguments the command line arguments
      */
     public static void main(String... arguments) {
+        BoolArg snap = new BoolArg();
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();
         BoolArg squeeze = new BoolArg();
@@ -61,6 +64,7 @@ public class Creator {
         BoolArg skipfiles = new BoolArg();
         Args args = new Args();
         args
+                .def("snap", snap)
                 .def("parse", parse)
                 .def("create", create)
                 .def("squeeze", squeeze)
@@ -75,6 +79,7 @@ public class Creator {
                 .def("--no-sha256", nosha256)
                 .def("--skip-files", skipfiles)
                 .defhelp("-h", "--help")
+                .alias("snap", "snapshot")
                 .alias("-o", "--output")
                 .alias("-a", "--arch")
                 .alias("-p", "--prev")
@@ -89,17 +94,20 @@ public class Creator {
                 .dep("--no-md5", "create")
                 .dep("--no-sha1", "create")
                 .dep("--no-sha256", "create")
-                .dep("-o", "parse", "create")
-                .dep("-a", "create", "parse")
-                .req("parse", "create", "squeeze")
+                .dep("-o", "snap", "parse", "create")
+                .dep("-a", "snap", "parse", "create")
+                .req("snap", "parse", "create", "squeeze")
                 .req("-p")
-                .uniq("parse", "create", "squeeze")
+                .uniq("snap", "parse", "create", "squeeze")
+                .usage("jupidator_creator", "snap", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "create", "-p", "-j", "-f", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "squeeze", "-j", "-v", "-f")
+                .group("Create a snapshot of current installation", "snap")
                 .group("Parse existing installation", "parse")
                 .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
                 .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
+                .info("snap", "parse INSTALL_DIR and create a snapshot of the provided directory INSTALL_DIR, to use as a 'snapshot update' with jupidator.")
                 .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
                 .info("-o", "output resulting hashing information to a file for future use or comparison, instead of standard output.", "FILE")
                 .info("-a", "the name of the architecture. If missing the default architecture is used.")
@@ -132,27 +140,37 @@ public class Creator {
             File in = new File(freeArgs.get(0));
             File out = output.get().isEmpty() ? null : new File(output.get());
 
-            if (parse.get())
+            if (snap.get())
+                snapshot(in, out, arch.get());
+            else if (parse.get())
                 parse(in, out, arch.get());
             else if (create.get())
                 create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
         }
     }
 
+    private static void snapshot(File input, File output, String arch) {
+        ParseFolder parse = parse(input, NOFILE, arch);
+        System.out.println(parse.toJSON().toString(WriterConfig.MINIMAL));
+//        if (!input.exists())
+//            throw new JupidatorCreatorException("Unable to locate path " + input.getAbsolutePath());
+//        System.out.println("Will produce a snapshot of " + input);;
+    }
+
     private static ParseFolder parse(File input, File output, String arch) {
         ParseFolder result = new ParseFolder(input);
-        JSONObject obj;
+        JsonObject obj;
         if (output != null && output.isFile())
             try {
-                obj = new JSONObject(new String(Files.readAllBytes(output.toPath()), "UTF-8"));
+                obj = Json.parse(new String(Files.readAllBytes(output.toPath()), "UTF-8")).asObject();
             } catch (IOException ex) {
                 throw new JupidatorCreatorException("Unable to parse output file " + output);
             }
         else
-            obj = new JSONObject();
+            obj = new JsonObject();
 
-        obj.put(arch, result.toJSON());
-        if (output == NULL) {
+        obj.add(arch, result.toJSON());
+        if (output == NOFILE) {
         } else if (output != null)
             try {
                 Files.write(output.toPath(), obj.toString().getBytes());
@@ -167,15 +185,15 @@ public class Creator {
     private static void create(File previous, File input, File output, File packages, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         ParseFolder older;
         try {
-            JSONObject obj = new JSONObject(new String(Files.readAllBytes(previous.toPath()), "UTF-8"));
-            obj = obj.optJSONObject(arch);
-            if ((obj == null))
+            JsonObject obj = Json.parse(new String(Files.readAllBytes(previous.toPath()), "UTF-8")).asObject();
+            if (obj.get(arch) == null)
                 throw new JupidatorCreatorException("Unable to find architecture " + arch + " in previous configurations at " + previous.getPath());
+            obj = obj.get(arch).asObject();
             older = new ParseFolder(obj);
         } catch (IOException ex) {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
-        ParseFolder current = parse(input, output == null ? NULL : output, arch);
+        ParseFolder current = parse(input, output == null ? NOFILE : output, arch);
         Collection<DiffCommand> diffs = DiffCreator.create(older, current, input, packages, version, arch, nomd5, nosha1, nosha256, skipfiles);
         XMLProducer.produce(jupfile, arch, version, diffs);
     }

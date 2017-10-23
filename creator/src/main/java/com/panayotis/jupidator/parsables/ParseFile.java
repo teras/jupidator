@@ -5,9 +5,9 @@
  */
 package com.panayotis.jupidator.parsables;
 
+import com.eclipsesource.json.JsonObject;
 import com.panayotis.jupidator.digester.Digester;
 import java.io.File;
-import org.json.JSONObject;
 
 /**
  *
@@ -28,12 +28,12 @@ public class ParseFile extends ParseItem {
                 getDigest("SHA-256", input).toString());
     }
 
-    ParseFile(JSONObject input) {
-        this(input.getLong("size"),
-                input.getString("name"),
-                input.getString("md5"),
-                input.getString("sha1"),
-                input.getString("sha256"));
+    ParseFile(JsonObject input) {
+        this(input.getLong("size", 0),
+                input.getString("name", ""),
+                input.getString("md5", ""),
+                input.getString("sha1", ""),
+                input.getString("sha256", ""));
     }
 
     public ParseFile(long size, String name, String md5, String sha1, String sha256) {
@@ -51,12 +51,12 @@ public class ParseFile extends ParseItem {
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject j = super.toJSON();
-        j.put("size", size);
-        j.put("md5", md5);
-        j.put("sha1", sha1);
-        j.put("sha256", sha256);
+    public JsonObject toJSON() {
+        JsonObject j = super.toJSON();
+        j.add("size", size);
+        j.add("md5", md5);
+        j.add("sha1", sha1);
+        j.add("sha256", sha256);
         return j;
     }
 

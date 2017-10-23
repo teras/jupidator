@@ -5,7 +5,7 @@
  */
 package com.panayotis.jupidator.parsables;
 
-import org.json.JSONObject;
+import com.eclipsesource.json.JsonObject;
 
 /**
  *
@@ -36,9 +36,9 @@ public abstract class ParseItem {
         return !((this.name == null) ? (other.name != null) : !this.name.equals(other.name));
     }
 
-    public JSONObject toJSON() {
-        JSONObject item = new JSONObject();
-        item.put("name", name);
+    public JsonObject toJSON() {
+        JsonObject item = new JsonObject();
+        item.add("name", name);
         return item;
     }
 

@@ -5,13 +5,12 @@
  */
 package com.panayotis.jupidator.parsables;
 
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
 import com.panayotis.jupidator.JupidatorCreatorException;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeSet;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -54,26 +53,26 @@ public class ParseFolder extends ParseItem {
                     items.add(new ParseFolder(child.getName(), child));
     }
 
-    public ParseFolder(JSONObject dir) {
-        this(dir.getString("name"), dir.getJSONArray("children"));
+    public ParseFolder(JsonObject dir) {
+        this(dir.getString("name", ""), dir.get("children").asArray());
     }
 
-    private ParseFolder(String name, JSONArray dir) {
+    private ParseFolder(String name, JsonArray dir) {
         super(name);
-        for (int i = 0; i < dir.length(); i++) {
-            JSONObject input = dir.getJSONObject(i);
-            JSONArray children = (JSONArray) input.opt("children");
-            items.add(children == null ? new ParseFile(input) : new ParseFolder(input.getString("name"), children));
+        for (int i = 0; i < dir.size(); i++) {
+            JsonObject input = dir.get(i).asObject();
+            JsonArray children = input.get("children") instanceof JsonArray ? input.get("children").asArray() : null;
+            items.add(children == null ? new ParseFile(input) : new ParseFolder(input.getString("name", ""), children));
         }
     }
 
     @Override
-    public JSONObject toJSON() {
-        JSONObject j = super.toJSON();
-        JSONArray children = new JSONArray();
-        j.put("children", children);
+    public JsonObject toJSON() {
+        JsonObject j = super.toJSON();
+        JsonArray children = new JsonArray();
+        j.add("children", children);
         for (ParseItem item : items)
-            children.put(item.toJSON());
+            children.add(item.toJSON());
         return j;
     }
 
