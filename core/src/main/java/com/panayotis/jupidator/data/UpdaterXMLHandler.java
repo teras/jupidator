@@ -38,15 +38,16 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class UpdaterXMLHandler extends DefaultHandler {
 
-    private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
+    private final UpdaterAppElements elements; // Location to store various application elements, needed in GUI
+    private final ApplicationInfo appinfo;    // Remember information about the current running application
+    private final Version full; // The full aggregated list of the latest files, in order to upgrade
+
     private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
-    private Version full; // The full aggregated list of the latest files, in order to upgrade
     private Version current_version;    // The list of files for the current reading "version" object
     private String current_versionname;    // The current version name as given to the version tag
     private boolean invalid_arch;    // The current arch: if it is null it means that it is not compatible with the current system. Used to attach elements to version.
     private StringBuilder descbuffer;    // Temporary buffer to store descriptions
     private String description;    // Description of current version, will be added only if at least one valid arch was found
-    private ApplicationInfo appinfo;    // Remember information about the current running application
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
     private ElementFile lastFileElement = null;   // Remember last Add element, to add digesters later on
 
@@ -78,8 +79,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 current_versionname = "";
             elements.updateVersion(release_last, current_versionname);
             current_version = null;
-            if (appinfo == null || release_last > appinfo.getRelease())
+            if (appinfo == null || release_last > appinfo.getRelease()) {
                 current_version = new Version();
+                if (TextUtils.isTrue(attr.getValue("snapshot")))
+                    current_version.setAsSnapshot();
+            }
         } else if (qName.equals("description")) {
             description = "";
             descbuffer = current_version == null ? null : new StringBuilder();

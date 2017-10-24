@@ -59,8 +59,9 @@ public class FileCommand implements Command {
                 setAttribute("name", name).
                 setAttribute("destdir", destdir).
                 setAttribute("sourcedir", sourcedir).
-                setAttribute("compress", compress).
                 setAttribute("size", Long.toString(size));
+        if (compress != null && !compress.isEmpty())
+            parentNode.setAttribute("compress", compress);
         if (md5 != null)
             parentNode.add("md5").setAttribute("value", md5).parent();
         if (sha1 != null)

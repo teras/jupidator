@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
@@ -32,8 +31,8 @@ import java.util.List;
 public class Arch implements Serializable {
 
     private final String tag;
+    private final List<String> arguments;
     private String exec;
-    private List<String> arguments;
 
     /* Default arch "any" */
     public static Arch defaultArch() {

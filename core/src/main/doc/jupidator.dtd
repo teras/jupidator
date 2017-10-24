@@ -79,7 +79,7 @@ Jupidator can be used in various architectures. With this element we define whic
 <!--
     Architecture dependent actions. If this is a matching architecture, a set of actions will be performed. If more than one architecture has changes for this release, then all architectures should be defined. If no changes exist for one arhcitecture, then this information will be skipped.
 -->
-<!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait)*>
+<!ELEMENT arch (file|rm|chmod|chown|exec|kill|wait|ignore)*>
 <!--
     @attr name The name of this architecture, as defined by the <a href="#architect_tag">tag</a> attribute of the <a href="#architect">architect</a> element.
     @attr gui The installer will present a graphical window spinning for this version onwards. If this attribute is not present, no GUI is requested.
@@ -98,7 +98,7 @@ Jupidator can be used in various architectures. With this element we define whic
     @attr destdir The destination directory of the file. This directory is <i>not</i> relative to anything. If you want to refer to other locations, like for example the application home, you <i>need</i> to specifically define this location with variables, such as ${APPHOME}.
     @attr name The file name. The name of the file is the same in both the source URL and in the destination directory. If this file is <a href="#file_compress">compressed</a> then the appropriate compression extension is added to the source file name. The compression extension should <i>never</i> be present in this tag (even for package files). If this is a zip or tar file with at least two content files (i.e. is a "package" file), then the value of this attribute is used only to locate the filename on the server and will not be inherited to the destination location. You can use directories inside the zip file to deploy to a deeper level directory.
     @attr size The size of the source file. It will be used to check if the downloaded file has correct size.
-    @attr compress <p>The source file is compressed in the server. The following methods can be used: "gzip" "bzip2" "zip" "tar" "tar.gz" "tar.bz2". This extension will be added to the source URL.</p><p>If a file is marked as one of "zip", "tar", "tar.gz" or "tar.bz2", then this is a package file. If only one file is found inside the package file, then this file is treated as a "stream", like the "gzip" and "bzip2" containers, and the filename stored inside the zip file will be ignored. If more than one file is found inside the package file, then all the file contents of this  package file will be unpacked at the <a href="#file_destdir">desired location</a>. This is a convenience method to unpack a bunch of files simultaneously, as a package, without the need to define these files one by one.</p><p>An actual package file which is not marked "compress"-ed with this attribute, is handled like any other regular file, and no decompression is performed.</p>
+    @attr compress <p>The source file is compressed in the server. The following methods can be used: "gzip" "bzip2" "zip" "tar" "tar.gz" "tar.bz2". If no compression is required, "none" should be selected. This extension will be added to the source URL.</p><p>If a file is marked as one of "zip", "tar", "tar.gz" or "tar.bz2", then this is a package file. If only one file is found inside the package file, then this file is treated as a "stream", like the "gzip" and "bzip2" containers, and the filename stored inside the zip file will be ignored. If more than one file is found inside the package file, then all the file contents of this  package file will be unpacked at the <a href="#file_destdir">desired location</a>. This is a convenience method to unpack a bunch of files simultaneously, as a package, without the need to define these files one by one.</p><p>An actual package file which is not marked "compress"-ed with this attribute, is handled like any other regular file, and no decompression is performed.</p>
     @attr ifexists Download and install this file <i>only</i> if this file already exists. If it does not, then this file is ignored.
     @attr forceinstall This attribute is disabled (false) by default. With this default behaviour, if the selected runtime application is under an operating system that takes care of the update process by itself, this file is ignored. If it is enabled, then this file is used no matter what the operating system does. Enable this feature if you want to upgrade parts of the application that are not taken care by the operating system.
 -->
@@ -172,6 +172,17 @@ Jupidator can be used in various architectures. With this element we define whic
 <!ATTLIST rm
     file CDATA #REQUIRED
     forceinstall CDATA "false"
+  >
+
+<!--
+    Ignore a directory tree, in snapshot mode. Usually 
+-->
+<!ELEMENT ignore EMPTY>
+<!--
+    @attr file The local file path to ignore. The full path name is expected. All files under this path, inclusive, will be ignored when updated. This is taken into account only in snapshot mode.
+-->
+<!ATTLIST ignore
+    file CDATA #REQUIRED
   >
 
 <!--

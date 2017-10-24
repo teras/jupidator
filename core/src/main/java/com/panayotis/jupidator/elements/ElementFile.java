@@ -62,7 +62,7 @@ public class ElementFile extends JupidatorElement {
         if (compress == null || compress.equals(""))
             compress = "none";
         String lcompress = compress.toLowerCase();
-        if (lcompress.equals("none"))
+        if (lcompress.isEmpty() || lcompress.equals("none"))
             compression = new NullCompression();
         else if (lcompress.equals("zip"))
             compression = new ZipCompression();

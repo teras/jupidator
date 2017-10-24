@@ -21,21 +21,22 @@ package com.panayotis.jupidator;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.WriterConfig;
 import com.panayotis.arjs.StringArg;
 import com.panayotis.arjs.Args;
 import com.panayotis.arjs.BoolArg;
+import com.panayotis.arjs.FileArg;
 import com.panayotis.arjs.MultiStringArg;
 import com.panayotis.jupidator.create.DiffCreator;
 import com.panayotis.jupidator.create.XMLProducer;
 import com.panayotis.jupidator.create.XMLSqueezer;
 import com.panayotis.jupidator.parsables.ParseFolder;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
 import com.panayotis.jupidator.create.Command;
+import com.panayotis.jupidator.create.SnapshotCreator;
+import java.io.File;
 
 /**
  *
@@ -53,13 +54,13 @@ public class Creator {
         BoolArg parse = new BoolArg();
         BoolArg create = new BoolArg();
         BoolArg squeeze = new BoolArg();
-        StringArg output = new StringArg("");
-        MultiStringArg ignore = new MultiStringArg();
         StringArg arch = new StringArg(System.getProperty("os.arch"));
-        StringArg prev = new StringArg("");
-        StringArg packfile = new StringArg("files");
         StringArg version = new StringArg("1.0-SNAPSHOT");
-        StringArg jupfile = new StringArg("jupidator.xml");
+        FileArg output = new FileArg();
+        MultiStringArg ignore = new MultiStringArg();
+        FileArg prev = new FileArg("");
+        FileArg packfile = new FileArg("files");
+        FileArg jupfile = new FileArg("jupidator.xml");
         BoolArg nomd5 = new BoolArg();
         BoolArg nosha1 = new BoolArg();
         BoolArg nosha256 = new BoolArg();
@@ -139,28 +140,25 @@ public class Creator {
         if (squeeze.get()) {
             if (!freeArgs.isEmpty())
                 throw new JupidatorCreatorException("No free parameters are expected, " + freeArgs.size() + " found");
-            squeeze(new File(jupfile.get()), new File(packfile.get()), version.get());
+            squeeze(jupfile.get(), packfile.get(), version.get());
         } else {
             if (freeArgs.size() != 1)
                 throw new JupidatorCreatorException("Exactly one free parameter is required, " + freeArgs.size() + " found");
             File in = new File(freeArgs.get(0));
-            File out = output.get().isEmpty() ? null : new File(output.get());
 
             if (snap.get())
-                snapshot(in, out, arch.get(), ignore.get());
+                snapshot(in, output.get(), arch.get(), version.get(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), ignore.get());
             else if (parse.get())
-                parse(in, out, arch.get());
+                parse(in, output.get(), arch.get());
             else if (create.get())
-                create(new File(prev.get()), in, out, new File(packfile.get()), arch.get(), version.get(), new File(jupfile.get()), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
+                create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
         }
     }
 
-    private static void snapshot(File input, File output, String arch, List<String> ignore) {
+    private static void snapshot(File input, File output, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, List<String> ignore) {
         ParseFolder parse = parse(input, NOFILE, arch);
-        System.out.println(parse.toJSON().toString(WriterConfig.MINIMAL));
-//        if (!input.exists())
-//            throw new JupidatorCreatorException("Unable to locate path " + input.getAbsolutePath());
-//        System.out.println("Will produce a snapshot of " + input);;
+        Collection<Command> diffs = SnapshotCreator.create(parse, input, output, version, arch, nomd5, nosha1, nosha256, ignore);
+        XMLProducer.produce(jupfile, arch, version, diffs);
     }
 
     private static ParseFolder parse(File input, File output, String arch) {

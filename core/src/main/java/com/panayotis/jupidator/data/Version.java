@@ -21,7 +21,6 @@ package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.elements.ExecutionTime;
 import com.panayotis.jupidator.elements.JupidatorElement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +45,7 @@ public class Version implements Serializable {
     private UpdaterProperties appprop;
     private Arch arch = Arch.defaultArch();
     private boolean graphical_gui;
+    private boolean asSnapshot;
 
     public static Version loadVersion(String xmlurl, ApplicationInfo appinfo) throws UpdaterException {
         return loadVersion(xmlurl, appinfo, true);
@@ -118,6 +118,11 @@ public class Version implements Serializable {
         if (other == null)
             return;
 
+        if (other.asSnapshot) {
+            this.asSnapshot = true;
+            elements.clear();
+        }
+
         JupidatorElement fother, fthis, fnew;
         for (String tag : other.elements.keySet()) {
             fother = other.elements.get(tag);
@@ -148,21 +153,28 @@ public class Version implements Serializable {
         return graphical_gui;
     }
 
+    public void setAsSnapshot() {
+        this.asSnapshot = true;
+    }
+
     private void sort() {
         JupidatorElement element;
-        ExecutionTime time;
         LinkedHashMap<String, JupidatorElement> before = new LinkedHashMap<String, JupidatorElement>();
         LinkedHashMap<String, JupidatorElement> mid = new LinkedHashMap<String, JupidatorElement>();
         LinkedHashMap<String, JupidatorElement> after = new LinkedHashMap<String, JupidatorElement>();
         for (String key : elements.keySet()) {
             element = elements.get(key);
-            time = element.getExectime();
-            if (time.equals(ExecutionTime.BEFORE))
-                before.put(key, element);
-            else if (time.equals(ExecutionTime.AFTER))
-                after.put(key, element);
-            else
-                mid.put(key, element);
+            switch (element.getExectime()) {
+                case BEFORE:
+                    before.put(key, element);
+                    break;
+                case AFTER:
+                    after.put(key, element);
+                    break;
+                default:
+                    mid.put(key, element);
+                    break;
+            }
         }
         elements = new LinkedHashMap<String, JupidatorElement>();
         elements.putAll(before);

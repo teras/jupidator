@@ -54,36 +54,20 @@ public class TarBz2FolderCompression {
         }
     }
 
-    public static boolean compress(File input, File output) {
+    public static Exception compress(File input, File output) {
         if (!input.isDirectory())
             throw new JupidatorCreatorException("TarBz2 compression is selected for folders only");
-
-        BufferedOutputStream outb = null;
-        TarOutputStream out = null;
-        try {
+        try (BufferedOutputStream outb = new BufferedOutputStream(new FileOutputStream(output));
+                TarOutputStream out = new TarOutputStream(new CBZip2OutputStream(outb))) {
 //            outfile.write('B');
 //            outfile.write('Z');
-            outb = new BufferedOutputStream(new FileOutputStream(output));
             outb.write('B');
             outb.write('Z');
-            out = new TarOutputStream(new CBZip2OutputStream(outb));
             appendFile(input, out, "");
             out.close();
-            return true;
-        } catch (IOException ex) {
-            return false;
-        } finally {
-            if (out != null)
-                try {
-                    out.close();
-                } catch (IOException ex) {
-                }
-            else if (outb != null)
-                try {
-                    outb.close();
-                } catch (IOException ex) {
-                }
-
+            return null;
+        } catch (Exception ex) {
+            return ex;
         }
     }
 }
