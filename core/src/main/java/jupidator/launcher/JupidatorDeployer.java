@@ -3,7 +3,6 @@
  *
  * Created on September 29, 2008, 5:10 PM
  */
-
 package jupidator.launcher;
 
 import java.io.File;

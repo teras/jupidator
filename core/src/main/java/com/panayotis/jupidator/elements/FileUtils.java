@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jupidator.elements;
 
 import com.panayotis.jupidator.Updater;
@@ -231,7 +230,8 @@ public class FileUtils {
                 ZipFile zip = null;
                 try {
                     zip = new ZipFile(cp);
-                    if (zip.size() > 0) {       /* Make sure it is a zip file */
+                    if (zip.size() > 0) {
+                        /* Make sure it is a zip file */
                         paths.add(cp);
                         getClassPathFromManifest(zip, classpaths, new File(path).getParent());
                     }

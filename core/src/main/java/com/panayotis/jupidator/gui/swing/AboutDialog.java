@@ -18,7 +18,7 @@
  *
  */
 
-/*
+ /*
  * AboutDialog.java
  *
  * Created on Dec 13, 2008, 3:05:23 PM
