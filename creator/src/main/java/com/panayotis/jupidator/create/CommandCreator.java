@@ -78,12 +78,18 @@ public class CommandCreator {
         }
 
         FileCommand file = new FileCommand(ext, destprefix + path, item.name, outfile.length(), srcprefix + path);
-        if (!nomd5)
-            file.setMD5(Digester.getDigester("MD5").setHash(outfile).toString());
-        if (!nosha1)
-            file.setSHA1(Digester.getDigester("SHA1").setHash(outfile).toString());
-        if (!nosha256)
-            file.setSHA256(Digester.getDigester("SHA-256").setHash(outfile).toString());
+        if (!nomd5) {
+            file.setLocalMD5(Digester.getDigester("MD5").setHash(infile).toString());
+            file.setRemoteMD5(Digester.getDigester("MD5").setHash(outfile).toString());
+        }
+        if (!nosha1) {
+            file.setLocalSHA1(Digester.getDigester("SHA1").setHash(infile).toString());
+            file.setRemoteSHA1(Digester.getDigester("SHA1").setHash(outfile).toString());
+        }
+        if (!nosha256) {
+            file.setLocalSHA256(Digester.getDigester("SHA-256").setHash(infile).toString());
+            file.setRemoteSHA256(Digester.getDigester("SHA-256").setHash(outfile).toString());
+        }
         fileCommands.add(file);
     }
 }

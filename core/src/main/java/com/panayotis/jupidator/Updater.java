@@ -34,9 +34,8 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import jupidator.launcher.DeployerParameters;
-import jupidator.launcher.XElement;
-
 import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
@@ -207,17 +206,15 @@ public class Updater {
                     }
                 }
 
-                /* Construct launcher parameters */
-                ArrayList<XElement> elements = new ArrayList<XElement>();
-                for (String key : curVersion.keySet())
-                    elements.add(curVersion.get(key).getExecElement());
+                /* Construct deploy parameters */
+                DeployerParameters params = new DeployerParameters(curInfo.getApplicationHome());
+                /* Calculate exec elements */
+                params.setElements(curVersion.getExecElements());
 
                 /* relaunch should be performed with original arguments, not jupidator update */
-                ArrayList<String> relaunch = new ArrayList<String>();
+                List<String> relaunch = new ArrayList<String>();
                 relaunch.addAll(hostVersion.getArch().getRelaunchCommand(hostInfo));
 
-                DeployerParameters params = new DeployerParameters(curInfo.getApplicationHome());
-                params.setElements(elements);
                 if (!curInfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
                     params.addElement(AppVersion.construct(curVersion.getAppElements()).getXElement(curInfo.getApplicationHome()));
                 params.setHeadless(gui.isHeadless());

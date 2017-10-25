@@ -24,6 +24,7 @@ import com.panayotis.jupidator.digester.Digester;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import static com.panayotis.jupidator.elements.mirror.DigesterContext.*;
 
 /**
  *
@@ -38,7 +39,8 @@ public class MirroredFile {
     private static final String FILEEXT = "FILEEXT";
     private long size;
     private final HashMap<String, String> elements = new HashMap<String, String>();
-    private final ArrayList<Digester> digesters = new ArrayList<Digester>();
+    private final ArrayList<Digester> local_digesters = new ArrayList<Digester>();
+    private final ArrayList<Digester> remote_digesters = new ArrayList<Digester>();
 
     public MirroredFile(String path, String file, ApplicationInfo info) {
         path = path == null ? "" : info.applyVariables(path);
@@ -81,12 +83,19 @@ public class MirroredFile {
         return size;
     }
 
-    public void addDigester(Digester digester) {
+    public void addDigester(DigesterContext cxt, Digester digester) {
         if (digester != null)
-            digesters.add(digester);
+            switch (cxt) {
+                case LOCAL:
+                    local_digesters.add(digester);
+                    break;
+                case REMOTE:
+                    remote_digesters.add(digester);
+            }
     }
 
-    public Iterable<Digester> getDigesters() {
-        return digesters;
+    public Iterable<Digester> getDigesters(DigesterContext cxt) {
+        return cxt == LOCAL ? local_digesters : cxt == REMOTE ? remote_digesters : null;
     }
+
 }

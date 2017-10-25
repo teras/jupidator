@@ -26,11 +26,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import jupidator.launcher.XElement;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.xml.sax.SAXException;
 
@@ -236,5 +239,16 @@ public class Version implements Serializable {
         } catch (IOException ex) {
             throw new UpdaterException("Unable to load jupidator data from URL " + xmlurl);
         }
+    }
+
+    public List<XElement> getExecElements() {
+        List<XElement> xelements = new ArrayList<XElement>();
+        if (asSnapshot)
+            for (String key : keySet())
+                System.out.println(get(key));
+        else
+            for (String key : keySet())
+                xelements.add(get(key).getExecElement());
+        return xelements;
     }
 }

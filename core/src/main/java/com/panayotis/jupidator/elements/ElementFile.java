@@ -32,6 +32,7 @@ import com.panayotis.jupidator.elements.compression.TarBZCompression;
 import com.panayotis.jupidator.elements.compression.TarCompression;
 import com.panayotis.jupidator.elements.compression.TarGZCompression;
 import com.panayotis.jupidator.elements.compression.ZipCompression;
+import com.panayotis.jupidator.elements.mirror.DigesterContext;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.elements.mirror.MirroredFile;
 import com.panayotis.jupidator.elements.security.PermissionManager;
@@ -97,8 +98,8 @@ public class ElementFile extends JupidatorElement {
         return new File(getDestinationFile()).exists();
     }
 
-    public void addDigester(Digester digester) {
-        source_location.addDigester(digester);
+    public void addDigester(DigesterContext ctx, Digester digester) {
+        source_location.addDigester(ctx, digester);
     }
 
     @Override

@@ -67,7 +67,7 @@ public class MirrorList {
     }
 
     private boolean isProperlyDigested(MirroredFile file, File download_location) {
-        for (Digester d : file.getDigesters())
+        for (Digester d : file.getDigesters(DigesterContext.REMOTE))
             if (!d.checkFile(download_location))
                 return false;
         return true;

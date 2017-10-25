@@ -28,6 +28,7 @@ import com.panayotis.jupidator.elements.ElementFile;
 import com.panayotis.jupidator.elements.ElementKill;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.ElementWait;
+import com.panayotis.jupidator.elements.mirror.DigesterContext;
 import com.panayotis.jupidator.elements.mirror.Mirror;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -50,6 +51,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private String description;    // Description of current version, will be added only if at least one valid arch was found
     private ElementExec lastSeenExecElement = null;    // Use this trick to store arguments in an exec element, instead of launcher. If it is null, they are stored in the launcher.
     private ElementFile lastFileElement = null;   // Remember last Add element, to add digesters later on
+    private DigesterContext digester_ctx = null;   // Remember last Add element, to add digesters later on
 
     public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements();
@@ -131,27 +133,31 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             current_version.put(new ElementKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
-        } else if (qName.equals("md5")) {
-            if (lastFileElement == null)
+        } else if (qName.equals("remote"))
+            digester_ctx = DigesterContext.REMOTE;
+        else if (qName.equals("local"))
+            digester_ctx = DigesterContext.LOCAL;
+        else if (qName.equals("md5")) {
+            if (lastFileElement == null || digester_ctx == null)
                 return;
             Digester d = Digester.getDigester("MD5");
             d.setHash(attr.getValue("value"));
-            lastFileElement.addDigester(d);
+            lastFileElement.addDigester(digester_ctx, d);
         } else if (qName.equals("sha1")) {
-            if (lastFileElement == null)
+            if (lastFileElement == null || digester_ctx == null)
                 return;
             Digester d = Digester.getDigester("SHA1");
             d.setHash(attr.getValue("value"));
-            lastFileElement.addDigester(d);
+            lastFileElement.addDigester(digester_ctx, d);
         } else if (qName.equals("sha2")) {
-            if (lastFileElement == null)
+            if (lastFileElement == null || digester_ctx == null)
                 return;
             String type = attr.getValue("type");
             if (type == null)
                 type = "256";
             Digester d = Digester.getDigester("SHA-" + type);
             d.setHash(attr.getValue("value"));
-            lastFileElement.addDigester(d);
+            lastFileElement.addDigester(digester_ctx, d);
         } else if (qName.equals("destination")) {
             if (lastFileElement != null && full.getArch().isCompatibleWith(attr.getValue("arch")))
                 lastFileElement.setDestDir(appinfo, attr.getValue("dir"));
@@ -193,8 +199,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
             descbuffer = null;
         } else if (qName.equals("exec"))
             lastSeenExecElement = null;
-        else if (qName.equals("file"))
+        else if (qName.equals("file")) {
             lastFileElement = null;
+            digester_ctx = null;
+        } else if (qName.equals("remote") || qName.equals("local"))
+            digester_ctx = null;
     }
 
     @Override

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,9 +45,7 @@ public class DeployerParameters implements Serializable {
     }
 
     public void setElements(List<XElement> elements) {
-        if (elements == null)
-            elements = new ArrayList<XElement>();
-        this.elements = elements;
+        this.elements = elements == null ? Collections.EMPTY_LIST : elements;
     }
 
     public void addElement(XElement element) {
