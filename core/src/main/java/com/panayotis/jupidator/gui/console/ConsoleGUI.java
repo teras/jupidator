@@ -38,21 +38,22 @@ import static com.panayotis.jupidator.i18n.I18N._t;
  */
 public class ConsoleGUI implements JupidatorGUI {
 
-    private String info1, info2, loglist;
+    private String info1, info2, loglist, filelist;
     private Updater callback;
     private boolean is_loglist_enabled = true;
     private boolean can_not_ignore = false;
     private boolean should_show_jupidator_about = true;
+    private boolean can_show_filelist = true;
     private String appname;
-    private BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
     public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         appname = el.getAppName();
         info1 = _t("A new version of {0} is available!", appname);
         info2 = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
                 + (info.getVersion() == null ? "" : " - " + _t("you have {0}", info.getVersion())) + ".";
-        if (is_loglist_enabled)
-            loglist = TextCreator.getList(el.getLogList(), true);
+        loglist = TextCreator.getList(el.getLogList(), true);
+        filelist = TextCreator.getFileList(callback.getElements());
         this.callback = callback;
         can_not_ignore = info.isSelfUpdate();
     }
@@ -67,6 +68,10 @@ public class ConsoleGUI implements JupidatorGUI {
         if (is_loglist_enabled && getAnswer(_t("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
             System.out.println();
             System.out.println(loglist);
+        }
+        if (is_loglist_enabled && getAnswer(_t("Do you want to see the full file list? [Y/n] "), "n") != 'n') {
+            System.out.println();
+            System.out.println(filelist);
         }
         String question = _t("Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/r/i] ");
         String valid_ans = "sri";
@@ -133,6 +138,8 @@ public class ConsoleGUI implements JupidatorGUI {
             is_loglist_enabled = TextUtils.isTrue(value);
         else if (key.equals(ABOUT))
             should_show_jupidator_about = TextUtils.isTrue(value);
+        else if (key.endsWith(ACTIONLIST))
+            can_show_filelist = TextUtils.isTrue(value);
     }
 
     private char getAnswer(String message, String list) {

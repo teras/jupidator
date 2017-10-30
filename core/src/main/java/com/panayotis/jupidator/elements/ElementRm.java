@@ -41,7 +41,7 @@ public class ElementRm extends JupidatorElement {
 
     @Override
     public String toString() {
-        return "-" + getDestinationFile();
+        return "Remove " + super.toString();
     }
 
     /* Nothig to download */

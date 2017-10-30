@@ -51,6 +51,10 @@ class SwingDialog extends JDialog {
     Details ChangeLogP;
     BufferedImage icon;
     private boolean infoVisible = true;
+    private boolean filelistVisible = true;
+    private boolean now_show_versions = true;
+    String infotext;
+    String filetext;
 
     static {
         BufferedImage img = null;
@@ -68,6 +72,7 @@ class SwingDialog extends JDialog {
         super((Frame) null, false);
         initComponents();
         InfoPane = new JEditorPane();
+        InfoPane.setContentType("text/html");
         InfoPane.setEditable(false);
         ChangeLogP = new Details();
         ChangeLogP.setViewportView(InfoPane);
@@ -78,6 +83,20 @@ class SwingDialog extends JDialog {
 
     public void setInfoVisible(boolean infoVisible) {
         this.infoVisible = infoVisible;
+    }
+
+    public void setFileListVisible(boolean filelistVisible) {
+        this.filelistVisible = filelistVisible;
+    }
+
+    void showVersions(boolean showVersions_not_Files) {
+        if (!filelistVisible)
+            DetailsB.setVisible(false);
+        InfoPane.setText(showVersions_not_Files ? infotext : filetext);
+        DetailsB.setText(showVersions_not_Files ? _t("Show Actions") : _t("Show Versions"));
+        InfoPane.setCaretPosition(0);
+        RelNotesL.setText(showVersions_not_Files ? _t("Release Notes") : _t("Actions"));
+        now_show_versions = showVersions_not_Files;
     }
 
     /**
@@ -152,7 +171,6 @@ class SwingDialog extends JDialog {
         DetailedP.setLayout(new java.awt.BorderLayout());
 
         RelNotesL.setFont(RelNotesL.getFont().deriveFont(RelNotesL.getFont().getStyle() | java.awt.Font.BOLD));
-        RelNotesL.setText(_t("Release Notes"));
         RelNotesL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 4, 0));
         DetailedP.add(RelNotesL, java.awt.BorderLayout.NORTH);
 
@@ -277,8 +295,13 @@ private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 }//GEN-LAST:event_InfoBActionPerformed
 
 private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetailsBActionPerformed
-    DetailedP.setVisible(!DetailedP.isVisible());
-    InfoB.setVisible(infoVisible && DetailedP.isVisible());
+    if (!DetailedP.isVisible()) {
+        DetailedP.setVisible(true);
+        InfoB.setVisible(infoVisible && DetailedP.isVisible());
+        DetailsB.setText(_t("Show Actions"));
+        showVersions(true);
+    } else if (filelistVisible)
+        showVersions(!now_show_versions);
     pack();
 }//GEN-LAST:event_DetailsBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -51,8 +51,10 @@ public class MirrorList {
                     reason = "Wrong size, required " + file.getRemoteSize() + ", found " + download_location.length();
                 else if (file.shouldFetchFile(download_location))
                     reason = "Security match failed";
-                else
+                else {
+                    app.receiveMessage(_t("File {0} sucessfully downloaded", download_location.getAbsolutePath()));
                     return null;
+                }
             } catch (IOException ex) {
                 reason = ex.getMessage();
             }

@@ -105,6 +105,8 @@ public class MirroredFile {
     }
 
     private boolean digestersAgree(File file, Iterable<Digester> digesters) {
+        if (!file.exists())
+            return false;
         for (Digester d : digesters)
             if (!d.checkFile(file))
                 return false;

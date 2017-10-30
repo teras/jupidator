@@ -167,6 +167,10 @@ public class Updater {
             this.gui = gui;
     }
 
+    public Iterable<JupidatorElement> getElements() {
+        return curVersion.values2();
+    }
+
     public void actionDisplay() throws UpdaterException {
         if (!curVersion.isEmpty()) {
             PermissionManager.manager.estimatePrivileges(new File(curInfo.getApplicationHome() + File.separator + AppVersion.FILETAG));
@@ -180,7 +184,7 @@ public class Updater {
 
     public void actionCommit() {
         long size = 0;
-        for (JupidatorElement element : curVersion.values())
+        for (JupidatorElement element : getElements())
             if (element instanceof ElementSizable)
                 size += ((ElementSizable) element).getSize();
         watcher.setAllBytes(size);
@@ -188,7 +192,7 @@ public class Updater {
             @Override
             public void run() {
                 /* Fetch */
-                for (JupidatorElement element : curVersion.values()) {
+                for (JupidatorElement element : getElements()) {
                     String result = element.fetch(application, watcher);
                     if (result != null) {
                         watcher.stopWatcher();
@@ -200,7 +204,7 @@ public class Updater {
                 /* Prepare */
                 watcher.stopWatcher();
                 gui.setIndetermined();
-                for (JupidatorElement element : curVersion.values()) {
+                for (JupidatorElement element : getElements()) {
                     String result = element.prepare(application);
                     if (result != null) {
                         application.receiveMessage(result);
@@ -213,7 +217,7 @@ public class Updater {
                 DeployerParameters params = new DeployerParameters(curInfo.getApplicationHome());
                 /* Calculate exec elements */
                 List<XElement> elements = new ArrayList<XElement>();
-                for (JupidatorElement element : curVersion.values())
+                for (JupidatorElement element : getElements())
                     elements.add(element.getExecElement());
                 params.setElements(elements);
 
@@ -253,7 +257,7 @@ public class Updater {
             download.join();
         } catch (InterruptedException ex) {
         }
-        for (JupidatorElement element : curVersion.values())
+        for (JupidatorElement element : getElements())
             element.cancel(application);
         PermissionManager.manager.cleanUp();
     }

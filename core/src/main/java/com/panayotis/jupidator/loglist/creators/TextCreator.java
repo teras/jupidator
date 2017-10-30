@@ -23,6 +23,7 @@ import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
 import static com.panayotis.jupidator.data.TextUtils.NL;
+import com.panayotis.jupidator.elements.JupidatorElement;
 import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
@@ -44,5 +45,12 @@ public class TextCreator {
                 data.append(NL);
             }
         return data.toString();
+    }
+
+    public static String getFileList(Iterable<JupidatorElement> elements) {
+        StringBuilder out = new StringBuilder();
+        for (JupidatorElement e : elements)
+            out.append(e.toString()).append(NL);
+        return out.toString();
     }
 }

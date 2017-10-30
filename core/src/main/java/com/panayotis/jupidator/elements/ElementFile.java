@@ -106,10 +106,16 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
 
     @Override
     public String toString() {
-        return "+" + source_location.toString() + ">" + getDestinationFile();
+        return "Install " + getDestinationFile();
     }
 
     public String fetch(UpdatedApplication application, BufferListener watcher) {
+        if (!source_location.shouldFetchFile(download_location)) {
+            application.receiveMessage(_t("File {0} already downloaded", download_location.getAbsolutePath()));
+            watcher.addBytes(source_location.getRemoteSize());
+            return null;
+        }
+
         if (compression instanceof InvalidCompression)
             return _t("Invalid compression type: {0}", compression.getFilenameExtension());
 
@@ -127,15 +133,15 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
             return _t("Could not remove old temporary file {0}", uncompress_location.getPath());
 
         /* Download file */
-        String error = mirrors.downloadFile(source_location, download_location, watcher, application);
-        if (error != null)
-            return error;
-        /* Successfully downloaded file */
-        application.receiveMessage(_t("File {0} sucessfully downloaded", getFileName()));
-        return null;
+        return mirrors.downloadFile(source_location, download_location, watcher, application);
     }
 
     public String prepare(UpdatedApplication application) {
+        if (!shouldUpdateFile()) {
+            application.receiveMessage(_t("File {0} already exists", download_location.getAbsolutePath()));
+            return null;
+        }
+
         String status = compression.decompress(download_location, uncompress_location);
         if (status == null) {
             if (!compression.getFilenameExtension().equals(""))
@@ -148,12 +154,16 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
     }
 
     public void cancel(UpdatedApplication application) {
-        String res = FileUtils.rmTree(download_location);
-        if (res != null)
-            application.receiveMessage(res);
-        res = FileUtils.rmTree(uncompress_location);
-        if (res != null)
-            application.receiveMessage(res);
+        if (source_location.shouldFetchFile(download_location)) {
+            String res = FileUtils.rmTree(download_location);
+            if (res != null)
+                application.receiveMessage(res);
+        }
+        if (shouldUpdateFile()) {
+            String res = FileUtils.rmTree(uncompress_location);
+            if (res != null)
+                application.receiveMessage(res);
+        }
     }
 
     @Override
@@ -166,7 +176,7 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
 
     public boolean shouldUpdateFile() {
         File currentFile = new File(getDestinationFile());
-        return currentFile.isFile() || currentFile.length() != getLocalSize()
+        return !currentFile.isFile() || currentFile.length() != getLocalSize()
                 ? true
                 : source_location.shouldUpdateFile(currentFile);
     }

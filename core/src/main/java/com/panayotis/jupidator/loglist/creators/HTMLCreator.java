@@ -19,6 +19,7 @@
  */
 package com.panayotis.jupidator.loglist.creators;
 
+import com.panayotis.jupidator.elements.JupidatorElement;
 import com.panayotis.jupidator.loglist.LogItem;
 import com.panayotis.jupidator.loglist.LogList;
 
@@ -32,6 +33,33 @@ public class HTMLCreator {
 
     public static String getList(LogList list, boolean onlyActive) {
         StringBuilder data = new StringBuilder();
+        addHeader(data);
+        if (!list.getApplicationInfo().equals("")) {
+            data.append("    <p class=\"jupreleaseinfo\">");
+            data.append(list.getApplicationInfo());
+            data.append("</p>\n");
+        }
+        for (LogItem item : list)
+            if (!onlyActive || item.isActive) {
+                data.append("    <div class=\"jupentry\">\n");
+                data.append("      <p class=\"jupversion\">").append(_t("Version")).append(": ").append(item.version).append("</p>\n");
+                data.append("      <p class=\"jupinfo\">").append(item.info).append("</p>\n");
+                data.append("    </div>\n");
+            }
+        addFooter(data);
+        return data.toString();
+    }
+
+    public static String getFileList(Iterable<JupidatorElement> elements) {
+        StringBuilder data = new StringBuilder();
+        addHeader(data);
+        for (JupidatorElement element : elements)
+            data.append("    <div class=\"jupentry\">").append(element.toString().replaceAll("\\s", "&nbsp;")).append("</div>\n");
+        addFooter(data);
+        return data.toString();
+    }
+
+    private static void addHeader(StringBuilder data) {
         data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
         data.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n");
         data.append("  <head>\n");
@@ -43,22 +71,9 @@ public class HTMLCreator {
         data.append("    </style>\n");
         data.append("  </head>\n");
         data.append("  <body>\n");
+    }
 
-        if (!list.getApplicationInfo().equals("")) {
-            data.append("    <p class=\"jupreleaseinfo\">");
-            data.append(list.getApplicationInfo());
-            data.append("</p>\n");
-        }
-
-        for (LogItem item : list)
-            if (!onlyActive || item.isActive) {
-                data.append("    <div class=\"jupentry\">\n");
-                data.append("      <p class=\"jupversion\">").append(_t("Version")).append(": ").append(item.version).append("</p>\n");
-                data.append("      <p class=\"jupinfo\">").append(item.info).append("</p>\n");
-                data.append("    </div>\n");
-            }
-
+    private static void addFooter(StringBuilder data) {
         data.append("  </body>\n</html>\n");
-        return data.toString();
     }
 }

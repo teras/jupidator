@@ -70,4 +70,9 @@ public class ElementWait extends JupidatorElement {
         return "WAIT" + cidx;
     }
 
+    @Override
+    public String toString() {
+        return "Wait " + msecs + "msec";
+    }
+
 }

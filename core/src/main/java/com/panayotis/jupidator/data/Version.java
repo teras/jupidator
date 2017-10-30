@@ -96,19 +96,6 @@ public class Version implements Serializable {
             this.arch = arch;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append("[Version").append('\n');
-        for (String tag : elements.keySet()) {
-            b.append("  ");
-            b.append(elements.get(tag).toString());
-            b.append('\n');
-        }
-        b.append("]");
-        return b.toString();
-    }
-
     public UpdaterAppElements getAppElements() {
         return appel;
     }
@@ -208,7 +195,7 @@ public class Version implements Serializable {
                 put(new ElementRm(new File(toRemove), appel));
     }
 
-    public Iterable<JupidatorElement> values() {
+    public Iterable<JupidatorElement> values2() {
         return elements.values();
     }
 

@@ -44,9 +44,10 @@ public class SwingGUI implements JupidatorGUI {
 
     private SwingDialog gui;
     private Updater callback;
-    private String newver, versinfo, title, infopane;
+    private String newver, versinfo, title;
     private BufferedImage icon;
-    private boolean skipvisible, prevvisible, detailedvisible = false, infovisible = true, systemlook = true;
+    private boolean skipvisible, prevvisible, detailedvisible = false, infovisible = true, systemlook = true, can_show_filelist = true;
+    private String infotext, filetext;
 
     public boolean isHeadless() {
         return false;
@@ -58,7 +59,8 @@ public class SwingGUI implements JupidatorGUI {
         versinfo = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
                 + (info.getVersion() == null ? "" : " - " + _t("you have {0}", info.getVersion())) + ".";
         title = _t("New version of {0} found!", el.getAppName());
-        infopane = HTMLCreator.getList(el.getLogList(), true);
+        infotext = HTMLCreator.getList(el.getLogList(), true);
+        filetext = HTMLCreator.getFileList(callback.getElements());
         try {
             String iconpath = el.getIconpath();
             if (iconpath != null && (!iconpath.equals("")))
@@ -77,6 +79,8 @@ public class SwingGUI implements JupidatorGUI {
             systemlook = TextUtils.isTrue(value);
         else if (key.equals(LOGLIST))
             detailedvisible = TextUtils.isTrue(value);
+        else if (key.endsWith(ACTIONLIST))
+            can_show_filelist = TextUtils.isTrue(value);
     }
 
     public void startDialog() {
@@ -89,16 +93,17 @@ public class SwingGUI implements JupidatorGUI {
         } catch (Exception ex) {
         }
         gui = new SwingDialog();
+        gui.infotext = infotext;
+        gui.filetext = filetext;
         gui.callback = callback;
         gui.NewVerL.setText(newver);
         gui.VersInfoL.setText(versinfo);
         gui.setTitle(title);
-        gui.InfoPane.setContentType("text/html");
-        gui.InfoPane.setText(infopane);
         gui.icon = icon;
         gui.SkipB.setVisible(skipvisible);
         gui.PrevL.setVisible(prevvisible);
         gui.setInfoVisible(infovisible);
+        gui.setFileListVisible(can_show_filelist);
         gui.DetailedP.setVisible(detailedvisible);
         gui.pack();
         gui.setLocationRelativeTo(null);

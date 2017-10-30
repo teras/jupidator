@@ -132,4 +132,10 @@ public abstract class JupidatorElement implements Serializable {
      * package com.panayotis.jupidator.launcher
      */
     public abstract XElement getExecElement();
+
+    @Override
+    public String toString() {
+        return getDestinationFile();
+    }
+
 }
