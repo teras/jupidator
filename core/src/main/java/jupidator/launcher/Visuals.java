@@ -187,7 +187,6 @@ public class Visuals extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jupidator/launcher/error.png"))); // NOI18N
         jLabel1.setText("Errors while updating");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 16, 8, 16));
         getContentPane().add(jLabel1, java.awt.BorderLayout.NORTH);
