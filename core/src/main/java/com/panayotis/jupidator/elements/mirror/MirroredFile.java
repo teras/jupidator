@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import static com.panayotis.jupidator.elements.mirror.DigesterContext.*;
+import java.io.File;
 
 /**
  *
@@ -37,12 +38,12 @@ public class MirroredFile {
     private static final String FILECOMPR = "FILECOMPR";
     private static final String FILEBASE = "FILEBASE";
     private static final String FILEEXT = "FILEEXT";
-    private long size;
+    private final long remotesize;
     private final HashMap<String, String> elements = new HashMap<String, String>();
     private final ArrayList<Digester> local_digesters = new ArrayList<Digester>();
     private final ArrayList<Digester> remote_digesters = new ArrayList<Digester>();
 
-    public MirroredFile(String path, String file, ApplicationInfo info) {
+    public MirroredFile(String path, String file, long remotesize, ApplicationInfo info) {
         path = path == null ? "" : info.applyVariables(path);
         file = file == null ? "" : info.applyVariables(file);
 
@@ -56,6 +57,7 @@ public class MirroredFile {
             elements.put(FILEBASE, file.substring(0, point));
             elements.put(FILEEXT, file.substring(point));
         }
+        this.remotesize = remotesize;
     }
 
     public void setExtension(String ext) {
@@ -75,14 +77,6 @@ public class MirroredFile {
         return elements.get(FILENAME);
     }
 
-    public void setSize(long size) {
-        this.size = size;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
     public void addDigester(DigesterContext cxt, Digester digester) {
         if (digester != null)
             switch (cxt) {
@@ -94,8 +88,26 @@ public class MirroredFile {
             }
     }
 
+    public long getRemoteSize() {
+        return remotesize;
+    }
+
     public Iterable<Digester> getDigesters(DigesterContext cxt) {
         return cxt == LOCAL ? local_digesters : cxt == REMOTE ? remote_digesters : null;
     }
 
+    public boolean shouldUpdateFile(File local_file) {
+        return !digestersAgree(local_file, local_digesters);
+    }
+
+    public boolean shouldFetchFile(File downloaded_file) {
+        return !digestersAgree(downloaded_file, remote_digesters);
+    }
+
+    private boolean digestersAgree(File file, Iterable<Digester> digesters) {
+        for (Digester d : digesters)
+            if (!d.checkFile(file))
+                return false;
+        return true;
+    }
 }

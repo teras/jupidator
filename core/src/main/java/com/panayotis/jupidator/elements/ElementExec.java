@@ -31,7 +31,7 @@ import jupidator.launcher.XElement;
  */
 public class ElementExec extends ElementNative {
 
-    private ArrayList<String> arguments;
+    private final ArrayList<String> arguments;
 
     public ElementExec(String command, String input, String exectime, UpdaterAppElements elements, ApplicationInfo info) {
         super(command, String.valueOf(Math.random()), input, // Random hash for this exec

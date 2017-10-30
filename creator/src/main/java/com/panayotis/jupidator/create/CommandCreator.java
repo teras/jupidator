@@ -77,7 +77,7 @@ public class CommandCreator {
                 throw new JupidatorCreatorException("Unable to create output file " + outfile.getAbsolutePath(), ex);
         }
 
-        FileCommand file = new FileCommand(ext, destprefix + path, item.name, outfile.length(), srcprefix + path);
+        FileCommand file = new FileCommand(ext, destprefix + path, item.name, infile.length(), outfile.length(), srcprefix + path);
         if (!nomd5) {
             file.setLocalMD5(Digester.getDigester("MD5").setHash(infile).toString());
             file.setRemoteMD5(Digester.getDigester("MD5").setHash(outfile).toString());

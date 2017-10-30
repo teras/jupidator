@@ -27,15 +27,16 @@ import jupidator.launcher.XERm;
 import jupidator.launcher.XElement;
 
 import static com.panayotis.jupidator.i18n.I18N._t;
+import java.io.File;
 
-/**
- *
- * @author teras
- */
 public class ElementRm extends JupidatorElement {
 
     public ElementRm(String file, UpdaterAppElements elements, ApplicationInfo info) {
         super(file, elements, info, ExecutionTime.MID);
+    }
+
+    public ElementRm(File localFile, UpdaterAppElements elements) {
+        super(localFile.getName(), 0, ExecutionTime.MID, localFile.getParentFile().getAbsolutePath(), elements);
     }
 
     @Override

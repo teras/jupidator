@@ -24,7 +24,9 @@ import com.eclipsesource.json.JsonObject;
 import com.panayotis.arjs.StringArg;
 import com.panayotis.arjs.Args;
 import com.panayotis.arjs.BoolArg;
+import com.panayotis.arjs.DecimalArg;
 import com.panayotis.arjs.FileArg;
+import com.panayotis.arjs.IntegralArg;
 import com.panayotis.arjs.MultiStringArg;
 import com.panayotis.jupidator.create.DiffCreator;
 import com.panayotis.jupidator.create.XMLProducer;
@@ -56,6 +58,7 @@ public class Creator {
         BoolArg squeeze = new BoolArg();
         StringArg arch = new StringArg(System.getProperty("os.arch"));
         StringArg version = new StringArg("1.0-SNAPSHOT");
+        DecimalArg release = new DecimalArg(0);
         FileArg output = new FileArg();
         MultiStringArg ignore = new MultiStringArg();
         FileArg prev = new FileArg("");
@@ -76,6 +79,7 @@ public class Creator {
                 .def("-p", prev)
                 .def("-f", packfile)
                 .def("-v", version)
+                .def("-r", release)
                 .def("-j", jupfile)
                 .def("-i", ignore)
                 .def("--no-md5", nomd5)
@@ -89,6 +93,7 @@ public class Creator {
                 .alias("-p", "--prev")
                 .alias("-f", "--files")
                 .alias("-v", "--version")
+                .alias("-r", "--release")
                 .alias("-j", "--jupfile")
                 .alias("-i", "--ignore")
                 .dep("-p", "create")
@@ -105,13 +110,13 @@ public class Creator {
                 .req("snap", "parse", "create", "squeeze")
                 .req("-p")
                 .uniq("snap", "parse", "create", "squeeze")
-                .usage("jupidator_creator", "snap", "-v", "-j", "-o", "-a", "-i", "INSTALL_DIR")
+                .usage("jupidator_creator", "snap", "-v", "-r", "-j", "-o", "-a", "-i", "INSTALL_DIR")
                 .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
-                .usage("jupidator_creator", "create", "-p", "-j", "-f", "-o", "-a", "INSTALL_DIR")
+                .usage("jupidator_creator", "create", "-p", "-v", "-r", "-j", "-f", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "squeeze", "-j", "-v", "-f")
-                .group("Create a snapshot of current installation", "snap", "-i")
+                .group("Create a snapshot of current installation", "snap", "-i", "-v", "-r")
                 .group("Parse existing installation", "parse")
-                .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "--no-md5", "--no-sha1", "--no-sha256")
+                .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "-r", "--no-md5", "--no-sha1", "--no-sha256")
                 .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
                 .info("snap", "parse INSTALL_DIR and create a snapshot of the provided directory INSTALL_DIR, to use as a 'snapshot update' with jupidator.")
                 .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
@@ -122,6 +127,7 @@ public class Creator {
                 .info("-f", "where the compressed package files will be stored; defaults to \"files\".")
                 .info("--skip-files", "skip creation of files, if specific files already exist.")
                 .info("-v", "the version of the produced application. Will be used to organize downloaded files.")
+                .info("-r", "the release number of the produced application. Will be used to organize downloaded files.")
                 .info("-j", "use this jupidator update file to append the update information. Defaults to jupidator.xml.")
                 .info("--no-md5", "disable the usade of md5 hashing algorithm.")
                 .info("--no-sha1", "disable the usade of sha1 hashing algorithm.")
@@ -147,18 +153,18 @@ public class Creator {
             File in = new File(freeArgs.get(0));
 
             if (snap.get())
-                snapshot(in, output.get(), arch.get(), version.get(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), ignore.get());
+                snapshot(in, output.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), ignore.get());
             else if (parse.get())
                 parse(in, output.get(), arch.get());
             else if (create.get())
-                create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
+                create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
         }
     }
 
-    private static void snapshot(File input, File output, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, List<String> ignore) {
+    private static void snapshot(File input, File output, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, List<String> ignore) {
         ParseFolder parse = parse(input, NOFILE, arch);
         Collection<Command> diffs = SnapshotCreator.create(parse, input, output, version, arch, nomd5, nosha1, nosha256, ignore);
-        XMLProducer.produce(jupfile, arch, version, diffs);
+        XMLProducer.produce(jupfile, arch, version, release, diffs, true);
     }
 
     private static ParseFolder parse(File input, File output, String arch) {
@@ -186,7 +192,7 @@ public class Creator {
         return result;
     }
 
-    private static void create(File previous, File input, File output, File packages, String arch, String version, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+    private static void create(File previous, File input, File output, File packages, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         ParseFolder older;
         try {
             JsonObject obj = Json.parse(new String(Files.readAllBytes(previous.toPath()), "UTF-8")).asObject();
@@ -199,7 +205,7 @@ public class Creator {
         }
         ParseFolder current = parse(input, output == null ? NOFILE : output, arch);
         Collection<Command> diffs = DiffCreator.create(older, current, input, packages, version, arch, nomd5, nosha1, nosha256, skipfiles);
-        XMLProducer.produce(jupfile, arch, version, diffs);
+        XMLProducer.produce(jupfile, arch, version, release, diffs, false);
     }
 
     private static void squeeze(File jupidator, File files, String version) {

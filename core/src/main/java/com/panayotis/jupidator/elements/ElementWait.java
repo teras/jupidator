@@ -33,11 +33,15 @@ import jupidator.launcher.XElement;
  */
 public class ElementWait extends JupidatorElement {
 
+    private static int COUNTER = 0;
+
     private final int msecs;
+    private final int cidx;
 
     public ElementWait(String msecs, String exectime, UpdaterAppElements elements, ApplicationInfo appinfo) {
         super(String.valueOf(Math.random()), elements, appinfo, ExecutionTime.parse(exectime, ExecutionTime.BEFORE));
         this.msecs = TextUtils.getInt(msecs, 1000);
+        cidx = ++COUNTER;
     }
 
     @Override
@@ -60,4 +64,10 @@ public class ElementWait extends JupidatorElement {
     public XElement getExecElement() {
         return new XEWait(msecs);
     }
+
+    @Override
+    public String getHash() {
+        return "WAIT" + cidx;
+    }
+
 }

@@ -21,29 +21,28 @@ package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
+import com.panayotis.jupidator.elements.ElementFile;
+import com.panayotis.jupidator.elements.ElementRm;
+import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.JupidatorElement;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import jupidator.launcher.XElement;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author teras
- */
 public class Version implements Serializable {
 
-    private LinkedHashMap<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
+    private Map<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
     private Arch arch = Arch.defaultArch();
@@ -74,6 +73,7 @@ public class Version implements Serializable {
             Version v = handler.getVersion();
             v.appel = handler.getAppElements();
             v.appprop = prop;
+            v.update(appinfo.getApplicationHome());
             v.sort();
             return v;
         } catch (SAXException ex) {
@@ -185,16 +185,31 @@ public class Version implements Serializable {
         elements.putAll(after);
     }
 
-    public int size() {
-        return elements.size();
+    private void update(String appHome) {
+        Collection<String> currentFiles = asSnapshot ? FileUtils.collectFilenames(appHome) : null;
+        Iterator<Map.Entry<String, JupidatorElement>> it = elements.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, JupidatorElement> next = it.next();
+            if (currentFiles != null)
+                currentFiles.remove(next.getValue().getDestinationFile());
+            if (next.getValue() instanceof ElementFile) {
+                if (!((ElementFile) next.getValue()).shouldUpdateFile())
+                    it.remove();
+                else // From now on it should be updated
+                if (currentFiles != null)
+                    for (String sup : ((ElementFile) next.getValue()).supportFiles())
+                        currentFiles.remove(sup);
+            } else if (next.getValue() instanceof ElementRm)
+                if (!new File(next.getValue().getDestinationFile()).exists())
+                    it.remove();
+        }
+        if (currentFiles != null)
+            for (String toRemove : currentFiles)
+                put(new ElementRm(new File(toRemove), appel));
     }
 
-    public Set<String> keySet() {
-        return elements.keySet();
-    }
-
-    public JupidatorElement get(String key) {
-        return elements.get(key);
+    public Iterable<JupidatorElement> values() {
+        return elements.values();
     }
 
     public void put(JupidatorElement element) {
@@ -241,14 +256,4 @@ public class Version implements Serializable {
         }
     }
 
-    public List<XElement> getExecElements() {
-        List<XElement> xelements = new ArrayList<XElement>();
-        if (asSnapshot)
-            for (String key : keySet())
-                System.out.println(get(key));
-        else
-            for (String key : keySet())
-                xelements.add(get(key).getExecElement());
-        return xelements;
-    }
 }

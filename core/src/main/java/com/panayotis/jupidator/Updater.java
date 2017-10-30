@@ -22,7 +22,9 @@ package com.panayotis.jupidator;
 import com.panayotis.jupidator.data.SimpleApplication;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.Version;
+import com.panayotis.jupidator.elements.ElementSizable;
 import com.panayotis.jupidator.elements.FileUtils;
+import com.panayotis.jupidator.elements.JupidatorElement;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jupidator.launcher.DeployerParameters;
 import static com.panayotis.jupidator.i18n.I18N._t;
+import jupidator.launcher.XElement;
 
 /**
  *
@@ -178,15 +181,16 @@ public class Updater {
 
     public void actionCommit() {
         long size = 0;
-        for (String key : curVersion.keySet())
-            size += curVersion.get(key).getSize();
+        for (JupidatorElement element : curVersion.values())
+            if (element instanceof ElementSizable)
+                size += ((ElementSizable) element).getSize();
         watcher.setAllBytes(size);
         download = new Thread() {
             @Override
             public void run() {
                 /* Fetch */
-                for (String key : curVersion.keySet()) {
-                    String result = curVersion.get(key).fetch(application, watcher);
+                for (JupidatorElement element : curVersion.values()) {
+                    String result = element.fetch(application, watcher);
                     if (result != null) {
                         watcher.stopWatcher();
                         application.receiveMessage(result);
@@ -197,8 +201,8 @@ public class Updater {
                 /* Prepare */
                 watcher.stopWatcher();
                 gui.setIndetermined();
-                for (String key : curVersion.keySet()) {
-                    String result = curVersion.get(key).prepare(application);
+                for (JupidatorElement element : curVersion.values()) {
+                    String result = element.prepare(application);
                     if (result != null) {
                         application.receiveMessage(result);
                         gui.errorOnCommit(result);
@@ -209,7 +213,10 @@ public class Updater {
                 /* Construct deploy parameters */
                 DeployerParameters params = new DeployerParameters(curInfo.getApplicationHome());
                 /* Calculate exec elements */
-                params.setElements(curVersion.getExecElements());
+                List<XElement> elements = new ArrayList<XElement>();
+                for (JupidatorElement element : curVersion.values())
+                    elements.add(element.getExecElement());
+                params.setElements(elements);
 
                 /* relaunch should be performed with original arguments, not jupidator update */
                 List<String> relaunch = new ArrayList<String>();
@@ -247,8 +254,8 @@ public class Updater {
             download.join();
         } catch (InterruptedException ex) {
         }
-        for (String key : curVersion.keySet())
-            curVersion.get(key).cancel(application);
+        for (JupidatorElement element : curVersion.values())
+            element.cancel(application);
         PermissionManager.manager.cleanUp();
     }
 

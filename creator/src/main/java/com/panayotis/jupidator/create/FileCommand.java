@@ -20,7 +20,8 @@ public class FileCommand implements Command {
     private final String compress;
     private final String destdir;
     private final String name;
-    private final long size;
+    private final long local_size;
+    private final long remote_size;
     private String sourcedir;
     private String local_md5;
     private String local_sha1;
@@ -30,7 +31,9 @@ public class FileCommand implements Command {
     private String remote_sha256;
 
     public FileCommand(XMLWalker w) {
-        this(w.attribute("compress"), w.attribute("destdir"), w.attribute("name"), Long.parseLong(w.attribute("size")), w.attribute("sourcedir"));
+        this(w.attribute("compress"), w.attribute("destdir"), w.attribute("name"),
+                Long.parseLong(w.attribute("localsize")), Long.parseLong(w.attribute("remotesize")),
+                w.attribute("sourcedir"));
         w.tag();
         if (w.nodeExists("local")) {
             w.toTag();
@@ -49,11 +52,12 @@ public class FileCommand implements Command {
         }
     }
 
-    public FileCommand(String compress, String destdir, String name, long size, String sourcedir) {
+    public FileCommand(String compress, String destdir, String name, long localsize, long remotesize, String sourcedir) {
         this.compress = compress;
         this.destdir = destdir;
         this.name = name;
-        this.size = size;
+        this.local_size = localsize;
+        this.remote_size = remotesize;
         this.sourcedir = sourcedir;
     }
 
@@ -87,7 +91,8 @@ public class FileCommand implements Command {
                 setAttribute("name", name).
                 setAttribute("destdir", destdir).
                 setAttribute("sourcedir", sourcedir).
-                setAttribute("size", Long.toString(size));
+                setAttribute("localsize", Long.toString(local_size)).
+                setAttribute("remotesize", Long.toString(remote_size));
         if (compress != null && !compress.isEmpty())
             w.setAttribute("compress", compress);
         if (local_md5 != null || local_sha1 != null || local_sha256 != null) {
@@ -134,7 +139,9 @@ public class FileCommand implements Command {
             return false;
         if (!Objects.equals(this.destdir, other.destdir))
             return false;
-        if (this.size != other.size)
+        if (this.local_size != other.local_size)
+            return false;
+        if (this.remote_size != other.remote_size)
             return false;
         if (!Objects.equals(this.compress, other.compress))
             return false;

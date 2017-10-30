@@ -42,6 +42,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static com.panayotis.jupidator.i18n.I18N._t;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  *
@@ -316,5 +318,30 @@ public class FileUtils {
         } catch (IOException ex) {
         }
         return false;
+    }
+
+    public static File getAbsolute(String pathName) {
+        File path = new File(pathName).getAbsoluteFile();
+        try {
+            return path.getCanonicalFile();
+        } catch (IOException ex) {
+            return path;
+        }
+    }
+
+    public static Collection<String> collectFilenames(String basePath) {
+        return collectFilenames(getAbsolute(basePath), new HashSet<String>());
+    }
+
+    private static Collection<String> collectFilenames(File base, Collection<String> files) {
+        if (base.isFile())
+            files.add(base.getAbsolutePath());
+        else if (base.isDirectory()) {
+            File[] children = base.listFiles();
+            if (children != null && children.length > 0)
+                for (File child : children)
+                    collectFilenames(child, files);
+        }
+        return files;
     }
 }

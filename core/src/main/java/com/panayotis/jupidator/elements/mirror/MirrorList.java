@@ -20,7 +20,6 @@
 package com.panayotis.jupidator.elements.mirror;
 
 import com.panayotis.jupidator.UpdatedApplication;
-import com.panayotis.jupidator.digester.Digester;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.BufferListener;
 import java.io.File;
@@ -31,13 +30,9 @@ import java.util.ArrayList;
 
 import static com.panayotis.jupidator.i18n.I18N._t;
 
-/**
- *
- * @author teras
- */
 public class MirrorList {
 
-    private ArrayList<Mirror> mirrors = new ArrayList<Mirror>();
+    private final ArrayList<Mirror> mirrors = new ArrayList<Mirror>();
 
     public String downloadFile(MirroredFile file, File download_location, BufferListener watcher, UpdatedApplication app) {
         String reason = "";
@@ -52,9 +47,9 @@ public class MirrorList {
                 /* Check download status */
                 if (status != null)
                     reason = status;
-                else if (download_location.length() != file.getSize())
-                    reason = "Wrong size, required " + file.getSize() + ", found " + download_location.length();
-                else if (!isProperlyDigested(file, download_location))
+                else if (download_location.length() != file.getRemoteSize())
+                    reason = "Wrong size, required " + file.getRemoteSize() + ", found " + download_location.length();
+                else if (file.shouldFetchFile(download_location))
                     reason = "Security match failed";
                 else
                     return null;
@@ -64,13 +59,6 @@ public class MirrorList {
             watcher.rollbackSize();
         }
         return _t("Unable to download file " + file.getFile() + " : " + reason);
-    }
-
-    private boolean isProperlyDigested(MirroredFile file, File download_location) {
-        for (Digester d : file.getDigesters(DigesterContext.REMOTE))
-            if (!d.checkFile(download_location))
-                return false;
-        return true;
     }
 
     public void addMirror(Mirror mirror) {

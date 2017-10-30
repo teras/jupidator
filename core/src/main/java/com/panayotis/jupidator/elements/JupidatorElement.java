@@ -35,41 +35,30 @@ import jupidator.launcher.XElement;
 public abstract class JupidatorElement implements Serializable {
 
     private final String filename;
-    private String destdir;
-    private final long size;
     private final long release;
     private final ExecutionTime exectime;
     private final boolean requiresPrivileges;
+    private String destdir;
 
     public JupidatorElement(String file, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
         this((file == null) ? null : new File(file).getName(), (file == null) ? null : new File(file).getParent(), elements, appinfo, exectime);
     }
 
     public JupidatorElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
-        this(name, dest, "0", elements, appinfo, exectime);
+        this(appinfo.applyVariables(name),
+                elements.getLastRelease(),
+                exectime == null ? ExecutionTime.MID : exectime,
+                appinfo.applyVariables(dest),
+                elements
+        );
     }
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public JupidatorElement(String name, String dest, String size, UpdaterAppElements elements, ApplicationInfo appinfo, ExecutionTime exectime) {
-        if (appinfo == null)
-            throw new NullPointerException("Application info not provided.");
-        if (elements == null)
-            throw new NullPointerException("UpdaterAppElements not provided.");
-
-        this.filename = appinfo.applyVariables(name);
-        this.release = elements.getLastRelease();
-        setDestDir(appinfo, dest);
-
-        long nsize = 0;
-        try {
-            nsize = Math.max(0, Long.parseLong(size));
-        } catch (NumberFormatException ex) {
-        }
-        this.size = nsize;
-
-        if (exectime == null)
-            exectime = ExecutionTime.MID;
+    public JupidatorElement(String filename, long release, ExecutionTime exectime, String destdir, UpdaterAppElements elements) {
+        this.filename = filename;
+        this.release = release;
         this.exectime = exectime;
+        this.destdir = destdir;
         requiresPrivileges = estimatePrivileges(elements);
     }
 
@@ -86,7 +75,7 @@ public abstract class JupidatorElement implements Serializable {
     }
 
     public String getHash() {
-        return getDestinationFile();
+        return FileUtils.getAbsolute(getDestinationFile()).getAbsolutePath();
     }
 
     public final String getDestinationFile() {
@@ -104,10 +93,6 @@ public abstract class JupidatorElement implements Serializable {
             return this;
         else
             return fother;
-    }
-
-    public long getSize() {
-        return size;
     }
 
     public boolean requiresPrivileges() {

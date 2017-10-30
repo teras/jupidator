@@ -42,12 +42,13 @@ import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
 
 import static com.panayotis.jupidator.i18n.I18N._t;
+import java.util.Arrays;
 
 /**
  *
  * @author teras
  */
-public class ElementFile extends JupidatorElement {
+public class ElementFile extends JupidatorElement implements ElementSizable {
 
     private static final String EXTENSION = ".jupidator";
     private final CompressionMethod compression;
@@ -55,10 +56,11 @@ public class ElementFile extends JupidatorElement {
     private final File download_location;
     private final File uncompress_location;
     private final MirrorList mirrors;
+    private final long localSize;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public ElementFile(String name, String source, String dest, String size, String compress, UpdaterAppElements elements, ApplicationInfo info) {
-        super(name, dest, size, elements, info, ExecutionTime.MID);
+    public ElementFile(String name, String source, String dest, String remotesize, String localsize, String compress, UpdaterAppElements elements, ApplicationInfo info) {
+        super(name, dest, elements, info, ExecutionTime.MID);
 
         if (compress == null || compress.equals(""))
             compress = "none";
@@ -81,17 +83,17 @@ public class ElementFile extends JupidatorElement {
             compression = new InvalidCompression(compress);
 
         // Calculate source location
-        source_location = new MirroredFile(source, getFileName(), info);
+        source_location = new MirroredFile(source, getFileName(), findSize(remotesize), info);
         source_location.setExtension(compression.getFilenameExtension());
-        source_location.setSize(getSize());
         mirrors = elements.getMirrors();
 
         // Find download location
         if (requiresPrivileges())
-            download_location = new File(PermissionManager.manager.requestSlot(), getFileName() + compression.getFilenameExtension() + EXTENSION);
+            download_location = FileUtils.getAbsolute(PermissionManager.manager.requestSlot().getAbsolutePath() + File.separator + getFileName() + compression.getFilenameExtension() + EXTENSION);
         else
-            download_location = new File(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
+            download_location = FileUtils.getAbsolute(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
         uncompress_location = new File(download_location.getParent(), getFileName() + EXTENSION);
+        localSize = findSize(localsize);
     }
 
     public boolean exists() {
@@ -161,4 +163,33 @@ public class ElementFile extends JupidatorElement {
             destination = destination.getParentFile();
         return new XEFile(uncompress_location.getPath(), destination.getAbsolutePath());
     }
+
+    public boolean shouldUpdateFile() {
+        File currentFile = new File(getDestinationFile());
+        return currentFile.isFile() || currentFile.length() != getLocalSize()
+                ? true
+                : source_location.shouldUpdateFile(currentFile);
+    }
+
+    public long getLocalSize() {
+        return localSize;
+    }
+
+    public long getSize() {
+        return source_location.getRemoteSize();
+    }
+
+    private static long findSize(String size) {
+        try {
+            if (size != null && !size.isEmpty())
+                return Math.max(0, Long.parseLong(size));
+        } catch (NumberFormatException ex) {
+        }
+        return 0;
+    }
+
+    public Iterable<String> supportFiles() {
+        return Arrays.asList(download_location.getAbsolutePath(), uncompress_location.getAbsolutePath());
+    }
+
 }

@@ -88,7 +88,7 @@ public class Digester {
                 digest.update(buffer, 0, read);
             return digest.digest();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
         } finally {
             if (fis != null)
                 try {

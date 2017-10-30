@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 public class XMLProducer {
 
-    public static void produce(File xmlfile, String arch, String version, Collection<Command> commands) {
+    public static void produce(File xmlfile, String arch, String version, long release, Collection<Command> commands, boolean snapshot) {
         XMLWalker w = XMLWalker.load(xmlfile);
         if (w == null)
             w = new XMLWalker();
@@ -23,8 +23,9 @@ public class XMLProducer {
         w.node("updatelist");
 
         w.filterNodes("version", q -> q.tag("version"), q -> version.equals(q.attribute("version")));
-        w.execIf(q -> !q.hasTag("version"), q -> q.add("version").tag("version").setAttribute("version", version));
+        w.execIf(q -> !q.hasTag("version"), q -> q.add("version").tag("version").setAttribute("version", version).setAttribute("release", Long.toString(release)));
         w.toTag("version");
+        w.execIf(q -> snapshot, q -> q.setAttribute("snapshot", "true"));
         w.execIf(q -> !q.nodeExists("description"), q -> q.add("description").setText("Description of version " + version));
         w.filterNodes("arch", q -> q.remove(), q -> arch.equals(q.attribute("name")));
         w.add("arch").setAttribute("name", arch);

@@ -99,7 +99,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
             lastFileElement = new ElementFile(attr.getValue("name"), attr.getValue("sourcedir"),
-                    attr.getValue("destdir"), attr.getValue("size"),
+                    attr.getValue("destdir"), attr.getValue("remotesize"), attr.getValue("localsize"),
                     attr.getValue("compress"), elements, appinfo);
             if (TextUtils.isTrue(attr.getValue("ifexists")) && (!lastFileElement.exists())) {
                 lastFileElement = null;
