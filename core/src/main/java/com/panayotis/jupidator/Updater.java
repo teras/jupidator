@@ -30,7 +30,6 @@ import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
-import com.panayotis.jupidator.loglist.creators.HTMLCreator;
 import com.panayotis.jupidator.versioning.SystemVersion;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -285,13 +284,5 @@ public class Updater {
         }
         gui.endDialog();
         System.exit(0);  // Restarting
-    }
-
-    public String getChangeLog() {
-        return getChangeLog(false);
-    }
-
-    public String getChangeLog(boolean onlyActive) {
-        return HTMLCreator.getList(curVersion.getAppElements().getLogList(), onlyActive);
     }
 }

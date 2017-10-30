@@ -23,12 +23,8 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.versioning.SystemVersion;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
 import jupidator.launcher.OperatingSystem;
 
 /**
@@ -51,13 +47,7 @@ public class Launcher {
     public static void main(String[] args) {
         if (args.length < 1)
             usage();
-        if ("--changelog".equals(args[0]))
-            if (args.length < 2)
-                usage();
-            else
-                changelog(args);
-        else
-            update(args);
+        update(args);
     }
 
     private static void usage() {
@@ -70,34 +60,7 @@ public class Launcher {
         System.err.println("    RELEASE : defaults to 1");
         System.err.println("    VERSION : defaults to null");
         System.err.println();
-        System.err.println(emphOn + "java -jar jupidator.jar --changelog  URL [OUT]" + emphOff);
-        System.err.println("Create a styled changelog file. Valid options are:");
-        System.err.println("    URL : the location of the changelog");
-        System.err.println("    OUT : the output file, defaults to stdout");
-        System.err.println();
         System.exit(-1);
-    }
-
-    private static void changelog(String[] args) {
-        String url = args[1];
-        String outfile = null;
-        Writer out = null;
-        try {
-            outfile = args.length > 2 ? args[2] : null;
-            out = new OutputStreamWriter(outfile == null ? System.out : new FileOutputStream(outfile), "UTF-8");
-            out.write(new Updater(url, ".", null).getChangeLog());
-            out.close();
-        } catch (UpdaterException ex) {
-            displayError(ex);
-        } catch (IOException ex) {
-            displayError(ex);
-        } finally {
-            if (out != null && outfile != null)
-                try {
-                    out.close();
-                } catch (IOException ex) {
-                }
-        }
     }
 
     private static void update(String[] args) {
