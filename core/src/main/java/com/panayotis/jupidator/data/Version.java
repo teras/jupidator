@@ -22,6 +22,7 @@ package com.panayotis.jupidator.data;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.elements.ElementFile;
+import com.panayotis.jupidator.elements.ElementNative;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.JupidatorElement;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -175,14 +177,16 @@ public class Version implements Serializable {
     private void update(String appHome) {
         Collection<String> currentFiles = asSnapshot ? FileUtils.collectFilenames(appHome) : null;
         Iterator<Map.Entry<String, JupidatorElement>> it = elements.entrySet().iterator();
+        Collection<String> postCommandsToRemove = new ArrayList<String>();
         while (it.hasNext()) {
             Map.Entry<String, JupidatorElement> next = it.next();
             if (currentFiles != null)
                 currentFiles.remove(next.getValue().getDestinationFile());
             if (next.getValue() instanceof ElementFile) {
-                if (!((ElementFile) next.getValue()).shouldUpdateFile())
+                if (!((ElementFile) next.getValue()).shouldUpdateFile()) {
+                    postCommandsToRemove.add(ElementNative.commandToHash("chmod", next.getKey()));  // Remove possible chmod command for this specific file
                     it.remove();
-                else // From now on it should be updated
+                } else // From now on it should be updated
                 if (currentFiles != null)
                     for (String sup : ((ElementFile) next.getValue()).supportFiles())
                         currentFiles.remove(sup);
@@ -190,6 +194,8 @@ public class Version implements Serializable {
                 if (!new File(next.getValue().getDestinationFile()).exists())
                     it.remove();
         }
+        for (String key : postCommandsToRemove)
+            elements.remove(key);
         if (currentFiles != null)
             for (String toRemove : currentFiles)
                 put(new ElementRm(new File(toRemove), appel));

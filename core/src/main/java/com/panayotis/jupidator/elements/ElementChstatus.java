@@ -34,7 +34,7 @@ import static com.panayotis.jupidator.i18n.I18N._t;
  */
 public abstract class ElementChstatus extends ElementNative {
 
-    private final String attr;
+    protected final String attr;
     private final boolean recursive;
 
     public ElementChstatus(String command, String file, String attr, String recursive, UpdaterAppElements elements, ApplicationInfo info) {

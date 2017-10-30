@@ -10,16 +10,22 @@ import com.panayotis.jupidator.compress.BZip2FileCompression;
 import com.panayotis.jupidator.compress.NoCompression;
 import com.panayotis.jupidator.compress.TarBz2FolderCompression;
 import com.panayotis.jupidator.digester.Digester;
+import com.panayotis.jupidator.digester.fileperms.FindPermissions;
 import com.panayotis.jupidator.parsables.ParseItem;
 import java.io.File;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.Collection;
+import static java.nio.file.attribute.PosixFilePermission.*;
+import java.util.Arrays;
 
 /**
  *
  * @author teras
  */
 public class CommandCreator {
+
+    private static final Collection<PosixFilePermission> defaultPerms = Arrays.asList(OWNER_READ, OWNER_WRITE, GROUP_READ, OTHERS_READ);
 
     private final Collection<Command> rmCommands = new ArrayList<>();
     private final Collection<Command> fileCommands = new ArrayList<>();
@@ -91,5 +97,9 @@ public class CommandCreator {
             file.setRemoteSHA256(Digester.getDigester("SHA-256").setHash(outfile).toString());
         }
         fileCommands.add(file);
+
+        String perms = FindPermissions.getPerms(infile);
+        if (perms != null && !perms.equals("644"))
+            fileCommands.add(new ChmodCommand(path, perms));
     }
 }

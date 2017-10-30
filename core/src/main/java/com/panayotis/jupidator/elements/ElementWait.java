@@ -74,5 +74,4 @@ public class ElementWait extends JupidatorElement {
     public String toString() {
         return "Wait " + msecs + "msec";
     }
-
 }

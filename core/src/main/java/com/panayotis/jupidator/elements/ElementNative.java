@@ -52,12 +52,16 @@ public abstract class ElementNative extends JupidatorElement {
 
     @Override
     public String getHash() {
-        return command + ":" + super.getHash();
+        return commandToHash(command, super.getHash());
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + command;
+        return command.substring(0, 1).toUpperCase() + (command.length() > 1 ? command.substring(1) : "") + " " + super.toString();
+    }
+
+    public static String commandToHash(String command, String baseHash) {
+        return command + ":" + baseHash;
     }
 
 }
