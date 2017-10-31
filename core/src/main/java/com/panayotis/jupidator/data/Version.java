@@ -19,6 +19,7 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.panayotis.jupidator.AppVersion;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.elements.ElementFile;
@@ -178,6 +179,7 @@ public class Version implements Serializable {
         Collection<String> currentFiles = asSnapshot ? FileUtils.collectFilenames(appHome) : null;
         Iterator<Map.Entry<String, JupidatorElement>> it = elements.entrySet().iterator();
         Collection<String> postCommandsToRemove = new ArrayList<String>();
+        elements.remove(new File(appHome, AppVersion.FILETAG).getAbsolutePath());
         while (it.hasNext()) {
             Map.Entry<String, JupidatorElement> next = it.next();
             if (currentFiles != null)
