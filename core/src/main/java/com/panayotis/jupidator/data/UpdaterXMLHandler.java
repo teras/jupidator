@@ -96,7 +96,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (!invalid_arch)
                 current_version.setGraphicalDeployer(TextUtils.isTrue(attr.getValue("gui")));
         } else if (qName.equals("file")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             lastFileElement = new ElementFile(attr.getValue("name"), attr.getValue("sourcedir"),
                     attr.getValue("destdir"), attr.getValue("remotesize"), attr.getValue("localsize"),
@@ -107,32 +107,38 @@ public class UpdaterXMLHandler extends DefaultHandler {
             }
             current_version.put(lastFileElement);
         } else if (qName.equals("rm")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             current_version.put(new ElementRm(attr.getValue("file"), elements, appinfo));
         } else if (qName.equals("chmod")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             current_version.put(new ElementChmod(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("chown")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             current_version.put(new ElementChown(attr.getValue("file"), attr.getValue("attr"),
                     attr.getValue("recursive"), elements, appinfo));
         } else if (qName.equals("exec")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             lastSeenExecElement = new ElementExec(attr.getValue("executable"), attr.getValue("input"), attr.getValue("time"), elements, appinfo);
             current_version.put(lastSeenExecElement);
         } else if (qName.equals("wait")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             current_version.put(new ElementWait(attr.getValue("msecs"), attr.getValue("time"), elements, appinfo));
         } else if (qName.equals("kill")) {
-            if (shouldIgnore(attr.getValue("forceinstall")))
+            if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;
             current_version.put(new ElementKill(attr.getValue("process"), attr.getValue("signal"), elements, appinfo));
+        } else if (qName.equals("ignore")) {
+            if (current_version == null)
+                return;
+            String ign = attr.getValue("file");
+            if (ign != null)
+                current_version.ignore(appinfo.applyVariables(ign));
         } else if (qName.equals("remote"))
             digester_ctx = DigesterContext.REMOTE;
         else if (qName.equals("local"))

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -49,6 +50,7 @@ public class Version implements Serializable {
     private UpdaterAppElements appel;
     private UpdaterProperties appprop;
     private Arch arch = Arch.defaultArch();
+    private final Collection<String> ignorelist = new LinkedList<String>();
     private boolean graphical_gui;
     private boolean asSnapshot;
 
@@ -128,6 +130,7 @@ public class Version implements Serializable {
             }
         }
         graphical_gui |= other.graphical_gui;
+        ignorelist.addAll(other.ignorelist);
     }
 
     public Arch getArch() {
@@ -176,10 +179,20 @@ public class Version implements Serializable {
     }
 
     private void update(String appHome) {
-        Collection<String> currentFiles = asSnapshot ? FileUtils.collectFilenames(appHome) : null;
+        Collection<String> currentFiles = asSnapshot ? FileUtils.collectFilenames(appHome, ignorelist.isEmpty() ? null : new FileUtils.FileFilter() {
+            public boolean accept(String file) {
+                for (String ignore : ignorelist)
+                    if (ignore.charAt(ignore.length() - 1) == File.separatorChar && file.startsWith(ignore))
+                        return false;
+                    else if (ignore.equals(file))
+                        return false;
+                return true;
+            }
+        }) : null;
+        if (currentFiles != null)
+            currentFiles.remove(new File(appHome, AppVersion.FILETAG).getAbsolutePath());
         Iterator<Map.Entry<String, JupidatorElement>> it = elements.entrySet().iterator();
         Collection<String> postCommandsToRemove = new ArrayList<String>();
-        elements.remove(new File(appHome, AppVersion.FILETAG).getAbsolutePath());
         while (it.hasNext()) {
             Map.Entry<String, JupidatorElement> next = it.next();
             if (currentFiles != null)
@@ -249,6 +262,10 @@ public class Version implements Serializable {
         } catch (IOException ex) {
             throw new UpdaterException("Unable to load jupidator data from URL " + xmlurl);
         }
+    }
+
+    public void ignore(String value) {
+        ignorelist.add(new File(value).isDirectory() ? value + File.separator : value);
     }
 
 }

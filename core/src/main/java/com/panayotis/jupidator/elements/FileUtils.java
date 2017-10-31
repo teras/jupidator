@@ -329,19 +329,25 @@ public class FileUtils {
         }
     }
 
-    public static Collection<String> collectFilenames(String basePath) {
-        return collectFilenames(getAbsolute(basePath), new HashSet<String>());
+    public static Collection<String> collectFilenames(String basePath, FileFilter ff) {
+        return collectFilenames(getAbsolute(basePath), new HashSet<String>(), ff);
     }
 
-    private static Collection<String> collectFilenames(File base, Collection<String> files) {
-        if (base.isFile())
-            files.add(base.getAbsolutePath());
-        else if (base.isDirectory()) {
+    private static Collection<String> collectFilenames(File base, Collection<String> files, FileFilter ff) {
+        if (base.isFile()) {
+            if (ff == null || ff.accept(base.getAbsolutePath()))
+                files.add(base.getAbsolutePath());
+        } else if (base.isDirectory()) {
             File[] children = base.listFiles();
             if (children != null && children.length > 0)
                 for (File child : children)
-                    collectFilenames(child, files);
+                    collectFilenames(child, files, ff);
         }
         return files;
+    }
+
+    public static interface FileFilter {
+
+        public boolean accept(String input);
     }
 }
