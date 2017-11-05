@@ -42,42 +42,42 @@ public class ApplicationInfo implements Serializable {
     private boolean distributionBased = false;
     private boolean selfupdate;
 
-    public ApplicationInfo() {
+    public ApplicationInfo() throws UpdaterException {
         this(null, 0, null, true);
     }
 
-    public ApplicationInfo(String appHome) {
+    public ApplicationInfo(String appHome) throws UpdaterException {
         this(appHome, 0, null, true);
     }
 
-    public ApplicationInfo(int release, String version) {
+    public ApplicationInfo(int release, String version) throws UpdaterException {
         this(null, release, version, true);
     }
 
-    public ApplicationInfo(String appHome, int release, String version) {
+    public ApplicationInfo(String appHome, int release, String version) throws UpdaterException {
         this(appHome, release, version, true);
     }
 
     @Deprecated
-    public ApplicationInfo(String appHome, String appSupportDir) {
+    public ApplicationInfo(String appHome, String appSupportDir) throws UpdaterException {
         this(appHome, 0, null, true);
     }
 
     @Deprecated
-    public ApplicationInfo(String appHome, String appSupportDir, String release, String version) {
+    public ApplicationInfo(String appHome, String appSupportDir, String release, String version) throws UpdaterException {
         this(appHome, TextUtils.getInt(release, 0), version, true);
     }
 
     @Deprecated
-    public ApplicationInfo(String appHome, String appSupportDir, int release, String version) {
+    public ApplicationInfo(String appHome, String appSupportDir, int release, String version) throws UpdaterException {
         this(appHome, release, version, true);
     }
 
-    static ApplicationInfo getSelfInfo(String appHome) {
+    static ApplicationInfo getSelfInfo(String appHome) throws UpdaterException {
         return new ApplicationInfo(appHome, SystemVersion.RELEASE, SystemVersion.VERSION, false);
     }
 
-    private ApplicationInfo(String appHome, int release, String version, boolean useLocalStamp) {
+    private ApplicationInfo(String appHome, int release, String version, boolean useLocalStamp) throws UpdaterException {
         vars = new HashMap<String, String>();
         if (appHome == null)
             appHome = FileUtils.getClassHome(null);
@@ -151,7 +151,7 @@ public class ApplicationInfo implements Serializable {
         this.selfupdate = true;
     }
 
-    private String fixDir(String dir, String title) {
+    private String fixDir(String dir, String title) throws UpdaterException {
         if (dir == null)
             throw new NullPointerException(title + "directory can not be null.");
         if (dir.equals("") || dir.equals("."))
@@ -160,7 +160,7 @@ public class ApplicationInfo implements Serializable {
         if (dir.length() > 1 && dir.endsWith(File.separator))
             dir = dir.substring(0, dir.length() - 1);
         if (!new File(dir).isDirectory())
-            throw new IllegalArgumentException("Unable to find " + title + " directory " + dir);
+            throw new UpdaterException("Unable to find " + title + " directory " + dir);
         return dir;
     }
 }

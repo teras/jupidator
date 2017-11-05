@@ -68,9 +68,8 @@ public class Launcher {
         String APPHOME = args.length > 1 ? args[1] : null;
         int RELEASE = args.length > 2 ? Integer.parseInt(args[2]) : 1;
         String VERSION = args.length > 3 ? args[3] : null;
-        ApplicationInfo ap = new ApplicationInfo(APPHOME, RELEASE, VERSION);
         try {
-            Updater upd = new Updater(URL, ap, null);
+            Updater upd = new Updater(URL, new ApplicationInfo(APPHOME, RELEASE, VERSION), null);
             upd.actionDisplay();
         } catch (UpdaterException ex) {
             displayError(ex);

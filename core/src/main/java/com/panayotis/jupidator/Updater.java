@@ -106,13 +106,23 @@ public class Updater {
         }
     }
 
+    private static ApplicationInfo constructApplicationInfo(String appHome, int release, String version, UpdatedApplication application) {
+        try {
+            return new ApplicationInfo(appHome, release, version);
+        } catch (UpdaterException ex) {
+            if (application != null)
+                application.receiveMessage(ex.toString());
+            return null;
+        }
+    }
+
     public static Updater start(String xmlurl, String appHome, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome), application, null);
+        return start(xmlurl, constructApplicationInfo(appHome, 0, null, application), application, null);
     }
 
     @Deprecated
     public static Updater start(String xmlurl, String appHome, String appSupportDir, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome), application, null);
+        return start(xmlurl, constructApplicationInfo(appHome, 0, null, application), application, null);
     }
 
     public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application) {
@@ -120,12 +130,12 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application, boolean ignorePostpone) {
-        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null, true, ignorePostpone);
+        return start(xmlurl, constructApplicationInfo(appHome, release, version, application), application, null, true, ignorePostpone);
     }
 
     @Deprecated
     public static Updater start(String xmlurl, String appHome, String appSupportDir, int release, String version, UpdatedApplication application) {
-        return start(xmlurl, new ApplicationInfo(appHome, release, version), application, null);
+        return start(xmlurl, constructApplicationInfo(appHome, release, version, application), application, null);
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui) {
@@ -133,6 +143,8 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst, boolean ignorePostpone) {
+        if (appinfo == null)
+            return null;
         try {
             Updater up = new Updater(xmlurl, appinfo, application, tryBzFirst, ignorePostpone);
             if (gui != null)
