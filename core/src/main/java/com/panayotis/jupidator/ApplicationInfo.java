@@ -23,6 +23,7 @@ import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.versioning.SystemVersion;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -81,7 +82,15 @@ public class ApplicationInfo implements Serializable {
         vars = new HashMap<String, String>();
         if (appHome == null)
             appHome = FileUtils.getClassHome(null);
-        appHome = fixDir(appHome, "Application");
+        File path = fixPath(appHome, "application");
+        if (path.isFile()) {
+            vars.put("APPEXEC", path.getAbsolutePath());
+            File parentPath = path.getParentFile();
+            if (parentPath == null)
+                throw new UpdaterException("Unable to locate application path based on executable " + path.getAbsolutePath());
+            path = parentPath;
+        }
+        appHome = path.getAbsolutePath();
         vars.put("APPHOME", appHome);
 
         // Find versions
@@ -151,16 +160,17 @@ public class ApplicationInfo implements Serializable {
         this.selfupdate = true;
     }
 
-    private String fixDir(String dir, String title) throws UpdaterException {
-        if (dir == null)
+    private File fixPath(String path, String title) throws UpdaterException {
+        if (path == null)
             throw new NullPointerException(title + "directory can not be null.");
-        if (dir.equals("") || dir.equals("."))
-            dir = TextUtils.getProperty("user.dir");
-        dir = dir.replace("/./", "/");
-        if (dir.length() > 1 && dir.endsWith(File.separator))
-            dir = dir.substring(0, dir.length() - 1);
-        if (!new File(dir).isDirectory())
-            throw new UpdaterException("Unable to find " + title + " directory " + dir);
-        return dir;
+        if (path.equals("") || path.equals("."))
+            path = TextUtils.getProperty("user.dir");
+        path = path.replace("/./", "/");
+        if (path.length() > 1 && path.endsWith(File.separator))
+            path = path.substring(0, path.length() - 1);
+        File result = new File(path);
+        if (!result.isDirectory() && !result.isFile())
+            throw new UpdaterException("Unable to find " + title + " path " + path);
+        return result;
     }
 }

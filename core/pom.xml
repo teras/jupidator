@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.panayotis.jupidator</groupId>
         <artifactId>project</artifactId>
-        <version>0.8.9.10</version>
+        <version>0.9.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.panayotis</groupId>
@@ -57,7 +57,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.panayotis.jupidator.helpers.Launcher</mainClass>
+                            <mainClass>${main.class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -75,5 +75,6 @@
     <properties>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
+        <main.class>com.panayotis.jupidator.helpers.Launcher</main.class>
     </properties>
 </project>
