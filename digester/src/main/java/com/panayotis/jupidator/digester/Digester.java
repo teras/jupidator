@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
- *
  * @author teras
  */
 public class Digester {
@@ -93,7 +92,7 @@ public class Digester {
             if (fis != null)
                 try {
                     fis.close();
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
         }
         return null;
@@ -102,8 +101,8 @@ public class Digester {
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
-        for (int i = 0; i < hash.length; i++) {
-            String part = Integer.toHexString(Byte.toUnsignedInt(hash[i]));
+        for (byte b : hash) {
+            String part = Integer.toHexString(((int) b) & 0xff);
             out.append(part.length() < 2 ? "0" : "").append(part);
         }
         return out.toString();

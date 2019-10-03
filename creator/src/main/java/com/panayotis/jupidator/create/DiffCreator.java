@@ -5,9 +5,9 @@
  */
 package com.panayotis.jupidator.create;
 
-import com.panayotis.jupidator.parsables.ParseFile;
-import com.panayotis.jupidator.parsables.ParseFolder;
-import com.panayotis.jupidator.parsables.ParseItem;
+import com.panayotis.jupidator.parsables.HashFile;
+import com.panayotis.jupidator.parsables.HashFolder;
+import com.panayotis.jupidator.parsables.HashItem;
 import java.io.File;
 import java.util.Collection;
 import java.util.TreeSet;
@@ -18,7 +18,7 @@ import java.util.TreeSet;
  */
 public class DiffCreator extends CommandCreator {
 
-    public static Collection<Command> create(ParseFolder oldInstallation, ParseFolder newInstallation, File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
+    public static Collection<Command> create(HashFolder oldInstallation, HashFolder newInstallation, File inputRoot, File output, String version, String arch, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         DiffCreator diff = new DiffCreator(inputRoot, output, version, arch, nomd5, nosha1, nosha256, skipfiles);
         diff.diff(oldInstallation, newInstallation, "");
         return diff.getCommands();
@@ -28,7 +28,7 @@ public class DiffCreator extends CommandCreator {
         super(inputRoot, output, version, arch, nomd5, nosha1, nosha256, skipfiles);
     }
 
-    private void diff(ParseItem oldItem, ParseItem newItem, String path) {
+    private void diff(HashItem oldItem, HashItem newItem, String path) {
         if (newItem == null)
             rm(oldItem, path);
         else if (oldItem == null)
@@ -36,14 +36,14 @@ public class DiffCreator extends CommandCreator {
         else if (!oldItem.getClass().equals(newItem.getClass())) {
             rm(oldItem, path);
             file(newItem, path);
-        } else if (oldItem instanceof ParseFile) {
+        } else if (oldItem instanceof HashFile) {
             if (!oldItem.equals(newItem))
                 file(newItem, path);
-        } else if (oldItem instanceof ParseFolder) {
+        } else if (oldItem instanceof HashFolder) {
             path = oldItem.name.equals(".") ? path : path + oldItem.name + "/";
 
-            Collection<String> oldNames = ((ParseFolder) oldItem).names();
-            Collection<String> newNames = ((ParseFolder) newItem).names();
+            Collection<String> oldNames = ((HashFolder) oldItem).names();
+            Collection<String> newNames = ((HashFolder) newItem).names();
 
             Collection<String> onlyInOld = new TreeSet<>(oldNames);
             onlyInOld.removeAll(newNames);
@@ -52,12 +52,12 @@ public class DiffCreator extends CommandCreator {
             onlyInNew.removeAll(oldNames);
 
             for (String name : onlyInOld)
-                diff(((ParseFolder) oldItem).searchFor(name), null, path);
+                diff(((HashFolder) oldItem).searchFor(name), null, path);
             for (String name : newNames)
                 if (onlyInNew.contains(name))
-                    diff(null, ((ParseFolder) newItem).searchFor(name), path);
+                    diff(null, ((HashFolder) newItem).searchFor(name), path);
                 else
-                    diff(((ParseFolder) oldItem).searchFor(name), ((ParseFolder) newItem).searchFor(name), path);
+                    diff(((HashFolder) oldItem).searchFor(name), ((HashFolder) newItem).searchFor(name), path);
         }
     }
 

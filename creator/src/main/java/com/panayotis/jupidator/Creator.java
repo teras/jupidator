@@ -21,27 +21,26 @@ package com.panayotis.jupidator;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
-import com.panayotis.arjs.StringArg;
-import com.panayotis.arjs.Args;
-import com.panayotis.arjs.BoolArg;
-import com.panayotis.arjs.DecimalArg;
-import com.panayotis.arjs.FileArg;
-import com.panayotis.arjs.IntegralArg;
-import com.panayotis.arjs.MultiStringArg;
+import com.panayotis.arjs.*;
 import com.panayotis.jupidator.create.DiffCreator;
 import com.panayotis.jupidator.create.XMLProducer;
 import com.panayotis.jupidator.create.XMLSqueezer;
-import com.panayotis.jupidator.parsables.ParseFolder;
+import com.panayotis.jupidator.parsables.HashFolder;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
+
 import com.panayotis.jupidator.create.Command;
 import com.panayotis.jupidator.create.SnapshotCreator;
+
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
- *
  * @author teras
  */
 public class Creator {
@@ -53,7 +52,7 @@ public class Creator {
      */
     public static void main(String... arguments) {
         BoolArg snap = new BoolArg();
-        BoolArg parse = new BoolArg();
+        BoolArg hash = new BoolArg();
         BoolArg create = new BoolArg();
         BoolArg squeeze = new BoolArg();
         StringArg arch = new StringArg(System.getProperty("os.arch"));
@@ -64,14 +63,14 @@ public class Creator {
         FileArg prev = new FileArg("");
         FileArg packfile = new FileArg("files");
         FileArg jupfile = new FileArg("jupidator.xml");
-        BoolArg nomd5 = new BoolArg();
-        BoolArg nosha1 = new BoolArg();
-        BoolArg nosha256 = new BoolArg();
+        BoolExclusiveArg md5 = new BoolExclusiveArg(true);
+        BoolExclusiveArg sha1 = new BoolExclusiveArg(false);
+        BoolExclusiveArg sha256 = new BoolExclusiveArg(false);
         BoolArg skipfiles = new BoolArg();
         Args args = new Args();
         args
                 .def("snap", snap)
-                .def("parse", parse)
+                .def("hash", hash)
                 .def("create", create)
                 .def("squeeze", squeeze)
                 .def("-o", output)
@@ -82,9 +81,12 @@ public class Creator {
                 .def("-r", release)
                 .def("-j", jupfile)
                 .def("-i", ignore)
-                .def("--no-md5", nomd5)
-                .def("--no-sha1", nosha1)
-                .def("--no-sha256", nosha256)
+                .def("--no-md5", md5.getInverse())
+                .def("--with-md5", md5)
+                .def("--no-sha1", sha1.getInverse())
+                .def("--with-sha1", sha1)
+                .def("--no-sha256", sha256.getInverse())
+                .def("--with-sha256", sha256)
                 .def("--skip-files", skipfiles)
                 .defhelp("-h", "--help")
                 .alias("snap", "snapshot")
@@ -104,22 +106,28 @@ public class Creator {
                 .dep("--no-md5", "snap", "create")
                 .dep("--no-sha1", "snap", "create")
                 .dep("--no-sha256", "snap", "create")
-                .dep("-o", "snap", "parse", "create")
-                .dep("-a", "snap", "parse", "create")
+                .dep("--with-md5", "snap", "create")
+                .dep("--with-sha1", "snap", "create")
+                .dep("--with-sha256", "snap", "create")
+                .dep("-o", "snap", "hash", "create")
+                .dep("-a", "snap", "hash", "create")
                 .dep("-i", "snap")
-                .req("snap", "parse", "create", "squeeze")
+                .req("snap", "hash", "create", "squeeze")
                 .req("-p")
-                .uniq("snap", "parse", "create", "squeeze")
+                .uniq("snap", "hash", "create", "squeeze")
+                .uniq("--no-md5", "--with-md5")
+                .uniq("--no-sha1", "--with-sha1")
+                .uniq("--no-sha256", "--with-sha256")
+                .usage("jupidator_creator", "hash", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "snap", "-v", "-r", "-j", "-o", "-a", "-i", "INSTALL_DIR")
-                .usage("jupidator_creator", "parse", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "create", "-p", "-v", "-r", "-j", "-f", "-o", "-a", "INSTALL_DIR")
                 .usage("jupidator_creator", "squeeze", "-j", "-v", "-f")
-                .group("Create a snapshot of current installation", "snap", "-i", "-v", "-r")
-                .group("Parse existing installation", "parse")
-                .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "-r", "--no-md5", "--no-sha1", "--no-sha256")
+                .group("Read existing installation and create a hash of all files", "hash")
+                .group("Create a full snapshot of current installation", "snap", "-i", "-v", "-r", "--with-md5", "--no-md5", "--with-sha1", "--no-sha1", "--with-sha256", "--no-sha256")
+                .group("Create jupidator files", "create", "-p", "-f", "--skip-files", "-j", "-v", "-r", "--with-md5", "--no-md5", "--with-sha1", "--no-sha1", "--with-sha256", "--no-sha256")
                 .group("Squeeze Jupidator file", "squeeze", "-j", "-v")
-                .info("snap", "parse INSTALL_DIR and create a snapshot of the provided directory INSTALL_DIR, to use as a 'snapshot update' with jupidator.")
-                .info("parse", "parse INSTALL_DIR and create fingerprints of the directory structure and files.")
+                .info("snap", "visit INSTALL_DIR and create a snapshot of the provided directory INSTALL_DIR, to use as a 'snapshot update' with jupidator.")
+                .info("hash", "visit INSTALL_DIR and create fingerprints of the directory structure and files.")
                 .info("-o", "output resulting hashing information to a file for future use or comparison, instead of standard output.", "FILE")
                 .info("-a", "the name of the architecture. If missing the default architecture is used.")
                 .info("create", "create an installation bundle, based on a previous installation (given by --prev) and the current installation (given by INSTALL_DIR).")
@@ -132,6 +140,9 @@ public class Creator {
                 .info("--no-md5", "disable the usage of md5 hashing algorithm.")
                 .info("--no-sha1", "disable the usage of sha1 hashing algorithm.")
                 .info("--no-sha256", "disable the usage of sha256 hashing algorithm.")
+                .info("--with-md5", "enable the usage of md5 hashing algorithm (enabled by default).")
+                .info("--with-sha1", "enable the usage of sha1 hashing algorithm (disabled by default).")
+                .info("--with-sha256", "enable the usage of sha256 hashing algorithm (disabled by default).")
                 .info("squeeze", "squeeze architects of jupidator update file and support the 'all' argument. Note that this is an irreversible procedure.")
                 .info("-i", "relative path of items to ignore", "IGNORE_PATH")
                 .setCondensed('-')
@@ -153,22 +164,22 @@ public class Creator {
             File in = new File(freeArgs.get(0));
 
             if (snap.get())
-                snapshot(in, output.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), ignore.get());
-            else if (parse.get())
-                parse(in, output.get(), arch.get());
+                snapshot(in, output.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), md5.getInverse().get(), sha1.getInverse().get(), sha256.getInverse().get(), ignore.get());
+            else if (hash.get())
+                hash(in, output.get(), arch.get());
             else if (create.get())
-                create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), nomd5.get(), nosha1.get(), nosha256.get(), skipfiles.get());
+                create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), md5.getInverse().get(), sha1.getInverse().get(), sha256.getInverse().get(), skipfiles.get());
         }
     }
 
     private static void snapshot(File input, File output, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, List<String> ignore) {
-        ParseFolder parse = parse(input, NOFILE, arch);
-        Collection<Command> diffs = SnapshotCreator.create(parse, input, output, version, arch, nomd5, nosha1, nosha256, ignore);
+        HashFolder hashFolder = hash(input, NOFILE, arch);
+        Collection<Command> diffs = SnapshotCreator.create(hashFolder, input, output, version, arch, nomd5, nosha1, nosha256, ignore);
         XMLProducer.produce(jupfile, arch, version, release, diffs, true);
     }
 
-    private static ParseFolder parse(File input, File output, String arch) {
-        ParseFolder result = new ParseFolder(input);
+    private static HashFolder hash(File input, File output, String arch) {
+        HashFolder result = new HashFolder(input);
         JsonObject obj;
         if (output != null && output.isFile())
             try {
@@ -193,17 +204,17 @@ public class Creator {
     }
 
     private static void create(File previous, File input, File output, File packages, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
-        ParseFolder older;
+        HashFolder older;
         try {
             JsonObject obj = Json.parse(new String(Files.readAllBytes(previous.toPath()), "UTF-8")).asObject();
             if (obj.get(arch) == null)
                 throw new JupidatorCreatorException("Unable to find architecture " + arch + " in previous configurations at " + previous.getPath());
             obj = obj.get(arch).asObject();
-            older = new ParseFolder(obj);
+            older = new HashFolder(obj);
         } catch (IOException ex) {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
-        ParseFolder current = parse(input, output == null ? NOFILE : output, arch);
+        HashFolder current = hash(input, output == null ? NOFILE : output, arch);
         Collection<Command> diffs = DiffCreator.create(older, current, input, packages, version, arch, nomd5, nosha1, nosha256, skipfiles);
         XMLProducer.produce(jupfile, arch, version, release, diffs, false);
     }

@@ -8,24 +8,28 @@ package com.panayotis.jupidator.parsables;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.panayotis.jupidator.JupidatorCreatorException;
+
 import java.io.File;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.TreeSet;
 
 /**
- *
  * @author teras
  */
-public class ParseFolder extends ParseItem {
+public class HashFolder extends HashItem {
 
-    private final Collection<ParseItem> items = new TreeSet<ParseItem>((o1, o2) -> o1.name.compareTo(o2.name)) {
+    private final Collection<HashItem> items = new TreeSet<HashItem>() {
         @Override
         public boolean containsAll(Collection<?> col) {
-            Collection<ParseItem> c = (Collection<ParseItem>) col;
-            for (ParseItem otheritem : c) {
+            if (col == null)
+                return false;
+            //noinspection unchecked
+            Collection<HashItem> c = (Collection<HashItem>) col;
+            for (HashItem other : c) {
                 boolean found = false;
-                for (ParseItem selfitem : this)
-                    if (selfitem.equals(otheritem)) {
+                for (HashItem self : this)
+                    if (self.equals(other)) {
                         found = true;
                         break;
                     }
@@ -36,11 +40,11 @@ public class ParseFolder extends ParseItem {
         }
     };
 
-    public ParseFolder(File in) {
+    public HashFolder(File in) {
         this(".", in);
     }
 
-    private ParseFolder(String name, File in) {
+    private HashFolder(String name, File in) {
         super(name);
         if (!in.exists())
             throw new JupidatorCreatorException("Input file '" + in.getPath() + "' should exist");
@@ -48,21 +52,21 @@ public class ParseFolder extends ParseItem {
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isFile())
-                    items.add(new ParseFile(child));
+                    items.add(new HashFile(child));
                 else if (child.isDirectory())
-                    items.add(new ParseFolder(child.getName(), child));
+                    items.add(new HashFolder(child.getName(), child));
     }
 
-    public ParseFolder(JsonObject dir) {
+    public HashFolder(JsonObject dir) {
         this(dir.getString("name", ""), dir.get("children").asArray());
     }
 
-    private ParseFolder(String name, JsonArray dir) {
+    private HashFolder(String name, JsonArray dir) {
         super(name);
         for (int i = 0; i < dir.size(); i++) {
             JsonObject input = dir.get(i).asObject();
             JsonArray children = input.get("children") instanceof JsonArray ? input.get("children").asArray() : null;
-            items.add(children == null ? new ParseFile(input) : new ParseFolder(input.getString("name", ""), children));
+            items.add(children == null ? new HashFile(input) : new HashFolder(input.getString("name", ""), children));
         }
     }
 
@@ -71,7 +75,7 @@ public class ParseFolder extends ParseItem {
         JsonObject j = super.toJSON();
         JsonArray children = new JsonArray();
         j.add("children", children);
-        for (ParseItem item : items)
+        for (HashItem item : items)
             children.add(item.toJSON());
         return j;
     }
@@ -80,23 +84,24 @@ public class ParseFolder extends ParseItem {
     public boolean equals(Object obj) {
         if (!super.equals(obj))
             return false;
-        final ParseFolder other = (ParseFolder) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name))
+        final HashFolder other = (HashFolder) obj;
+        if (!Objects.equals(this.name, other.name))
             return false;
-        if (this.items != other.items && (this.items == null || !this.items.equals(other.items)))
+        //noinspection RedundantIfStatement
+        if (this.items != other.items && !this.items.equals(other.items))
             return false;
         return true;
     }
 
     public Collection<String> names() {
         Collection<String> names = new TreeSet<>();
-        for (ParseItem item : items)
+        for (HashItem item : items)
             names.add(item.name);
         return names;
     }
 
-    public ParseItem searchFor(String name) {
-        for (ParseItem item : items)
+    public HashItem searchFor(String name) {
+        for (HashItem item : items)
             if (item.name.equals(name))
                 return item;
         return null;

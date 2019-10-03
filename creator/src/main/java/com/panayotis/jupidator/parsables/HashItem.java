@@ -7,15 +7,16 @@ package com.panayotis.jupidator.parsables;
 
 import com.eclipsesource.json.JsonObject;
 
+import java.util.Objects;
+
 /**
- *
  * @author teras
  */
-public abstract class ParseItem {
+public abstract class HashItem implements Comparable<HashItem> {
 
     public final String name;
 
-    public ParseItem(String name) {
+    public HashItem(String name) {
         this.name = name;
     }
 
@@ -32,8 +33,8 @@ public abstract class ParseItem {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ParseItem other = (ParseItem) obj;
-        return !((this.name == null) ? (other.name != null) : !this.name.equals(other.name));
+        HashItem other = (HashItem) obj;
+        return Objects.equals(this.name, other.name);
     }
 
     public JsonObject toJSON() {
@@ -47,4 +48,8 @@ public abstract class ParseItem {
         return name;
     }
 
+    @Override
+    public int compareTo(HashItem o) {
+        return this.name.compareTo(o.name);
+    }
 }

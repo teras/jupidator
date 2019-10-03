@@ -10,17 +10,18 @@ import com.panayotis.jupidator.compress.BZip2FileCompression;
 import com.panayotis.jupidator.compress.NoCompression;
 import com.panayotis.jupidator.compress.TarBz2FolderCompression;
 import com.panayotis.jupidator.digester.Digester;
-import com.panayotis.jupidator.digester.fileperms.FindPermissions;
-import com.panayotis.jupidator.parsables.ParseItem;
+import com.panayotis.jupidator.parsables.HashFile;
+import com.panayotis.jupidator.parsables.HashItem;
+
 import java.io.File;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
-import java.util.Collection;
-import static java.nio.file.attribute.PosixFilePermission.*;
 import java.util.Arrays;
+import java.util.Collection;
+
+import static java.nio.file.attribute.PosixFilePermission.*;
 
 /**
- *
  * @author teras
  */
 public class CommandCreator {
@@ -55,11 +56,11 @@ public class CommandCreator {
         return fileCommands;
     }
 
-    protected void rm(ParseItem item, String path) {
+    protected void rm(HashItem item, String path) {
         rmCommands.add(new RmCommand(path + item.name));
     }
 
-    protected void file(ParseItem item, String path) {
+    protected void file(HashItem item, String path) {
         if (path.endsWith("/"))
             path = path.substring(0, path.length() - 1);
         path = path.isEmpty() ? "" : "/" + path;
@@ -98,8 +99,7 @@ public class CommandCreator {
         }
         fileCommands.add(file);
 
-        String perms = FindPermissions.getPerms(infile);
-        if (perms != null && !perms.equals("644"))
-            fileCommands.add(new ChmodCommand(path, perms));
+        if (item instanceof HashFile && ((HashFile) item).exec)
+            fileCommands.add(new ChmodCommand(path, "755"));
     }
 }

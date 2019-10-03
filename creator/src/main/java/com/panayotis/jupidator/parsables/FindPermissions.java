@@ -17,30 +17,26 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jupidator.digester.fileperms;
+package com.panayotis.jupidator.parsables;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
+
 import static java.nio.file.attribute.PosixFilePermission.*;
 
 /**
- *
  * @author teras
  */
 public class FindPermissions {
 
-    public static final String getPerms(File file) {
+    public static boolean isExec(File file) {
         try {
-            Set<PosixFilePermission> perms = Files.getPosixFilePermissions(file.toPath(), LinkOption.NOFOLLOW_LINKS);
-            char owner = (char) ('0' + (perms.contains(OWNER_READ) ? 4 : 0) + (perms.contains(OWNER_WRITE) ? 2 : 0) + (perms.contains(OWNER_EXECUTE) ? 1 : 0));
-            char group = (char) ('0' + (perms.contains(GROUP_READ) ? 4 : 0) + (perms.contains(GROUP_WRITE) ? 2 : 0) + (perms.contains(GROUP_EXECUTE) ? 1 : 0));
-            char others = (char) ('0' + (perms.contains(OTHERS_READ) ? 4 : 0) + (perms.contains(OTHERS_WRITE) ? 2 : 0) + (perms.contains(OTHERS_EXECUTE) ? 1 : 0));
-            return owner + "" + group + "" + others;
+            return file.isFile() && Files.getPosixFilePermissions(file.toPath(), LinkOption.NOFOLLOW_LINKS).contains(OWNER_EXECUTE);
         } catch (Exception ex) {
-            return null;
+            return false;
         }
     }
 }
