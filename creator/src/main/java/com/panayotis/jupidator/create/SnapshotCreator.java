@@ -8,11 +8,11 @@ package com.panayotis.jupidator.create;
 import com.panayotis.jupidator.parsables.HashFile;
 import com.panayotis.jupidator.parsables.HashFolder;
 import com.panayotis.jupidator.parsables.HashItem;
+
 import java.io.File;
 import java.util.Collection;
 
 /**
- *
  * @author teras
  */
 public class SnapshotCreator extends CommandCreator {
@@ -34,9 +34,10 @@ public class SnapshotCreator extends CommandCreator {
         if (item instanceof HashFile)
             file(item, path);
         else if (item instanceof HashFolder) {
-            path = item.name.equals(".") ? path : path + item.name + "/";
-            for (String name : ((HashFolder) item).names())
-                parse(((HashFolder) item).searchFor(name), path);
+            HashFolder itemF = (HashFolder) item;
+            path = itemF.name.equals(".") ? path : path + itemF.name + "/";
+            for (String name : itemF.names())
+                parse(itemF.searchFor(name), path);
         }
     }
 

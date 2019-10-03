@@ -100,6 +100,6 @@ public class CommandCreator {
         fileCommands.add(file);
 
         if (item instanceof HashFile && ((HashFile) item).exec)
-            fileCommands.add(new ChmodCommand(path, "755"));
+            fileCommands.add(new ChmodCommand(destprefix + path + "/" + item.name, "755"));
     }
 }
