@@ -26,6 +26,7 @@ import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.loglist.creators.TextCreator;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,7 +34,6 @@ import java.io.InputStreamReader;
 import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
- *
  * @author teras
  */
 public class ConsoleGUI implements JupidatorGUI {
@@ -47,7 +47,7 @@ public class ConsoleGUI implements JupidatorGUI {
     private String appname;
     private final BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
-    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
+    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) {
         appname = el.getAppName();
         info1 = _t("A new version of {0} is available!", appname);
         info2 = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
@@ -128,7 +128,7 @@ public class ConsoleGUI implements JupidatorGUI {
         System.out.println(_t("Downloading {0}, {1} percent completed.", ratio, percent * 100));
     }
 
-    public void setIndetermined() {
+    public void setUndetermined() {
         System.out.println(_t("Please wait..."));
     }
 

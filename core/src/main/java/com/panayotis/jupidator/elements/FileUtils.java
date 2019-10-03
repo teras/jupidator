@@ -23,6 +23,7 @@ import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -42,11 +44,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static com.panayotis.jupidator.i18n.I18N._t;
+
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
- *
  * @author teras
  */
 public class FileUtils {
@@ -115,7 +117,7 @@ public class FileUtils {
                 ZipFile zip = null;
                 try {
                     zip = new ZipFile(cp);
-                    for (Enumeration<? extends ZipEntry> e = (Enumeration<? extends ZipEntry>) zip.entries(); e.hasMoreElements();) {
+                    for (Enumeration<? extends ZipEntry> e = (Enumeration<? extends ZipEntry>) zip.entries(); e.hasMoreElements(); ) {
                         ZipEntry entry = e.nextElement();
                         String name = entry.getName();
                         if (name.startsWith(PACKAGEZIP) && (!name.endsWith("/"))) {
@@ -333,6 +335,31 @@ public class FileUtils {
         return collectFilenames(getAbsolute(basePath), new HashSet<String>(), ff);
     }
 
+    public static String readFromStream(InputStream inputStream) {
+        if (inputStream == null)
+            return null;
+        StringBuilder data = new StringBuilder();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            char[] buf = new char[1000];
+            int length;
+            while ((length = reader.read(buf)) >= 0)
+                data.append(buf, 0, length);
+            return data.toString();
+        } catch (IOException e) {
+            System.err.println(e.toString());
+            return null;
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
     private static Collection<String> collectFilenames(File base, Collection<String> files, FileFilter ff) {
         if (base.isFile()) {
             if (ff == null || ff.accept(base.getAbsolutePath()))
@@ -346,8 +373,8 @@ public class FileUtils {
         return files;
     }
 
-    public static interface FileFilter {
+    public interface FileFilter {
 
-        public boolean accept(String input);
+        boolean accept(String input);
     }
 }

@@ -19,6 +19,8 @@
  */
 package com.panayotis.jupidator.data;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonValue;
 import com.panayotis.jupidator.AppVersion;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
@@ -27,32 +29,23 @@ import com.panayotis.jupidator.elements.ElementNative;
 import com.panayotis.jupidator.elements.ElementRm;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.elements.JupidatorElement;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.*;
+
 import org.apache.tools.bzip2.CBZip2InputStream;
-import org.xml.sax.SAXException;
 
 public class Version implements Serializable {
 
     private Map<String, JupidatorElement> elements = new LinkedHashMap<String, JupidatorElement>();
-    private UpdaterAppElements appel;
+    private UpdaterAppElements appelements = new UpdaterAppElements();
     private UpdaterProperties appprop;
     private Arch arch = Arch.defaultArch();
     private final Collection<String> ignorelist = new LinkedList<String>();
     private boolean graphical_gui;
     private boolean asSnapshot;
+    private boolean fullUpdate;
 
     public static Version loadVersion(String xmlurl, ApplicationInfo appinfo) throws UpdaterException {
         return loadVersion(xmlurl, appinfo, true);
@@ -62,47 +55,28 @@ public class Version implements Serializable {
         return loadVersion(xmlurl, appinfo, tryBzFirst, false);
     }
 
-    public static Version loadVersion(String xmlurl, ApplicationInfo appinfo, boolean tryBzFirst, boolean ignorePostpone) throws UpdaterException {
-        InputStream is = null;
-        try {
-            UpdaterProperties prop = new UpdaterProperties(appinfo, ignorePostpone);
-            if (!ignorePostpone && prop.isTooSoon()) {
-                Version v = new Version();
-                v.appel = new UpdaterAppElements();
-                return v;
+    public static Version loadVersion(String url, ApplicationInfo appinfo, boolean tryBzFirst, boolean ignorePostpone) throws UpdaterException {
+        if (url == null)
+            throw new NullPointerException("Updater URL can't be null");
+        String data = FileUtils.readFromStream(initInputStream(url));
+        Version result = new Version(null);
+        if (data != null) {
+            result.appprop = new UpdaterProperties(appinfo, ignorePostpone);
+            if (ignorePostpone || !result.appprop.isTooSoon()) {
+                data = data.trim();
+                UpdaterHandler handler = new UpdaterXMLHandler();
+                handler.populate(data, result, appinfo);
             }
-            is = initInputStream(xmlurl);
-            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);
-            parser.parse(is, handler);
-            Version v = handler.getVersion();
-            v.appel = handler.getAppElements();
-            v.appprop = prop;
-            v.update(appinfo.getApplicationHome());
-            v.sort();
-            return v;
-        } catch (SAXException ex) {
-            throw new UpdaterException(ex.getMessage());
-        } catch (IOException ex) {
-            throw new UpdaterException(ex.getClass().getName() + ": " + ex.getMessage());
-        } catch (ParserConfigurationException ex) {
-            throw new UpdaterException(ex.getMessage());
-        } finally {
-            if (is != null)
-                try {
-                    is.close();
-                } catch (IOException ex) {
-                }
         }
+        return result;
     }
 
-    public void replaceArch(Arch arch) {
-        if (arch != null)
-            this.arch = arch;
+    Version(UpdaterProperties appprop) {
+        this.appprop = appprop;
     }
 
     public UpdaterAppElements getAppElements() {
-        return appel;
+        return appelements;
     }
 
     public UpdaterProperties getUpdaterProperties() {
@@ -138,7 +112,8 @@ public class Version implements Serializable {
     }
 
     public void setArch(Arch arch) {
-        this.arch = arch;
+        if (arch != null)
+            this.arch = arch;
     }
 
     void setGraphicalDeployer(boolean graphical_gui) {
@@ -151,6 +126,11 @@ public class Version implements Serializable {
 
     public void setAsSnapshot() {
         this.asSnapshot = true;
+    }
+
+    void postProcess(String appHome) {
+        update(appHome);
+        sort();
     }
 
     private void sort() {
@@ -202,9 +182,9 @@ public class Version implements Serializable {
                     postCommandsToRemove.add(ElementNative.commandToHash("chmod", next.getKey()));  // Remove possible chmod command for this specific file
                     it.remove();
                 } else // From now on it should be updated
-                if (currentFiles != null)
-                    for (String sup : ((ElementFile) next.getValue()).supportFiles())
-                        currentFiles.remove(sup);
+                    if (currentFiles != null)
+                        for (String sup : ((ElementFile) next.getValue()).supportFiles())
+                            currentFiles.remove(sup);
             } else if (next.getValue() instanceof ElementRm)
                 if (!new File(next.getValue().getDestinationFile()).exists())
                     it.remove();
@@ -213,7 +193,7 @@ public class Version implements Serializable {
             elements.remove(key);
         if (currentFiles != null)
             for (String toRemove : currentFiles)
-                put(new ElementRm(new File(toRemove), appel));
+                put(new ElementRm(new File(toRemove), appelements));
     }
 
     public Iterable<JupidatorElement> values2() {
@@ -241,12 +221,12 @@ public class Version implements Serializable {
                     xmlurl += ".bz2";
                     isBz = true;
                 }
-            } catch (IOException ex) {
+            } catch (IOException ignored) {
             } finally {
                 if (is != null)
                     try {
                         is.close();
-                    } catch (IOException ex) {
+                    } catch (IOException ignored) {
                     }
             }
         }

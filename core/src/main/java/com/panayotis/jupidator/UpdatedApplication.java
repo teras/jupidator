@@ -25,7 +25,7 @@ package com.panayotis.jupidator;
  */
 public interface UpdatedApplication {
 
-    public abstract boolean requestRestart();
+    boolean requestRestart();
 
-    public abstract void receiveMessage(String message);
+    void receiveMessage(String message);
 }

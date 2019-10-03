@@ -9,7 +9,7 @@
     </parent>
     <artifactId>creator</artifactId>
     <description>A library/tool in Java for automatic updating of applications with minimum user interaction and small developer effort. The command line tool to easily create jupidator XML files.</description>
-    <url>https://github.com/teras/arjs</url>
+    <url>http://jupidator.panayotis.com/</url>
 
     <dependencies>
         <dependency>

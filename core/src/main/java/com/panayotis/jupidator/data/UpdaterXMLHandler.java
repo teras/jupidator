@@ -20,6 +20,7 @@
 package com.panayotis.jupidator.data;
 
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.digester.Digester;
 import com.panayotis.jupidator.elements.ElementChmod;
 import com.panayotis.jupidator.elements.ElementChown;
@@ -31,17 +32,24 @@ import com.panayotis.jupidator.elements.ElementWait;
 import com.panayotis.jupidator.elements.mirror.DigesterContext;
 import com.panayotis.jupidator.elements.mirror.Mirror;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.StringReader;
+
 /**
- *
  * @author teras
  */
-public class UpdaterXMLHandler extends DefaultHandler {
+public class UpdaterXMLHandler extends DefaultHandler implements UpdaterHandler {
 
-    private final UpdaterAppElements elements; // Location to store various application elements, needed in GUI
-    private final ApplicationInfo appinfo;    // Remember information about the current running application
-    private final Version full; // The full aggregated list of the latest files, in order to upgrade
+    private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
+    private ApplicationInfo appinfo;    // Remember information about the current running application
+    private Version full; // The full aggregated list of the latest files, in order to upgrade
 
     private Arch lastarch; // The last loaded arch - used to set additional parameters to this architecture
     private Version current_version;    // The list of files for the current reading "version" object
@@ -53,11 +61,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private ElementFile lastFileElement = null;   // Remember last Add element, to add digesters later on
     private DigesterContext digester_ctx = null;   // Remember last Add element, to add digesters later on
 
-    public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
-        elements = new UpdaterAppElements();
-        this.appinfo = appinfo;
-        full = new Version();
-    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attr) {
@@ -82,7 +85,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             elements.updateVersion(release_last, current_versionname);
             current_version = null;
             if (appinfo == null || release_last > appinfo.getRelease()) {
-                current_version = new Version();
+                current_version = new Version(null);
                 if (TextUtils.isTrue(attr.getValue("snapshot")))
                     current_version.setAsSnapshot();
             }
@@ -222,11 +225,21 @@ public class UpdaterXMLHandler extends DefaultHandler {
         descbuffer.append(info);
     }
 
-    UpdaterAppElements getAppElements() {
-        return elements;
-    }
-
-    Version getVersion() {
-        return full;
+    @Override
+    public void populate(String data, Version version, ApplicationInfo appinfo) throws UpdaterException {
+        try {
+            this.full = version;
+            this.elements = full.getAppElements();
+            this.appinfo = appinfo;
+            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+            parser.parse(new InputSource(new StringReader(data)), this);
+            full.postProcess(this.appinfo.getApplicationHome());
+        } catch (SAXException ex) {
+            throw new UpdaterException(ex.getMessage());
+        } catch (IOException ex) {
+            throw new UpdaterException(ex.getClass().getName() + ": " + ex.getMessage());
+        } catch (ParserConfigurationException ex) {
+            throw new UpdaterException(ex.getMessage());
+        }
     }
 }

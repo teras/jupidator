@@ -25,33 +25,32 @@ import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 
 /**
- *
  * @author teras
  */
 public interface JupidatorGUI {
 
-    public static final String ABOUT = "about";
-    public static final String SYSTEMLOOK = "systemlook";
-    public static final String LOGLIST = "loglist";
-    public static final String ACTIONLIST = "actionlist";
+    String ABOUT = "about";
+    String SYSTEMLOOK = "systemlook";
+    String LOGLIST = "loglist";
+    String ACTIONLIST = "actionlist";
 
-    public void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo) throws UpdaterException;
+    void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo);
 
-    public void startDialog();
+    void startDialog();
 
-    public void endDialog();
+    void endDialog();
 
-    public void errorOnCommit(String message);
+    void errorOnCommit(String message);
 
-    public void successOnCommit(boolean restartableApp);
+    void successOnCommit(boolean restartableApp);
 
-    public void errorOnRestart(String message);
+    void errorOnRestart(String message);
 
-    public void setDownloadRatio(String ratio, float percent);
+    void setDownloadRatio(String ratio, float percent);
 
-    public void setIndetermined();
+    void setUndetermined();
 
-    public void setProperty(String key, String value);
+    void setProperty(String key, String value);
 
-    public boolean isHeadless();
+    boolean isHeadless();
 }

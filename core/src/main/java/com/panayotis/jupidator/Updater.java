@@ -31,17 +31,18 @@ import com.panayotis.jupidator.gui.UpdateWatcher;
 import com.panayotis.jupidator.gui.console.ConsoleGUI;
 import com.panayotis.jupidator.gui.swing.SwingGUI;
 import com.panayotis.jupidator.versioning.SystemVersion;
-import java.awt.GraphicsEnvironment;
+import jupidator.launcher.DeployerParameters;
+import jupidator.launcher.XElement;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import jupidator.launcher.DeployerParameters;
+
 import static com.panayotis.jupidator.i18n.I18N._t;
-import jupidator.launcher.XElement;
 
 /**
- *
  * @author teras
  */
 public class Updater {
@@ -97,7 +98,7 @@ public class Updater {
 
             Version selfvers = Version.loadVersion(SystemVersion.URL, selfappinfo);
             if (!selfvers.isEmpty()) {
-                selfvers.replaceArch(curVersion.getArch());
+                selfvers.setArch(curVersion.getArch());
                 curInfo = selfappinfo;
                 curVersion = selfvers;
                 curVersion.getAppElements().setSelfUpdate(oldname);
@@ -130,7 +131,11 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application, boolean ignorePostpone) {
-        return start(xmlurl, constructApplicationInfo(appHome, release, version, application), application, null, true, ignorePostpone);
+        return start(xmlurl, appHome, release, version, application, ignorePostpone, true);
+    }
+
+    public static Updater start(String xmlurl, String appHome, int release, String version, UpdatedApplication application, boolean ignorePostpone, boolean autoShowDialog) {
+        return start(xmlurl, constructApplicationInfo(appHome, release, version, application), application, null, true, ignorePostpone, autoShowDialog);
     }
 
     @Deprecated
@@ -143,13 +148,18 @@ public class Updater {
     }
 
     public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst, boolean ignorePostpone) {
+        return start(xmlurl, appinfo, application, gui, tryBzFirst, ignorePostpone, true);
+    }
+
+    public static Updater start(String xmlurl, ApplicationInfo appinfo, UpdatedApplication application, JupidatorGUI gui, boolean tryBzFirst, boolean ignorePostpone, boolean autoShowDialog) {
         if (appinfo == null)
             return null;
         try {
             Updater up = new Updater(xmlurl, appinfo, application, tryBzFirst, ignorePostpone);
             if (gui != null)
                 up.setGUI(gui);
-            up.actionDisplay();
+            if (autoShowDialog)
+                up.actionDisplay();
             return up;
         } catch (UpdaterException ex) {
             if (application != null)
@@ -183,15 +193,17 @@ public class Updater {
         return curVersion.values2();
     }
 
-    public void actionDisplay() throws UpdaterException {
-        if (!curVersion.isEmpty()) {
+    public void actionDisplay() {
+        if (!isUpdatable())
+            return;
+        if (watcher == null) {
+            // Lazily initialize visuals
             PermissionManager.manager.estimatePrivileges(new File(curInfo.getApplicationHome() + File.separator + AppVersion.FILETAG));
-            getGUI(); // GUI is created lazily, when needed (very important)
             watcher = new UpdateWatcher(); // Watcher is also created lazily, when needed
-            watcher.setCallBack(gui);
-            gui.setInformation(this, curVersion.getAppElements(), curInfo);
-            gui.startDialog();
+            watcher.setCallBack(getGUI());
+            getGUI().setInformation(this, curVersion.getAppElements(), curInfo);
         }
+        getGUI().startDialog();
     }
 
     public void actionCommit() {
@@ -215,7 +227,7 @@ public class Updater {
                 }
                 /* Prepare */
                 watcher.stopWatcher();
-                gui.setIndetermined();
+                gui.setUndetermined();
                 for (JupidatorElement element : getElements()) {
                     String result = element.prepare(application);
                     if (result != null) {
@@ -300,5 +312,9 @@ public class Updater {
         }
         gui.endDialog();
         System.exit(0);  // Restarting
+    }
+
+    public boolean isUpdatable() {
+        return !curVersion.isEmpty();
     }
 }

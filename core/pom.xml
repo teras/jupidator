@@ -10,7 +10,7 @@
     <groupId>com.panayotis</groupId>
     <artifactId>jupidator</artifactId>
     <description>A library/tool in Java for automatic updating of applications with minimum user interaction and small developer effort. This is the main library. Use this in your projects.</description>
-    <url>https://github.com/teras/arjs</url>
+    <url>http://jupidator.panayotis.com/</url>
 
     <build>
         <resources>
@@ -71,10 +71,16 @@
             <artifactId>digester</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.eclipsesource.minimal-json</groupId>
+            <artifactId>minimal-json</artifactId>
+            <version>0.9.5</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <properties>
-        <maven.compiler.source>1.5</maven.compiler.source>
-        <maven.compiler.target>1.5</maven.compiler.target>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
         <main.class>com.panayotis.jupidator.helpers.Launcher</main.class>
     </properties>
 </project>

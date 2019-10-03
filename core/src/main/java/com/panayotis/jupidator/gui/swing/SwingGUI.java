@@ -27,6 +27,7 @@ import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.JupidatorGUI;
 import com.panayotis.jupidator.loglist.creators.HTMLCreator;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -37,7 +38,6 @@ import javax.swing.UIManager;
 import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
- *
  * @author teras
  */
 public class SwingGUI implements JupidatorGUI {
@@ -53,7 +53,7 @@ public class SwingGUI implements JupidatorGUI {
         return false;
     }
 
-    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
+    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) {
         this.callback = callback;
         newver = _t("A new version of {0} is available!", el.getAppName());
         versinfo = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
@@ -84,29 +84,28 @@ public class SwingGUI implements JupidatorGUI {
     }
 
     public void startDialog() {
-        if (gui != null)
-            return;
-
-        try {
-            if (systemlook)
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
+        if (gui == null) {
+            try {
+                if (systemlook)
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {
+            }
+            gui = new SwingDialog();
+            gui.infotext = infotext;
+            gui.filetext = filetext;
+            gui.callback = callback;
+            gui.NewVerL.setText(newver);
+            gui.VersInfoL.setText(versinfo);
+            gui.setTitle(title);
+            gui.icon = icon;
+            gui.SkipB.setVisible(skipvisible);
+            gui.PrevL.setVisible(prevvisible);
+            gui.setInfoVisible(infovisible);
+            gui.setFileListVisible(can_show_filelist);
+            gui.DetailedP.setVisible(detailedvisible);
+            gui.pack();
+            gui.setLocationRelativeTo(null);
         }
-        gui = new SwingDialog();
-        gui.infotext = infotext;
-        gui.filetext = filetext;
-        gui.callback = callback;
-        gui.NewVerL.setText(newver);
-        gui.VersInfoL.setText(versinfo);
-        gui.setTitle(title);
-        gui.icon = icon;
-        gui.SkipB.setVisible(skipvisible);
-        gui.PrevL.setVisible(prevvisible);
-        gui.setInfoVisible(infovisible);
-        gui.setFileListVisible(can_show_filelist);
-        gui.DetailedP.setVisible(detailedvisible);
-        gui.pack();
-        gui.setLocationRelativeTo(null);
         gui.setVisible(true);
     }
 
@@ -115,7 +114,8 @@ public class SwingGUI implements JupidatorGUI {
         gui.dispose();
     }
 
-    public void setIndetermined() {
+    @Override
+    public void setUndetermined() {
         gui.ActionB.setEnabled(false);
         gui.PBar.setIndeterminate(true);
         gui.PBar.setToolTipText(_t("Processing update"));
