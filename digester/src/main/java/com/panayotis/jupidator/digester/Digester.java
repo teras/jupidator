@@ -92,7 +92,7 @@ public class Digester {
             if (fis != null)
                 try {
                     fis.close();
-                } catch (IOException ignored) {
+                } catch (IOException ex) {
                 }
         }
         return null;

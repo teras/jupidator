@@ -40,11 +40,11 @@ public class HashFolder extends HashItem {
         }
     };
 
-    public HashFolder(File in) {
-        this(".", in);
+    public HashFolder(File in, boolean withHashes) {
+        this(".", in, withHashes);
     }
 
-    private HashFolder(String name, File in) {
+    private HashFolder(String name, File in, boolean withHashes) {
         super(name);
         if (!in.exists())
             throw new JupidatorCreatorException("Input file '" + in.getPath() + "' should exist");
@@ -52,9 +52,9 @@ public class HashFolder extends HashItem {
         if (children != null && children.length > 0)
             for (File child : children)
                 if (child.isFile())
-                    items.add(new HashFile(child));
+                    items.add(new HashFile(child, withHashes));
                 else if (child.isDirectory())
-                    items.add(new HashFolder(child.getName(), child));
+                    items.add(new HashFolder(child.getName(), child, withHashes));
     }
 
     public HashFolder(JsonObject dir) {

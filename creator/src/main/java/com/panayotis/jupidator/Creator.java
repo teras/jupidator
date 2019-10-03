@@ -28,6 +28,7 @@ import com.panayotis.jupidator.create.XMLSqueezer;
 import com.panayotis.jupidator.parsables.HashFolder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
@@ -166,24 +167,24 @@ public class Creator {
             if (snap.get())
                 snapshot(in, output.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), md5.getInverse().get(), sha1.getInverse().get(), sha256.getInverse().get(), ignore.get());
             else if (hash.get())
-                hash(in, output.get(), arch.get());
+                hash(in, output.get(), arch.get(), true);
             else if (create.get())
                 create(prev.get(), in, output.get(), packfile.get(), arch.get(), version.get(), release.get().longValue(), jupfile.get(), md5.getInverse().get(), sha1.getInverse().get(), sha256.getInverse().get(), skipfiles.get());
         }
     }
 
     private static void snapshot(File input, File output, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, List<String> ignore) {
-        HashFolder hashFolder = hash(input, NOFILE, arch);
+        HashFolder hashFolder = hash(input, NOFILE, arch, false);
         Collection<Command> diffs = SnapshotCreator.create(hashFolder, input, output, version, arch, nomd5, nosha1, nosha256, ignore);
         XMLProducer.produce(jupfile, arch, version, release, diffs, true);
     }
 
-    private static HashFolder hash(File input, File output, String arch) {
-        HashFolder result = new HashFolder(input);
+    private static HashFolder hash(File input, File output, String arch, boolean withHashes) {
+        HashFolder result = new HashFolder(input, withHashes);
         JsonObject obj;
         if (output != null && output.isFile())
             try {
-                obj = Json.parse(new String(Files.readAllBytes(output.toPath()), "UTF-8")).asObject();
+                obj = Json.parse(new String(Files.readAllBytes(output.toPath()), StandardCharsets.UTF_8)).asObject();
             } catch (IOException ex) {
                 throw new JupidatorCreatorException("Unable to parse output file " + output);
             }
@@ -206,7 +207,7 @@ public class Creator {
     private static void create(File previous, File input, File output, File packages, String arch, String version, long release, File jupfile, boolean nomd5, boolean nosha1, boolean nosha256, boolean skipfiles) {
         HashFolder older;
         try {
-            JsonObject obj = Json.parse(new String(Files.readAllBytes(previous.toPath()), "UTF-8")).asObject();
+            JsonObject obj = Json.parse(new String(Files.readAllBytes(previous.toPath()), StandardCharsets.UTF_8)).asObject();
             if (obj.get(arch) == null)
                 throw new JupidatorCreatorException("Unable to find architecture " + arch + " in previous configurations at " + previous.getPath());
             obj = obj.get(arch).asObject();
@@ -214,7 +215,7 @@ public class Creator {
         } catch (IOException ex) {
             throw new JupidatorCreatorException("Unable to read previous installation file '" + previous + "'");
         }
-        HashFolder current = hash(input, output == null ? NOFILE : output, arch);
+        HashFolder current = hash(input, output == null ? NOFILE : output, arch, false);
         Collection<Command> diffs = DiffCreator.create(older, current, input, packages, version, arch, nomd5, nosha1, nosha256, skipfiles);
         XMLProducer.produce(jupfile, arch, version, release, diffs, false);
     }

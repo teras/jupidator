@@ -16,6 +16,8 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Objects;
 
+import static com.panayotis.jupidator.digester.Digester.getDigester;
+
 /**
  * @author teras
  */
@@ -27,12 +29,12 @@ public class HashFile extends HashItem {
     public final String sha256;
     public final boolean exec;
 
-    public HashFile(File input) {
+    HashFile(File input, boolean withHashes) {
         this(input.length(),
                 input.getName(),
-                getDigest("MD5", input).toString(),
-                getDigest("SHA1", input).toString(),
-                getDigest("SHA-256", input).toString(),
+                withHashes ? getDigester("MD5").setHash(input).toString() : "",
+                withHashes ? getDigester("SHA1").setHash(input).toString() : "",
+                withHashes ? getDigester("SHA-256").setHash(input).toString() : "",
                 FindPermissions.isExec(input));
     }
 
@@ -55,19 +57,16 @@ public class HashFile extends HashItem {
         this.exec = isExec;
     }
 
-    private static Digester getDigest(String name, File input) {
-        Digester digester = Digester.getDigester(name);
-        digester.setHash(input);
-        return digester;
-    }
-
     @Override
     public JsonObject toJSON() {
         JsonObject j = super.toJSON();
         j.add("size", size);
-        j.add("md5", md5);
-        j.add("sha1", sha1);
-        j.add("sha256", sha256);
+        if (!md5.isEmpty())
+            j.add("md5", md5);
+        if (!sha1.isEmpty())
+            j.add("sha1", sha1);
+        if (!sha256.isEmpty())
+            j.add("sha256", sha256);
         if (exec)
             j.add("exec", true);
         return j;
