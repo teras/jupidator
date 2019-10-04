@@ -21,7 +21,6 @@ package com.panayotis.jupidator.gui;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
-import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 
 /**
@@ -34,7 +33,7 @@ public interface JupidatorGUI {
     String LOGLIST = "loglist";
     String ACTIONLIST = "actionlist";
 
-    void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo);
+    void setInformation(Updater callback, UpdaterAppElements appElements, ApplicationInfo appinfo, String urlInfo);
 
     void startDialog();
 

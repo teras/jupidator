@@ -21,7 +21,6 @@ package com.panayotis.jupidator.gui.swing;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
-import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.security.PermissionManager;
@@ -47,13 +46,13 @@ public class SwingGUI implements JupidatorGUI {
     private String newver, versinfo, title;
     private BufferedImage icon;
     private boolean skipvisible, prevvisible, detailedvisible = false, infovisible = true, systemlook = true, can_show_filelist = true;
-    private String infotext, filetext;
+    private String infotext, filetext, urlText;
 
     public boolean isHeadless() {
         return false;
     }
 
-    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) {
+    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info, String urlInfo) {
         this.callback = callback;
         newver = _t("A new version of {0} is available!", el.getAppName());
         versinfo = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
@@ -62,13 +61,14 @@ public class SwingGUI implements JupidatorGUI {
         infotext = HTMLCreator.getList(el.getLogList(), true);
         filetext = HTMLCreator.getFileList(callback.getElements());
         try {
-            String iconpath = el.getIconpath();
-            if (iconpath != null && (!iconpath.equals("")))
-                icon = ImageIO.read(new URL(iconpath));
-        } catch (IOException ex) {
+            String iconPath = el.getIconpath();
+            if (iconPath != null && (!iconPath.equals("")))
+                icon = ImageIO.read(new URL(iconPath));
+        } catch (IOException ignored) {
         }
         skipvisible = !info.isSelfUpdate();
         prevvisible = PermissionManager.manager.isRequiredPrivileges();
+        urlText = urlInfo;
     }
 
     public void setProperty(String key, String value) {
@@ -103,6 +103,8 @@ public class SwingGUI implements JupidatorGUI {
             gui.setInfoVisible(infovisible);
             gui.setFileListVisible(can_show_filelist);
             gui.DetailedP.setVisible(detailedvisible);
+            gui.webNotesL.setVisible(urlText != null);
+            gui.urlText = urlText;
             gui.pack();
             gui.setLocationRelativeTo(null);
         }

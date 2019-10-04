@@ -21,7 +21,6 @@ package com.panayotis.jupidator.gui.console;
 
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.Updater;
-import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.data.TextUtils;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.gui.JupidatorGUI;
@@ -45,9 +44,10 @@ public class ConsoleGUI implements JupidatorGUI {
     private boolean should_show_jupidator_about = true;
     private boolean can_show_filelist = true;
     private String appname;
+    private String urlInfo;
     private final BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
 
-    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info) {
+    public void setInformation(Updater callback, UpdaterAppElements el, ApplicationInfo info, String urlInfo) {
         appname = el.getAppName();
         info1 = _t("A new version of {0} is available!", appname);
         info2 = _t("{0} version {1} is now available", el.getAppName(), el.getNewestVersion())
@@ -56,6 +56,7 @@ public class ConsoleGUI implements JupidatorGUI {
         filelist = TextCreator.getFileList(callback.getElements());
         this.callback = callback;
         can_not_ignore = info.isSelfUpdate();
+        this.urlInfo = urlInfo;
     }
 
     public void startDialog() {
@@ -65,6 +66,8 @@ public class ConsoleGUI implements JupidatorGUI {
         System.out.println();
         System.out.println(info1);
         System.out.println(info2);
+        if (urlInfo != null)
+            System.out.println(_t("More info can be found at:") + " " + urlInfo);
         if (is_loglist_enabled && getAnswer(_t("Do you want to see the detailed changelog? [Y/n] "), "n") != 'n') {
             System.out.println();
             System.out.println(loglist);

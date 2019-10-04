@@ -18,7 +18,7 @@
  *
  */
 
- /*
+/*
  * SwingDialog.java
  *
  * Created on September 25, 2008, 3:54 AM
@@ -26,11 +26,12 @@
 package com.panayotis.jupidator.gui.swing;
 
 import com.panayotis.jupidator.Updater;
-import java.awt.BorderLayout;
-import java.awt.Frame;
-import java.awt.Image;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -39,13 +40,12 @@ import javax.swing.JEditorPane;
 import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
- *
  * @author teras
  */
 class SwingDialog extends JDialog {
 
     private static final BufferedImage sysicon;
-    //
+
     Updater callback;
     JEditorPane InfoPane;
     Details ChangeLogP;
@@ -55,6 +55,7 @@ class SwingDialog extends JDialog {
     private boolean now_show_versions = true;
     String infotext;
     String filetext;
+    String urlText;
 
     static {
         BufferedImage img = null;
@@ -117,7 +118,9 @@ class SwingDialog extends JDialog {
         MainPanel = new javax.swing.JPanel();
         InfoHolderP = new javax.swing.JPanel();
         DetailedP = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         RelNotesL = new javax.swing.JLabel();
+        webNotesL = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         VersInfoL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -170,9 +173,22 @@ class SwingDialog extends JDialog {
 
         DetailedP.setLayout(new java.awt.BorderLayout());
 
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
         RelNotesL.setFont(RelNotesL.getFont().deriveFont(RelNotesL.getFont().getStyle() | java.awt.Font.BOLD));
         RelNotesL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 4, 0));
-        DetailedP.add(RelNotesL, java.awt.BorderLayout.NORTH);
+        jPanel2.add(RelNotesL, java.awt.BorderLayout.CENTER);
+
+        webNotesL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/panayotis/jupidator/icons/web.png"))); // NOI18N
+        webNotesL.setText(_t("On the Web"));
+        webNotesL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                webNotesLActionPerformed(evt);
+            }
+        });
+        jPanel2.add(webNotesL, java.awt.BorderLayout.EAST);
+
+        DetailedP.add(jPanel2, java.awt.BorderLayout.NORTH);
 
         InfoHolderP.add(DetailedP, java.awt.BorderLayout.CENTER);
 
@@ -196,7 +212,7 @@ class SwingDialog extends JDialog {
         });
         jPanel1.add(InfoB, java.awt.BorderLayout.EAST);
 
-        NewVerL.setFont(NewVerL.getFont().deriveFont(NewVerL.getFont().getStyle() | java.awt.Font.BOLD, NewVerL.getFont().getSize()+1));
+        NewVerL.setFont(NewVerL.getFont().deriveFont(NewVerL.getFont().getStyle() | java.awt.Font.BOLD, NewVerL.getFont().getSize() + 1));
         NewVerL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
         jPanel1.add(NewVerL, java.awt.BorderLayout.CENTER);
 
@@ -267,43 +283,51 @@ class SwingDialog extends JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void UpdateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBActionPerformed
-    CommandP.setVisible(false);
-    ProgressP.setVisible(true);
-    MainPanel.add(ProgressP, BorderLayout.SOUTH);
-    callback.actionCommit();
-}//GEN-LAST:event_UpdateBActionPerformed
+    private void UpdateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBActionPerformed
+        CommandP.setVisible(false);
+        ProgressP.setVisible(true);
+        MainPanel.add(ProgressP, BorderLayout.SOUTH);
+        callback.actionCommit();
+    }//GEN-LAST:event_UpdateBActionPerformed
 
-private void LaterBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaterBActionPerformed
-    callback.actionDefer();
-}//GEN-LAST:event_LaterBActionPerformed
+    private void LaterBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaterBActionPerformed
+        callback.actionDefer();
+    }//GEN-LAST:event_LaterBActionPerformed
 
-private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBActionPerformed
-    callback.actionIgnore();
-}//GEN-LAST:event_SkipBActionPerformed
+    private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBActionPerformed
+        callback.actionIgnore();
+    }//GEN-LAST:event_SkipBActionPerformed
 
-private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionBActionPerformed
-    ActionB.setEnabled(false);
-    if (ActionB.getActionCommand().startsWith("c"))
-        callback.actionCancel();
-    else
-        callback.actionRestart();
-}//GEN-LAST:event_ActionBActionPerformed
+    private void ActionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionBActionPerformed
+        ActionB.setEnabled(false);
+        if (ActionB.getActionCommand().startsWith("c"))
+            callback.actionCancel();
+        else
+            callback.actionRestart();
+    }//GEN-LAST:event_ActionBActionPerformed
 
-private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoBActionPerformed
-    new AboutDialog(this).setVisible(true);
-}//GEN-LAST:event_InfoBActionPerformed
+    private void InfoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoBActionPerformed
+        new AboutDialog(this).setVisible(true);
+    }//GEN-LAST:event_InfoBActionPerformed
 
-private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetailsBActionPerformed
-    if (!DetailedP.isVisible()) {
-        DetailedP.setVisible(true);
-        InfoB.setVisible(infoVisible && DetailedP.isVisible());
-        DetailsB.setText(_t("Show Actions"));
-        showVersions(true);
-    } else if (filelistVisible)
-        showVersions(!now_show_versions);
-    pack();
-}//GEN-LAST:event_DetailsBActionPerformed
+    private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetailsBActionPerformed
+        if (!DetailedP.isVisible()) {
+            DetailedP.setVisible(true);
+            InfoB.setVisible(infoVisible && DetailedP.isVisible());
+            DetailsB.setText(_t("Show Actions"));
+            showVersions(true);
+        } else if (filelistVisible)
+            showVersions(!now_show_versions);
+        pack();
+    }//GEN-LAST:event_DetailsBActionPerformed
+
+    private void webNotesLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_webNotesLActionPerformed
+        try {
+            Desktop.getDesktop().browse(new URI(urlText));
+        } catch (Exception ignored) {
+        }
+    }//GEN-LAST:event_webNotesLActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JButton ActionB;
     javax.swing.JPanel BarPanel;
@@ -326,9 +350,11 @@ private void DetailsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     javax.swing.JButton UpdateB;
     javax.swing.JLabel VersInfoL;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    javax.swing.JButton webNotesL;
     // End of variables declaration//GEN-END:variables
 
     @Override

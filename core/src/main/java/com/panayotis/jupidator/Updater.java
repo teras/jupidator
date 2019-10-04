@@ -201,7 +201,7 @@ public class Updater {
             PermissionManager.manager.estimatePrivileges(new File(curInfo.getApplicationHome() + File.separator + AppVersion.FILETAG));
             watcher = new UpdateWatcher(); // Watcher is also created lazily, when needed
             watcher.setCallBack(getGUI());
-            getGUI().setInformation(this, curVersion.getAppElements(), curInfo);
+            getGUI().setInformation(this, curVersion.getAppElements(), curInfo, curVersion.getInfoUrl());
         }
         getGUI().startDialog();
     }

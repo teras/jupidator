@@ -80,6 +80,7 @@ public class UpdaterXMLHandler extends DefaultHandler implements UpdaterHandler 
             current_version = null;
             if (appinfo == null || release_last > appinfo.getRelease()) {
                 current_version = new Version(null);
+                current_version.setInfoUrl(attr.getValue("url"));
                 if (TextUtils.isTrue(attr.getValue("snapshot")))
                     current_version.setAsSnapshot();
             }

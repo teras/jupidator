@@ -19,22 +19,18 @@
  */
 package com.panayotis.jupidator.data;
 
-import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonValue;
 import com.panayotis.jupidator.AppVersion;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.elements.ElementFile;
-import com.panayotis.jupidator.elements.ElementNative;
-import com.panayotis.jupidator.elements.ElementRm;
-import com.panayotis.jupidator.elements.FileUtils;
-import com.panayotis.jupidator.elements.JupidatorElement;
+import com.panayotis.jupidator.elements.*;
+import org.apache.tools.bzip2.CBZip2InputStream;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
-
-import org.apache.tools.bzip2.CBZip2InputStream;
 
 public class Version implements Serializable {
 
@@ -45,7 +41,7 @@ public class Version implements Serializable {
     private final Collection<String> ignorelist = new LinkedList<String>();
     private boolean graphical_gui;
     private boolean asSnapshot;
-    private boolean fullUpdate;
+    private String infoUrl;
 
     public static Version loadVersion(String xmlurl, ApplicationInfo appinfo) throws UpdaterException {
         return loadVersion(xmlurl, appinfo, true);
@@ -83,6 +79,14 @@ public class Version implements Serializable {
         return appprop;
     }
 
+    public String getInfoUrl() {
+        return infoUrl;
+    }
+
+    public void setInfoUrl(String url) {
+        this.infoUrl = url;
+    }
+
     void merge(Version other) {
         if (other == null)
             return;
@@ -105,6 +109,7 @@ public class Version implements Serializable {
         }
         graphical_gui |= other.graphical_gui;
         ignorelist.addAll(other.ignorelist);
+        infoUrl = other.infoUrl == null ? infoUrl : other.infoUrl;
     }
 
     public Arch getArch() {
@@ -248,5 +253,4 @@ public class Version implements Serializable {
     public void ignore(String value) {
         ignorelist.add(new File(value).isDirectory() ? value + File.separator : value);
     }
-
 }
