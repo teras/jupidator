@@ -22,13 +22,7 @@ package com.panayotis.jupidator.data;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.digester.Digester;
-import com.panayotis.jupidator.elements.ElementChmod;
-import com.panayotis.jupidator.elements.ElementChown;
-import com.panayotis.jupidator.elements.ElementExec;
-import com.panayotis.jupidator.elements.ElementFile;
-import com.panayotis.jupidator.elements.ElementKill;
-import com.panayotis.jupidator.elements.ElementRm;
-import com.panayotis.jupidator.elements.ElementWait;
+import com.panayotis.jupidator.elements.*;
 import com.panayotis.jupidator.elements.mirror.DigesterContext;
 import com.panayotis.jupidator.elements.mirror.Mirror;
 import org.xml.sax.Attributes;
@@ -104,11 +98,10 @@ public class UpdaterXMLHandler extends DefaultHandler implements UpdaterHandler 
             lastFileElement = new ElementFile(attr.getValue("name"), attr.getValue("sourcedir"),
                     attr.getValue("destdir"), attr.getValue("remotesize"), attr.getValue("localsize"),
                     attr.getValue("compress"), elements, appinfo);
-            if (TextUtils.isTrue(attr.getValue("ifexists")) && (!lastFileElement.exists())) {
+            if (TextUtils.isTrue(attr.getValue("ifexists")) && (!lastFileElement.exists()))
                 lastFileElement = null;
-                return;
-            }
-            current_version.put(lastFileElement);
+            else
+                current_version.put(lastFileElement);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")) || current_version == null)
                 return;

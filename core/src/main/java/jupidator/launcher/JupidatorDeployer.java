@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.util.List;
 
 /**
- *
  * @author teras
  */
 public class JupidatorDeployer {
@@ -37,7 +36,7 @@ public class JupidatorDeployer {
             in = null;
 
             Visuals.setHeadless(params.isHeadless());
-            Visuals.info("Start of Jupidator Deployer for location " + params.applocation);
+            Visuals.info("Start of Jupidator Deployer for location " + params.appLocation);
 
             /* Run after visuals have been initialized */
             Thread worker = new Thread() {
@@ -72,7 +71,7 @@ public class JupidatorDeployer {
             if (in != null)
                 try {
                     in.close();
-                } catch (IOException ex1) {
+                } catch (IOException ignored) {
                 }
             errorWasFound(ex);
         }

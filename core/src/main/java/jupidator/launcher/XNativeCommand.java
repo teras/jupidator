@@ -22,7 +22,6 @@ package jupidator.launcher;
 import java.util.ArrayList;
 
 /**
- *
  * @author teras
  */
 public final class XNativeCommand {
@@ -42,7 +41,7 @@ public final class XNativeCommand {
             return null;
         String[] res = new String[arguments.size() + 1];
         res[0] = command;
-        System.arraycopy(arguments.toArray(), 0, res, 1, arguments.size());
+        System.arraycopy(arguments.toArray(new String[0]), 0, res, 1, arguments.size());
         return res;
     }
 }

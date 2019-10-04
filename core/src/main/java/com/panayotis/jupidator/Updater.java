@@ -246,8 +246,7 @@ public class Updater {
                 params.setElements(elements);
 
                 /* relaunch should be performed with original arguments, not jupidator update */
-                List<String> relaunch = new ArrayList<String>();
-                relaunch.addAll(hostVersion.getArch().getRelaunchCommand(hostInfo));
+                List<String> relaunch = new ArrayList<String>(hostVersion.getArch().getRelaunchCommand(hostInfo));
 
                 if (!curInfo.isSelfUpdate())    // Add self  update information if we do not update jupidator
                     params.addElement(AppVersion.construct(curVersion.getAppElements()).getXElement(curInfo.getApplicationHome()));

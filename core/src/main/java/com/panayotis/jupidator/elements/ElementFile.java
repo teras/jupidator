@@ -23,26 +23,19 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.digester.Digester;
-import com.panayotis.jupidator.elements.compression.BZip2Compression;
-import com.panayotis.jupidator.elements.compression.CompressionMethod;
-import com.panayotis.jupidator.elements.compression.GZipCompression;
-import com.panayotis.jupidator.elements.compression.InvalidCompression;
-import com.panayotis.jupidator.elements.compression.NullCompression;
-import com.panayotis.jupidator.elements.compression.TarBZCompression;
-import com.panayotis.jupidator.elements.compression.TarCompression;
-import com.panayotis.jupidator.elements.compression.TarGZCompression;
-import com.panayotis.jupidator.elements.compression.ZipCompression;
+import com.panayotis.jupidator.elements.compression.*;
 import com.panayotis.jupidator.elements.mirror.DigesterContext;
 import com.panayotis.jupidator.elements.mirror.MirrorList;
 import com.panayotis.jupidator.elements.mirror.MirroredFile;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
-import java.io.File;
 import jupidator.launcher.XEFile;
 import jupidator.launcher.XElement;
 
-import static com.panayotis.jupidator.i18n.I18N._t;
+import java.io.File;
 import java.util.Arrays;
+
+import static com.panayotis.jupidator.i18n.I18N._t;
 
 /**
  *
@@ -58,8 +51,7 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
     private final MirrorList mirrors;
     private final long localSize;
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
-    public ElementFile(String name, String source, String dest, String remotesize, String localsize, String compress, UpdaterAppElements elements, ApplicationInfo info) {
+    public ElementFile(String name, String source, String dest, String remoteSizeS, String localSizeS, String compress, UpdaterAppElements elements, ApplicationInfo info) {
         super(name, dest, elements, info, ExecutionTime.MID);
 
         if (compress == null || compress.equals(""))
@@ -82,8 +74,19 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
         else
             compression = new InvalidCompression(compress);
 
+        // Guess size
+        long lsize = toSize(localSizeS);
+        long rsize = toSize(remoteSizeS);
+        if (lsize == 0)
+            lsize = rsize;
+        if (rsize == 0)
+            rsize = lsize;
+        if (lsize == 0)
+            lsize = rsize = -1;
+        localSize = lsize;
+
         // Calculate source location
-        source_location = new MirroredFile(source, getFileName(), findSize(remotesize), info);
+        source_location = new MirroredFile(source, getFileName(), rsize, info);
         source_location.setExtension(compression.getFilenameExtension());
         mirrors = elements.getMirrors();
 
@@ -93,7 +96,6 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
         else
             download_location = FileUtils.getAbsolute(getDestinationFile() + compression.getFilenameExtension() + EXTENSION);
         uncompress_location = new File(download_location.getParent(), getFileName() + EXTENSION);
-        localSize = findSize(localsize);
     }
 
     public boolean exists() {
@@ -112,7 +114,8 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
     public String fetch(UpdatedApplication application, BufferListener watcher) {
         if (!source_location.shouldFetchFile(download_location)) {
             application.receiveMessage(_t("File {0} already downloaded", download_location.getAbsolutePath()));
-            watcher.addBytes(source_location.getRemoteSize());
+            if (source_location.getRemoteSize() >= 0)
+                watcher.addBytes(source_location.getRemoteSize());
             return null;
         }
 
@@ -176,9 +179,7 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
 
     public boolean shouldUpdateFile() {
         File currentFile = new File(getDestinationFile());
-        return !currentFile.isFile() || currentFile.length() != getLocalSize()
-                ? true
-                : source_location.shouldUpdateFile(currentFile);
+        return (!currentFile.isFile() || currentFile.length() != getLocalSize()) || source_location.shouldUpdateFile(currentFile);
     }
 
     public long getLocalSize() {
@@ -189,11 +190,11 @@ public class ElementFile extends JupidatorElement implements ElementSizable {
         return source_location.getRemoteSize();
     }
 
-    private static long findSize(String size) {
+    private static long toSize(String size) {
         try {
             if (size != null && !size.isEmpty())
                 return Math.max(0, Long.parseLong(size));
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException ignored) {
         }
         return 0;
     }

@@ -24,7 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author teras
  */
 public class TextUtils {
@@ -32,7 +31,8 @@ public class TextUtils {
     public static final String NL = System.getProperty("line.separator");
 
     public static String getProperty(String key) {
-        return System.getProperty(key).replace("%20", " ");
+        String data = System.getProperty(key);
+        return data == null ? null : data.replace("%20", " ");
     }
 
     public static String getSystemName() {
@@ -80,7 +80,7 @@ public class TextUtils {
         if (value != null)
             try {
                 return Integer.parseInt(value);
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignored) {
             }
         return deflt;
     }

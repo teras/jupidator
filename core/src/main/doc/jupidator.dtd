@@ -65,10 +65,12 @@ Jupidator can be used in various architectures. With this element we define whic
     @attr release <p>The integer value of the current release. This number is checked against the "release" value of the runtime environment.</p>
         <p>Remember that release files are incrementally defined. <i>All</i> versions with release number greater than the one given to the runtime environment, will be taken into account -  <i>not</i> only the last one!</p>
     @attr version Human readable display of the current release version
+    @attr snapshot This version will be snapshot-based. A full download of all the file will be performed and all previous elements will be ignored.
 -->
 <!ATTLIST version
     release CDATA #REQUIRED
     version CDATA #REQUIRED
+    snapshot CDATA "false"
   >
 
 <!--

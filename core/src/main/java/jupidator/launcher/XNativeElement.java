@@ -23,9 +23,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 
 /**
- *
  * @author teras
  */
 public abstract class XNativeElement extends XTargetElement {
@@ -39,7 +39,7 @@ public abstract class XNativeElement extends XTargetElement {
 
     protected static String exec(XNativeCommand command) {
         StringBuilder output = new StringBuilder();
-        Visuals.info("Executing " + command.command);
+        Visuals.info("Executing " + Arrays.toString(command.getArgs()));
         try {
             Process p = Runtime.getRuntime().exec(command.getArgs());
             if (command.input != null && command.input.length() > 0) {

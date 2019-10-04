@@ -22,9 +22,12 @@ package com.panayotis.jupidator.elements.mirror;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.elements.FileUtils;
 import com.panayotis.jupidator.gui.BufferListener;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -38,25 +41,27 @@ public class MirrorList {
         String reason = "";
         for (Mirror mirror : mirrors) {
             watcher.freezeSize();
+
+            /* Create URL */
+            URL url = null;
             try {
-                /* Create URL */
-                URL url = mirror.getURL(file.getElements());
-                app.receiveMessage(_t("Request URL {0}", url.toString()));
-                /* Download file */
-                String status = FileUtils.copyFile(url.openStream(), new FileOutputStream(download_location), watcher, true);
-                /* Check download status */
-                if (status != null)
-                    reason = status;
-                else if (download_location.length() != file.getRemoteSize())
-                    reason = "Wrong size, required " + file.getRemoteSize() + ", found " + download_location.length();
-                else if (file.shouldFetchFile(download_location))
-                    reason = "Security match failed";
-                else {
-                    app.receiveMessage(_t("File {0} sucessfully downloaded", download_location.getAbsolutePath()));
-                    return null;
-                }
-            } catch (IOException ex) {
-                reason = ex.getMessage();
+                url = mirror.getURL(file.getElements());
+            } catch (MalformedURLException e) {
+                continue;
+            }
+            app.receiveMessage(_t("Request URL {0}", url.toString()));
+            /* Download file */
+            String status = download(url, download_location, watcher);
+            /* Check download status */
+            if (status != null)
+                reason = status;
+            else if (file.getRemoteSize() >= 0 && download_location.length() != file.getRemoteSize())
+                reason = "Wrong size, required " + file.getRemoteSize() + ", found " + download_location.length();
+            else if (file.shouldFetchFile(download_location))
+                reason = "Security match failed";
+            else {
+                app.receiveMessage(_t("File {0} sucessfully downloaded", download_location.getAbsolutePath()));
+                return null;
             }
             watcher.rollbackSize();
         }
@@ -68,5 +73,21 @@ public class MirrorList {
         if (location < 0)
             location = 0;
         mirrors.add(location, mirror);
+    }
+
+    private static String download(URL from, File to, BufferListener watcher) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) from.openConnection();
+            connection.setUseCaches(true);
+            connection.connect();
+//            System.out.println(connection.getResponseCode());
+            return FileUtils.copyFile(from.openStream(), new FileOutputStream(to), watcher, true);
+        } catch (Exception e) {
+            return e.getMessage();
+        } finally {
+            if (connection != null)
+                connection.disconnect();
+        }
     }
 }

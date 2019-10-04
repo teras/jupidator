@@ -157,5 +157,6 @@ public class SwingGUI implements JupidatorGUI {
         gui.ProgressP.remove(gui.InfoL);
         gui.BarPanel.add(gui.InfoL);
         gui.InfoL.setText(message);
+        gui.InfoL.setToolTipText(message);
     }
 }

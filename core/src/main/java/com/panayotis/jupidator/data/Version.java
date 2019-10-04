@@ -240,6 +240,7 @@ public class Version implements Serializable {
             } else
                 return new URL(xmlurl).openStream();
         } catch (IOException ex) {
+            ex.printStackTrace(System.out);
             throw new UpdaterException("Unable to load jupidator data from URL " + xmlurl);
         }
     }

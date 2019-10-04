@@ -20,7 +20,6 @@
 package com.panayotis.jupidator.elements;
 
 /**
- *
  * @author teras
  */
 public enum ExecutionTime {
@@ -28,13 +27,10 @@ public enum ExecutionTime {
     BEFORE, MID, AFTER;
 
     public static ExecutionTime parse(String time, ExecutionTime deflt) {
-        if (time == null)
+        try {
+            return time == null ? deflt : valueOf(time.toUpperCase());
+        } catch (Exception e) {
             return deflt;
-
-        ExecutionTime ex = valueOf(time);
-        if (ex == null)
-            return deflt;
-
-        return ex;
+        }
     }
 }

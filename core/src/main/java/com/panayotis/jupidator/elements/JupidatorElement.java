@@ -24,12 +24,13 @@ import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.data.UpdaterAppElements;
 import com.panayotis.jupidator.elements.security.PermissionManager;
 import com.panayotis.jupidator.gui.BufferListener;
+
 import java.io.File;
 import java.io.Serializable;
+
 import jupidator.launcher.XElement;
 
 /**
- *
  * @author teras
  */
 public abstract class JupidatorElement implements Serializable {
@@ -48,7 +49,7 @@ public abstract class JupidatorElement implements Serializable {
         this(appinfo.applyVariables(name),
                 elements.getLastRelease(),
                 exectime == null ? ExecutionTime.MID : exectime,
-                appinfo.applyVariables(dest),
+                appinfo.applyVariables(dest == null || dest.trim().isEmpty() ? "${APPHOME}" : dest),
                 elements
         );
     }
@@ -81,7 +82,7 @@ public abstract class JupidatorElement implements Serializable {
     public final String getDestinationFile() {
         if (destdir.equals(""))
             return filename;
-        return destdir + File.separator + filename;
+        return destdir + (destdir.endsWith("/") ? "" : "/") + filename;
     }
 
     public String getFileName() {
@@ -103,7 +104,7 @@ public abstract class JupidatorElement implements Serializable {
      * This method downloads files for this element.
      *
      * @param application The requested application
-     * @param blisten Where data are stored
+     * @param blisten     Where data are stored
      * @return Error message, or null if everything is fine
      */
     public abstract String fetch(UpdatedApplication application, BufferListener blisten);

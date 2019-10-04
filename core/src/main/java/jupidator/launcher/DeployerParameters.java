@@ -20,6 +20,7 @@
 package jupidator.launcher;
 
 import com.panayotis.jupidator.elements.FileUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
  * @author teras
  */
 public class DeployerParameters implements Serializable {
@@ -38,10 +38,10 @@ public class DeployerParameters implements Serializable {
     private List<XElement> elements = new ArrayList<XElement>();
     private List<String> relaunch = new ArrayList<String>();
     private boolean headless = true;
-    public final String applocation;
+    public final String appLocation;
 
     public DeployerParameters(String applocation) {
-        this.applocation = applocation;
+        this.appLocation = applocation;
     }
 
     public void setElements(List<XElement> elements) {
@@ -89,7 +89,7 @@ public class DeployerParameters implements Serializable {
             output = new ObjectOutputStream(new FileOutputStream(out));
             output.writeObject(this);
             status = true;
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         } finally {
             if (output != null)
                 try {

@@ -18,7 +18,7 @@
  *
  */
 
- /*
+/*
  * Visuals.java
  *
  * Created on 27 Ιαν 2011, 4:30:15 μμ
@@ -37,7 +37,6 @@ import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 
 /**
- *
  * @author teras
  */
 public class Visuals extends javax.swing.JFrame {
@@ -45,16 +44,45 @@ public class Visuals extends javax.swing.JFrame {
     private static final int DWIDTH = 400;
     private static final int DHEIGHT = 300;
     //
-    private static StringBuilder info = new StringBuilder();
     private static boolean headless = false;
     private static boolean foundErrors = false;
     private static JFrame frame;
     static File logfile;
+    private static StringBuilder cacheOut = new StringBuilder();
+
+    private static FileWriter fout = null;
+
+    static {
+        String home = System.getProperty("user.home") + File.separator;
+        File logdir;
+        if (OperatingSystem.isWindows)
+            logdir = new File(System.getenv("APPDATA") + "\\jupidator");
+        else if (OperatingSystem.isMac)
+            logdir = new File(home + "Library/Logs/jupidator");
+        else
+            logdir = new File(home + ".local/share/jupidator");
+        logdir.mkdirs();
+
+        logfile = new File(logdir, new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date()));
+        if (logfile.getParentFile().isDirectory()) {
+            try {
+                fout = new FileWriter(logfile);
+            } catch (IOException ignored) {
+            }
+        }
+    }
 
     public static void info(String message) {
         if (frame == null)
             showWorking();
-        info.append(message).append("\n");
+        if (fout != null) {
+            try {
+                fout.append(message).append("\n");
+                fout.flush();
+                cacheOut.append(message).append("\n");
+            } catch (IOException ignored) {
+            }
+        }
     }
 
     public static void error(String message) {
@@ -63,12 +91,17 @@ public class Visuals extends javax.swing.JFrame {
     }
 
     public static boolean finish() {
-        storeLog();
+        if (fout != null) {
+            try {
+                fout.close();
+            } catch (IOException ignored) {
+            }
+        }
         if (frame == null || (!foundErrors))
             return true;
         frame.setVisible(false);
         frame.dispose();
-        frame = new Visuals(info.toString());
+        frame = new Visuals(cacheOut.toString());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         return false;
@@ -110,39 +143,8 @@ public class Visuals extends javax.swing.JFrame {
         frame.setVisible(true);
     }
 
-    /* 
-     *  private code to store output to a file
-     */
-    private static void storeLog() {
-        String home = System.getProperty("user.home") + File.separator;
-        File logdir;
-        if (OperatingSystem.isWindows)
-            logdir = new File(System.getenv("APPDATA") + "\\jupidator");
-        else if (OperatingSystem.isMac)
-            logdir = new File(home + "Library/Logs/jupidator");
-        else
-            logdir = new File(home + ".local/share/jupidator");
-        logdir.mkdirs();
-
-        logfile = new File(logdir, new SimpleDateFormat("'jupidator-'yyyyMMdd.kkmmss.SSSS'.log'").format(new Date()));
-        if (!logfile.getParentFile().isDirectory())
-            return;
-        FileWriter fout = null;
-        try {
-            fout = new FileWriter(logfile);
-            fout.write(info.toString());
-        } catch (IOException ex) {
-        } finally {
-            if (fout != null)
-                try {
-                    fout.close();
-                } catch (IOException ex) {
-                }
-        }
-    }
-
-    /* 
-     * Following code requires a non-headless display 
+    /*
+     * Following code requires a non-headless display
      */
     public Visuals(String error) {
         initComponents();
@@ -216,6 +218,7 @@ public class Visuals extends javax.swing.JFrame {
     private void AckBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AckBActionPerformed
         JupidatorDeployer.finishWithStatus(-1);
     }//GEN-LAST:event_AckBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AckB;
     private javax.swing.JPanel ErrorP;
