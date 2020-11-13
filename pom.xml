@@ -5,7 +5,7 @@
     <artifactId>project</artifactId>
     <!-- mvn versions:set -DnewVersion=0.9.0 -DgenerateBackupPoms=false -->
     <!--  Also change properties below -->
-    <version>0.9.0.1</version>
+    <version>0.9.0.2</version>
     <packaging>pom</packaging>
     <name>Jupidator Project</name>
     <description>A library/tool in Java for automatic updating of applications with minimum user interaction and small developer effort. This is the parent project of the library.</description>
